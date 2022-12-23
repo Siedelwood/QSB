@@ -1,0 +1,16 @@
+{
+    "name": "Swift_4_Selection",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(4) Selection",
+    "shortdesc": "Erweitert die Selektion von Einheiten und bietet weitere Optionen an.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_1_InterfaceCore"
+    ]
+}

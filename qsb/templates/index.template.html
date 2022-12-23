@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Revision</title>
+        <link rel="stylesheet" href="css/main.css" />
+        <script src="js/jquery.js"></script>
+        <script src="js/search.js"></script>
+    </head>
+    <body>
+        <div id="modules">
+            <div id="searchContainer">
+                <h1>Revision</h1>
+                <hr/>
+                <p>
+                    <ul>
+                        <li>Einzelnes Wort: Es wird nach dem Wort gesucht</li>
+                        <li>! Vorangestellt: Groß- u. Kleinschreibung wird beachtet.</li>
+                        <li>Worte mit + getrennt: Alle Wörter müssen vorkommen (Beispiel: käse+kauf)</li>
+                        <li>Worte mit , getrennt: Mindestens 1 Wort muss vorkommen (Beispiel: hakim,health)</li>
+                    </ul>
+                </p>
+                <form id="searchForm">
+                    <input type="text" id="pattern" />
+                    <input type="button" name="search" id="search" value="Suchen" />
+                    <input type="button" name="reset" id="reset" value="Zurücksetzen" />
+                    <input type="submit" style="display: none" />
+                </form>
+                <hr/>
+            <div>
+            <div id="searchResultsContainer">
+                <h3>Ergebnisse</h3>
+                <div id="bundlelinkContainer">
+                    <div style="margin-bottom: 10px;"><b>Module</b></div>
+                    ###PLACEHOLDER_BUNDLE_LINK###
+                </div>
+                <div id="directlinkContainer">
+                    <div style="margin-bottom: 10px;"><b>Funktionen</b></div>
+                    ###PLACEHOLDER_DIRECT_LINK###
+                </div>
+            </div>
+            <div id="indexEntriesContainer">
+                <h3>Index</h3>
+                <div id="modulesContainer">
+                    ###PLACEHOLDER_LUA_BUNDLES###
+                </div>
+                <p id="notFound">Leider wurden keine Ergebnisse gefunden!</p>
+            </div>
+        </div>
+    </bod>
+</html>

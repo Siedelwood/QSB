@@ -1,0 +1,410 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Fields">Fields</a></li>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>swift_mod_entitysearch.api</strong></li>
+  <li><a href="../modules/swift_mod_maploadermap.api.html">swift_mod_maploadermap.api</a></li>
+  <li><a href="../modules/swift_mod_maploadermap.combined.html">swift_mod_maploadermap.combined</a></li>
+  <li><a href="../modules/swift_mod_maploader.api.html">swift_mod_maploader.api</a></li>
+  <li><a href="../modules/swift_mod_maploader.combined.html">swift_mod_maploader.combined</a></li>
+  <li><a href="../modules/swift_mod_militarylimit.api.html">swift_mod_militarylimit.api</a></li>
+  <li><a href="../modules/swift_mod_pathfinding.api.html">swift_mod_pathfinding.api</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>swift_mod_entitysearch.api</code></h1>
+<p>Stellt eine bessere Suche nach Entities bereit.</p>
+<p>
+<p> Die Suche nach Entities, speziell solcher ohne eine Kategorie oder eines
+ Spielers, gestaltet sich oft schwer. Dieses Mudul wartet mit einer neuen
+ Suchmethode auf, die garantiert alle Entities findet und keine Grenzen
+ kennt.
+<p> Die Suche nach Entities wird über Prädikate gesteuert. Ein Prädikat ist ein
+ Kriterium, dass das Ergebnis der Entity-Suche anhand von Paramern enschränkt.
+ Dabei gibt es Prädikate, welche schneller als andere abgearbeitet werden.
+ Die Reihenfolge, in der sie gelistet werden, ist also wichtig.
+<p> <b>Vorausgesetzte Module:</b>
+ <ul>
+ <li><a href="Swift_1_JobsCore.api.html">(1) Jobs Core</a></li>
+ </ul>
+</p>
+
+
+<h2><a href="#Fields">Fields</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#QSB.SearchPredicate">QSB.SearchPredicate</a></td>
+	<td class="summary">Mögliche Prädikate für die Suche.</td>
+	</tr>
+</table>
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.SearchEntities">API.SearchEntities (_PlayerID)</a></td>
+	<td class="summary">Findet <u>alle</u> Entities.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SearchEntitiesInArea">API.SearchEntitiesInArea (_Area, _Position, _PlayerID, _Type, _Category)</a></td>
+	<td class="summary">Findet alle Entities in einem Gebiet.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SearchEntitiesInTerritory">API.SearchEntitiesInTerritory (_Territory, _PlayerID, _Type, _Category)</a></td>
+	<td class="summary">Findet alle Entities in einem Territorium.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.CommenceEntitySearch">API.CommenceEntitySearch (...)</a></td>
+	<td class="summary">Führt eine benutzerdefinierte Suche nach Entities aus.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "QSB.SearchPredicate"></a>
+    <strong>QSB.SearchPredicate</strong>
+    </dt>
+    <dd>
+    Mögliche Prädikate für die Suche.
+
+
+    <ul>
+        <li><span class="parameter">OfID</span>
+         (_ID, ...) - Schränkt auf eine bestimmte EntityID ein.
+        </li>
+        <li><span class="parameter">OfPlayer</span>
+         (_Player, ...) - Schränkt auf Entities eines bestimmten Spielers ein.
+        </li>
+        <li><span class="parameter">OfName</span>
+         (_Name, ...) - Schränkt auf eine bestimmten Skriptnamen ein.
+        </li>
+        <li><span class="parameter">OfNamePrefix</span>
+         (_Prefix, ...) - Schränkt auf Entities ein, deren Name mit dem Präfix beginnt.
+        </li>
+        <li><span class="parameter">OfNameSuffix</span>
+         (_Suffix, ...) - Schränkt auf Entities ein, deren Name mit dem Suffix endet.
+        </li>
+        <li><span class="parameter">OfType</span>
+         (_Type, ...) - Schränkt auf Entities mit dem Typen ein.
+        </li>
+        <li><span class="parameter">OfCategory</span>
+         (_Category, ...) - Schränkt auf Entities mit der Kategorie ein.
+        </li>
+        <li><span class="parameter">InArea</span>
+         (_X, _Y, _AreaSize) - Schränkt auf Entities im Gebiet ein.
+        </li>
+        <li><span class="parameter">InTerritory</span>
+         (_Territory, ...) - Schränkt auf Entities im Territorium.
+        </li>
+        <li><span class="parameter">IsBuilding</span>
+         () - Schränkt auf Gebäude ein.
+        </li>
+        <li><span class="parameter">IsFinishedBuilding</span>
+         () - Schränkt auf fertig gebaute Gebäude ein.
+        </li>
+        <li><span class="parameter">IsSettler</span>
+         () - Schränkt auf Siedler ein.
+<p> Predikate können verknüpft werden über Operatoren.
+ <ul>
+ <li>NOT (_Predicate) - Negiert das Ergebnis des Prädikat.</li>
+ <li>ALL (...) - Alle Prädikate müssen wahr sein.</li>
+ <li>ANY (...) - Mindestes ein Prädikat muss wahr sein</li>
+ <li>XOR (...) - Exklusiv 1 aus allen Predikaten muss wahr sein.</li>
+ </ul>
+
+        </li>
+    </ul>
+
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/swift_mod_entitysearch.api.html#API.CommenceEntitySearch">API.CommenceEntitySearch</a>
+    </ul>
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.SearchEntities"></a>
+    <strong>API.SearchEntities (_PlayerID)</strong>
+    </dt>
+    <dd>
+    Findet <u>alle</u> Entities.
+<p> Die Suche kann optional auf einen Spieler beschränkt werden.
+<p> <h5>Multiplayer</h5>
+ Im Multiplayer kann diese Funktion nur in synchron
+ ausgeführtem Code benutzt werden, da es sonst zu Desyncs komm.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         (Optional) ID des Besitzers
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Liste mit Ergebnissen
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/swift_mod_entitysearch.api.html#API.CommenceEntitySearch">API.CommenceEntitySearch</a>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- ALLE Entities
+</span><span class="keyword">local</span> Result = API.SearchEntities();
+<span class="comment">-- Alle Entities von Spieler 5.
+</span><span class="keyword">local</span> Result = API.SearchEntities(<span class="number">5</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SearchEntitiesInArea"></a>
+    <strong>API.SearchEntitiesInArea (_Area, _Position, _PlayerID, _Type, _Category)</strong>
+    </dt>
+    <dd>
+    Findet alle Entities in einem Gebiet.
+<p> <h5>Multiplayer</h5>
+ Im Multiplayer kann diese Funktion nur in synchron
+ ausgeführtem Code benutzt werden, da es sonst zu Desyncs komm.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Area</span>
+            <span class="types"><span class="type">number</span></span>
+             Größe des Suchgebiet
+        </li>
+        <li><span class="parameter">_Position</span>
+         Mittelpunkt (EntityID, Skriptname oder Table)
+        </li>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         (Optional) ID des Besitzers
+        </li>
+        <li><span class="parameter">_Type</span>
+            <span class="types"><span class="type">number</span></span>
+             (Optional) Typ des Entity
+        </li>
+        <li><span class="parameter">_Category</span>
+            <span class="types"><span class="type">number</span></span>
+         (Optional) Category des Entity
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Liste mit Ergebnissen
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/swift_mod_entitysearch.api.html#API.CommenceEntitySearch">API.CommenceEntitySearch</a>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> Result = API.SearchEntitiesInArea(<span class="number">5000</span>, <span class="string">"Busches"</span>, <span class="number">0</span>, Entities.R_HerbBush);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SearchEntitiesInTerritory"></a>
+    <strong>API.SearchEntitiesInTerritory (_Territory, _PlayerID, _Type, _Category)</strong>
+    </dt>
+    <dd>
+    Findet alle Entities in einem Territorium.
+<p> <h5>Multiplayer</h5>
+ Im Multiplayer kann diese Funktion nur in synchron
+ ausgeführtem Code benutzt werden, da es sonst zu Desyncs komm.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Territory</span>
+            <span class="types"><span class="type">number</span></span>
+         Territorium für die Suche
+        </li>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+          (Optional) ID des Besitzers
+        </li>
+        <li><span class="parameter">_Type</span>
+            <span class="types"><span class="type">number</span></span>
+              (Optional) Typ des Entity
+        </li>
+        <li><span class="parameter">_Category</span>
+            <span class="types"><span class="type">number</span></span>
+          (Optional) Category des Entity
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Liste mit Ergebnissen
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/swift_mod_entitysearch.api.html#API.CommenceEntitySearch">API.CommenceEntitySearch</a>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> Result = API.SearchEntitiesInTerritory(<span class="number">7</span>, <span class="number">0</span>, Entities.R_HerbBush);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.CommenceEntitySearch"></a>
+    <strong>API.CommenceEntitySearch (...)</strong>
+    </dt>
+    <dd>
+    Führt eine benutzerdefinierte Suche nach Entities aus.
+<p> <b>Achtung</b>: Die Reihenfolge der angewandten Predikate hat maßgeblichen
+ Einfluss auf die Dauer der Suche. Während Abfragen auf den Besitzer oder
+ den Typ schnell gehen, dauern Gebietssuchen lange! Es ist daher klug, zuerst
+ Kriterien auszuschließen, die schnell bestimmt werden!
+<p> <h5>Multiplayer</h5>
+ Im Multiplayer kann diese Funktion nur in synchron
+ ausgeführtem Code benutzt werden, da es sonst zu Desyncs komm.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Liste mit Suchprädikaten
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Liste mit Ergebnissen
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/swift_mod_entitysearch.api.html#QSB.SearchPredicate">QSB.SearchPredicate</a>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Es werden alle Kühe und Schafe von Spieler 1 gefunden, die nicht auf den
+</span><span class="comment">-- Territorien 7 und 15 sind.
+</span><span class="keyword">local</span> Result = API.CommenceEntitySearch(
+    <span class="comment">-- Nur Entities von Spieler 1 akzeptieren
+</span>    {QSB.SearchPredicate.OfPlayer, <span class="number">1</span>},
+    <span class="comment">-- Nur Entities akzeptieren, die Kühe oder Schafe sind.
+</span>    {ANY,
+     {QSB.SearchPredicate.OfCategory, EntityCategories.SheepPasture},
+     {QSB.SearchPredicate.OfCategory, EntityCategories.CattlePasture}},
+    <span class="comment">-- Nur Entities akzeptieren, die nicht auf den Territorien 7 und 15 sind.
+</span>    {ALL,
+     {NOT, {QSB.SearchPredicate.InTerritory, <span class="number">15</span>}},
+     {NOT, {QSB.SearchPredicate.InTerritory, <span class="number">7</span>}}}
+);</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2022-12-02 22:01:48 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+    "name": "Swift_5_Minimap",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(5) Minimap",
+    "shortdesc": "Ermöglicht Signale auf der Minikarte anzuzeigen.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_1_InterfaceCore"
+    ]
+}

@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# build unifile qsb
+echo "build unifile qsb..."
+rm -rf ../var/*
+mkdir -p ../var/qsb
+#mkdir -p ../lua/var
+cd ../lua/bin
+lua writer.lua
+cd ../../bin
+cp ../var/qsb.lua ../var/qsb/qsb.lua
+#cp ../var/qsb.lua ../lua/var/qsb.lua
+echo "done!"
+echo "create minified qsb..."
+#FIXME Minifyer produces invalid code!
+#cd ../lua/tools/luaminifyer
+#./LuaMinify.sh ../../../var/qsb.lua &>/dev/null
+cp ../var/qsb.lua ../var/qsb_min.lua
+cp ../var/qsb_min.lua ../var/qsb/qsb_min.lua
+rm ../var/qsb.lua
+rm ../var/qsb_min.lua
+#cp ../var/qsb_min.lua ../lua/var/qsb_min.lua
+echo "done!"
+
+# build documentation
+echo "build documentation..."
+cd ../lua/tools/ldoc
+lua ldoc.lua -d ../../../doc/html ../../modules #&>/dev/null
+lua ldoc.lua -d ../../mods/doc ../../mods &>/dev/null
+cd ../../bin
+lua docbuilder.lua &>/dev/null
+cd ../../bin
+rm -rf ../doc/html/js
+cp -r ../tpl/js ../doc/html
+rm -rf ../doc/html/css
+cp -r ../tpl/css ../doc/html
+echo "done!"
+
+# create archive
+echo "create archive..."
+cd ../var
+cp -r ../default/mapscript.lua qsb/mapscript.lua
+cp -r ../default/localmapscript.lua qsb/localmapscript.lua
+cp -r ../doc qsb
+mkdir -p qsb/src/modules
+cp -r ../lua/modules/* qsb/src/modules
+zip -r -o qsb/* qsb/src/* qsb/doc/* &>/dev/null
+#rm -rf qsb/doc
+rm -rf qsb/src
+#rm qsb/localmapscript.lua
+#rm qsb/mapscript.lua
+mv qsb/doc.zip qsb.zip
+echo "done!"
+
+# copy to shipment repo
+echo "copy to shipment repo..."
+cd ../bin
+mkdir --parents ../Swift/modules
+rm -rf ../Swift/modules/*
+cp -r ../lua/modules/* ../Swift/modules
+mkdir --parents ../Swift/default
+rm -rf ../Swift/default/*
+cp -r ../default/* ../Swift/default
+mkdir --parents ../Swift/doc
+rm -rf ../Swift/doc/*
+cp -r ../doc/* ../Swift/doc
+echo "done!"

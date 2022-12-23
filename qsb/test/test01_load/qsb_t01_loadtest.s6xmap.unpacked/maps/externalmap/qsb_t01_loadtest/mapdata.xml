@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+ <MapProps classname="EGL::CMapProps">
+  <NumberOfPlayer>8</NumberOfPlayer>
+  <CityLevels>
+   <Height>-1</Height>
+   <Height>-1</Height>
+   <Height>-1</Height>
+   <Height>-1</Height>
+   <Height>-1</Height>
+   <Height>-1</Height>
+   <Height>-1</Height>
+   <Height>-1</Height>
+  </CityLevels>
+ </MapProps>
+ <Entities>
+  <EntityCollection>
+   <E>
+    <T>B_Castle_ME</T>
+    <Pl>1</Pl>
+    <H>750</H>
+    <S>1.</S>
+    <P>
+     <X>6564.85498046875</X>
+     <Y>8474.4677734375</Y>
+    </P>
+    <O>0.000000e+000</O>
+   </E>
+   <E>
+    <T>B_Marketplace_ME</T>
+    <Pl>1</Pl>
+    <H>6000</H>
+    <S>1.</S>
+    <P>
+     <X>6602.1708984375</X>
+     <Y>5804.4677734375</Y>
+    </P>
+    <O>0.000000e+000</O>
+   </E>
+   <E>
+    <T>B_Cathedral</T>
+    <Pl>1</Pl>
+    <H>500</H>
+    <S>1.</S>
+    <P>
+     <X>4182.1708984375</X>
+     <Y>5941.8984375</Y>
+    </P>
+    <O>9.000000e+001</O>
+   </E>
+   <E>
+    <T>B_StoreHouse</T>
+    <Pl>1</Pl>
+    <H>500</H>
+    <S>1.</S>
+    <P>
+     <X>6597.63037109375</X>
+     <Y>3784.4677734375</Y>
+    </P>
+    <O>1.800000e+002</O>
+   </E>
+  </EntityCollection>
+ </Entities>
+ <Roads>
+  <RoadsCollection>  </RoadsCollection>
+ </Roads>
+ <Walls>
+  <WallGateCollection>  </WallGateCollection>
+  <WallCollection>  </WallCollection>
+ </Walls>
+</root>

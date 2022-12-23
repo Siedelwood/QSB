@@ -1,0 +1,18 @@
+{
+    "name": "Swift_2_Typewriter",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(2) Typewriter",
+    "shortdesc": "Ermöglicht die Anzeige von Text mit einem Schreibmaschineneffekt.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_1_InputOutputCore",
+        "Swift_1_DisplayCore",
+        "Swift_1_JobsCore"
+    ]
+}

@@ -1,0 +1,17 @@
+{
+    "name": "Swift_4_ShipSalesman",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(4) Ship Salesman",
+    "shortdesc": "",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_1_JobsCore",
+        "Swift_1_TradingCore"
+    ]
+}

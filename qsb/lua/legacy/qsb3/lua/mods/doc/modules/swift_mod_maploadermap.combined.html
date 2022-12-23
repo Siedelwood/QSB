@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/swift_mod_entitysearch.api.html">swift_mod_entitysearch.api</a></li>
+  <li><a href="../modules/swift_mod_maploadermap.api.html">swift_mod_maploadermap.api</a></li>
+  <li><strong>swift_mod_maploadermap.combined</strong></li>
+  <li><a href="../modules/swift_mod_maploader.api.html">swift_mod_maploader.api</a></li>
+  <li><a href="../modules/swift_mod_maploader.combined.html">swift_mod_maploader.combined</a></li>
+  <li><a href="../modules/swift_mod_militarylimit.api.html">swift_mod_militarylimit.api</a></li>
+  <li><a href="../modules/swift_mod_pathfinding.api.html">swift_mod_pathfinding.api</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>swift_mod_maploadermap.combined</code></h1>
+<p>CURRENTLY, THIS WON'T JUST WORK!
+<p> Stellt Hilfsfunktionen bereit, um Maps zu verwalten, welche mit dem
+ Maploader gestartet wurden.</p>
+<p>
+<p> Es werden außerdem die Fähigkeiten der bösen Helden Crimsin Sabatt und
+ des Roten Prinzen wiederhergestellt.
+<p> Dieses Bundle sollte zusammen mit dem Maploader verwendet werden!
+</p>
+    <h3>Verwandte Themen:</h3>
+    <ul>
+    </ul>
+
+
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.Map_AddValueToLoad">API.Map_AddValueToLoad (_Key)</a></td>
+	<td class="summary">Fügt eine Profilvariable zum Laden hinzu.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.Map_LoadValues">API.Map_LoadValues ()</a></td>
+	<td class="summary">Läd die zuvor vorgemerkten Werte aus dem Profil.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.Map_ReplacePrimaryKnight">API.Map_ReplacePrimaryKnight ()</a></td>
+	<td class="summary">Ersetzt den Helden mit dem zuvor im Maploader ausgewählten Helden.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.Map_SaveValue">API.Map_SaveValue (_Key, _Value)</a></td>
+	<td class="summary">Speichert einen Wert im Profil des Spielers.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.Map_SetFinished">API.Map_SetFinished ()</a></td>
+	<td class="summary">Markiert die Map im Profil des Spielers als abgeschlossen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.Map_SetHeroAbilityTextureSource">API.Map_SetHeroAbilityTextureSource (_Key, _Value)</a></td>
+	<td class="summary">Ändert die Texturposition der Heldenfähigkeit des bösen Helden.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.Map_AddValueToLoad"></a>
+    <strong>API.Map_AddValueToLoad (_Key)</strong>
+    </dt>
+    <dd>
+    Fügt eine Profilvariable zum Laden hinzu.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Key</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name der Variable
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.Map_LoadValues"></a>
+    <strong>API.Map_LoadValues ()</strong>
+    </dt>
+    <dd>
+    Läd die zuvor vorgemerkten Werte aus dem Profil.
+<p> Die geladenen Werte werden in gvMission.Campaign gespeichert.
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.Map_ReplacePrimaryKnight"></a>
+    <strong>API.Map_ReplacePrimaryKnight ()</strong>
+    </dt>
+    <dd>
+    Ersetzt den Helden mit dem zuvor im Maploader ausgewählten Helden.
+<p> Das Portrait und der Select-Button werden automatisch ausgetauscht. Falls
+ vorhanden, wird Mission_MapReady aufgerufen.
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.Map_SaveValue"></a>
+    <strong>API.Map_SaveValue (_Key, _Value)</strong>
+    </dt>
+    <dd>
+    Speichert einen Wert im Profil des Spielers.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Key</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Name der Variable
+        </li>
+        <li><span class="parameter">_Value</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Zu speichernder Wert
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.Map_SetFinished"></a>
+    <strong>API.Map_SetFinished ()</strong>
+    </dt>
+    <dd>
+    Markiert die Map im Profil des Spielers als abgeschlossen.
+<p> Diese Funktion sollte aufgerufen werden, wenn der Spieler die Siegmeldung
+ erhält.
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.Map_SetHeroAbilityTextureSource"></a>
+    <strong>API.Map_SetHeroAbilityTextureSource (_Key, _Value)</strong>
+    </dt>
+    <dd>
+    Ändert die Texturposition der Heldenfähigkeit des bösen Helden.
+<p> Mögliche Helden sind:
+ <ul>
+ <li>CrimsonSabatt</li>
+ <li>RedPrince</li>
+ </ul>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Key</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Name der Variable
+        </li>
+        <li><span class="parameter">_Value</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Zu speichernder Wert
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.Map_SetHeroAbilityTextureSource(<span class="string">"CrimsonSabatt"</span>, {<span class="number">1</span>, <span class="number">1</span>, <span class="string">"myicons"</span>});</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2022-12-02 22:01:48 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>

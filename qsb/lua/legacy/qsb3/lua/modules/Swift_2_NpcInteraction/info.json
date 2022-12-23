@@ -1,0 +1,19 @@
+{
+    "name": "Swift_2_NpInteraction",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(2) NPC Interaction",
+    "shortdesc": "Ermöglicht die Interaktion mit Siedlern (NPCs).",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua",
+        "behavior.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_1_JobsCore",
+        "Swift_1_InterfaceCore",
+        "Swift_1_ScriptingValueCore"
+    ]
+}

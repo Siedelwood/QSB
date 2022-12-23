@@ -1,0 +1,16 @@
+{
+    "name": "Swift_5_InteractiveMines",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(5) Interactive Mines",
+    "shortdesc": "Ermöglicht es eingestürzte Minen mit dem Helden zu restaurieren.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_2_ObjectInteraction"
+    ]
+}

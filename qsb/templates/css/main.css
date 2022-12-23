@@ -1,0 +1,91 @@
+/**
+ * CSS der Startseite der Dokumentation von Symfonia.
+ * @version 1.0
+ * @author totalwarANGEL
+ *
+ */
+
+html {
+    height: 100%;
+}
+
+body {
+    height: calc(100% - 10px);
+    margin: 0;
+    padding: 5px;
+    background: #dddddd;
+    font-size: 11pt;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: justify;
+}
+
+#modules {
+    border-left: 2px solid #bbbbbb;
+    border-right: 2px solid #bbbbbb;
+    padding: 5px;
+    height: 99%;
+    background: #ffffff;
+    overflow-y: scroll;
+}
+
+#modulesContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+}
+
+#searchResultsContainer {
+    display: none;
+}
+
+body {
+    width: 800px;
+    margin: auto;
+}
+
+.docContainer {
+    padding: 0px;
+    margin: 0px;
+}
+
+.docLinkContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.doclink {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #bbbbbb;
+    background: #eeeeee;
+    color: #333333;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16pt;
+    font-weight: 100;
+}
+.doclink:visited {
+    color: #333333;
+}
+.doclink:hover {
+    color: #333333;
+}
+
+.docLinkExpander {
+    margin: 0px 0px 0px auto;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.docInvisibleContent {
+    display: none;
+}
+
+.result {
+    margin-bottom: 5px;
+    padding: 5px;
+    border: 1px solid #bbbbbb;
+    background: #eeeeee;
+    color: #333333;
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PlayList>
+  <PlayListEntry>
+    <FileName>music\05_combatevelance1.mp3</FileName>
+    <Type>Loop</Type>
+    <Chance>10</Chance>
+  </PlayListEntry>
+</PlayList>

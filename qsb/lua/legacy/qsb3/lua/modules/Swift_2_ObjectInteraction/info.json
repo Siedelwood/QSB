@@ -1,0 +1,19 @@
+{
+    "name": "Swift_2_ObjectInteraction",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(2) Object Interaction",
+    "shortdesc": "Dieses Modul erweitert die Steuerung von interaktiven Objekten.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua",
+        "behavior.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_1_JobsCore",
+        "Swift_1_InterfaceCore",
+        "Swift_1_InputOutputCore"
+    ]
+}

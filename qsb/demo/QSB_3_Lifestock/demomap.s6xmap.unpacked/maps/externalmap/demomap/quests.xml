@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+ <QuestList>
+  <Quest>
+   <QuestName>BefriendBandit</QuestName>
+   <QuestParameter>
+    <QuestHidden>false</QuestHidden>
+    <QuestGiver>1</QuestGiver>
+    <QuestReceiver>1</QuestReceiver>
+    <QuestTime>0</QuestTime>
+    <Description></Description>
+    <StartMessage></StartMessage>
+    <FailureMessage></FailureMessage>
+    <SuccessMessage></SuccessMessage>
+    <BehaviorCollection>    </BehaviorCollection>
+   </QuestParameter>
+  </Quest>
+  <Quest>
+   <QuestName>BefriendCity</QuestName>
+   <QuestParameter>
+    <QuestHidden>false</QuestHidden>
+    <QuestGiver>1</QuestGiver>
+    <QuestReceiver>1</QuestReceiver>
+    <QuestTime>0</QuestTime>
+    <Description></Description>
+    <StartMessage></StartMessage>
+    <FailureMessage></FailureMessage>
+    <SuccessMessage></SuccessMessage>
+    <BehaviorCollection>    </BehaviorCollection>
+   </QuestParameter>
+  </Quest>
+  <Quest>
+   <QuestName>BefriendHarbor</QuestName>
+   <QuestParameter>
+    <QuestHidden>false</QuestHidden>
+    <QuestGiver>1</QuestGiver>
+    <QuestReceiver>1</QuestReceiver>
+    <QuestTime>0</QuestTime>
+    <Description></Description>
+    <StartMessage></StartMessage>
+    <FailureMessage></FailureMessage>
+    <SuccessMessage></SuccessMessage>
+    <BehaviorCollection>    </BehaviorCollection>
+   </QuestParameter>
+  </Quest>
+  <Quest>
+   <QuestName>BefriendVillage</QuestName>
+   <QuestParameter>
+    <QuestHidden>false</QuestHidden>
+    <QuestGiver>1</QuestGiver>
+    <QuestReceiver>1</QuestReceiver>
+    <QuestTime>0</QuestTime>
+    <Description></Description>
+    <StartMessage></StartMessage>
+    <FailureMessage></FailureMessage>
+    <SuccessMessage></SuccessMessage>
+    <BehaviorCollection>    </BehaviorCollection>
+   </QuestParameter>
+  </Quest>
+  <Quest>
+   <QuestName>DiscoverBandit</QuestName>
+   <QuestParameter>
+    <QuestHidden>false</QuestHidden>
+    <QuestGiver>1</QuestGiver>
+    <QuestReceiver>1</QuestReceiver>
+    <QuestTime>0</QuestTime>
+    <Description></Description>
+    <StartMessage></StartMessage>
+    <FailureMessage></FailureMessage>
+    <SuccessMessage></SuccessMessage>
+    <BehaviorCollection>    </BehaviorCollection>
+   </QuestParameter>
+  </Quest>
+  <Quest>
+   <QuestName>DiscoverCity</QuestName>
+   <QuestParameter>
+    <QuestHidden>false</QuestHidden>
+    <QuestGiver>1</QuestGiver>
+    <QuestReceiver>1</QuestReceiver>
+    <QuestTime>0</QuestTime>
+    <Description></Description>
+    <StartMessage></StartMessage>
+    <FailureMessage></FailureMessage>
+    <SuccessMessage></SuccessMessage>
+    <BehaviorCollection>    </BehaviorCollection>
+   </QuestParameter>
+  </Quest>
+  <Quest>
+   <QuestName>DiscoverHarbor</QuestName>
+   <QuestParameter>
+    <QuestHidden>false</QuestHidden>
+    <QuestGiver>1</QuestGiver>
+    <QuestReceiver>1</QuestReceiver>
+    <QuestTime>0</QuestTime>
+    <Description></Description>
+    <StartMessage></StartMessage>
+    <FailureMessage></FailureMessage>
+    <SuccessMessage></SuccessMessage>
+    <BehaviorCollection>    </BehaviorCollection>
+   </QuestParameter>
+  </Quest>
+  <Quest>
+   <QuestName>DiscoverVillage</QuestName>
+   <QuestParameter>
+    <QuestHidden>false</QuestHidden>
+    <QuestGiver>1</QuestGiver>
+    <QuestReceiver>1</QuestReceiver>
+    <QuestTime>0</QuestTime>
+    <Description></Description>
+    <StartMessage></StartMessage>
+    <FailureMessage></FailureMessage>
+    <SuccessMessage></SuccessMessage>
+    <BehaviorCollection>    </BehaviorCollection>
+   </QuestParameter>
+  </Quest>
+ </QuestList>
+</root>

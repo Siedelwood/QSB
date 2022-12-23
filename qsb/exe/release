@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Runs the normal build script. Then the result is copied into the deployment
+# repository.
+
+qsb/exe/build
+rm -rf ../revisionrelease/release &>/dev/null
+mkdir -p ../revisionrelease/release
+cp -r qsb/lua/var/build/* ../revisionrelease/release

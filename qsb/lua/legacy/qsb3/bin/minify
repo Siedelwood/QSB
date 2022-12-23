@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd ../luaminifyer
+for d in ../lua/modules/* ; do
+    # rm "$d/swift_min.lua"
+    # rm "$d/bugfixes_min.lua"
+    # rm "$d/debug_min.lua"
+    # rm "$d/user_min.lua"
+    # rm "$d/source_min.lua"
+    # rm "$d/behavior_min.lua"
+    ./LuaMinify.sh "$d/swift.lua" &>/dev/null
+    ./LuaMinify.sh "$d/bugfixes.lua" &>/dev/null
+    ./LuaMinify.sh "$d/debug.lua" &>/dev/null
+    ./LuaMinify.sh "$d/user.lua" &>/dev/null
+    ./LuaMinify.sh "$d/source.lua" &>/dev/null
+    ./LuaMinify.sh "$d/behavior.lua" &>/dev/null
+done

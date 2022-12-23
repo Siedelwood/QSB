@@ -1,0 +1,1 @@
+Script.Load("E:/Repositories/revision/qsb/test/test15_pathcivil/mapscript.lua");

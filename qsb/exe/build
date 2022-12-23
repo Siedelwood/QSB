@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# This shell script combines the source files into the qsb and the modules.
+# Additional files like demo maps and sample scripts are also copied. The
+# output is copied to qsb/lua/var/build
+
+echo 'START BUILDING QSB'
+
+# create folder
+echo 'clean and prepare output'
+rm -rf qsb/lua/var &>/dev/null
+mkdir -p qsb/lua/var/build/modules
+echo 'directory: qsb/lua/var/build/modules'
+echo 'done!'
+
+# compile files
+echo 'load qsb files...'
+cd qsb/lua/tools
+lua writer.lua
+mv ../var/build/qsb_idc.lua ../var/qsb_idc.lua
+lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/ &>/dev/null
+#lua luaminifyer/CommandLineMinify.lua ../var/build/qsb_idc.lua
+mv ../var/qsb_idc.lua ../var/build/qsb_idc.lua
+lua docbuilder.lua
+rm -rf ../var/build/doc/js
+cp -r ../../templates/js ../var/build/doc
+rm -rf ../var/build/doc/css
+cp -r ../../templates/css ../var/build/doc
+cp ../default/* ../var/build
+echo 'done!'
+
+# copy demo maps
+echo 'copy demo maps...'
+for d in ../../demo/* ; do
+    fn=$(basename -- "$d")
+    if test -f "../../demo/$fn/demomap.s6xmap"; then
+        echo "copy: ../../demo/$fn/demomap.s6xmap to ../var/build/modules/$fn"
+        cp "../../demo/$fn/demomap.s6xmap" "../var/build/modules/$fn" &>/dev/null
+    fi
+done
+echo 'done!'
+
+# copy example scripts
+echo 'copy example scripts...'
+for d in ../../sample/* ; do
+    fn=$(basename -- "$d")
+    if test -f "../../sample/$fn/readme.md"; then
+        cp "../../sample/$fn/readme.md" "../var/build/modules/$fn" &>/dev/null
+    fi
+    if test -f "../../sample/$fn/sample.pdf"; then
+        echo "copy: ../../sample/$fn/sample.pdf to ../var/build/modules/$fn"
+        cp "../../sample/$fn/sample.pdf" "../var/build/modules/$fn" &>/dev/null
+    fi
+done
+echo 'done!'
+
+echo 'QSB BUILDING FINISHED'

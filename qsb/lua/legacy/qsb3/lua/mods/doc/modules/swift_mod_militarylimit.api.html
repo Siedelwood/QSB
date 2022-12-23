@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+<li><a href="#Event">Event</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/swift_mod_entitysearch.api.html">swift_mod_entitysearch.api</a></li>
+  <li><a href="../modules/swift_mod_maploadermap.api.html">swift_mod_maploadermap.api</a></li>
+  <li><a href="../modules/swift_mod_maploadermap.combined.html">swift_mod_maploadermap.combined</a></li>
+  <li><a href="../modules/swift_mod_maploader.api.html">swift_mod_maploader.api</a></li>
+  <li><a href="../modules/swift_mod_maploader.combined.html">swift_mod_maploader.combined</a></li>
+  <li><strong>swift_mod_militarylimit.api</strong></li>
+  <li><a href="../modules/swift_mod_pathfinding.api.html">swift_mod_pathfinding.api</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>swift_mod_militarylimit.api</code></h1>
+<p>Dieses Modul ermöglicht es das Soldatenlimit eines Spielers frei festzulegen.</p>
+<p>
+<p> <b>Hinweis</b>: Wird nichts eingestellt, wird der Standard verwendet. Das
+ Limit ist dann 25, 43, 61, 91 (je nach Ausbaustufe der Burg).
+<p> <b>Vorausgesetzte Module:</b>
+ <ul>
+ <li><a href="Swift_1_EntityEventCore.api.html">(1) Entity Event Core</a></li>
+ <li><a href="Swift_1_InterfaceCore.api.html">(1) Interface Core</a></li>
+ <li><a href="Swift_1_JobsCore.api.html">(1) Jobs Core</a></li>
+ </ul>
+</p>
+
+
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.GetPlayerSoldierLimit">API.GetPlayerSoldierLimit (_PlayerID)</a></td>
+	<td class="summary">Gibt das aktuelle Soldatenlimit des Spielers zurück.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SetPlayerSoldierLimit">API.SetPlayerSoldierLimit (_PlayerID, _Function)</a></td>
+	<td class="summary">Setzt die Funktion zur Berechnung des Soldatenlimit.</td>
+	</tr>
+</table>
+<h2><a href="#Event">Event</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#QSB.ScriptEvents">QSB.ScriptEvents</a></td>
+	<td class="summary">Events, auf die reagiert werden kann.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.GetPlayerSoldierLimit"></a>
+    <strong>API.GetPlayerSoldierLimit (_PlayerID)</strong>
+    </dt>
+    <dd>
+    Gibt das aktuelle Soldatenlimit des Spielers zurück.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         ID des Spielers
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Aktuelles Soldatenlimit
+    </ol>
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> Limit = API.GetPlayerSoldierLimit(<span class="number">1</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SetPlayerSoldierLimit"></a>
+    <strong>API.SetPlayerSoldierLimit (_PlayerID, _Function)</strong>
+    </dt>
+    <dd>
+    Setzt die Funktion zur Berechnung des Soldatenlimit.
+<p> Wird die Funktion nil gesetzt, wird der Standard in Abhängigkeit der
+ Burgausbaustufe verwendet.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         ID des Spielers
+        </li>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">function</span></span>
+         (Optional) Funktion zur Ermittlung
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Verwende den Standard (25, 43, 61, 91)
+</span>API.SetPlayerSoldierLimit(<span class="number">1</span>);
+<span class="comment">-- Verwende eigene Funktion (Limit ist für den Spieler immer 2000)
+</span>API.SetPlayerSoldierLimit(<span class="number">1</span>, <span class="keyword">function</span>(_PlayerID)
+    <span class="keyword">return</span> <span class="number">2000</span>;
+<span class="keyword">end</span>);</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Event"></a>Event</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "QSB.ScriptEvents"></a>
+    <strong>QSB.ScriptEvents</strong>
+    </dt>
+    <dd>
+    Events, auf die reagiert werden kann.
+
+
+    <ul>
+        <li><span class="parameter">ProducedThief</span>
+             Ein Dieb wird rekrutiert (Parameter: EntityID, CastleID, CostsTable)
+        </li>
+        <li><span class="parameter">ProducedBattalion</span>
+         Ein Battalion wird rekrutiert (Parameter: EntityID, BarrackID, CostsTable)
+        </li>
+        <li><span class="parameter">RefilledBattalion</span>
+         Ein Battalion wird aufgefüllt (Parameter: EntityID, BarrackID, SoldiersBefore, SoldiersAfter, CostsTable)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2022-12-02 22:01:48 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>

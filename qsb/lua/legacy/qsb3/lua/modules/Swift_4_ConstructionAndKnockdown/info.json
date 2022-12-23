@@ -1,0 +1,16 @@
+{
+    "name": "Swift_4_ConstructionAndKnockdown",
+    "version": "2.0.0",
+    "mandatory": false,
+    "caption": "(4) Construction and Knockdown",
+    "shortdesc": "Ermöglicht den Abriss und Bau von Gebäuden und Straßen zu steuern.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_1_InterfaceCore"
+    ]
+}

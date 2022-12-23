@@ -1,0 +1,17 @@
+{
+    "name": "Swift_2_KnightTitleRequirements",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(2) Knight Title Requirements",
+    "shortdesc": "Ermöglicht benutzerdefinierte Aufstiegsbedinungen einzustellen.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua",
+        "requirements.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_1_InterfaceCore"
+    ]
+}

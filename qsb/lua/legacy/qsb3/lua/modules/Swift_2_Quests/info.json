@@ -1,0 +1,17 @@
+{
+    "name": "Swift_2_Quests",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(2) Quests",
+    "shortdesc": "Ermöglicht die Erstellung von Quests im Skript.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_1_DisplayCore",
+        "Swift_1_InputOutputCore"
+    ]
+}

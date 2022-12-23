@@ -1,0 +1,77 @@
+.metadata
+target/
+*/target/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# PyDev specific (Python IDE for Eclipse)
+*.pydevproject
+
+# CDT-specific (C/C++ Development Tooling)
+.cproject
+
+# Java annotation processor (APT)
+.factorypath
+
+# PDT-specific (PHP Development Tools)
+.buildpath
+
+# sbteclipse plugin
+.target
+
+# Tern plugin
+.tern-project
+
+# TeXlipse plugin
+.texlipse
+
+# STS (Spring Tool Suite)
+.springBeans
+
+# Intellij IDEA
+
+.idea
+
+# Code Recommenders
+.recommenders/
+
+# Scala IDE specific (Scala & Java development for Eclipse)
+.cache-main
+.scala_dependencies
+.worksheet
+/con/
+*.synw-proj
+*.vscode
+
+# Symfonia
+doctest/
+app/
+tmp/
+*/ldoc/*
+qsb3/doc/html
+qsb4/doc
+qsb3/lua/mods/doc
+qsb3/Swift
+qsb/lua/core.lua
+tmp/
+var/
+var/build/
+qsb3/var/qsb/
+qsb/doc/html/
+*/combined.lua
+swift_*.lua
+
+*_min.lua
+*.odt#

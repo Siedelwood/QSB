@@ -1,0 +1,16 @@
+{
+    "name": "Swift_5_GraphVizExport",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(5) GraphViz Export",
+    "shortdesc": "Ermöglicht es die erstellten Quests als Diagramm darzustellen.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_2_Quests"
+    ]
+}

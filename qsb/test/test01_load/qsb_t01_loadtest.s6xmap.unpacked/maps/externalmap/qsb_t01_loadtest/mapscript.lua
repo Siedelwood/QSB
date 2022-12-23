@@ -1,0 +1,1 @@
+Script.Load("E:/Repositories/revision/qsb/test/test01_load/mapscript.lua");

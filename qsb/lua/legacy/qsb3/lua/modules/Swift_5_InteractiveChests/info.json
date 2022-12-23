@@ -1,0 +1,16 @@
+{
+    "name": "Swift_5_InteractiveChests",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(5) Interactive Chests",
+    "shortdesc": "Ermöglicht es Truhen und Ruinen mit zufälligen Schätzen zu befüllen.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_2_ObjectInteraction"
+    ]
+}

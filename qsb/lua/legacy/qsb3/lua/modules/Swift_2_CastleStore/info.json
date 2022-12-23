@@ -1,0 +1,17 @@
+{
+    "name": "Swift_2_CastleStore",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(2) Castle Store",
+    "shortdesc": "Verleiht dem Spieler die Fähigkeit Lagerplatz in der Burg zu nutzen.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_1_JobsCore",
+        "Swift_1_InterfaceCore"
+    ]
+}

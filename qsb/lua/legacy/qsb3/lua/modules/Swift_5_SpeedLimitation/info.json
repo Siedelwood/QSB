@@ -1,0 +1,15 @@
+{
+    "name": "Swift_5_SpeedLimitation",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(5) Game Speed Limit",
+    "shortdesc": "Dieses Modul erlaubt die maximale Beschleunigung des Spiels zu steuern.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core"
+    ]
+}

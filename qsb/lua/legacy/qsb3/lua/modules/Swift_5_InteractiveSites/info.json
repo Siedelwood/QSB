@@ -1,0 +1,16 @@
+{
+    "name": "Swift_5_InteractiveSites",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(5) Interactive Sites",
+    "shortdesc": "Es können interaktive Baustellen gesetzt werden.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_2_ObjectInteraction"
+    ]
+}

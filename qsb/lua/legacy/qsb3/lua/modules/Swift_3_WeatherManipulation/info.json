@@ -1,0 +1,16 @@
+{
+    "name": "Swift_3_WeatherManipulation",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(3) Weather Manipulation",
+    "shortdesc": "Dieses Modul ermöglicht das Ändern des Wetters.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core",
+        "Swift_1_JobsCore"
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Swift_1_InputOutputCore",
+    "version": "1.0.0",
+    "mandatory": false,
+    "caption": "(1) Input/Output Core",
+    "shortdesc": "Ermöglicht die Steuerung von grundlegender Eingabe und Ausgabe von Daten.",
+    "description": "",
+    "files": [
+        "source.lua",
+        "api.lua",
+        "behavior.lua"
+    ],
+    "dependencies": [
+        "Swift_0_Core"
+    ]
+}
