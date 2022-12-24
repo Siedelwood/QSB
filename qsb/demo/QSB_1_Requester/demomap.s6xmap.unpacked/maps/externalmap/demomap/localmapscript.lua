@@ -30,8 +30,6 @@ function Mission_LoadFiles()
         MapPath = "E:/Repositories/revision/qsb/demo/QSB_1_Requester/demomap.s6xmap.unpacked/" ..MapPath;
     end
     return {
-        MapPath.. "script/qsb_1_requester.lua",
-
         MapPath.. "script/localmapscript.lua",
     };
 end
