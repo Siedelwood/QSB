@@ -658,8 +658,8 @@ function ModuleBuildingButtons.Local:BindButtons(_ID)
         self.BuildingButtons.Configuration[ButtonName].Bind = ButtonOverride[i];
         XGUIEng.ShowWidget("/InGame/Root/Normal/BuildingButtons/" ..ButtonName, 1);
         XGUIEng.DisableButton("/InGame/Root/Normal/BuildingButtons/" ..ButtonName, 0);
-        local X = ButtonOverride[i][1];
-        local Y = ButtonOverride[i][2];
+        local X = ButtonOverride[i].Position[1];
+        local Y = ButtonOverride[i].Position[2];
         if not X or not Y then
             local AnchorPosition = {12, 296};
             X = AnchorPosition[1] + (64 * (i-1));

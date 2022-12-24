@@ -15110,14 +15110,14 @@ function ModuleGuiControl.Local:SetIcon(_WidgetID, _Coordinates, _Size, _Name)
 end
 
 function ModuleGuiControl.Local:TooltipNormal(_title, _text, _disabledText)
-    if _title and _title:find("[A-Za-z0-9]+/[A-Za-z0-9]+$") then
+    if _title and _title:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _title = XGUIEng.GetStringTableText(_title);
     end
-    if _text and _text:find("[A-Za-z0-9]+/[A-Za-z0-9]+$") then
+    if _text and _text:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _text = XGUIEng.GetStringTableText(_text);
     end
     _disabledText = _disabledText or "";
-    if _disabledText and _disabledText:find("[A-Za-z0-9]+/[A-Za-z0-9]+$") then
+    if _disabledText and _disabledText:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _disabledText = XGUIEng.GetStringTableText(_disabledText);
     end
 
@@ -15156,13 +15156,13 @@ function ModuleGuiControl.Local:TooltipCosts(_title,_text,_disabledText,_costs,_
     for i= 1, 4, 1 do
         Costs[i] = _costs[i];
     end
-    if _title and _title:find("[A-Za-z0-9]+/[A-Za-z0-9]+$") then
+    if _title and _title:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _title = XGUIEng.GetStringTableText(_title);
     end
-    if _text and _text:find("[A-Za-z0-9]+/[A-Za-z0-9]+$") then
+    if _text and _text:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _text = XGUIEng.GetStringTableText(_text);
     end
-    if _disabledText and _disabledText:find("^[A-Za-z0-9]+/[A-Za-z0-9]+$") then
+    if _disabledText and _disabledText:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _disabledText = XGUIEng.GetStringTableText(_disabledText);
     end
 
@@ -22417,8 +22417,8 @@ function ModuleBuildingButtons.Local:BindButtons(_ID)
         self.BuildingButtons.Configuration[ButtonName].Bind = ButtonOverride[i];
         XGUIEng.ShowWidget("/InGame/Root/Normal/BuildingButtons/" ..ButtonName, 1);
         XGUIEng.DisableButton("/InGame/Root/Normal/BuildingButtons/" ..ButtonName, 0);
-        local X = ButtonOverride[i][1];
-        local Y = ButtonOverride[i][2];
+        local X = ButtonOverride[i].Position[1];
+        local Y = ButtonOverride[i].Position[2];
         if not X or not Y then
             local AnchorPosition = {12, 296};
             X = AnchorPosition[1] + (64 * (i-1));
