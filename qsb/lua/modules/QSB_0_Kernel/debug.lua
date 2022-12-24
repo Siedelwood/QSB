@@ -127,7 +127,7 @@ end
 function Revision.Debug:ProcessDebugShortcut(_Type, _Params)
     if self.DevelopingCheats then
         if _Type == "RestartMap" then
-            API.RestartMap();
+            Framework.RestartMap();
         elseif _Type == "Terminal" then
             API.ShowTextInput(GUI.GetPlayerID(), true);
         end
