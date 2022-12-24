@@ -760,6 +760,7 @@ end
 -- Loadscreen
 
 function Revision:SetupLoadscreenHandler()
+    -- Send the event as command to the global script
     QSB.ScriptEvents.LoadscreenClosed = self.Event:CreateScriptEvent("Event_LoadscreenClosed");
     if self.Environment == QSB.Environment.GLOBAL then
         self.Event:CreateScriptCommand(
@@ -767,14 +768,17 @@ function Revision:SetupLoadscreenHandler()
             function()
                 API.SendScriptEvent(QSB.ScriptEvents.LoadscreenClosed);
                 Logic.ExecuteInLuaLocalState([[
-                    API.SendScriptEvent(QSB.ScriptEvents.LoadscreenClosed)
+                    API.SendScriptEvent(QSB.ScriptEvents.LoadscreenClosed);
+                    XGUIEng.PopPage();
                 ]]);
             end
         );
         return;
     end
 
-    self.Job:CreateEventJob(
+    -- Job for when the button can't be clicked
+    -- (When the map is restarted. This should only happen in debug.)
+    self.LoadscreenWatchJobID = self.Job:CreateEventJob(
         Events.LOGIC_EVENT_EVERY_TURN,
         function()
             if XGUIEng.IsWidgetShownEx("/LoadScreen/LoadScreen") == 0 then
@@ -786,6 +790,19 @@ function Revision:SetupLoadscreenHandler()
             end
         end
     );
+
+    -- Overwrite the loadscreen button
+    HideLoadScreen_Orig_Revision = HideLoadScreen;
+    HideLoadScreen = function()
+        HideLoadScreen_Orig_Revision();
+        XGUIEng.PushPage("/LoadScreen/LoadScreen", true);
+        XGUIEng.ShowWidget("/LoadScreen/LoadScreen/ButtonStart", 0);
+        EndJob(self.LoadscreenWatchJobID);
+        Revision.Event:DispatchScriptCommand(
+            QSB.ScriptCommands.RegisterLoadscreenHidden,
+            GUI.GetPlayerID()
+        );
+    end
 end
 
 -- -------------------------------------------------------------------------- --
@@ -801,20 +818,6 @@ function API.Install()
     Revision:LoadKernel();
     Revision:LoadModules();
     collectgarbage("collect");
-end
-
----
--- Startet die Map sofort neu.
---
--- <b>Achtung</b>: Die Funktion Framework.RestartMap kann nicht mehr verwendet
--- werden, da es sonst zu Fehlern mit dem Ladebildschirm kommt!
---
--- @within System
---
-function API.RestartMap()
-    Camera.RTS_FollowEntity(0);
-    Framework.SetLoadScreenNeedButton(1);
-    Framework.RestartMap();
 end
 
 ---
@@ -916,6 +919,19 @@ function API.GetDelayedPlayers()
         end
     end
     return PlayerList;
+end
+
+---
+-- Gibt zurück, ob die Sitzung geladen wurde.
+--
+-- <h5>Multiplayer</h5>
+-- Nur für Multiplayer ausgelegt! Nicht im Singleplayer nutzen!
+--
+-- @return[type=boolean] Sitzung ist geladen
+-- @within Multiplayer
+--
+function API.IsMultiplayerLoaded()
+    return Framework.IsNetworkGame() and  Network.SessionHaveAllPlayersFinishedLoading() == true;
 end
 
 --[[
@@ -4741,7 +4757,7 @@ end
 function Revision.Debug:ProcessDebugShortcut(_Type, _Params)
     if self.DevelopingCheats then
         if _Type == "RestartMap" then
-            API.RestartMap();
+            Framework.RestartMap();
         elseif _Type == "Terminal" then
             API.ShowTextInput(GUI.GetPlayerID(), true);
         end

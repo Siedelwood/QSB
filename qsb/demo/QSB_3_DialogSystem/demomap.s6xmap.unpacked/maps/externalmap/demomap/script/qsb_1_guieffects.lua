@@ -68,7 +68,6 @@ function ModuleGuiEffects.Global:OnGameStart()
     API.StartHiResJob(function()
         ModuleGuiEffects.Global:ControlTypewriter();
     end);
-    self:ShowInitialBlackscreen();
 end
 
 function ModuleGuiEffects.Global:OnEvent(_ID, ...)
@@ -169,17 +168,6 @@ function ModuleGuiEffects.Global:ConcludeCinematicEvent(_ID, _PlayerID)
     ))
 end
 
-function ModuleGuiEffects.Global:ShowInitialBlackscreen()
-    if not Framework.IsNetworkGame() then
-        Logic.ExecuteInLuaLocalState([[
-            XGUIEng.PopPage();
-            API.ActivateColoredScreen(GUI.GetPlayerID(), 0, 0, 0, 255);
-            API.DeactivateNormalInterface(GUI.GetPlayerID());
-            XGUIEng.PushPage("/LoadScreen/LoadScreen", false);
-        ]]);
-    end
-end
-
 -- Local -------------------------------------------------------------------- --
 
 function ModuleGuiEffects.Local:OnGameStart()
@@ -205,10 +193,6 @@ end
 function ModuleGuiEffects.Local:OnEvent(_ID, ...)
     if _ID == QSB.ScriptEvents.LoadscreenClosed then
         self.LoadscreenClosed = true;
-        if not Framework.IsNetworkGame() then
-            self:InterfaceDeactivateImageBackground(GUI.GetPlayerID());
-            self:InterfaceActivateNormalInterface(GUI.GetPlayerID());
-        end
     elseif _ID == QSB.ScriptEvents.CinematicActivated then
         self.CinematicEventStatus[arg[2]][arg[1]] = 1;
     elseif _ID == QSB.ScriptEvents.CinematicConcluded then
@@ -284,8 +268,8 @@ function ModuleGuiEffects.Global:FinishTypewriter(_PlayerID)
                 API.DeactivateImageScreen(GUI.GetPlayerID())
                 API.ActivateNormalInterface(GUI.GetPlayerID())
                 API.ActivateBorderScroll(GUI.GetPlayerID())
-                if ModuleGUI then
-                    ModuleGUI.Local:UpdateHiddenWidgets()
+                if ModuleGuiControl then
+                    ModuleGuiControl.Local:UpdateHiddenWidgets()
                 end
                 Input.GameMode()
                 GUI.ClearNotes()
