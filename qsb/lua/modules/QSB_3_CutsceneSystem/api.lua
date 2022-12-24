@@ -165,7 +165,7 @@ end
 -- @within Anwenderfunktionen
 --
 function API.IsCutsceneActive(_PlayerID)
-    if Revision.Environment == QSB.Environment.GLOBAL then
+    if API.GetScriptEnvironment() == QSB.Environment.GLOBAL then
         return ModuleCutsceneSystem.Global:GetCurrentCutscene(_PlayerID) ~= nil;
     end
     return ModuleCutsceneSystem.Local:GetCurrentCutscene(_PlayerID) ~= nil;

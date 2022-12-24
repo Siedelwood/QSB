@@ -453,16 +453,31 @@ end
 --
 QSB.ScriptEvents = QSB.ScriptEvents or {};
 
+---
+-- Konstanten der Script Environments
+-- @field GLOBAL Die globale Skriptumgebung
+-- @field LOCAL  Die lokale Skriptumgebung
+--
 QSB.Environment = {
     GLOBAL = 1,
     LOCAL  = 2,
 }
 
+---
+-- Konstanten der Spielversionen
+-- @field ORIGINAL        Das Originalspiel
+-- @field HISTORY_EDITION Die History Edition
+--
 QSB.GameVersion = {
     ORIGINAL        = 1,
     HISTORY_EDITION = 2,
 }
 
+---
+-- Konstanten der Spielvarianten
+-- @field VANILLA   Das unmodifizierte Spiel
+-- @field COMMUNITY Der Community Patch
+--
 QSB.GameVariant = {
     VANILLA   = 1,
     COMMUNITY = 2,
@@ -821,6 +836,50 @@ function API.Install()
 end
 
 ---
+-- Gibt die Version des Spiels zurück.
+--
+-- <b>Hinweis</b>: Unter der Version wird verstanden, ob das Originalspiel
+-- oder die History Edition gespielt wird. Zwischen den einzelnen Patches
+-- des Originalspiels oder der History Edition wird nicht unterschieden. Es
+-- wird die aktuellste Version vorausgesetzt.
+--
+-- @return[type=boolean] Spiel ist History Edition
+-- @within System
+-- @see QSB.GameVersion
+--
+function API.GetGameVersion()
+    return Revision.GameVersion;
+end
+
+---
+-- Gibt die Variante des Spiels zurück.
+--
+-- <b>Hinweis</b>: Unter der Variante wird verstanden, ob das unveränderte
+-- Spiel oder der Community Patch gespielt wird.
+--
+-- @return[type=boolean] Spiel ist History Edition
+-- @within System
+-- @see QSB.GameVariant
+--
+function API.GetGameVariant()
+    return Revision.GameVariant;
+end
+
+---
+-- Gibt die Skriptumgebung zurück.
+--
+-- <b>Hinweis</b>: Unter dem Environment wird verstanden, ob es sich um das
+-- globale oder das lokale Skript handelt.
+--
+-- @return[type=boolean] Spiel ist History Edition
+-- @within System
+-- @see QSB.Environment
+--
+function API.GetScriptEnvironment()
+    return Revision.Environment;
+end
+
+---
 -- Prüft, ob das laufende Spiel eine Multiplayerpartie in der History Edition
 -- ist.
 --
@@ -832,7 +891,7 @@ end
 -- @within System
 --
 function API.IsHistoryEditionNetworkGame()
-    return Revision.GameVersion == QSB.GameVersion.HISTORY_EDITION and Framework.IsNetworkGame();
+    return API.GetGameVersion() == QSB.GameVersion.HISTORY_EDITION and Framework.IsNetworkGame();
 end
 
 ---

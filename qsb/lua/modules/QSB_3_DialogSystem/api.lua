@@ -177,7 +177,7 @@ end
 -- @within Anwenderfunktionen
 --
 function API.IsDialogActive(_PlayerID)
-    if Revision.Environment == QSB.Environment.GLOBAL then
+    if API.GetScriptEnvironment() == QSB.Environment.GLOBAL then
         return ModuleDialogSystem.Global:GetCurrentDialog(_PlayerID) ~= nil;
     end
     return ModuleDialogSystem.Local:GetCurrentDialog(_PlayerID) ~= nil;

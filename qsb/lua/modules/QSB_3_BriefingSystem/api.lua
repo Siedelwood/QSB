@@ -320,7 +320,7 @@ end
 -- @within Anwenderfunktionen
 --
 function API.IsBriefingActive(_PlayerID)
-    if Revision.Environment == QSB.Environment.GLOBAL then
+    if API.GetScriptEnvironment() == QSB.Environment.GLOBAL then
         return ModuleBriefingSystem.Global:GetCurrentBriefing(_PlayerID) ~= nil;
     end
     return ModuleBriefingSystem.Local:GetCurrentBriefing(_PlayerID) ~= nil;

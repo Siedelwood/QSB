@@ -207,8 +207,7 @@ end
 function ModuleSelection.Local:OnGameStart()
     QSB.ScriptEvents.SelectionChanged = API.RegisterScriptEvent("Event_SelectionChanged");
 
-    if  Revision.GameVariant == QSB.GameVersion.HISTORY_EDITION
-    and Framework.IsNetworkGame() then
+    if API.IsHistoryEditionNetworkGame() then
         return;
     end
     self:OverrideSelection();
