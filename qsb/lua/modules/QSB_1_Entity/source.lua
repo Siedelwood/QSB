@@ -473,5 +473,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleEntity);
+Swift:RegisterModule(ModuleEntity);
 

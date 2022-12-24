@@ -373,5 +373,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleShipSalesment);
+Swift:RegisterModule(ModuleShipSalesment);
 

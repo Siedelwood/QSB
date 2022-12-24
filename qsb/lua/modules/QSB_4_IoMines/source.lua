@@ -168,5 +168,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleInteractiveMines);
+Swift:RegisterModule(ModuleInteractiveMines);
 

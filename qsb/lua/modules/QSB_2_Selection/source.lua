@@ -374,9 +374,9 @@ function ModuleSelection.Local:OnSelectionCanged(_Source)
     local EntityID = GUI.GetSelectedEntity();
     local EntityType = Logic.GetEntityType(EntityID);
 
-    local OldSelectionString = Revision.LuaBase:ConvertTableToString(self.SelectedEntities[PlayerID] or {});
+    local OldSelectionString = Swift.LuaBase:ConvertTableToString(self.SelectedEntities[PlayerID] or {});
     self.SelectedEntities[PlayerID] = SelectedEntities;
-    local NewSelectionString = Revision.LuaBase:ConvertTableToString(self.SelectedEntities[PlayerID] or {});
+    local NewSelectionString = Swift.LuaBase:ConvertTableToString(self.SelectedEntities[PlayerID] or {});
 
     -- This event is only send on the local machine. Only the local player
     -- can select units, so the event musn't be send to other players!
@@ -792,5 +792,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleSelection);
+Swift:RegisterModule(ModuleSelection);
 

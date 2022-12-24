@@ -14,7 +14,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.Text = {
+Swift.Text = {
     Languages = {
         {"de", "Deutsch", "en"},
         {"en", "English", "en"},
@@ -51,18 +51,18 @@ Revision.Text = {
 
 QSB.Language = "de";
 
-function Revision.Text:Initalize()
-    QSB.ScriptEvents.LanguageSet = Revision.Event:CreateScriptEvent("Event_LanguageSet");
+function Swift.Text:Initalize()
+    QSB.ScriptEvents.LanguageSet = Swift.Event:CreateScriptEvent("Event_LanguageSet");
     self:DetectLanguage();
 end
 
-function Revision.Text:OnSaveGameLoaded()
+function Swift.Text:OnSaveGameLoaded()
 end
 
 -- -------------------------------------------------------------------------- --
 -- Language
 
-function Revision.Text:DetectLanguage()
+function Swift.Text:DetectLanguage()
     local DefaultLanguage = Network.GetDesiredLanguage();
     if DefaultLanguage ~= "de" and DefaultLanguage ~= "fr" then
         DefaultLanguage = "en";
@@ -70,18 +70,18 @@ function Revision.Text:DetectLanguage()
     QSB.Language = DefaultLanguage;
 end
 
-function Revision.Text:OnLanguageChanged(_PlayerID, _GUI_PlayerID, _Language)
+function Swift.Text:OnLanguageChanged(_PlayerID, _GUI_PlayerID, _Language)
     self:ChangeSystemLanguage(_PlayerID, _Language, _GUI_PlayerID);
 end
 
-function Revision.Text:ChangeSystemLanguage(_PlayerID, _Language, _GUI_PlayerID)
+function Swift.Text:ChangeSystemLanguage(_PlayerID, _Language, _GUI_PlayerID)
     local OldLanguage = QSB.Language;
     local NewLanguage = _Language;
     if _GUI_PlayerID == nil or _GUI_PlayerID == _PlayerID then
         QSB.Language = _Language;
     end
 
-    Revision.Event:DispatchScriptEvent(QSB.ScriptEvents.LanguageSet, OldLanguage, NewLanguage);
+    Swift.Event:DispatchScriptEvent(QSB.ScriptEvents.LanguageSet, OldLanguage, NewLanguage);
     Logic.ExecuteInLuaLocalState(string.format(
         [[
             local OldLanguage = "%s"
@@ -89,7 +89,7 @@ function Revision.Text:ChangeSystemLanguage(_PlayerID, _Language, _GUI_PlayerID)
             if GUI.GetPlayerID() == %d then
                 QSB.Language = NewLanguage
             end
-            Revision.Event:DispatchScriptEvent(QSB.ScriptEvents.LanguageSet, OldLanguage, NewLanguage)
+            Swift.Event:DispatchScriptEvent(QSB.ScriptEvents.LanguageSet, OldLanguage, NewLanguage)
         ]],
         OldLanguage,
         NewLanguage,
@@ -97,7 +97,7 @@ function Revision.Text:ChangeSystemLanguage(_PlayerID, _Language, _GUI_PlayerID)
     ));
 end
 
-function Revision.Text:Localize(_Text)
+function Swift.Text:Localize(_Text)
     local LocalizedText;
     if type(_Text) == "table" then
         LocalizedText = {};
@@ -131,7 +131,7 @@ end
 -- -------------------------------------------------------------------------- --
 -- Placeholder
 
-function Revision.Text:ConvertPlaceholders(_Text)
+function Swift.Text:ConvertPlaceholders(_Text)
     local s1, e1, s2, e2;
     while true do
         local Before, Placeholder, After, Replacement, s1, e1, s2, e2;
@@ -156,7 +156,7 @@ function Revision.Text:ConvertPlaceholders(_Text)
     return _Text;
 end
 
-function Revision.Text:SplicePlaceholderText(_Text, _Start)
+function Swift.Text:SplicePlaceholderText(_Text, _Start)
     local s1, e1 = _Text:find(_Start);
     local s2, e2 = _Text:find("}", e1);
 
@@ -166,14 +166,14 @@ function Revision.Text:SplicePlaceholderText(_Text, _Start)
     return Before, Placeholder, After, s1, e1, s2, e2;
 end
 
-function Revision.Text:ReplaceColorPlaceholders(_Text)
+function Swift.Text:ReplaceColorPlaceholders(_Text)
     for k, v in pairs(self.Colors) do
         _Text = _Text:gsub("{" ..k.. "}", v);
     end
     return _Text;
 end
 
-function Revision.Text:ReplaceValuePlaceholder(_Text)
+function Swift.Text:ReplaceValuePlaceholder(_Text)
     local Ref = _G;
     local Slice = string.slice(_Text, "%.");
     for i= 1, #Slice do
@@ -202,7 +202,7 @@ end
 -- foo 1 2 3
 -- bar 1 2 3
 -- muh 4
-function Revision.Text:CommandTokenizer(_Input)
+function Swift.Text:CommandTokenizer(_Input)
     local Commands = {};
     if _Input == nil then
         return Commands;
@@ -296,7 +296,7 @@ end
 -- -- Rückgabe: {"Deutsch", {"A"}}
 --
 function API.Localize(_Text)
-    return Revision.Text:Localize(_Text);
+    return Swift.Text:Localize(_Text);
 end
 
 ---
@@ -315,7 +315,7 @@ end
 -- API.Note("Das ist eine flüchtige Information!");
 --
 function API.Note(_Text)
-    _Text = Revision.Text:ConvertPlaceholders(Revision.Text:Localize(_Text));
+    _Text = Swift.Text:ConvertPlaceholders(Swift.Text:Localize(_Text));
     if not GUI then
         Logic.DEBUG_AddNote(_Text);
         return;
@@ -339,7 +339,7 @@ end
 -- API.StaticNote("Das ist eine dauerhafte Information!");
 --
 function API.StaticNote(_Text)
-    _Text = Revision.Text:ConvertPlaceholders(Revision.Text:Localize(_Text));
+    _Text = Swift.Text:ConvertPlaceholders(Swift.Text:Localize(_Text));
     if not GUI then
         Logic.ExecuteInLuaLocalState(string.format(
             [[GUI.AddStaticNote("%s")]],
@@ -372,7 +372,7 @@ end
 -- API.Message("Das ist eine WERTVOLLE Nachricht!", "ui/menu_left_gold_pay");
 --
 function API.Message(_Text, _Sound)
-    _Text = Revision.Text:ConvertPlaceholders(Revision.Text:Localize(_Text));
+    _Text = Swift.Text:ConvertPlaceholders(Swift.Text:Localize(_Text));
     if not GUI then
         Logic.ExecuteInLuaLocalState(string.format(
             [[API.Message("%s", %s)]],
@@ -381,7 +381,7 @@ function API.Message(_Text, _Sound)
         ));
         return;
     end
-    _Text = Revision.Text:ConvertPlaceholders(API.Localize(_Text));
+    _Text = Swift.Text:ConvertPlaceholders(API.Localize(_Text));
     if _Sound then
         _Sound = _Sound:gsub("/", "\\");
     end
@@ -466,11 +466,11 @@ end
 function API.ConvertPlaceholders(_Message)
     if type(_Message) == "table" then
         for k, v in pairs(_Message) do
-            _Message[k] = Revision.Text:ConvertPlaceholders(v);
+            _Message[k] = Swift.Text:ConvertPlaceholders(v);
         end
         return API.Localize(_Message);
     elseif type(_Message) == "string" then
-        return Revision.Text:ConvertPlaceholders(_Message);
+        return Swift.Text:ConvertPlaceholders(_Message);
     else
         return _Message;
     end
@@ -496,7 +496,7 @@ function API.AddNamePlaceholder(_Name, _Replacement)
         error("API.AddNamePlaceholder: Only strings, numbers, or tables are allowed!");
         return;
     end
-    Revision.Text.Placeholders.Names[_Name] = _Replacement;
+    Swift.Text.Placeholders.Names[_Name] = _Replacement;
 end
 
 ---
@@ -520,6 +520,6 @@ function API.AddEntityTypePlaceholder(_Type, _Replacement)
         error("API.AddEntityTypePlaceholder: EntityType does not exist!");
         return;
     end
-    Revision.Text.Placeholders.EntityTypes[_Type] = _Replacement;
+    Swift.Text.Placeholders.EntityTypes[_Type] = _Replacement;
 end
 

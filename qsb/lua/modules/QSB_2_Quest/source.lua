@@ -532,7 +532,7 @@ function ModuleQuest.Global:FindQuestNames(_Pattern, _ExactName)
 end
 
 function ModuleQuest.Global:ProcessChatInput(_Text, _PlayerID, _IsDebug)
-    local Commands = Revision.Text:CommandTokenizer(_Text);
+    local Commands = Swift.Text:CommandTokenizer(_Text);
     for i= 1, #Commands, 1 do
         if Commands[1] == "fail" or Commands[1] == "restart"
         or Commands[1] == "start" or Commands[1] == "stop"
@@ -589,5 +589,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleQuest);
+Swift:RegisterModule(ModuleQuest);
 

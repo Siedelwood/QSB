@@ -63,5 +63,5 @@ function B_Goal_NPC:GetIcon()
     return {14,10}
 end
 
-Revision:RegisterBehavior(B_Goal_NPC);
+Swift:RegisterBehavior(B_Goal_NPC);
 

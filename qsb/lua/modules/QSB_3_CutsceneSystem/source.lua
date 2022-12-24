@@ -738,5 +738,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleCutsceneSystem);
+Swift:RegisterModule(ModuleCutsceneSystem);
 

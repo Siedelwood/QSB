@@ -35,21 +35,21 @@ if not MapEditor and not GUI then
         
         -- Call directly for singleplayer
         if not Framework.IsNetworkGame() then
-            Revision:CreateRandomSeed();
+            Swift:CreateRandomSeed();
             if Mission_LocalOnQsbLoaded then
                 Mission_LocalOnQsbLoaded();
             end
 
         -- Send asynchron command to player in multiplayer
         else
-            function Revision_Selfload_ReadyTrigger()
+            function Swift_Selfload_ReadyTrigger()
                 if table.getn(API.GetDelayedPlayers()) == 0 then
-                    Revision:CreateRandomSeed();
-                    Revision.Event:DispatchScriptCommand(QSB.ScriptCommands.GlobalQsbLoaded, 0);
+                    Swift:CreateRandomSeed();
+                    Swift.Event:DispatchScriptCommand(QSB.ScriptCommands.GlobalQsbLoaded, 0);
                     return true;
                 end
             end
-            StartSimpleHiResJob("Revision_Selfload_ReadyTrigger")
+            StartSimpleHiResJob("Swift_Selfload_ReadyTrigger")
         end        
     ]]);
     API.Install();

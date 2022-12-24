@@ -460,5 +460,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleGuiControl);
+Swift:RegisterModule(ModuleGuiControl);
 

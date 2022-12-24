@@ -91,5 +91,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleSound);
+Swift:RegisterModule(ModuleSound);
 

@@ -14,23 +14,23 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.LuaBase = {};
+Swift.LuaBase = {};
 
 QSB.Metatable = {Init = false, Weak = {}, Metas = {}, Key = 0};
 
-function Revision.LuaBase:Initalize()
+function Swift.LuaBase:Initalize()
     self:OverrideTable();
     self:OverrideString();
     self:OverrideMath();
 end
 
-function Revision.LuaBase:OnSaveGameLoaded()
+function Swift.LuaBase:OnSaveGameLoaded()
     self:OverrideTable();
     self:OverrideString();
     self:OverrideMath();
 end
 
-function Revision.LuaBase:OverrideTable()
+function Swift.LuaBase:OverrideTable()
     table.compare = function(t1, t2, fx)
         assert(type(t1) == "table");
         assert(type(t2) == "table");
@@ -97,7 +97,7 @@ function Revision.LuaBase:OverrideTable()
         t2 = t2 or {};
         assert(type(t1) == "table");
         assert(type(t2) == "table");
-        return Revision.LuaBase:CopyTable(t1, t2);
+        return Swift.LuaBase:CopyTable(t1, t2);
     end
 
     table.invert = function (t1)
@@ -120,7 +120,7 @@ function Revision.LuaBase:OverrideTable()
     end
 
     table.tostring = function(t)
-        return Revision.LuaBase:ConvertTableToString(t);
+        return Swift.LuaBase:ConvertTableToString(t);
     end
 
     -- FIXME: Does not work?
@@ -191,7 +191,7 @@ function Revision.LuaBase:OverrideTable()
     table.restoreMetatables();
 end
 
-function Revision.LuaBase:OverrideString()
+function Swift.LuaBase:OverrideString()
     string.contains = function (self, s)
         return self:find(s) ~= nil;
     end
@@ -233,7 +233,7 @@ function Revision.LuaBase:OverrideString()
     end
 end
 
-function Revision.LuaBase:OverrideMath()
+function Swift.LuaBase:OverrideMath()
     math.lerp = function(s, c, e)
         local f = (c - s) / e;
         return (f > 1 and 1) or f;
@@ -244,7 +244,7 @@ function Revision.LuaBase:OverrideMath()
     end
 end
 
-function Revision.LuaBase:ConvertTableToString(_Table)
+function Swift.LuaBase:ConvertTableToString(_Table)
     assert(type(_Table) == "table");
     local String = "{";
     for k, v in pairs(_Table) do
@@ -270,7 +270,7 @@ function Revision.LuaBase:ConvertTableToString(_Table)
     return String;
 end
 
-function Revision.LuaBase:CopyTable(_Table1, _Table2)
+function Swift.LuaBase:CopyTable(_Table1, _Table2)
     _Table1 = _Table1 or {};
     _Table2 = _Table2 or {};
     for k, v in pairs(_Table1) do
@@ -286,7 +286,7 @@ function Revision.LuaBase:CopyTable(_Table1, _Table2)
     return _Table2;
 end
 
-function Revision.LuaBase:ToBoolean(_Input)
+function Swift.LuaBase:ToBoolean(_Input)
     if type(_Input) == "boolean" then
         return _Input;
     end
@@ -318,7 +318,7 @@ end
 -- local Bool = API.ToBoolean("no") --> Bool = false
 --
 function API.ToBoolean(_Value)
-    return Revision.LuaBase:ToBoolean(_Value);
+    return Swift.LuaBase:ToBoolean(_Value);
 end
 
 ---

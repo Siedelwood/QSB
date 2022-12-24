@@ -512,5 +512,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleNpcInteraction);
+Swift:RegisterModule(ModuleNpcInteraction);
 

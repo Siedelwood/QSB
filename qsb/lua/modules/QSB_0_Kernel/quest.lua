@@ -14,35 +14,35 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.Quest = {}
+Swift.Quest = {}
 
-function Revision.Quest:Initalize()
-    QSB.ScriptEvents.QuestFailure = Revision.Event:CreateScriptEvent("Event_QuestFailure");
-    QSB.ScriptEvents.QuestInterrupt = Revision.Event:CreateScriptEvent("Event_QuestInterrupt");
-    QSB.ScriptEvents.QuestReset = Revision.Event:CreateScriptEvent("Event_QuestReset");
-    QSB.ScriptEvents.QuestSuccess = Revision.Event:CreateScriptEvent("Event_QuestSuccess");
-    QSB.ScriptEvents.QuestTrigger = Revision.Event:CreateScriptEvent("Event_QuestTrigger");
+function Swift.Quest:Initalize()
+    QSB.ScriptEvents.QuestFailure = Swift.Event:CreateScriptEvent("Event_QuestFailure");
+    QSB.ScriptEvents.QuestInterrupt = Swift.Event:CreateScriptEvent("Event_QuestInterrupt");
+    QSB.ScriptEvents.QuestReset = Swift.Event:CreateScriptEvent("Event_QuestReset");
+    QSB.ScriptEvents.QuestSuccess = Swift.Event:CreateScriptEvent("Event_QuestSuccess");
+    QSB.ScriptEvents.QuestTrigger = Swift.Event:CreateScriptEvent("Event_QuestTrigger");
 
-    if Revision.Environment == QSB.Environment.GLOBAL then
+    if Swift.Environment == QSB.Environment.GLOBAL then
         self:OverrideQuestSystemGlobal();
     end
 end
 
-function Revision.Quest:OnSaveGameLoaded()
+function Swift.Quest:OnSaveGameLoaded()
 end
 
-function Revision.Quest:OverrideQuestSystemGlobal()
+function Swift.Quest:OverrideQuestSystemGlobal()
     QuestTemplate.Trigger_Orig_QSB_Core = QuestTemplate.Trigger
     QuestTemplate.Trigger = function(_quest)
         QuestTemplate.Trigger_Orig_QSB_Core(_quest);
         for i=1,_quest.Objectives[0] do
             if _quest.Objectives[i].Type == Objective.Custom2 and _quest.Objectives[i].Data[1].SetDescriptionOverwrite then
                 local Desc = _quest.Objectives[i].Data[1]:SetDescriptionOverwrite(_quest);
-                Revision.Quest:ChangeCustomQuestCaptionText(Desc, _quest);
+                Swift.Quest:ChangeCustomQuestCaptionText(Desc, _quest);
                 break;
             end
         end
-        Revision.Quest:SendQuestStateEvent(_quest.Identifier, "QuestTrigger");
+        Swift.Quest:SendQuestStateEvent(_quest.Identifier, "QuestTrigger");
     end
 
     QuestTemplate.Interrupt_Orig_QSB_Core = QuestTemplate.Interrupt;
@@ -60,35 +60,35 @@ function Revision.Quest:OverrideQuestSystemGlobal()
             end
         end
 
-        Revision.Quest:SendQuestStateEvent(_Quest.Identifier, "QuestInterrupt");
+        Swift.Quest:SendQuestStateEvent(_Quest.Identifier, "QuestInterrupt");
     end
 
     QuestTemplate.Fail_Orig_QSB_Core = QuestTemplate.Fail;
     QuestTemplate.Fail = function(_Quest)
         _Quest:Fail_Orig_QSB_Core();
-        Revision.Quest:SendQuestStateEvent(_Quest.Identifier, "QuestFailure");
+        Swift.Quest:SendQuestStateEvent(_Quest.Identifier, "QuestFailure");
     end
 
     QuestTemplate.Success_Orig_QSB_Core = QuestTemplate.Success;
     QuestTemplate.Success = function(_Quest)
         _Quest:Success_Orig_QSB_Core();
-        Revision.Quest:SendQuestStateEvent(_Quest.Identifier, "QuestSuccess");
+        Swift.Quest:SendQuestStateEvent(_Quest.Identifier, "QuestSuccess");
     end
 end
 
-function Revision.Quest:SendQuestStateEvent(_QuestName, _StateName)
+function Swift.Quest:SendQuestStateEvent(_QuestName, _StateName)
     local QuestID = API.GetQuestID(_QuestName);
     if Quests[QuestID] then
-        Revision.Event:DispatchScriptEvent(QSB.ScriptEvents[_StateName], QuestID);
+        Swift.Event:DispatchScriptEvent(QSB.ScriptEvents[_StateName], QuestID);
         Logic.ExecuteInLuaLocalState(string.format(
-            [[Revision.Event:DispatchScriptEvent(QSB.ScriptEvents["%s"], %d)]],
+            [[Swift.Event:DispatchScriptEvent(QSB.ScriptEvents["%s"], %d)]],
             _StateName,
             QuestID
         ));
     end
 end
 
-function Revision.Quest:ChangeCustomQuestCaptionText(_Text, _Quest)
+function Swift.Quest:ChangeCustomQuestCaptionText(_Text, _Quest)
     if _Quest and _Quest.Visible then
         _Quest.QuestDescription = _Text;
         Logic.ExecuteInLuaLocalState([[
@@ -268,9 +268,9 @@ function API.RestartQuest(_QuestName, _NoMessage)
             Quest.Job = Trigger.RequestTrigger(Events.LOGIC_EVENT_EVERY_SECOND, "", "Quest_Loop", 1, 0, {Quest.QueueID});
         end
         -- Note: Send the event
-        Revision.Event:DispatchScriptEvent(QSB.ScriptEvents.QuestReset, QuestID);
+        Swift.Event:DispatchScriptEvent(QSB.ScriptEvents.QuestReset, QuestID);
         Logic.ExecuteInLuaLocalState(string.format(
-            "Revision.Event:DispatchScriptEvent(QSB.ScriptEvents.QuestReset, %d)",
+            "Swift.Event:DispatchScriptEvent(QSB.ScriptEvents.QuestReset, %d)",
             QuestID
         ));
         return QuestID, Quest;

@@ -1268,5 +1268,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleBriefingSystem);
+Swift:RegisterModule(ModuleBriefingSystem);
 

@@ -421,5 +421,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleBuildRestriction);
+Swift:RegisterModule(ModuleBuildRestriction);
 

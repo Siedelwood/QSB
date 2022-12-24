@@ -681,5 +681,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleBuildingButtons);
+Swift:RegisterModule(ModuleBuildingButtons);
 

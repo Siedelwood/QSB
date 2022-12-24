@@ -131,5 +131,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleCamera);
+Swift:RegisterModule(ModuleCamera);
 

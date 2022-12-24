@@ -538,5 +538,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleEntityMovement);
+Swift:RegisterModule(ModuleEntityMovement);
 

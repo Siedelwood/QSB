@@ -14,22 +14,22 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.Utils = {}
+Swift.Utils = {}
 
 QSB.RefillAmounts = {};
 QSB.CustomVariable = {};
 
-function Revision.Utils:Initalize()
-    QSB.ScriptEvents.CustomValueChanged = Revision.Event:CreateScriptEvent("Event_CustomValueChanged");
-    if Revision.Environment == QSB.Environment.GLOBAL then
+function Swift.Utils:Initalize()
+    QSB.ScriptEvents.CustomValueChanged = Swift.Event:CreateScriptEvent("Event_CustomValueChanged");
+    if Swift.Environment == QSB.Environment.GLOBAL then
         self:OverwriteGeologistRefill();
     end
 end
 
-function Revision.Utils:OnSaveGameLoaded()
+function Swift.Utils:OnSaveGameLoaded()
 end
 
-function Revision.Utils:OverwriteGeologistRefill()
+function Swift.Utils:OverwriteGeologistRefill()
     if Framework.GetGameExtraNo() >= 1 then
         GameCallback_OnGeologistRefill_Orig_QSB_Kernel = GameCallback_OnGeologistRefill;
         GameCallback_OnGeologistRefill = function(_PlayerID, _TargetID, _GeologistID)
@@ -50,7 +50,7 @@ function Revision.Utils:OverwriteGeologistRefill()
     end
 end
 
-function Revision.Utils:TriggerEntityKilledCallbacks(_Entity, _Attacker)
+function Swift.Utils:TriggerEntityKilledCallbacks(_Entity, _Attacker)
     local DefenderID = GetID(_Entity);
     local AttackerID = GetID(_Attacker or 0);
     if AttackerID == 0 or DefenderID == 0 or Logic.GetEntityHealth(DefenderID) > 0 then
@@ -69,32 +69,32 @@ function Revision.Utils:TriggerEntityKilledCallbacks(_Entity, _Attacker)
     ));
 end
 
-function Revision.Utils:GetCustomVariable(_Name)
+function Swift.Utils:GetCustomVariable(_Name)
     return QSB.CustomVariable[_Name];
 end
 
-function Revision.Utils:SetCustomVariable(_Name, _Value)
-    Revision.Utils:UpdateCustomVariable(_Name, _Value);
+function Swift.Utils:SetCustomVariable(_Name, _Value)
+    Swift.Utils:UpdateCustomVariable(_Name, _Value);
     local Value = tostring(_Value);
     if type(_Value) ~= "number" then
         Value = [["]] ..Value.. [["]];
     end
     if GUI then
-        Revision.Event:DispatchScriptCommand(QSB.ScriptCommands.UpdateCustomVariable, 0, _Name, Value);
+        Swift.Event:DispatchScriptCommand(QSB.ScriptCommands.UpdateCustomVariable, 0, _Name, Value);
     else
         Logic.ExecuteInLuaLocalState(string.format(
-            [[Revision.Utils:UpdateCustomVariable("%s", %s)]],
+            [[Swift.Utils:UpdateCustomVariable("%s", %s)]],
             _Name,
             Value
         ));
     end
 end
 
-function Revision.Utils:UpdateCustomVariable(_Name, _Value)
+function Swift.Utils:UpdateCustomVariable(_Name, _Value)
     if QSB.CustomVariable[_Name] then
         local Old = QSB.CustomVariable[_Name];
         QSB.CustomVariable[_Name] = _Value;
-        Revision.Event:DispatchScriptEvent(
+        Swift.Event:DispatchScriptEvent(
             QSB.ScriptEvents.CustomValueChanged,
             _Name,
             Old,
@@ -102,7 +102,7 @@ function Revision.Utils:UpdateCustomVariable(_Name, _Value)
         );
     else
         QSB.CustomVariable[_Name] = _Value;
-        Revision.Event:DispatchScriptEvent(
+        Swift.Event:DispatchScriptEvent(
             QSB.ScriptEvents.CustomValueChanged,
             _Name,
             nil,
@@ -127,7 +127,7 @@ end
 -- local Value = API.ObtainCustomVariable("MyVariable", 0);
 --
 function API.SaveCustomVariable(_Name, _Value)
-    Revision.Utils:SetCustomVariable(_Name, _Value);
+    Swift.Utils:SetCustomVariable(_Name, _Value);
 end
 
 ---
@@ -962,13 +962,13 @@ function API.GroupHurt(_Entity, _Damage, _Attacker)
         if Health <= _Damage then
             _Damage = _Damage - Health;
             Logic.HurtEntity(EntityToHurt, Health);
-            Revision.Utils:TriggerEntityKilledCallbacks(EntityToHurt, _Attacker);
+            Swift.Utils:TriggerEntityKilledCallbacks(EntityToHurt, _Attacker);
             if IsLeader and _Damage > 0 then
                 API.GroupHurt(EntityToHurt, _Damage);
             end
         else
             Logic.HurtEntity(EntityToHurt, _Damage);
-            Revision.Utils:TriggerEntityKilledCallbacks(EntityToHurt, _Attacker);
+            Swift.Utils:TriggerEntityKilledCallbacks(EntityToHurt, _Attacker);
         end
     end
 end

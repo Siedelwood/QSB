@@ -142,7 +142,7 @@ function ModuleGuiEffects.Global:ActivateCinematicEvent(_PlayerID)
     Logic.ExecuteInLuaLocalState(string.format(
         [[API.SendScriptEvent(QSB.ScriptEvents.CinematicActivated, %d, %d);
           if GUI.GetPlayerID() == %d then
-            ModuleGuiEffects.Local.SavingWasDisabled = Revision.Save.SavingDisabled == true;
+            ModuleGuiEffects.Local.SavingWasDisabled = Swift.Save.SavingDisabled == true;
             API.DisableSaving(true);
           end]],
         ID,
@@ -654,5 +654,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleGuiEffects);
+Swift:RegisterModule(ModuleGuiEffects);
 

@@ -68,7 +68,7 @@ function B_Reprisal_JournalEnable:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_JournalEnable);
+Swift:RegisterBehavior(B_Reprisal_JournalEnable);
 
 -- -------------------------------------------------------------------------- --
 
@@ -83,7 +83,7 @@ function Reward_JournalEnable(...)
     return B_Reward_JournalEnable:new(...);
 end
 
-B_Reward_JournalEnable = Revision.LuaBase:CopyTable(B_Reprisal_JournalEnable);
+B_Reward_JournalEnable = Swift.LuaBase:CopyTable(B_Reprisal_JournalEnable);
 B_Reward_JournalEnable.Name = "Reward_JournalEnable";
 B_Reward_JournalEnable.Description.en = "Reward: Displays the journal for a quest or hides it.";
 B_Reward_JournalEnable.Description.de = "Lohn: Zeigt das Tagebuch für einen Quest an oder versteckt es.";
@@ -94,7 +94,7 @@ B_Reward_JournalEnable.GetRewardTable = function(self, _Quest)
     return { Reward.Custom, { self, self.CustomFunction } };
 end
 
-Revision:RegisterBehavior(B_Reward_JournalEnable);
+Swift:RegisterBehavior(B_Reward_JournalEnable);
 
 -- -------------------------------------------------------------------------- --
 
@@ -166,7 +166,7 @@ function B_Reprisal_JournalWrite:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_JournalWrite);
+Swift:RegisterBehavior(B_Reprisal_JournalWrite);
 
 -- -------------------------------------------------------------------------- --
 
@@ -182,7 +182,7 @@ function Reward_JournalWrite(...)
     return B_Reward_JournalWrite:new(...);
 end
 
-B_Reward_JournalWrite = Revision.LuaBase:CopyTable(B_Reprisal_JournalWrite);
+B_Reward_JournalWrite = Swift.LuaBase:CopyTable(B_Reprisal_JournalWrite);
 B_Reward_JournalWrite.Name = "Reward_JournalWrite";
 B_Reward_JournalWrite.Description.en = "Reward: Adds or alters a journal entry to a quest.";
 B_Reward_JournalWrite.Description.de = "Lohn: Schreibt oder ändert einen Tagebucheintrag.";
@@ -193,7 +193,7 @@ B_Reward_JournalWrite.GetRewardTable = function(self, _Quest)
     return { Reward.Custom, { self, self.CustomFunction } };
 end
 
-Revision:RegisterBehavior(B_Reward_JournalWrite);
+Swift:RegisterBehavior(B_Reward_JournalWrite);
 
 -- -------------------------------------------------------------------------- --
 
@@ -259,7 +259,7 @@ function B_Reprisal_JournalRemove:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_JournalRemove);
+Swift:RegisterBehavior(B_Reprisal_JournalRemove);
 
 -- -------------------------------------------------------------------------- --
 
@@ -274,7 +274,7 @@ function Reward_JournalRemove(...)
     return B_Reward_JournalRemove:new(...);
 end
 
-B_Reward_JournalRemove = Revision.LuaBase:CopyTable(B_Reprisal_JournalRemove);
+B_Reward_JournalRemove = Swift.LuaBase:CopyTable(B_Reprisal_JournalRemove);
 B_Reward_JournalRemove.Name = "Reward_JournalRemove";
 B_Reward_JournalRemove.Description.en = "Reward: Remove a journal entry from a quest.";
 B_Reward_JournalRemove.Description.de = "Lohn: Entfernt einen Tagebucheintrag vom Quest.";
@@ -285,7 +285,7 @@ B_Reward_JournalRemove.GetRewardTable = function(self, _Quest)
     return { Reward.Custom, { self, self.CustomFunction } };
 end
 
-Revision:RegisterBehavior(B_Reward_JournalRemove);
+Swift:RegisterBehavior(B_Reward_JournalRemove);
 
 -- -------------------------------------------------------------------------- --
 
@@ -356,7 +356,7 @@ function B_Reprisal_JournaHighlight:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_JournaHighlight);
+Swift:RegisterBehavior(B_Reprisal_JournaHighlight);
 
 -- -------------------------------------------------------------------------- --
 
@@ -372,7 +372,7 @@ function Reward_JournaHighlight(...)
     return B_Reward_JournaHighlight:new(...);
 end
 
-B_Reward_JournaHighlight = Revision.LuaBase:CopyTable(B_Reprisal_JournaHighlight);
+B_Reward_JournaHighlight = Swift.LuaBase:CopyTable(B_Reprisal_JournaHighlight);
 B_Reward_JournaHighlight.Name = "Reward_JournaHighlight";
 B_Reward_JournaHighlight.Description.en = "Reward: Highlights or unhighlights a journal entry of a quest.";
 B_Reward_JournaHighlight.Description.de = "Lohn: Hebt einen Tagebucheintrag hevor oder hebt die Hervorhebung auf.";
@@ -383,5 +383,5 @@ B_Reward_JournaHighlight.GetRewardTable = function(self, _Quest)
     return { Reward.Custom, { self, self.CustomFunction } };
 end
 
-Revision:RegisterBehavior(B_Reward_JournaHighlight);
+Swift:RegisterBehavior(B_Reward_JournaHighlight);
 

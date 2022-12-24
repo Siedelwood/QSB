@@ -220,14 +220,14 @@ function API.DialogLanguageSelection(_PlayerID)
     end
 
     local DisplayedList = {};
-    for i= 1, #Revision.Text.Languages do
-        table.insert(DisplayedList, Revision.Text.Languages[i][2]);
+    for i= 1, #Swift.Text.Languages do
+        table.insert(DisplayedList, Swift.Text.Languages[i][2]);
     end
     local Action = function(_Selected)
         API.BroadcastScriptCommand(
             QSB.ScriptCommands.SetLanguageResult,
             GUI.GetPlayerID(),
-            Revision.Text.Languages[_Selected][1]
+            Swift.Text.Languages[_Selected][1]
         );
     end
     local Text = API.Localize(ModuleRequester.Shared.Text.ChooseLanguage);
@@ -249,14 +249,14 @@ function API.DefineLanguage(_Shortcut, _Name, _Fallback)
     assert(type(_Shortcut) == "string");
     assert(type(_Name) == "string");
     assert(type(_Fallback) == "string");
-    for k, v in pairs(Revision.Text.Languages) do
+    for k, v in pairs(Swift.Text.Languages) do
         if v[1] == _Shortcut then
             return;
         end
     end
-    table.insert(Revision.Text.Languages, {_Shortcut, _Name, _Fallback});
+    table.insert(Swift.Text.Languages, {_Shortcut, _Name, _Fallback});
     Logic.ExecuteInLuaLocalState(string.format([[
-        table.insert(Revision.Text.Languages, {"%s", "%s", "%s"})
+        table.insert(Swift.Text.Languages, {"%s", "%s", "%s"})
     ]], _Shortcut, _Name, _Fallback));
 end
 

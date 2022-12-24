@@ -370,5 +370,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleBehaviorCollection);
+Swift:RegisterModule(ModuleBehaviorCollection);
 

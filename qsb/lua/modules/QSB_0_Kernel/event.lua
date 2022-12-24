@@ -15,7 +15,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.Event = {
+Swift.Event = {
     ScriptEventRegister   = {};
     ScriptEventListener   = {};
     ScriptCommandRegister = {};
@@ -25,9 +25,9 @@ QSB.ScriptCommandSequence = 2;
 QSB.ScriptCommands = {};
 QSB.ScriptEvents = {};
 
-function Revision.Event:Initalize()
+function Swift.Event:Initalize()
     self:OverrideSoldierPayment();
-    if Revision.Environment == QSB.Environment.GLOBAL then
+    if Swift.Environment == QSB.Environment.GLOBAL then
         self:CreateScriptCommand("Cmd_SendScriptEvent", function(_Event, ...)
             assert(QSB.ScriptEvents[_Event] ~= nil);
             API.SendScriptEvent(QSB.ScriptEvents[_Event], unpack(arg));
@@ -35,24 +35,24 @@ function Revision.Event:Initalize()
     end
 end
 
-function Revision.Event:OnSaveGameLoaded()
+function Swift.Event:OnSaveGameLoaded()
 end
 
 -- -------------------------------------------------------------------------- --
 -- Script Commands
 
-function Revision.Event:OverrideSoldierPayment()
-    GameCallback_SetSoldierPaymentLevel_Orig_Revision = GameCallback_SetSoldierPaymentLevel;
+function Swift.Event:OverrideSoldierPayment()
+    GameCallback_SetSoldierPaymentLevel_Orig_Swift = GameCallback_SetSoldierPaymentLevel;
     GameCallback_SetSoldierPaymentLevel = function(_PlayerID, _Level)
         if _Level <= 2 then
-            return GameCallback_SetSoldierPaymentLevel_Orig_Revision(_PlayerID, _Level);
+            return GameCallback_SetSoldierPaymentLevel_Orig_Swift(_PlayerID, _Level);
         end
-        Revision.Event:ProcessScriptCommand(_PlayerID, _Level);
+        Swift.Event:ProcessScriptCommand(_PlayerID, _Level);
     end
 end
 
-function Revision.Event:CreateScriptCommand(_Name, _Function)
-    if Revision.Environment == QSB.Environment.LOCAL then
+function Swift.Event:CreateScriptCommand(_Name, _Function)
+    if Swift.Environment == QSB.Environment.LOCAL then
         return 0;
     end
     QSB.ScriptCommandSequence = QSB.ScriptCommandSequence +1;
@@ -66,7 +66,7 @@ function Revision.Event:CreateScriptCommand(_Name, _Function)
         [[
             local ID = %d
             local Name = "%s"
-            Revision.Event.ScriptCommandRegister[ID] = Name
+            Swift.Event.ScriptCommandRegister[ID] = Name
             QSB.ScriptCommands[Name] = ID
         ]],
         ID,
@@ -76,8 +76,8 @@ function Revision.Event:CreateScriptCommand(_Name, _Function)
     return ID;
 end
 
-function Revision.Event:DispatchScriptCommand(_ID, ...)
-    if Revision.Environment == QSB.Environment.GLOBAL then
+function Swift.Event:DispatchScriptCommand(_ID, ...)
+    if Swift.Environment == QSB.Environment.GLOBAL then
         return;
     end
     assert(_ID ~= nil);
@@ -87,12 +87,12 @@ function Revision.Event:DispatchScriptCommand(_ID, ...)
         local PlayerName = Logic.GetPlayerName(NamePlayerID);
         local Parameters = self:EncodeScriptCommandParameters(unpack(arg));
 
-        if Framework.IsNetworkGame() and Revision.GameVersion == QSB.GameVersion.HISTORY_EDITION then
+        if Framework.IsNetworkGame() and Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
             GUI.SetPlayerName(NamePlayerID, Parameters);
             GUI.SetSoldierPaymentLevel(_ID);
         else
             GUI.SendScriptCommand(string.format(
-                [[Revision.Event:ProcessScriptCommand(%d, %d, "%s")]],
+                [[Swift.Event:ProcessScriptCommand(%d, %d, "%s")]],
                 arg[1],
                 _ID,
                 Parameters
@@ -103,19 +103,19 @@ function Revision.Event:DispatchScriptCommand(_ID, ...)
             self.ScriptCommandRegister[_ID]
         ), true);
 
-        if Framework.IsNetworkGame() and Revision.GameVersion == QSB.GameVersion.HISTORY_EDITION then
+        if Framework.IsNetworkGame() and Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
             GUI.SetPlayerName(NamePlayerID, PlayerName);
             GUI.SetSoldierPaymentLevel(PlayerSoldierPaymentLevel[PlayerID]);
         end
     end
 end
 
-function Revision.Event:ProcessScriptCommand(_PlayerID, _ID, _ParameterString)
+function Swift.Event:ProcessScriptCommand(_PlayerID, _ID, _ParameterString)
     if not self.ScriptCommandRegister[_ID] then
         return;
     end
     local PlayerName = _ParameterString;
-    if Framework.IsNetworkGame() and Revision.GameVersion == QSB.GameVersion.HISTORY_EDITION then
+    if Framework.IsNetworkGame() and Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
         PlayerName = Logic.GetPlayerName(_PlayerID +4);
     end
     local Parameters = self:DecodeScriptCommandParameters(PlayerName);
@@ -130,7 +130,7 @@ function Revision.Event:ProcessScriptCommand(_PlayerID, _ID, _ParameterString)
     self.ScriptCommandRegister[_ID][2](unpack(Parameters));
 end
 
-function Revision.Event:EncodeScriptCommandParameters(...)
+function Swift.Event:EncodeScriptCommandParameters(...)
     local Query = "";
     for i= 1, #arg do
         local Parameter = arg[i];
@@ -151,7 +151,7 @@ function Revision.Event:EncodeScriptCommandParameters(...)
     return Query;
 end
 
-function Revision.Event:DecodeScriptCommandParameters(_Query)
+function Swift.Event:DecodeScriptCommandParameters(_Query)
     local Parameters = {};
     for k, v in pairs(string.slice(_Query, "#")) do
         local Value = v;
@@ -179,7 +179,7 @@ end
 -- -------------------------------------------------------------------------- --
 -- Script Events
 
-function Revision.Event:CreateScriptEvent(_Name)
+function Swift.Event:CreateScriptEvent(_Name)
     for i= 1, #self.ScriptEventRegister, 1 do
         if self.ScriptEventRegister[i] == _Name then
             return 0;
@@ -191,15 +191,15 @@ function Revision.Event:CreateScriptEvent(_Name)
     return ID;
 end
 
-function Revision.Event:DispatchScriptEvent(_ID, ...)
+function Swift.Event:DispatchScriptEvent(_ID, ...)
     if not self.ScriptEventRegister[_ID] then
         return;
     end
     -- Dispatch module events
-    for i= 1, #Revision.ModuleRegister, 1 do
-        local Env = (Revision.Environment == QSB.Environment.GLOBAL and "Global") or "Local";
-        if Revision.ModuleRegister[i][Env] and Revision.ModuleRegister[i][Env].OnEvent then
-            Revision.ModuleRegister[i][Env]:OnEvent(_ID, unpack(arg));
+    for i= 1, #Swift.ModuleRegister, 1 do
+        local Env = (Swift.Environment == QSB.Environment.GLOBAL and "Global") or "Local";
+        if Swift.ModuleRegister[i][Env] and Swift.ModuleRegister[i][Env].OnEvent then
+            Swift.ModuleRegister[i][Env]:OnEvent(_ID, unpack(arg));
         end
     end
     -- Call event game callback
@@ -220,14 +220,14 @@ end
 -- API
 
 function API.RegisterScriptCommand(_Name, _Function)
-    return Revision.Event:CreateScriptCommand(_Name, _Function);
+    return Swift.Event:CreateScriptCommand(_Name, _Function);
 end
 
 function API.BroadcastScriptCommand(_NameOrID, ...)
     local ID = _NameOrID;
     if type(ID) == "string" then
-        for i= 1, #Revision.Event.ScriptCommandRegister, 1 do
-            if Revision.Event.ScriptCommandRegister[i][1] == _NameOrID then
+        for i= 1, #Swift.Event.ScriptCommandRegister, 1 do
+            if Swift.Event.ScriptCommandRegister[i][1] == _NameOrID then
                 ID = i;
             end
         end
@@ -236,7 +236,7 @@ function API.BroadcastScriptCommand(_NameOrID, ...)
     if not GUI then
         return;
     end
-    Revision.Event:DispatchScriptCommand(ID, 0, unpack(arg));
+    Swift.Event:DispatchScriptCommand(ID, 0, unpack(arg));
 end
 
 -- Does this function makes any sense? Calling the synchronization but only for
@@ -244,8 +244,8 @@ end
 function API.SendScriptCommand(_NameOrID, ...)
     local ID = _NameOrID;
     if type(ID) == "string" then
-        for i= 1, #Revision.Event.ScriptCommandRegister, 1 do
-            if Revision.Event.ScriptCommandRegister[i][1] == _NameOrID then
+        for i= 1, #Swift.Event.ScriptCommandRegister, 1 do
+            if Swift.Event.ScriptCommandRegister[i][1] == _NameOrID then
                 ID = i;
             end
         end
@@ -254,7 +254,7 @@ function API.SendScriptCommand(_NameOrID, ...)
     if not GUI then
         return;
     end
-    Revision.Event:DispatchScriptCommand(ID, GUI.GetPlayerID(), unpack(arg));
+    Swift.Event:DispatchScriptCommand(ID, GUI.GetPlayerID(), unpack(arg));
 end
 
 ---
@@ -269,7 +269,7 @@ end
 -- local EventID = API.RegisterScriptEvent("MyNewEvent");
 --
 function API.RegisterScriptEvent(_Name)
-    return Revision.Event:CreateScriptEvent(_Name);
+    return Swift.Event:CreateScriptEvent(_Name);
 end
 
 ---
@@ -289,7 +289,7 @@ end
 -- API.SendScriptEvent(SomeEventID, Param1, Param2, ...);
 --
 function API.SendScriptEvent(_EventID, ...)
-    Revision.Event:DispatchScriptEvent(_EventID, unpack(arg));
+    Swift.Event:DispatchScriptEvent(_EventID, unpack(arg));
 end
 
 ---
@@ -309,7 +309,7 @@ function API.BroadcastScriptEventToGlobal(_EventName, ...)
     if not GUI then
         return;
     end
-    Revision.Event:DispatchScriptCommand(
+    Swift.Event:DispatchScriptCommand(
         QSB.ScriptCommands.SendScriptEvent,
         0,
         _EventName,
@@ -334,7 +334,7 @@ function API.SendScriptEventToGlobal(_EventName, ...)
     if not GUI then
         return;
     end
-    Revision.Event:DispatchScriptCommand(
+    Swift.Event:DispatchScriptCommand(
         QSB.ScriptCommands.SendScriptEvent,
         GUI.GetPlayerID(),
         _EventName,
@@ -363,15 +363,15 @@ end
 -- end);
 --
 function API.AddScriptEventListener(_EventID, _Function)
-    if not Revision.Event.ScriptEventListener[_EventID] then
-        Revision.Event.ScriptEventListener[_EventID] = {
+    if not Swift.Event.ScriptEventListener[_EventID] then
+        Swift.Event.ScriptEventListener[_EventID] = {
             IDSequence = 0;
         }
     end
-    local Data = Revision.Event.ScriptEventListener[_EventID];
+    local Data = Swift.Event.ScriptEventListener[_EventID];
     assert(type(_Function) == "function");
-    Revision.Event.ScriptEventListener[_EventID].IDSequence = Data.IDSequence +1;
-    Revision.Event.ScriptEventListener[_EventID][Data.IDSequence] = _Function;
+    Swift.Event.ScriptEventListener[_EventID].IDSequence = Data.IDSequence +1;
+    Swift.Event.ScriptEventListener[_EventID][Data.IDSequence] = _Function;
     return Data.IDSequence;
 end
 
@@ -384,8 +384,8 @@ end
 -- @see API.AddScriptEventListener
 --
 function API.RemoveScriptEventListener(_EventID, _ID)
-    if Revision.Event.ScriptEventListener[_EventID] then
-        Revision.Event.ScriptEventListener[_EventID][_ID] = nil;
+    if Swift.Event.ScriptEventListener[_EventID] then
+        Swift.Event.ScriptEventListener[_EventID][_ID] = nil;
     end
 end
 

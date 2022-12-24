@@ -193,5 +193,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleTreasure);
+Swift:RegisterModule(ModuleTreasure);
 

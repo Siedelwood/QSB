@@ -288,7 +288,7 @@ function ModuleObjectInteraction.Global:OverrideObjectInteraction()
 end
 
 function ModuleObjectInteraction.Global:ProcessChatInput(_Text)
-    local Commands = Revision.Text:CommandTokenizer(_Text);
+    local Commands = Swift.Text:CommandTokenizer(_Text);
     for i= 1, #Commands, 1 do
         if Commands[1] == "enableobject" then
             local State = (Commands[3] and tonumber(Commands[3])) or nil;
@@ -695,5 +695,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleObjectInteraction);
+Swift:RegisterModule(ModuleObjectInteraction);
 

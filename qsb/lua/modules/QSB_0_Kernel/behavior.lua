@@ -14,7 +14,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.Behavior = {
+Swift.Behavior = {
     QuestCounter = 0,
     Text = {
         ActivateBuff = {
@@ -70,19 +70,19 @@ QSB.DestroyedSoldiers = {};
 QSB.EffectNameToID = {};
 QSB.InitalizedObjekts = {};
 
-function Revision.Behavior:Initalize()
-    if Revision.Environment == QSB.Environment.GLOBAL then
+function Swift.Behavior:Initalize()
+    if Swift.Environment == QSB.Environment.GLOBAL then
         self:OverrideQuestMarkers();
     end
-    if Revision.Environment == QSB.Environment.LOCAL then
+    if Swift.Environment == QSB.Environment.LOCAL then
         self:OverrideDisplayQuestObjective();
     end
 end
 
-function Revision.Behavior:OnSaveGameLoaded()
+function Swift.Behavior:OnSaveGameLoaded()
 end
 
-function Revision.Behavior:OverrideQuestMarkers()
+function Swift.Behavior:OverrideQuestMarkers()
     QuestTemplate.RemoveQuestMarkers = function(self)
         for i=1, self.Objectives[0] do
             if self.Objectives[i].Type == Objective.Distance then
@@ -121,7 +121,7 @@ function Revision.Behavior:OverrideQuestMarkers()
     end
 end
 
-function Revision.Behavior:OverrideDisplayQuestObjective()
+function Swift.Behavior:OverrideDisplayQuestObjective()
     GUI_Interaction.DisplayQuestObjective_Orig_QSB_Kernel = GUI_Interaction.DisplayQuestObjective
     GUI_Interaction.DisplayQuestObjective = function(_QuestIndex, _MessageKey)
         local Quest, QuestType = GUI_Interaction.GetPotentialSubQuestAndType(_QuestIndex);
@@ -134,7 +134,7 @@ function Revision.Behavior:OverrideDisplayQuestObjective()
     end
 end
 
-function Revision.Behavior:IsQuestPositionReached(_Quest, _Objective)
+function Swift.Behavior:IsQuestPositionReached(_Quest, _Objective)
     local IDdata2 = GetID(_Objective.Data[1]);
     if IDdata2 == -65566 then
         _Objective.Data[1] = Logic.GetKnightID(_Quest.ReceivingPlayer);
@@ -210,7 +210,7 @@ function B_Reward_DEBUG:GetCustomData(_Index)
     return {"true","false"};
 end
 
-Revision:RegisterBehavior(B_Reward_DEBUG);
+Swift:RegisterBehavior(B_Reward_DEBUG);
 
 -- -------------------------------------------------------------------------- --
 -- GOALS
@@ -252,7 +252,7 @@ function B_Goal_ActivateObject:GetMsgKey()
     return "Quest_Object_Activate"
 end
 
-Revision:RegisterBehavior(B_Goal_ActivateObject);
+Swift:RegisterBehavior(B_Goal_ActivateObject);
 
 -- -------------------------------------------------------------------------- --
 
@@ -355,7 +355,7 @@ function B_Goal_Deliver:GetMsgKey()
     return "Quest_Deliver_Goods"
 end
 
-Revision:RegisterBehavior(B_Goal_Deliver);
+Swift:RegisterBehavior(B_Goal_Deliver);
 
 -- -------------------------------------------------------------------------- --
 
@@ -411,11 +411,11 @@ end
 function B_Goal_Diplomacy:ChangeCaption(_Quest)
     local PlayerName = GetPlayerName(self.PlayerID) or "";
     local Text = string.format(
-        Revision:Localize(self.TextPattern),
-        Revision:Localize(self.DiploNameMap[self.DiplState]),
+        Swift:Localize(self.TextPattern),
+        Swift:Localize(self.DiploNameMap[self.DiplState]),
         PlayerName
     );
-    Revision.Quest:ChangeCustomQuestCaptionText(Text, _Quest);
+    Swift.Quest:ChangeCustomQuestCaptionText(Text, _Quest);
 end
 
 function B_Goal_Diplomacy:CustomFunction(_Quest)
@@ -457,7 +457,7 @@ function B_Goal_Diplomacy:GetCustomData(_Index)
     end
 end
 
-Revision:RegisterBehavior(B_Goal_Diplomacy);
+Swift:RegisterBehavior(B_Goal_Diplomacy);
 
 -- -------------------------------------------------------------------------- --
 
@@ -515,7 +515,7 @@ function B_Goal_DiscoverPlayer:GetMsgKey()
     return "Quest_Discover"
 end
 
-Revision:RegisterBehavior(B_Goal_DiscoverPlayer);
+Swift:RegisterBehavior(B_Goal_DiscoverPlayer);
 
 -- -------------------------------------------------------------------------- --
 
@@ -563,7 +563,7 @@ function B_Goal_DiscoverTerritory:GetMsgKey()
     return "Quest_Discover_Territory"
 end
 
-Revision:RegisterBehavior(B_Goal_DiscoverTerritory);
+Swift:RegisterBehavior(B_Goal_DiscoverTerritory);
 
 -- -------------------------------------------------------------------------- --
 
@@ -627,7 +627,7 @@ function B_Goal_DestroyPlayer:GetMsgKey()
     return "Quest_DestroyEntities_Building"
 end
 
-Revision:RegisterBehavior(B_Goal_DestroyPlayer)
+Swift:RegisterBehavior(B_Goal_DestroyPlayer)
 
 -- -------------------------------------------------------------------------- --
 
@@ -683,7 +683,7 @@ function B_Goal_StealInformation:GetMsgKey()
 
 end
 
-Revision:RegisterBehavior(B_Goal_StealInformation);
+Swift:RegisterBehavior(B_Goal_StealInformation);
 
 -- -------------------------------------------------------------------------- --
 
@@ -742,7 +742,7 @@ function B_Goal_DestroyAllPlayerUnits:GetMsgKey()
     return "Quest_DestroyEntities"
 end
 
-Revision:RegisterBehavior(B_Goal_DestroyAllPlayerUnits);
+Swift:RegisterBehavior(B_Goal_DestroyAllPlayerUnits);
 
 -- -------------------------------------------------------------------------- --
 
@@ -812,7 +812,7 @@ function B_Goal_DestroyScriptEntity:GetMsgKey()
     return "Quest_DestroyEntities"
 end
 
-Revision:RegisterBehavior(B_Goal_DestroyScriptEntity);
+Swift:RegisterBehavior(B_Goal_DestroyScriptEntity);
 
 -- -------------------------------------------------------------------------- --
 
@@ -900,7 +900,7 @@ function B_Goal_DestroyType:GetMsgKey()
     return "Quest_DestroyEntities"
 end
 
-Revision:RegisterBehavior(B_Goal_DestroyType);
+Swift:RegisterBehavior(B_Goal_DestroyType);
 
 -- -------------------------------------------------------------------------- --
 
@@ -983,7 +983,7 @@ function B_Goal_EntityDistance:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Goal_EntityDistance);
+Swift:RegisterBehavior(B_Goal_EntityDistance);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1033,7 +1033,7 @@ function B_Goal_KnightDistance:AddParameter(_Index, _Parameter)
     end
 end
 
-Revision:RegisterBehavior(B_Goal_KnightDistance);
+Swift:RegisterBehavior(B_Goal_KnightDistance);
 
 ---
 -- Eine bestimmte Anzahl an Einheiten einer Kategorie muss sich auf dem
@@ -1171,7 +1171,7 @@ function B_Goal_UnitsOnTerritory:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Goal_UnitsOnTerritory);
+Swift:RegisterBehavior(B_Goal_UnitsOnTerritory);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1235,14 +1235,14 @@ end
 
 function B_Goal_ActivateBuff:CustomFunction(_Quest)
    if not _Quest.QuestDescription or _Quest.QuestDescription == "" then
-        local tMapping = Revision.LuaBase:CopyTable(Revision.Behavior.Text.ActivateBuff.BuffsVanilla);
+        local tMapping = Swift.LuaBase:CopyTable(Swift.Behavior.Text.ActivateBuff.BuffsVanilla);
         if g_GameExtraNo >= 1 then
-            tMapping = Revision.LuaBase:CopyTable(Revision.Behavior.Text.ActivateBuff.BuffsEx1, tMapping);
+            tMapping = Swift.LuaBase:CopyTable(Swift.Behavior.Text.ActivateBuff.BuffsEx1, tMapping);
         end
-        Revision.Quest:ChangeCustomQuestCaptionText(
+        Swift.Quest:ChangeCustomQuestCaptionText(
             string.format(
-                Revision:Localize(Revision.Behavior.Text.ActivateBuff.Pattern),
-                Revision:Localize(tMapping[self.BuffName])
+                Swift:Localize(Swift.Behavior.Text.ActivateBuff.Pattern),
+                Swift:Localize(tMapping[self.BuffName])
             ),
             _Quest
         );
@@ -1321,7 +1321,7 @@ function B_Goal_ActivateBuff:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Goal_ActivateBuff);
+Swift:RegisterBehavior(B_Goal_ActivateBuff);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1384,7 +1384,7 @@ function B_Goal_BuildRoad:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Goal_BuildRoad);
+Swift:RegisterBehavior(B_Goal_BuildRoad);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1491,7 +1491,7 @@ function B_Goal_BuildWall:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Goal_BuildWall);
+Swift:RegisterBehavior(B_Goal_BuildWall);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1535,7 +1535,7 @@ function B_Goal_Claim:GetMsgKey()
     return "Quest_Claim_Territory"
 end
 
-Revision:RegisterBehavior(B_Goal_Claim);
+Swift:RegisterBehavior(B_Goal_Claim);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1577,7 +1577,7 @@ function B_Goal_ClaimXTerritories:GetMsgKey()
     return "Quest_Claim_Territory"
 end
 
-Revision:RegisterBehavior(B_Goal_ClaimXTerritories);
+Swift:RegisterBehavior(B_Goal_ClaimXTerritories);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1632,7 +1632,7 @@ function B_Goal_Create:GetMsgKey()
     return Logic.IsEntityTypeInCategory( Entities[self.EntityName], EntityCategories.AttackableBuilding ) == 1 and "Quest_Create_Building" or "Quest_Create_Unit"
 end
 
-Revision:RegisterBehavior(B_Goal_Create);
+Swift:RegisterBehavior(B_Goal_Create);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1678,7 +1678,7 @@ function B_Goal_Produce:GetMsgKey()
     return "Quest_Produce"
 end
 
-Revision:RegisterBehavior(B_Goal_Produce);
+Swift:RegisterBehavior(B_Goal_Produce);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1742,7 +1742,7 @@ function B_Goal_GoodAmount:GetCustomData( _Index )
     return Data
 end
 
-Revision:RegisterBehavior(B_Goal_GoodAmount);
+Swift:RegisterBehavior(B_Goal_GoodAmount);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1812,7 +1812,7 @@ function B_Goal_SatisfyNeed:GetMsgKey()
     -- No default message
 end
 
-Revision:RegisterBehavior(B_Goal_SatisfyNeed);
+Swift:RegisterBehavior(B_Goal_SatisfyNeed);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1857,7 +1857,7 @@ function B_Goal_SettlersNumber:GetMsgKey()
     return "Quest_NumberSettlers";
 end
 
-Revision:RegisterBehavior(B_Goal_SettlersNumber);
+Swift:RegisterBehavior(B_Goal_SettlersNumber);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1898,7 +1898,7 @@ function B_Goal_Spouses:GetMsgKey()
     return "Quest_NumberSpouses"
 end
 
-Revision:RegisterBehavior(B_Goal_Spouses);
+Swift:RegisterBehavior(B_Goal_Spouses);
 
 -- -------------------------------------------------------------------------- --
 
@@ -1956,11 +1956,11 @@ function B_Goal_SoldierCount:CustomFunction(_Quest)
     if not _Quest.QuestDescription or _Quest.QuestDescription == "" then
         local Relation = tostring(self.bRelSmallerThan);
         local PlayerName = GetPlayerName(self.PlayerID) or "";
-        Revision.Quest:ChangeCustomQuestCaptionText(
+        Swift.Quest:ChangeCustomQuestCaptionText(
             string.format(
-                Revision:Localize(Revision.Behavior.Text.SoldierCount.Pattern),
+                Swift:Localize(Swift.Behavior.Text.SoldierCount.Pattern),
                 PlayerName,
-                Revision:Localize(Revision.Behavior.Text.SoldierCount.Relation[Relation]),
+                Swift:Localize(Swift.Behavior.Text.SoldierCount.Relation[Relation]),
                 self.NumberOfUnits
             ),
             _Quest
@@ -2008,7 +2008,7 @@ function B_Goal_SoldierCount:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Goal_SoldierCount);
+Swift:RegisterBehavior(B_Goal_SoldierCount);
 
 -- -------------------------------------------------------------------------- --
 
@@ -2090,7 +2090,7 @@ function B_Goal_KnightTitle:GetCustomData( _Index )
     return {"Knight", "Mayor", "Baron", "Earl", "Marquees", "Duke", "Archduke"}
 end
 
-Revision:RegisterBehavior(B_Goal_KnightTitle);
+Swift:RegisterBehavior(B_Goal_KnightTitle);
 
 -- -------------------------------------------------------------------------- --
 
@@ -2141,9 +2141,9 @@ end
 function B_Goal_Festivals:CustomFunction(_Quest)
     if not _Quest.QuestDescription or _Quest.QuestDescription == "" then
         local PlayerName = GetPlayerName(self.PlayerID) or "";
-        Revision.Quest:ChangeCustomQuestCaptionText(
+        Swift.Quest:ChangeCustomQuestCaptionText(
             string.format(
-                Revision:Localize(Revision.Behavior.Text.Festivals.Pattern),
+                Swift:Localize(Swift.Behavior.Text.Festivals.Pattern),
                 PlayerName, self.NeededFestivals
             ), 
             _Quest
@@ -2197,7 +2197,7 @@ function B_Goal_Festivals:GetIcon()
     return {4,15}
 end
 
-Revision:RegisterBehavior(B_Goal_Festivals)
+Swift:RegisterBehavior(B_Goal_Festivals)
 
 -- -------------------------------------------------------------------------- --
 
@@ -2256,7 +2256,7 @@ function B_Goal_Capture:GetMsgKey()
     end
 end
 
-Revision:RegisterBehavior(B_Goal_Capture);
+Swift:RegisterBehavior(B_Goal_Capture);
 
 -- -------------------------------------------------------------------------- --
 
@@ -2338,7 +2338,7 @@ function B_Goal_CaptureType:GetMsgKey()
     end
 end
 
-Revision:RegisterBehavior(B_Goal_CaptureType);
+Swift:RegisterBehavior(B_Goal_CaptureType);
 
 -- -------------------------------------------------------------------------- --
 
@@ -2414,7 +2414,7 @@ function B_Goal_Protect:GetMsgKey()
     return "Quest_Protect"
 end
 
-Revision:RegisterBehavior(B_Goal_Protect);
+Swift:RegisterBehavior(B_Goal_Protect);
 
 -- -------------------------------------------------------------------------- --
 
@@ -2459,7 +2459,7 @@ function B_Goal_Refill:AddParameter(_Index, _Parameter)
 end
 
 if g_GameExtraNo > 0 then
-    Revision:RegisterBehavior(B_Goal_Refill);
+    Swift:RegisterBehavior(B_Goal_Refill);
 end
 
 -- -------------------------------------------------------------------------- --
@@ -2547,7 +2547,7 @@ function B_Goal_ResourceAmount:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Goal_ResourceAmount);
+Swift:RegisterBehavior(B_Goal_ResourceAmount);
 
 -- -------------------------------------------------------------------------- --
 
@@ -2573,7 +2573,7 @@ function B_Goal_InstantFailure:GetGoalTable()
     return {Objective.DummyFail};
 end
 
-Revision:RegisterBehavior(B_Goal_InstantFailure);
+Swift:RegisterBehavior(B_Goal_InstantFailure);
 
 -- -------------------------------------------------------------------------- --
 
@@ -2599,7 +2599,7 @@ function B_Goal_InstantSuccess:GetGoalTable()
     return {Objective.Dummy};
 end
 
-Revision:RegisterBehavior(B_Goal_InstantSuccess);
+Swift:RegisterBehavior(B_Goal_InstantSuccess);
 
 -- -------------------------------------------------------------------------- --
 
@@ -2628,7 +2628,7 @@ function B_Goal_NoChange:GetGoalTable()
     return { Objective.NoChange }
 end
 
-Revision:RegisterBehavior(B_Goal_NoChange);
+Swift:RegisterBehavior(B_Goal_NoChange);
 
 -- -------------------------------------------------------------------------- --
 
@@ -2695,7 +2695,7 @@ function B_Goal_MapScriptFunction:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Goal_MapScriptFunction);
+Swift:RegisterBehavior(B_Goal_MapScriptFunction);
 
 -- -------------------------------------------------------------------------- --
 
@@ -2809,7 +2809,7 @@ function B_Goal_CustomVariables:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Goal_CustomVariables)
+Swift:RegisterBehavior(B_Goal_CustomVariables)
 
 -- -------------------------------------------------------------------------- --
 
@@ -2893,10 +2893,10 @@ function B_Goal_TributeDiplomacy:GetTributeQuest(_Quest)
             FailureMsg = FailureMsg[Language];
         end
 
-        Revision.Behavior.QuestCounter = Revision.Behavior.QuestCounter+1;
+        Swift.Behavior.QuestCounter = Swift.Behavior.QuestCounter+1;
 
         local QuestID, Quest = QuestTemplate:New (
-            _Quest.Identifier.."_TributeDiplomacyQuest_" ..Revision.Behavior.QuestCounter,
+            _Quest.Identifier.."_TributeDiplomacyQuest_" ..Swift.Behavior.QuestCounter,
             _Quest.SendingPlayer,
             _Quest.ReceivingPlayer,
             {{ Objective.Deliver, {Goods.G_Gold, self.Amount}}},
@@ -2995,7 +2995,7 @@ function B_Goal_TributeDiplomacy:GetCustomData(_Index)
     end
 end
 
-Revision:RegisterBehavior(B_Goal_TributeDiplomacy);
+Swift:RegisterBehavior(B_Goal_TributeDiplomacy);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3123,13 +3123,13 @@ function B_Goal_TributeClaim:CreateTributeQuest(_Quest)
             FailureMsg = FailureMsg[Language];
         end
 
-        Revision.Behavior.QuestCounter = Revision.Behavior.QuestCounter+1;
+        Swift.Behavior.QuestCounter = Swift.Behavior.QuestCounter+1;
 
         local OnFinished = function()
             self.Time = Logic.GetTime();
         end
         local QuestID, Quest = QuestTemplate:New(
-            _Quest.Identifier.."_TributeClaimQuest" ..Revision.Behavior.QuestCounter,
+            _Quest.Identifier.."_TributeClaimQuest" ..Swift.Behavior.QuestCounter,
             self.PlayerID,
             _Quest.ReceivingPlayer,
             {{ Objective.Deliver, {Goods.G_Gold, self.Amount}}},
@@ -3274,7 +3274,7 @@ function B_Goal_TributeClaim:GetCustomData(_Index)
     end
 end
 
-Revision:RegisterBehavior(B_Goal_TributeClaim);
+Swift:RegisterBehavior(B_Goal_TributeClaim);
 
 -- -------------------------------------------------------------------------- --
 -- REPRISALS
@@ -3331,7 +3331,7 @@ function B_Reprisal_InteractiveObjectDeactivate:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_InteractiveObjectDeactivate);
+Swift:RegisterBehavior(B_Reprisal_InteractiveObjectDeactivate);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3406,7 +3406,7 @@ function B_Reprisal_InteractiveObjectActivate:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_InteractiveObjectActivate);
+Swift:RegisterBehavior(B_Reprisal_InteractiveObjectActivate);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3448,7 +3448,7 @@ function B_Reprisal_SlightlyDiplomacyDecrease:AddParameter(_Index, _Parameter)
     end
 end
 
-Revision:RegisterBehavior(B_Reprisal_SlightlyDiplomacyDecrease);
+Swift:RegisterBehavior(B_Reprisal_SlightlyDiplomacyDecrease);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3511,7 +3511,7 @@ function B_Reprisal_Diplomacy:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_Diplomacy);
+Swift:RegisterBehavior(B_Reprisal_Diplomacy);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3563,7 +3563,7 @@ function B_Reprisal_DestroyEntity:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_DestroyEntity);
+Swift:RegisterBehavior(B_Reprisal_DestroyEntity);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3614,7 +3614,7 @@ function B_Reprisal_DestroyEffect:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_DestroyEffect);
+Swift:RegisterBehavior(B_Reprisal_DestroyEffect);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3640,7 +3640,7 @@ function B_Reprisal_Defeat:GetReprisalTable()
     return {Reprisal.Defeat};
 end
 
-Revision:RegisterBehavior(B_Reprisal_Defeat);
+Swift:RegisterBehavior(B_Reprisal_Defeat);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3668,7 +3668,7 @@ function B_Reprisal_FakeDefeat:GetReprisalTable()
     return { Reprisal.FakeDefeat }
 end
 
-Revision:RegisterBehavior(B_Reprisal_FakeDefeat);
+Swift:RegisterBehavior(B_Reprisal_FakeDefeat);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3764,7 +3764,7 @@ function B_Reprisal_ReplaceEntity:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_ReplaceEntity);
+Swift:RegisterBehavior(B_Reprisal_ReplaceEntity);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3813,7 +3813,7 @@ function B_Reprisal_QuestRestart:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_QuestRestart);
+Swift:RegisterBehavior(B_Reprisal_QuestRestart);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3862,7 +3862,7 @@ function B_Reprisal_QuestFailure:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_QuestFailure);
+Swift:RegisterBehavior(B_Reprisal_QuestFailure);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3911,7 +3911,7 @@ function B_Reprisal_QuestSuccess:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_QuestSuccess);
+Swift:RegisterBehavior(B_Reprisal_QuestSuccess);
 
 -- -------------------------------------------------------------------------- --
 
@@ -3962,7 +3962,7 @@ function B_Reprisal_QuestActivate:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_QuestActivate)
+Swift:RegisterBehavior(B_Reprisal_QuestActivate)
 
 -- -------------------------------------------------------------------------- --
 
@@ -4018,7 +4018,7 @@ function B_Reprisal_QuestInterrupt:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_QuestInterrupt);
+Swift:RegisterBehavior(B_Reprisal_QuestInterrupt);
 
 -- -------------------------------------------------------------------------- --
 
@@ -4092,7 +4092,7 @@ function B_Reprisal_QuestForceInterrupt:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_QuestForceInterrupt);
+Swift:RegisterBehavior(B_Reprisal_QuestForceInterrupt);
 
 -- -------------------------------------------------------------------------- --
 
@@ -4191,7 +4191,7 @@ function B_Reprisal_CustomVariables:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_CustomVariables)
+Swift:RegisterBehavior(B_Reprisal_CustomVariables)
 
 -- -------------------------------------------------------------------------- --
 
@@ -4258,7 +4258,7 @@ function B_Reprisal_MapScriptFunction:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_MapScriptFunction);
+Swift:RegisterBehavior(B_Reprisal_MapScriptFunction);
 
 -- -------------------------------------------------------------------------- --
 
@@ -4342,7 +4342,7 @@ function B_Reprisal_Technology:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_Technology);
+Swift:RegisterBehavior(B_Reprisal_Technology);
 
 -- -------------------------------------------------------------------------- --
 -- REWARDS
@@ -4427,7 +4427,7 @@ function B_Reprisal_Technology:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_Technology);
+Swift:RegisterBehavior(B_Reprisal_Technology);
 
 -- -------------------------------------------------------------------------- --
 -- Rewards                                                                    --
@@ -4444,7 +4444,7 @@ function Reward_ObjectDeactivate(...)
     return B_Reward_InteractiveObjectDeactivate:new(...);
 end
 
-B_Reward_InteractiveObjectDeactivate = Revision.LuaBase:CopyTable(B_Reprisal_InteractiveObjectDeactivate);
+B_Reward_InteractiveObjectDeactivate = Swift.LuaBase:CopyTable(B_Reprisal_InteractiveObjectDeactivate);
 B_Reward_InteractiveObjectDeactivate.Name             = "Reward_InteractiveObjectDeactivate";
 B_Reward_InteractiveObjectDeactivate.Description.en   = "Reward: Deactivates an interactive object";
 B_Reward_InteractiveObjectDeactivate.Description.de   = "Lohn: Deaktiviert ein interaktives Objekt";
@@ -4455,7 +4455,7 @@ B_Reward_InteractiveObjectDeactivate.GetRewardTable = function(self, _Quest)
     return { Reward.Custom,{self, self.CustomFunction} }
 end
 
-Revision:RegisterBehavior(B_Reward_InteractiveObjectDeactivate);
+Swift:RegisterBehavior(B_Reward_InteractiveObjectDeactivate);
 
 -- -------------------------------------------------------------------------- --
 
@@ -4478,7 +4478,7 @@ function Reward_ObjectActivate(...)
     return B_Reward_InteractiveObjectActivate:new(...);
 end
 
-B_Reward_InteractiveObjectActivate = Revision.LuaBase:CopyTable(B_Reprisal_InteractiveObjectActivate);
+B_Reward_InteractiveObjectActivate = Swift.LuaBase:CopyTable(B_Reprisal_InteractiveObjectActivate);
 B_Reward_InteractiveObjectActivate.Name             = "Reward_InteractiveObjectActivate";
 B_Reward_InteractiveObjectActivate.Description.en   = "Reward: Activates an interactive object";
 B_Reward_InteractiveObjectActivate.Description.de   = "Lohn: Aktiviert ein interaktives Objekt";
@@ -4489,7 +4489,7 @@ B_Reward_InteractiveObjectActivate.GetRewardTable = function(self, _Quest)
     return { Reward.Custom,{self, self.CustomFunction} };
 end
 
-Revision:RegisterBehavior(B_Reward_InteractiveObjectActivate);
+Swift:RegisterBehavior(B_Reward_InteractiveObjectActivate);
 
 -- -------------------------------------------------------------------------- --
 
@@ -4695,7 +4695,7 @@ function B_Reward_ObjectInit:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reward_ObjectInit);
+Swift:RegisterBehavior(B_Reward_ObjectInit);
 
 -- -------------------------------------------------------------------------- --
 
@@ -4712,7 +4712,7 @@ function Reward_Diplomacy(...)
     return B_Reward_Diplomacy:new(...);
 end
 
-B_Reward_Diplomacy = Revision.LuaBase:CopyTable(B_Reprisal_Diplomacy);
+B_Reward_Diplomacy = Swift.LuaBase:CopyTable(B_Reprisal_Diplomacy);
 B_Reward_Diplomacy.Name             = "Reward_Diplomacy";
 B_Reward_Diplomacy.Description.en   = "Reward: Sets Diplomacy state of two Players to a stated value.";
 B_Reward_Diplomacy.Description.de   = "Lohn: Setzt den Diplomatiestatus zweier Spieler auf den angegebenen Wert.";
@@ -4723,7 +4723,7 @@ B_Reward_Diplomacy.GetRewardTable = function(self, _Quest)
     return { Reward.Custom,{self, self.CustomFunction} }
 end
 
-Revision:RegisterBehavior(B_Reward_Diplomacy);
+Swift:RegisterBehavior(B_Reward_Diplomacy);
 
 -- -------------------------------------------------------------------------- --
 
@@ -4765,7 +4765,7 @@ function B_Reward_SlightlyDiplomacyIncrease:AddParameter(_Index, _Parameter)
     end
 end
 
-Revision:RegisterBehavior(B_Reward_SlightlyDiplomacyIncrease);
+Swift:RegisterBehavior(B_Reward_SlightlyDiplomacyIncrease);
 
 -- -------------------------------------------------------------------------- --
 
@@ -4937,7 +4937,7 @@ function B_Reward_Merchant:GetCustomData(_Index)
     end
 end
 
-Revision:RegisterBehavior(B_Reward_Merchant)
+Swift:RegisterBehavior(B_Reward_Merchant)
 
 -- -------------------------------------------------------------------------- --
 
@@ -4955,7 +4955,7 @@ function Reward_DestroyEntity(...)
     return B_Reward_DestroyEntity:new(...);
 end
 
-B_Reward_DestroyEntity = Revision.LuaBase:CopyTable(B_Reprisal_DestroyEntity);
+B_Reward_DestroyEntity = Swift.LuaBase:CopyTable(B_Reprisal_DestroyEntity);
 B_Reward_DestroyEntity.Name = "Reward_DestroyEntity";
 B_Reward_DestroyEntity.Description.en = "Reward: Replaces an entity with an invisible script entity, which retains the entities name.";
 B_Reward_DestroyEntity.Description.de = "Lohn: Ersetzt eine Entity mit einer unsichtbaren Script-Entity, die den Namen übernimmt.";
@@ -4966,7 +4966,7 @@ B_Reward_DestroyEntity.GetRewardTable = function(self, _Quest)
     return { Reward.Custom,{self, self.CustomFunction} }
 end
 
-Revision:RegisterBehavior(B_Reward_DestroyEntity);
+Swift:RegisterBehavior(B_Reward_DestroyEntity);
 
 -- -------------------------------------------------------------------------- --
 
@@ -4981,7 +4981,7 @@ function Reward_DestroyEffect(...)
     return B_Reward_DestroyEffect:new(...);
 end
 
-B_Reward_DestroyEffect = Revision.LuaBase:CopyTable(B_Reprisal_DestroyEffect);
+B_Reward_DestroyEffect = Swift.LuaBase:CopyTable(B_Reprisal_DestroyEffect);
 B_Reward_DestroyEffect.Name = "Reward_DestroyEffect";
 B_Reward_DestroyEffect.Description.en = "Reward: Destroys an effect.";
 B_Reward_DestroyEffect.Description.de = "Lohn: Zerstört einen Effekt.";
@@ -4992,7 +4992,7 @@ B_Reward_DestroyEffect.GetRewardTable = function(self, _Quest)
     return { Reward.Custom, { self, self.CustomFunction } };
 end
 
-Revision:RegisterBehavior(B_Reward_DestroyEffect);
+Swift:RegisterBehavior(B_Reward_DestroyEffect);
 
 -- -------------------------------------------------------------------------- --
 
@@ -5108,7 +5108,7 @@ function B_Reward_CreateBattalion:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reward_CreateBattalion);
+Swift:RegisterBehavior(B_Reward_CreateBattalion);
 
 -- -------------------------------------------------------------------------- --
 
@@ -5231,7 +5231,7 @@ function B_Reward_CreateSeveralBattalions:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reward_CreateSeveralBattalions);
+Swift:RegisterBehavior(B_Reward_CreateSeveralBattalions);
 
 -- -------------------------------------------------------------------------- --
 
@@ -5335,7 +5335,7 @@ function B_Reward_CreateEffect:GetCustomData(_Index)
     return types;
 end
 
-Revision:RegisterBehavior(B_Reward_CreateEffect);
+Swift:RegisterBehavior(B_Reward_CreateEffect);
 
 -- -------------------------------------------------------------------------- --
 
@@ -5460,17 +5460,17 @@ function B_Reward_CreateEntity:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reward_CreateEntity);
+Swift:RegisterBehavior(B_Reward_CreateEntity);
 
 -- -------------------------------------------------------------------------- --
 
 -- Kompatibelität
-B_Reward_CreateSettler = Revision.LuaBase:CopyTable(B_Reward_CreateEntity);
+B_Reward_CreateSettler = Swift.LuaBase:CopyTable(B_Reward_CreateEntity);
 B_Reward_CreateSettler.Name = "Reward_CreateSettler";
 B_Reward_CreateSettler.Description.en = "Reward: Replaces an entity by a new one of a given type";
 B_Reward_CreateSettler.Description.de = "Lohn: Ersetzt eine Entity durch eine neue gegebenen Typs";
 B_Reward_CreateSettler.Description.fr = "Récompense: Remplace une entité par une nouvelle entité de type donné";
-Revision:RegisterBehavior(B_Reward_CreateSettler);
+Swift:RegisterBehavior(B_Reward_CreateSettler);
 
 -- -------------------------------------------------------------------------- --
 
@@ -5598,7 +5598,7 @@ function B_Reward_CreateSeveralEntities:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reward_CreateSeveralEntities);
+Swift:RegisterBehavior(B_Reward_CreateSeveralEntities);
 
 -- -------------------------------------------------------------------------- --
 
@@ -5663,7 +5663,7 @@ function B_Reward_MoveSettler:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reward_MoveSettler);
+Swift:RegisterBehavior(B_Reward_MoveSettler);
 
 -- -------------------------------------------------------------------------- --
 
@@ -5689,7 +5689,7 @@ function B_Reward_Victory:GetRewardTable()
     return {Reward.Victory};
 end
 
-Revision:RegisterBehavior(B_Reward_Victory);
+Swift:RegisterBehavior(B_Reward_Victory);
 
 -- -------------------------------------------------------------------------- --
 
@@ -5722,7 +5722,7 @@ function B_Reward_Defeat:CustomFunction(_Quest)
     Defeated(_Quest.ReceivingPlayer)
 end
 
-Revision:RegisterBehavior(B_Reward_Defeat);
+Swift:RegisterBehavior(B_Reward_Defeat);
 
 -- -------------------------------------------------------------------------- --
 
@@ -5750,7 +5750,7 @@ function B_Reward_FakeVictory:GetRewardTable()
     return { Reward.FakeVictory }
 end
 
-Revision:RegisterBehavior(B_Reward_FakeVictory);
+Swift:RegisterBehavior(B_Reward_FakeVictory);
 
 -- -------------------------------------------------------------------------- --
 
@@ -5918,7 +5918,7 @@ function B_Reward_AI_SpawnAndAttackTerritory:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reward_AI_SpawnAndAttackTerritory);
+Swift:RegisterBehavior(B_Reward_AI_SpawnAndAttackTerritory);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6057,7 +6057,7 @@ function B_Reward_AI_SpawnAndAttackArea:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reward_AI_SpawnAndAttackArea);
+Swift:RegisterBehavior(B_Reward_AI_SpawnAndAttackArea);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6215,7 +6215,7 @@ function B_Reward_AI_SpawnAndProtectArea:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reward_AI_SpawnAndProtectArea);
+Swift:RegisterBehavior(B_Reward_AI_SpawnAndProtectArea);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6354,7 +6354,7 @@ function B_Reward_AI_SetNumericalFact:Debug(_Quest)
     return false
 end
 
-Revision:RegisterBehavior(B_Reward_AI_SetNumericalFact);
+Swift:RegisterBehavior(B_Reward_AI_SetNumericalFact);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6422,7 +6422,7 @@ function B_Reward_AI_Aggressiveness:GetCustomData(_Index)
     return { "1", "2", "3" };
 end
 
-Revision:RegisterBehavior(B_Reward_AI_Aggressiveness)
+Swift:RegisterBehavior(B_Reward_AI_Aggressiveness)
 
 -- -------------------------------------------------------------------------- --
 
@@ -6481,7 +6481,7 @@ function B_Reward_AI_SetEnemy:Debug(_Quest)
     end
     return false;
 end
-Revision:RegisterBehavior(B_Reward_AI_SetEnemy)
+Swift:RegisterBehavior(B_Reward_AI_SetEnemy)
 
 -- -------------------------------------------------------------------------- --
 
@@ -6501,7 +6501,7 @@ function Reward_ReplaceEntity(...)
     return B_Reward_ReplaceEntity:new(...);
 end
 
-B_Reward_ReplaceEntity = Revision.LuaBase:CopyTable(B_Reprisal_ReplaceEntity);
+B_Reward_ReplaceEntity = Swift.LuaBase:CopyTable(B_Reprisal_ReplaceEntity);
 B_Reward_ReplaceEntity.Name = "Reward_ReplaceEntity";
 B_Reward_ReplaceEntity.Description.en = "Reward: Replaces an entity with a new one of a different type. The playerID can be changed too.";
 B_Reward_ReplaceEntity.Description.de = "Lohn: Ersetzt eine Entity durch eine neue anderen Typs. Es kann auch die Spielerzugehörigkeit geändert werden.";
@@ -6512,7 +6512,7 @@ B_Reward_ReplaceEntity.GetRewardTable = function(self, _Quest)
     return { Reward.Custom,{self, self.CustomFunction} }
 end
 
-Revision:RegisterBehavior(B_Reward_ReplaceEntity);
+Swift:RegisterBehavior(B_Reward_ReplaceEntity);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6580,7 +6580,7 @@ function B_Reward_SetResourceAmount:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reward_SetResourceAmount);
+Swift:RegisterBehavior(B_Reward_SetResourceAmount);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6623,7 +6623,7 @@ function B_Reward_Resources:GetRewardTable()
     return { Reward.Resources, GoodType, self.GoodAmount }
 end
 
-Revision:RegisterBehavior(B_Reward_Resources);
+Swift:RegisterBehavior(B_Reward_Resources);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6758,7 +6758,7 @@ function B_Reward_SendCart:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reward_SendCart);
+Swift:RegisterBehavior(B_Reward_SendCart);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6802,7 +6802,7 @@ function B_Reward_Units:GetRewardTable()
     return { Reward.Units, assert( Entities[self.EntityName] ), self.Amount }
 end
 
-Revision:RegisterBehavior(B_Reward_Units);
+Swift:RegisterBehavior(B_Reward_Units);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6817,7 +6817,7 @@ function Reward_QuestRestart(...)
     return B_Reward_QuestRestart:new(...)
 end
 
-B_Reward_QuestRestart = Revision.LuaBase:CopyTable(B_Reprisal_QuestRestart);
+B_Reward_QuestRestart = Swift.LuaBase:CopyTable(B_Reprisal_QuestRestart);
 B_Reward_QuestRestart.Name = "Reward_QuestRestart";
 B_Reward_QuestRestart.Description.en = "Reward: Restarts a (completed) quest so it can be triggered and completed again.";
 B_Reward_QuestRestart.Description.de = "Lohn: Startet eine (beendete) Quest neu, damit diese neu ausgelöst und beendet werden kann.";
@@ -6828,7 +6828,7 @@ B_Reward_QuestRestart.GetRewardTable = function(self, _Quest)
     return { Reward.Custom,{self, self.CustomFunction} }
 end
 
-Revision:RegisterBehavior(B_Reward_QuestRestart);
+Swift:RegisterBehavior(B_Reward_QuestRestart);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6843,7 +6843,7 @@ function Reward_QuestFailure(...)
     return B_Reward_QuestFailure:new(...)
 end
 
-B_Reward_QuestFailure = Revision.LuaBase:CopyTable(B_Reprisal_QuestFailure);
+B_Reward_QuestFailure = Swift.LuaBase:CopyTable(B_Reprisal_QuestFailure);
 B_Reward_QuestFailure.Name = "Reward_QuestFailure";
 B_Reward_QuestFailure.Description.en = "Reward: Lets another active quest fail.";
 B_Reward_QuestFailure.Description.de = "Lohn: Lässt eine andere aktive Quest fehlschlagen.";
@@ -6854,7 +6854,7 @@ B_Reward_QuestFailure.GetRewardTable = function(self, _Quest)
     return { Reward.Custom,{self, self.CustomFunction} }
 end
 
-Revision:RegisterBehavior(B_Reward_QuestFailure);
+Swift:RegisterBehavior(B_Reward_QuestFailure);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6869,7 +6869,7 @@ function Reward_QuestSuccess(...)
     return B_Reward_QuestSuccess:new(...)
 end
 
-B_Reward_QuestSuccess = Revision.LuaBase:CopyTable(B_Reprisal_QuestSuccess);
+B_Reward_QuestSuccess = Swift.LuaBase:CopyTable(B_Reprisal_QuestSuccess);
 B_Reward_QuestSuccess.Name = "Reward_QuestSuccess";
 B_Reward_QuestSuccess.Description.en = "Reward: Completes another active quest successfully.";
 B_Reward_QuestSuccess.Description.de = "Lohn: Beendet eine andere aktive Quest erfolgreich.";
@@ -6880,7 +6880,7 @@ B_Reward_QuestSuccess.GetRewardTable = function(self, _Quest)
     return { Reward.Custom,{self, self.CustomFunction} }
 end
 
-Revision:RegisterBehavior(B_Reward_QuestSuccess);
+Swift:RegisterBehavior(B_Reward_QuestSuccess);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6895,7 +6895,7 @@ function Reward_QuestActivate(...)
     return B_Reward_QuestActivate:new(...)
 end
 
-B_Reward_QuestActivate = Revision.LuaBase:CopyTable(B_Reprisal_QuestActivate);
+B_Reward_QuestActivate = Swift.LuaBase:CopyTable(B_Reprisal_QuestActivate);
 B_Reward_QuestActivate.Name = "Reward_QuestActivate";
 B_Reward_QuestActivate.Description.en = "Reward: Activates another quest that is not triggered yet.";
 B_Reward_QuestActivate.Description.de = "Lohn: Aktiviert eine andere Quest die noch nicht ausgelöst wurde.";
@@ -6906,7 +6906,7 @@ B_Reward_QuestActivate.GetRewardTable = function(self, _Quest)
     return {Reward.Custom, {self, self.CustomFunction} }
 end
 
-Revision:RegisterBehavior(B_Reward_QuestActivate)
+Swift:RegisterBehavior(B_Reward_QuestActivate)
 
 -- -------------------------------------------------------------------------- --
 
@@ -6921,7 +6921,7 @@ function Reward_QuestInterrupt(...)
     return B_Reward_QuestInterrupt:new(...)
 end
 
-B_Reward_QuestInterrupt = Revision.LuaBase:CopyTable(B_Reprisal_QuestInterrupt);
+B_Reward_QuestInterrupt = Swift.LuaBase:CopyTable(B_Reprisal_QuestInterrupt);
 B_Reward_QuestInterrupt.Name = "Reward_QuestInterrupt";
 B_Reward_QuestInterrupt.Description.en = "Reward: Interrupts another active quest without success or failure.";
 B_Reward_QuestInterrupt.Description.de = "Lohn: Beendet eine andere aktive Quest ohne Erfolg oder Misserfolg.";
@@ -6932,7 +6932,7 @@ B_Reward_QuestInterrupt.GetRewardTable = function(self, _Quest)
     return { Reward.Custom,{self, self.CustomFunction} }
 end
 
-Revision:RegisterBehavior(B_Reward_QuestInterrupt);
+Swift:RegisterBehavior(B_Reward_QuestInterrupt);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6948,7 +6948,7 @@ function Reward_QuestForceInterrupt(...)
     return B_Reward_QuestForceInterrupt:new(...)
 end
 
-B_Reward_QuestForceInterrupt = Revision.LuaBase:CopyTable(B_Reprisal_QuestForceInterrupt);
+B_Reward_QuestForceInterrupt = Swift.LuaBase:CopyTable(B_Reprisal_QuestForceInterrupt);
 B_Reward_QuestForceInterrupt.Name = "Reward_QuestForceInterrupt";
 B_Reward_QuestForceInterrupt.Description.en = "Reward: Interrupts another quest (even when it isn't active yet) without success or failure.";
 B_Reward_QuestForceInterrupt.Description.de = "Lohn: Beendet eine andere Quest, auch wenn diese noch nicht aktiv ist ohne Erfolg oder Misserfolg.";
@@ -6959,7 +6959,7 @@ B_Reward_QuestForceInterrupt.GetRewardTable = function(self, _Quest)
     return { Reward.Custom,{self, self.CustomFunction} }
 end
 
-Revision:RegisterBehavior(B_Reward_QuestForceInterrupt);
+Swift:RegisterBehavior(B_Reward_QuestForceInterrupt);
 
 -- -------------------------------------------------------------------------- --
 
@@ -6990,7 +6990,7 @@ function Reward_CustomVariables(...)
     return B_Reward_CustomVariables:new(...);
 end
 
-B_Reward_CustomVariables = Revision.LuaBase:CopyTable(B_Reprisal_CustomVariables);
+B_Reward_CustomVariables = Swift.LuaBase:CopyTable(B_Reprisal_CustomVariables);
 B_Reward_CustomVariables.Name = "Reward_CustomVariables";
 B_Reward_CustomVariables.Description.en = "Reward: Executes a mathematical operation with this variable. The other operand can be a number or another custom variable.";
 B_Reward_CustomVariables.Description.de = "Lohn: Führt eine mathematische Operation mit der Variable aus. Der andere Operand kann eine Zahl oder eine Custom-Varible sein.";
@@ -7001,7 +7001,7 @@ B_Reward_CustomVariables.GetRewardTable = function(self, _Quest)
     return { Reward.Custom, {self, self.CustomFunction} };
 end
 
-Revision:RegisterBehavior(B_Reward_CustomVariables)
+Swift:RegisterBehavior(B_Reward_CustomVariables)
 
 -- -------------------------------------------------------------------------- --
 
@@ -7026,7 +7026,7 @@ function Reward_MapScriptFunction(...)
     return B_Reward_MapScriptFunction:new(...);
 end
 
-B_Reward_MapScriptFunction = Revision.LuaBase:CopyTable(B_Reprisal_MapScriptFunction);
+B_Reward_MapScriptFunction = Swift.LuaBase:CopyTable(B_Reprisal_MapScriptFunction);
 B_Reward_MapScriptFunction.Name = "Reward_MapScriptFunction";
 B_Reward_MapScriptFunction.Description.en = "Reward: Calls a function within the global map script if the quest has failed.";
 B_Reward_MapScriptFunction.Description.de = "Lohn: Ruft eine Funktion im globalen Kartenskript auf, wenn die Quest fehlschlägt.";
@@ -7037,7 +7037,7 @@ B_Reward_MapScriptFunction.GetRewardTable = function(self, _Quest)
     return {Reward.Custom, {self, self.CustomFunction}};
 end
 
-Revision:RegisterBehavior(B_Reward_MapScriptFunction);
+Swift:RegisterBehavior(B_Reward_MapScriptFunction);
 
 -- -------------------------------------------------------------------------- --
 
@@ -7054,7 +7054,7 @@ function Reward_Technology(...)
     return B_Reward_Technology:new(...);
 end
 
-B_Reward_Technology = Revision.LuaBase:CopyTable(B_Reprisal_Technology);
+B_Reward_Technology = Swift.LuaBase:CopyTable(B_Reprisal_Technology);
 B_Reward_Technology.Name = "Reward_Technology";
 B_Reward_Technology.Description.en = "Reward: Locks or unlocks a technology for the given player.";
 B_Reward_Technology.Description.de = "Lohn: Sperrt oder erlaubt eine Technolgie fuer den angegebenen Player.";
@@ -7065,7 +7065,7 @@ B_Reward_Technology.GetRewardTable = function(self, _Quest)
     return { Reward.Custom, {self, self.CustomFunction} }
 end
 
-Revision:RegisterBehavior(B_Reward_Technology);
+Swift:RegisterBehavior(B_Reward_Technology);
 
 ---
 -- Gibt dem Auftragnehmer eine Anzahl an Prestigepunkten.
@@ -7103,7 +7103,7 @@ function B_Reward_PrestigePoints :GetRewardTable()
     return { Reward.PrestigePoints, self.Points }
 end
 
-Revision:RegisterBehavior(B_Reward_PrestigePoints);
+Swift:RegisterBehavior(B_Reward_PrestigePoints);
 
 -- -------------------------------------------------------------------------- --
 
@@ -7175,7 +7175,7 @@ function B_Reward_AI_MountOutpost:Debug(_Quest)
     end
 end
 
-Revision:RegisterBehavior(B_Reward_AI_MountOutpost)
+Swift:RegisterBehavior(B_Reward_AI_MountOutpost)
 
 -- -------------------------------------------------------------------------- --
 
@@ -7228,7 +7228,7 @@ function B_Reward_QuestRestartForceActive:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reward_QuestRestartForceActive)
+Swift:RegisterBehavior(B_Reward_QuestRestartForceActive)
 
 -- -------------------------------------------------------------------------- --
 
@@ -7293,7 +7293,7 @@ function B_Reward_UpgradeBuilding:Debug(_Quest)
     end
 end
 
-Revision:RegisterBehavior(B_Reward_UpgradeBuilding)
+Swift:RegisterBehavior(B_Reward_UpgradeBuilding)
 
 ---
 -- Setzt das Upgrade Level des angegebenen Gebäudes.
@@ -7367,7 +7367,7 @@ function B_Reward_SetBuildingUpgradeLevel:GetCustomData(_Index)
     end
 end
 
-Revision:RegisterBehavior(B_Reward_SetBuildingUpgradeLevel);
+Swift:RegisterBehavior(B_Reward_SetBuildingUpgradeLevel);
 
 -- -------------------------------------------------------------------------- --
 -- TRIGGERS
@@ -7407,7 +7407,7 @@ function B_Trigger_PlayerDiscovered:AddParameter(_Index, _Parameter)
     end
 end
 
-Revision:RegisterBehavior(B_Trigger_PlayerDiscovered);
+Swift:RegisterBehavior(B_Trigger_PlayerDiscovered);
 
 -- -------------------------------------------------------------------------- --
 
@@ -7449,7 +7449,7 @@ function B_Trigger_OnDiplomacy:AddParameter(_Index, _Parameter)
     end
 end
 
-Revision:RegisterBehavior(B_Trigger_OnDiplomacy);
+Swift:RegisterBehavior(B_Trigger_OnDiplomacy);
 
 -- -------------------------------------------------------------------------- --
 
@@ -7512,7 +7512,7 @@ function B_Trigger_OnNeedUnsatisfied:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Trigger_OnNeedUnsatisfied);
+Swift:RegisterBehavior(B_Trigger_OnNeedUnsatisfied);
 
 -- -------------------------------------------------------------------------- --
 
@@ -7554,7 +7554,7 @@ function B_Trigger_OnResourceDepleted:CustomFunction(_Quest)
     return not ID or ID == 0 or Logic.GetResourceDoodadGoodType(ID) == 0 or Logic.GetResourceDoodadGoodAmount(ID) == 0
 end
 
-Revision:RegisterBehavior(B_Trigger_OnResourceDepleted);
+Swift:RegisterBehavior(B_Trigger_OnResourceDepleted);
 
 -- -------------------------------------------------------------------------- --
 
@@ -7627,7 +7627,7 @@ function B_Trigger_OnAmountOfGoods:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Trigger_OnAmountOfGoods);
+Swift:RegisterBehavior(B_Trigger_OnAmountOfGoods);
 
 -- -------------------------------------------------------------------------- --
 
@@ -7713,12 +7713,12 @@ function B_Trigger_OnQuestActiveWait:Reset(_Quest)
     self.WasActivated = nil;
 end
 
-Revision:RegisterBehavior(B_Trigger_OnQuestActiveWait);
+Swift:RegisterBehavior(B_Trigger_OnQuestActiveWait);
 
 -- -------------------------------------------------------------------------- --
 
 -- Kompatibelitätsmodus
-B_Trigger_OnQuestActive = Revision.LuaBase:CopyTable(B_Trigger_OnQuestActiveWait);
+B_Trigger_OnQuestActive = Swift.LuaBase:CopyTable(B_Trigger_OnQuestActiveWait);
 B_Trigger_OnQuestActive.Name = "Trigger_OnQuestActive";
 B_Trigger_OnQuestActive.Description.en = "Trigger: Starts the quest after another has been activated.";
 B_Trigger_OnQuestActive.Description.de = "Auslöser: Startet den Quest, wenn ein anderer aktiviert wird.";
@@ -7734,7 +7734,7 @@ function B_Trigger_OnQuestActive:AddParameter(_Index, _Parameter)
     end
 end
 
-Revision:RegisterBehavior(B_Trigger_OnQuestActive);
+Swift:RegisterBehavior(B_Trigger_OnQuestActive);
 
 -- -------------------------------------------------------------------------- --
 
@@ -7812,12 +7812,12 @@ function B_Trigger_OnQuestFailureWait:Reset(_Quest)
     self.WaitTimeTimer = nil;
 end
 
-Revision:RegisterBehavior(B_Trigger_OnQuestFailureWait);
+Swift:RegisterBehavior(B_Trigger_OnQuestFailureWait);
 
 -- -------------------------------------------------------------------------- --
 
 -- Kompatibelitätsmodus
-B_Trigger_OnQuestFailure = Revision.LuaBase:CopyTable(B_Trigger_OnQuestFailureWait);
+B_Trigger_OnQuestFailure = Swift.LuaBase:CopyTable(B_Trigger_OnQuestFailureWait);
 B_Trigger_OnQuestFailure.Name = "Trigger_OnQuestFailure";
 B_Trigger_OnQuestFailure.Description.en = "Trigger: Starts the quest after another has failed.";
 B_Trigger_OnQuestFailure.Description.de = "Auslöser: Startet den Quest, wenn ein anderer fehlschlägt.";
@@ -7833,7 +7833,7 @@ function B_Trigger_OnQuestFailure:AddParameter(_Index, _Parameter)
     end
 end
 
-Revision:RegisterBehavior(B_Trigger_OnQuestFailure);
+Swift:RegisterBehavior(B_Trigger_OnQuestFailure);
 
 -- -------------------------------------------------------------------------- --
 
@@ -7888,7 +7888,7 @@ function B_Trigger_OnQuestNotTriggered:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Trigger_OnQuestNotTriggered);
+Swift:RegisterBehavior(B_Trigger_OnQuestNotTriggered);
 
 -- -------------------------------------------------------------------------- --
 
@@ -7966,12 +7966,12 @@ function B_Trigger_OnQuestInterruptedWait:Reset(_Quest)
     self.WaitTimeTimer = nil;
 end
 
-Revision:RegisterBehavior(B_Trigger_OnQuestInterruptedWait);
+Swift:RegisterBehavior(B_Trigger_OnQuestInterruptedWait);
 
 -- -------------------------------------------------------------------------- --
 
 -- Kompatibelitätsmodus
-B_Trigger_OnQuestInterrupted = Revision.LuaBase:CopyTable(B_Trigger_OnQuestInterruptedWait);
+B_Trigger_OnQuestInterrupted = Swift.LuaBase:CopyTable(B_Trigger_OnQuestInterruptedWait);
 B_Trigger_OnQuestInterrupted.Name = "Trigger_OnQuestInterrupted";
 B_Trigger_OnQuestInterrupted.Description.en = "Trigger: Starts the quest after another is interrupted.";
 B_Trigger_OnQuestInterrupted.Description.de = "Auslöser: Startet den Quest, wenn ein anderer abgebrochen wurde.";
@@ -7987,7 +7987,7 @@ function B_Trigger_OnQuestInterrupted:AddParameter(_Index, _Parameter)
     end
 end
 
-Revision:RegisterBehavior(B_Trigger_OnQuestInterrupted);
+Swift:RegisterBehavior(B_Trigger_OnQuestInterrupted);
 
 -- -------------------------------------------------------------------------- --
 
@@ -8068,12 +8068,12 @@ function B_Trigger_OnQuestOverWait:Reset(_Quest)
     self.WaitTimeTimer = nil;
 end
 
-Revision:RegisterBehavior(B_Trigger_OnQuestOverWait);
+Swift:RegisterBehavior(B_Trigger_OnQuestOverWait);
 
 -- -------------------------------------------------------------------------- --
 
 -- Kompatibelitätsmodus
-B_Trigger_OnQuestOver = Revision.LuaBase:CopyTable(B_Trigger_OnQuestOverWait);
+B_Trigger_OnQuestOver = Swift.LuaBase:CopyTable(B_Trigger_OnQuestOverWait);
 B_Trigger_OnQuestOver.Name = "Trigger_OnQuestOver";
 B_Trigger_OnQuestOver.Description.en = "Trigger: Starts the quest after another finished.";
 B_Trigger_OnQuestOver.Description.de = "Auslöser: Startet den Quest, wenn ein anderer abgeschlossen wurde.";
@@ -8089,7 +8089,7 @@ function B_Trigger_OnQuestOver:AddParameter(_Index, _Parameter)
     end
 end
 
-Revision:RegisterBehavior(B_Trigger_OnQuestOver);
+Swift:RegisterBehavior(B_Trigger_OnQuestOver);
 
 -- -------------------------------------------------------------------------- --
 
@@ -8167,12 +8167,12 @@ function B_Trigger_OnQuestSuccessWait:Reset(_Quest)
     self.WaitTimeTimer = nil;
 end
 
-Revision:RegisterBehavior(B_Trigger_OnQuestSuccessWait);
+Swift:RegisterBehavior(B_Trigger_OnQuestSuccessWait);
 
 -- -------------------------------------------------------------------------- --
 
 -- Kompatibelitätsmodus
-B_Trigger_OnQuestSuccess = Revision.LuaBase:CopyTable(B_Trigger_OnQuestSuccessWait);
+B_Trigger_OnQuestSuccess = Swift.LuaBase:CopyTable(B_Trigger_OnQuestSuccessWait);
 B_Trigger_OnQuestSuccess.Name = "Trigger_OnQuestSuccess";
 B_Trigger_OnQuestSuccess.Description.en = "Trigger: Starts the quest after another finished successfully.";
 B_Trigger_OnQuestSuccess.Description.de = "Auslöser: Startet den Quest, wenn ein anderer erfolgreich abgeschlossen wurde.";
@@ -8188,7 +8188,7 @@ function B_Trigger_OnQuestSuccess:AddParameter(_Index, _Parameter)
     end
 end
 
-Revision:RegisterBehavior(B_Trigger_OnQuestSuccess);
+Swift:RegisterBehavior(B_Trigger_OnQuestSuccess);
 
 -- -------------------------------------------------------------------------- --
 
@@ -8284,7 +8284,7 @@ function B_Trigger_CustomVariables:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Trigger_CustomVariables)
+Swift:RegisterBehavior(B_Trigger_CustomVariables)
 
 -- -------------------------------------------------------------------------- --
 
@@ -8310,7 +8310,7 @@ function B_Trigger_AlwaysActive:GetTriggerTable()
     return {Triggers.Time, 0 }
 end
 
-Revision:RegisterBehavior(B_Trigger_AlwaysActive);
+Swift:RegisterBehavior(B_Trigger_AlwaysActive);
 
 -- -------------------------------------------------------------------------- --
 
@@ -8371,7 +8371,7 @@ function B_Trigger_OnMonth:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Trigger_OnMonth);
+Swift:RegisterBehavior(B_Trigger_OnMonth);
 
 -- -------------------------------------------------------------------------- --
 
@@ -8406,7 +8406,7 @@ function B_Trigger_OnMonsoon:CustomFunction(_Quest)
     end
 end
 
-Revision:RegisterBehavior(B_Trigger_OnMonsoon);
+Swift:RegisterBehavior(B_Trigger_OnMonsoon);
 
 -- -------------------------------------------------------------------------- --
 
@@ -8445,7 +8445,7 @@ function B_Trigger_Time:AddParameter(_Index, _Parameter)
     end
 end
 
-Revision:RegisterBehavior(B_Trigger_Time);
+Swift:RegisterBehavior(B_Trigger_Time);
 
 -- -------------------------------------------------------------------------- --
 
@@ -8477,7 +8477,7 @@ function B_Trigger_OnWaterFreezes:CustomFunction(_Quest)
     end
 end
 
-Revision:RegisterBehavior(B_Trigger_OnWaterFreezes);
+Swift:RegisterBehavior(B_Trigger_OnWaterFreezes);
 
 -- -------------------------------------------------------------------------- --
 
@@ -8508,7 +8508,7 @@ function B_Trigger_NeverTriggered:GetTriggerTable()
 
 end
 
-Revision:RegisterBehavior(B_Trigger_NeverTriggered)
+Swift:RegisterBehavior(B_Trigger_NeverTriggered)
 
 -- -------------------------------------------------------------------------- --
 
@@ -8575,7 +8575,7 @@ function B_Trigger_OnAtLeastOneQuestFailure:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Trigger_OnAtLeastOneQuestFailure);
+Swift:RegisterBehavior(B_Trigger_OnAtLeastOneQuestFailure);
 
 -- -------------------------------------------------------------------------- --
 
@@ -8642,7 +8642,7 @@ function B_Trigger_OnAtLeastOneQuestSuccess:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Trigger_OnAtLeastOneQuestSuccess);
+Swift:RegisterBehavior(B_Trigger_OnAtLeastOneQuestSuccess);
 
 -- -------------------------------------------------------------------------- --
 
@@ -8747,7 +8747,7 @@ function B_Trigger_OnAtLeastXOfYQuestsSuccess:GetCustomData(_Index)
     end
 end
 
-Revision:RegisterBehavior(B_Trigger_OnAtLeastXOfYQuestsSuccess)
+Swift:RegisterBehavior(B_Trigger_OnAtLeastXOfYQuestsSuccess)
 
 -- -------------------------------------------------------------------------- --
 
@@ -8808,7 +8808,7 @@ function B_Trigger_MapScriptFunction:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Trigger_MapScriptFunction);
+Swift:RegisterBehavior(B_Trigger_MapScriptFunction);
 
 ---
 -- Startet den Quest, sobald ein Effekt zerstört wird oder verschwindet.
@@ -8856,5 +8856,5 @@ function B_Trigger_OnEffectDestroyed:Debug(_Quest)
 		return true
 	end
 end
-Revision:RegisterBehavior(B_Trigger_OnEffectDestroyed)
+Swift:RegisterBehavior(B_Trigger_OnEffectDestroyed)
 

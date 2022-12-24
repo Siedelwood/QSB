@@ -164,8 +164,8 @@ function ModuleRequester.Local:OpenDialog(_PlayerID, _Title, _Text, _Action)
         assert(type(_Title) == "string");
         assert(type(_Text) == "string");
 
-        _Title = "{center}" .. Revision.Text:ConvertPlaceholders(_Title);
-        _Text  = Revision.Text:ConvertPlaceholders(_Text);
+        _Title = "{center}" .. Swift.Text:ConvertPlaceholders(_Title);
+        _Text  = Swift.Text:ConvertPlaceholders(_Text);
         if string.len(_Text) < 35 then
             _Text = _Text .. "{cr}";
         end
@@ -201,7 +201,7 @@ function ModuleRequester.Local:OpenDialog(_PlayerID, _Title, _Text, _Action)
         XGUIEng.SetText(RequesterDialog_Title.."White", _Title);
         XGUIEng.PushPage(RequesterDialog,false);
 
-        if Revision.Save.SavingDisabled then
+        if Swift.Save.SavingDisabled then
             self.SavingWasDisabled = true;
         end
         API.DisableSaving(true);
@@ -562,5 +562,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleRequester);
+Swift:RegisterModule(ModuleRequester);
 

@@ -965,5 +965,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleDialogSystem);
+Swift:RegisterModule(ModuleDialogSystem);
 

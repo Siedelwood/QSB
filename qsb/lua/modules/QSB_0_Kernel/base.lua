@@ -485,12 +485,12 @@ QSB.GameVariant = {
 
 -- -------------------------------------------------------------------------- --
 
-Revision = {
+Swift = {
     ModuleRegister = {},
     BehaviorRegister = {},
 };
 
-function Revision:LoadKernel()
+function Swift:LoadKernel()
     self.Environment = (GUI and QSB.Environment.LOCAL) or QSB.Environment.GLOBAL;
     self.GameVersion = (Network.IsNATReady and QSB.GameVersion.HISTORY_EDITION) or QSB.GameVersion.ORIGINAL;
     self.GameVariant = (Entities.U_PolarBear and QSB.GameVariant.COMMUNITY) or QSB.GameVariant.VANILLA;
@@ -522,7 +522,7 @@ end
 -- -------------------------------------------------------------------------- --
 -- File Loading
 
-function Revision:LoadExternFiles()
+function Swift:LoadExternFiles()
     if Mission_LoadFiles then
         local FilesList = Mission_LoadFiles();
         for i= 1, #FilesList, 1 do
@@ -538,13 +538,13 @@ end
 -- -------------------------------------------------------------------------- --
 -- Multiplayer
 
-function Revision:SetupRandomSeedHandler()
+function Swift:SetupRandomSeedHandler()
     if self.Environment == QSB.Environment.GLOBAL then
-        Revision.Event:CreateScriptCommand("Cmd_ProclaimateRandomSeed", function(_Seed)
-            if Revision.MP_Seed_Set then
+        Swift.Event:CreateScriptCommand("Cmd_ProclaimateRandomSeed", function(_Seed)
+            if Swift.MP_Seed_Set then
                 return;
             end
-            Revision.MP_Seed_Set = true;
+            Swift.MP_Seed_Set = true;
             math.randomseed(_Seed);
             local void = math.random(1, 100);
             Logic.ExecuteInLuaLocalState(string.format(
@@ -556,7 +556,7 @@ function Revision:SetupRandomSeedHandler()
     end
 end
 
-function Revision:CreateRandomSeed()
+function Swift:CreateRandomSeed()
     for PlayerID = 1, 8 do
         -- Find first human player to generate random seed
         if Logic.PlayerGetIsHumanFlag(PlayerID) and Logic.PlayerGetGameState(PlayerID) ~= 0 then
@@ -565,7 +565,7 @@ function Revision:CreateRandomSeed()
             if GUI.GetPlayerID() == PlayerID then
                 local Seed = self:BuildRandomSeed(PlayerID);
                 if Framework.IsNetworkGame() then
-                    Revision.Event:DispatchScriptCommand(QSB.ScriptCommands.ProclaimateRandomSeed, 0, Seed);
+                    Swift.Event:DispatchScriptCommand(QSB.ScriptCommands.ProclaimateRandomSeed, 0, Seed);
                 else
                     math.randomseed(Seed);
                     math.random(1, 100);
@@ -580,7 +580,7 @@ function Revision:CreateRandomSeed()
     end
 end
 
-function Revision:BuildRandomSeed(_PlayerID)
+function Swift:BuildRandomSeed(_PlayerID)
     local PlayerName = Logic.GetPlayerName(_PlayerID);
     local MapName = Framework.GetCurrentMapName();
     local MapType = Framework.GetCurrentMapTypeAndCampaignName();
@@ -597,38 +597,38 @@ end
 -- -------------------------------------------------------------------------- --
 -- Save Game
 
-function Revision:SetupQsbLoadedHandler()
+function Swift:SetupQsbLoadedHandler()
     if self.Environment == QSB.Environment.GLOBAL then
-        Revision.Event:CreateScriptCommand("Cmd_GlobalQsbLoaded", function()
-            if Mission_MP_OnQsbLoaded and not Revision.MP_FMA_Loaded and Framework.IsNetworkGame() then
+        Swift.Event:CreateScriptCommand("Cmd_GlobalQsbLoaded", function()
+            if Mission_MP_OnQsbLoaded and not Swift.MP_FMA_Loaded and Framework.IsNetworkGame() then
                 Logic.ExecuteInLuaLocalState([[
                     if Mission_MP_LocalOnQsbLoaded then
                         Mission_MP_LocalOnQsbLoaded();
                     end
                 ]]);
-                Revision.MP_FMA_Loaded = true;
+                Swift.MP_FMA_Loaded = true;
                 Mission_MP_OnQsbLoaded();
             end
         end);
     end
 end
 
-function Revision:SetupSaveGameHandler()
+function Swift:SetupSaveGameHandler()
     QSB.ScriptEvents.SaveGameLoaded = self.Event:CreateScriptEvent("Event_SaveGameLoaded");
 
     if self.Environment == QSB.Environment.GLOBAL then
-        Mission_OnSaveGameLoaded_Orig_Revision = Mission_OnSaveGameLoaded;
+        Mission_OnSaveGameLoaded_Orig_Swift = Mission_OnSaveGameLoaded;
         Mission_OnSaveGameLoaded = function()
-            Mission_OnSaveGameLoaded_Orig_Revision();
-            Revision:OnSaveGameLoaded();
+            Mission_OnSaveGameLoaded_Orig_Swift();
+            Swift:OnSaveGameLoaded();
         end
     end
 end
 
-function Revision:OnSaveGameLoaded()
+function Swift:OnSaveGameLoaded()
     -- Trigger in local script
     if self.Environment == QSB.Environment.GLOBAL then
-        Logic.ExecuteInLuaLocalState("Revision:OnSaveGameLoaded()");
+        Logic.ExecuteInLuaLocalState("Swift:OnSaveGameLoaded()");
     end
     -- Call shared
     self.LuaBase:OnSaveGameLoaded();
@@ -656,7 +656,7 @@ end
 -- -------------------------------------------------------------------------- --
 -- Module Registration
 
-function Revision:LoadModules()
+function Swift:LoadModules()
     for i= 1, #self.ModuleRegister, 1 do
         if self.Environment == QSB.Environment.GLOBAL then
             self.ModuleRegister[i].Local = nil;
@@ -673,7 +673,7 @@ function Revision:LoadModules()
     end
 end
 
-function Revision:RegisterModule(_Module)
+function Swift:RegisterModule(_Module)
     if (type(_Module) ~= "table") then
         assert(false, "Modules must be tables!");
         return;
@@ -685,7 +685,7 @@ function Revision:RegisterModule(_Module)
     table.insert(self.ModuleRegister, _Module);
 end
 
-function Revision:IsModuleRegistered(_Name)
+function Swift:IsModuleRegistered(_Name)
     for k, v in pairs(self.ModuleRegister) do
         return v.Properties and v.Properties.Name == _Name;
     end
@@ -694,7 +694,7 @@ end
 -- -------------------------------------------------------------------------- --
 -- Behavior Registration
 
-function Revision:LoadBehaviors()
+function Swift:LoadBehaviors()
     for i= 1, #self.BehaviorRegister, 1 do
         local Behavior = self.BehaviorRegister[i];
 
@@ -720,7 +720,7 @@ function Revision:LoadBehaviors()
     end
 end
 
-function Revision:RegisterBehavior(_Behavior)
+function Swift:RegisterBehavior(_Behavior)
     if self.Environment == QSB.Environment.LOCAL then
         return;
     end
@@ -748,33 +748,33 @@ end
 -- -------------------------------------------------------------------------- --
 -- Escape Capture
 
-function Revision:SetupEscapeHandler()
+function Swift:SetupEscapeHandler()
     QSB.ScriptEvents.EscapePressed = self.Event:CreateScriptEvent("Event_EscapePressed");
     if self.Environment == QSB.Environment.LOCAL then
         self:SetEscapeKeyTrigger();
     end
 end
 
-function Revision:SetEscapeKeyTrigger()
-    Input.KeyBindDown(Keys.Escape, "Revision:OnPlayerPressedEscape()", 30, false);
+function Swift:SetEscapeKeyTrigger()
+    Input.KeyBindDown(Keys.Escape, "Swift:OnPlayerPressedEscape()", 30, false);
 end
 
-function Revision:OnPlayerPressedEscape()
+function Swift:OnPlayerPressedEscape()
     -- Global
-    Revision.Event:DispatchScriptCommand(
+    Swift.Event:DispatchScriptCommand(
         QSB.ScriptCommands.SendScriptEvent,
         0,
         "EscapePressed",
         GUI.GetPlayerID()
     );
     -- Local
-    Revision.Event:DispatchScriptCommand(QSB.ScriptEvents.EscapePressed, 0, GUI.GetPlayerID());
+    Swift.Event:DispatchScriptCommand(QSB.ScriptEvents.EscapePressed, 0, GUI.GetPlayerID());
 end
 
 -- -------------------------------------------------------------------------- --
 -- Loadscreen
 
-function Revision:SetupLoadscreenHandler()
+function Swift:SetupLoadscreenHandler()
     -- Send the event as command to the global script
     QSB.ScriptEvents.LoadscreenClosed = self.Event:CreateScriptEvent("Event_LoadscreenClosed");
     if self.Environment == QSB.Environment.GLOBAL then
@@ -797,7 +797,7 @@ function Revision:SetupLoadscreenHandler()
         Events.LOGIC_EVENT_EVERY_TURN,
         function()
             if XGUIEng.IsWidgetShownEx("/LoadScreen/LoadScreen") == 0 then
-                Revision.Event:DispatchScriptCommand(
+                Swift.Event:DispatchScriptCommand(
                     QSB.ScriptCommands.RegisterLoadscreenHidden,
                     GUI.GetPlayerID()
                 );
@@ -807,13 +807,13 @@ function Revision:SetupLoadscreenHandler()
     );
 
     -- Overwrite the loadscreen button
-    HideLoadScreen_Orig_Revision = HideLoadScreen;
+    HideLoadScreen_Orig_Swift = HideLoadScreen;
     HideLoadScreen = function()
-        HideLoadScreen_Orig_Revision();
+        HideLoadScreen_Orig_Swift();
         XGUIEng.PushPage("/LoadScreen/LoadScreen", true);
         XGUIEng.ShowWidget("/LoadScreen/LoadScreen/ButtonStart", 0);
         EndJob(self.LoadscreenWatchJobID);
-        Revision.Event:DispatchScriptCommand(
+        Swift.Event:DispatchScriptCommand(
             QSB.ScriptCommands.RegisterLoadscreenHidden,
             GUI.GetPlayerID()
         );
@@ -824,14 +824,14 @@ end
 -- API
 
 ---
--- Installiert Revision.
+-- Installiert Swift.
 --
 -- @within Base
 -- @local
 --
 function API.Install()
-    Revision:LoadKernel();
-    Revision:LoadModules();
+    Swift:LoadKernel();
+    Swift:LoadModules();
     collectgarbage("collect");
 end
 
@@ -848,7 +848,7 @@ end
 -- @see QSB.GameVersion
 --
 function API.GetGameVersion()
-    return Revision.GameVersion;
+    return Swift.GameVersion;
 end
 
 ---
@@ -862,7 +862,7 @@ end
 -- @see QSB.GameVariant
 --
 function API.GetGameVariant()
-    return Revision.GameVariant;
+    return Swift.GameVariant;
 end
 
 ---
@@ -876,7 +876,7 @@ end
 -- @see QSB.Environment
 --
 function API.GetScriptEnvironment()
-    return Revision.Environment;
+    return Swift.Environment;
 end
 
 ---

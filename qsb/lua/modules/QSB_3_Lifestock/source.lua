@@ -449,5 +449,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleLifestockBreeding);
+Swift:RegisterModule(ModuleLifestockBreeding);
 

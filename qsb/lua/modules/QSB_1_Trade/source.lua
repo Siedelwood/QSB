@@ -717,5 +717,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleTrade);
+Swift:RegisterModule(ModuleTrade);
 

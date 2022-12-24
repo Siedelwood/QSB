@@ -16,38 +16,38 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.Debug = {
+Swift.Debug = {
     CheckAtRun           = false;
     TraceQuests          = false;
     DevelopingCheats     = false;
     DevelopingShell      = false;
 };
 
-function Revision.Debug:Initalize()
-    QSB.ScriptEvents.DebugChatConfirmed = Revision.Event:CreateScriptEvent("Event_DebugChatConfirmed");
-    QSB.ScriptEvents.DebugConfigChanged = Revision.Event:CreateScriptEvent("Event_DebugConfigChanged");
+function Swift.Debug:Initalize()
+    QSB.ScriptEvents.DebugChatConfirmed = Swift.Event:CreateScriptEvent("Event_DebugChatConfirmed");
+    QSB.ScriptEvents.DebugConfigChanged = Swift.Event:CreateScriptEvent("Event_DebugConfigChanged");
 
-    if Revision.Environment == QSB.Environment.LOCAL then
+    if Swift.Environment == QSB.Environment.LOCAL then
         self:InitalizeQsbDebugHotkeys();
 
         API.AddScriptEventListener(
             QSB.ScriptEvents.ChatClosed,
             function(...)
-                Revision.Debug:ProcessDebugInput(unpack(arg));
+                Swift.Debug:ProcessDebugInput(unpack(arg));
             end
         );
     end
 end
 
-function Revision.Debug:OnSaveGameLoaded()
-    if Revision.Environment == QSB.Environment.LOCAL then
+function Swift.Debug:OnSaveGameLoaded()
+    if Swift.Environment == QSB.Environment.LOCAL then
         self:InitalizeDebugWidgets();
         self:InitalizeQsbDebugHotkeys();
     end
 end
 
-function Revision.Debug:ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _DevelopingShell)
-    if Revision.Environment == QSB.Environment.LOCAL then
+function Swift.Debug:ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _DevelopingShell)
+    if Swift.Environment == QSB.Environment.LOCAL then
         return;
     end
 
@@ -56,7 +56,7 @@ function Revision.Debug:ActivateDebugMode(_CheckAtRun, _TraceQuests, _Developing
     self.DevelopingCheats = _DevelopingCheats == true;
     self.DevelopingShell  = _DevelopingShell == true;
 
-    Revision.Event:DispatchScriptEvent(
+    Swift.Event:DispatchScriptEvent(
         QSB.ScriptEvents.DebugModeStatusChanged,
         self.CheckAtRun,
         self.TraceQuests,
@@ -66,19 +66,19 @@ function Revision.Debug:ActivateDebugMode(_CheckAtRun, _TraceQuests, _Developing
 
     Logic.ExecuteInLuaLocalState(string.format(
         [[
-            Revision.Debug.CheckAtRun       = %s;
-            Revision.Debug.TraceQuests      = %s;
-            Revision.Debug.DevelopingCheats = %s;
-            Revision.Debug.DevelopingShell  = %s;
+            Swift.Debug.CheckAtRun       = %s;
+            Swift.Debug.TraceQuests      = %s;
+            Swift.Debug.DevelopingCheats = %s;
+            Swift.Debug.DevelopingShell  = %s;
 
-            Revision.Event:DispatchScriptEvent(
+            Swift.Event:DispatchScriptEvent(
                 QSB.ScriptEvents.DebugModeStatusChanged,
-                Revision.Debug.CheckAtRun,
-                Revision.Debug.TraceQuests,
-                Revision.Debug.DevelopingCheats,
-                Revision.Debug.DevelopingShell
+                Swift.Debug.CheckAtRun,
+                Swift.Debug.TraceQuests,
+                Swift.Debug.DevelopingCheats,
+                Swift.Debug.DevelopingShell
             );
-            Revision.Debug:InitalizeDebugWidgets();
+            Swift.Debug:InitalizeDebugWidgets();
         ]],
         tostring(self.CheckAtRun),
         tostring(self.TraceQuests),
@@ -87,7 +87,7 @@ function Revision.Debug:ActivateDebugMode(_CheckAtRun, _TraceQuests, _Developing
     ));
 end
 
-function Revision.Debug:InitalizeDebugWidgets()
+function Swift.Debug:InitalizeDebugWidgets()
     if Network.IsNATReady ~= nil and Framework.IsNetworkGame() then
         return;
     end
@@ -104,27 +104,27 @@ function Revision.Debug:InitalizeDebugWidgets()
     end
 end
 
-function Revision.Debug:InitalizeQsbDebugHotkeys()
+function Swift.Debug:InitalizeQsbDebugHotkeys()
     if Framework.IsNetworkGame() then
         return;
     end
     -- Restart map
     Input.KeyBindDown(
         Keys.ModifierControl + Keys.ModifierShift + Keys.ModifierAlt + Keys.R,
-        "Revision.Debug:ProcessDebugShortcut('RestartMap')",
+        "Swift.Debug:ProcessDebugShortcut('RestartMap')",
         30,
         false
     );
     -- Open chat
     Input.KeyBindDown(
         Keys.ModifierShift + Keys.OemPipe,
-        "Revision.Debug:ProcessDebugShortcut('Terminal')",
+        "Swift.Debug:ProcessDebugShortcut('Terminal')",
         30,
         false
     );
 end
 
-function Revision.Debug:ProcessDebugShortcut(_Type, _Params)
+function Swift.Debug:ProcessDebugShortcut(_Type, _Params)
     if self.DevelopingCheats then
         if _Type == "RestartMap" then
             Framework.RestartMap();
@@ -134,7 +134,7 @@ function Revision.Debug:ProcessDebugShortcut(_Type, _Params)
     end
 end
 
-function Revision.Debug:ProcessDebugInput(_Input, _PlayerID, _DebugAllowed)
+function Swift.Debug:ProcessDebugInput(_Input, _PlayerID, _DebugAllowed)
     if _DebugAllowed then
         if _Input:lower():find("^restartmap") then
             self:ProcessDebugShortcut("RestartMap");
@@ -143,9 +143,9 @@ function Revision.Debug:ProcessDebugInput(_Input, _PlayerID, _DebugAllowed)
         elseif _Input:lower():find("^version") then
             local Slices = _Input:slice(" ");
             if Slices[2] then
-                for i= 1, #Revision.ModuleRegister do
-                    if Revision.ModuleRegister[i].Properties.Name ==  Slices[2] then
-                        GUI.AddStaticNote("Version: " ..Revision.ModuleRegister[i].Properties.Version);
+                for i= 1, #Swift.ModuleRegister do
+                    if Swift.ModuleRegister[i].Properties.Name ==  Slices[2] then
+                        GUI.AddStaticNote("Version: " ..Swift.ModuleRegister[i].Properties.Version);
                     end
                 end
                 return;
@@ -197,6 +197,6 @@ end
 -- @within System
 --
 function API.ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _DevelopingShell)
-    Revision.Debug:ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _DevelopingShell);
+    Swift.Debug:ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _DevelopingShell);
 end
 

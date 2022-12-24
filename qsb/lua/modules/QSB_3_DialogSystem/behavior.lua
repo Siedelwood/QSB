@@ -70,7 +70,7 @@ function B_Reprisal_Dialog:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Reprisal_Dialog);
+Swift:RegisterBehavior(B_Reprisal_Dialog);
 
 -- -------------------------------------------------------------------------- --
 
@@ -87,7 +87,7 @@ function Reward_Dialog(...)
     return B_Reward_Dialog:new(...);
 end
 
-B_Reward_Dialog = Revision.LuaBase:CopyTable(B_Reprisal_Dialog);
+B_Reward_Dialog = Swift.LuaBase:CopyTable(B_Reprisal_Dialog);
 B_Reward_Dialog.Name = "Reward_Dialog";
 B_Reward_Dialog.Description.en = "Reward: Calls a function to start an new dialog.";
 B_Reward_Dialog.Description.de = "Lohn: Ruft die Funktion auf und startet das enthaltene Dialog.";
@@ -98,7 +98,7 @@ B_Reward_Dialog.GetRewardTable = function(self, _Quest)
     return { Reward.Custom,{self, self.CustomFunction} }
 end
 
-Revision:RegisterBehavior(B_Reward_Dialog);
+Swift:RegisterBehavior(B_Reward_Dialog);
 
 -- -------------------------------------------------------------------------- --
 
@@ -173,5 +173,5 @@ function B_Trigger_Dialog:Debug(_Quest)
     return false;
 end
 
-Revision:RegisterBehavior(B_Trigger_Dialog);
+Swift:RegisterBehavior(B_Trigger_Dialog);
 

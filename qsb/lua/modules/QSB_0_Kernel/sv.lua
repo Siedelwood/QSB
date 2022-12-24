@@ -14,7 +14,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.ScriptingValue = {
+Swift.ScriptingValue = {
     SV = {
         Game = "Vanilla",
         Vanilla = {
@@ -36,17 +36,17 @@ Revision.ScriptingValue = {
     }
 }
 
-function Revision.ScriptingValue:Initalize()
-    if Revision.GameVersion == QSB.GameVersion.HISTORY_EDITION then
+function Swift.ScriptingValue:Initalize()
+    if Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
         self.SV.Game = "HistoryEdition";
     end
     QSB.ScriptingValue = self.SV[self.SV.Game];
 end
 
-function Revision.ScriptingValue:OnSaveGameLoaded()
+function Swift.ScriptingValue:OnSaveGameLoaded()
     -- Porting savegames between game versions
     -- (Not recommended but we try to support it)
-    if Revision.GameVersion == QSB.GameVersion.HISTORY_EDITION then
+    if Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
         self.SV.Game = "HistoryEdition";
     end
     QSB.ScriptingValue = self.SV[self.SV.Game];
@@ -57,7 +57,7 @@ QSB.ScriptingValue = {};
 -- -------------------------------------------------------------------------- --
 -- Conversion Methods
 
-function Revision.ScriptingValue:BitsInteger(num)
+function Swift.ScriptingValue:BitsInteger(num)
     local t = {};
     while num > 0 do
         rest = math.qmod(num, 2);
@@ -68,7 +68,7 @@ function Revision.ScriptingValue:BitsInteger(num)
     return t;
 end
 
-function Revision.ScriptingValue:BitsFraction(num, t)
+function Swift.ScriptingValue:BitsFraction(num, t)
     for i = 1, 48 do
         num = num * 2;
         if(num >= 1) then
@@ -84,7 +84,7 @@ function Revision.ScriptingValue:BitsFraction(num, t)
     return t;
 end
 
-function Revision.ScriptingValue:IntegerToFloat(num)
+function Swift.ScriptingValue:IntegerToFloat(num)
     if(num == 0) then
         return 0;
     end
@@ -111,7 +111,7 @@ function Revision.ScriptingValue:IntegerToFloat(num)
     return fraction * math.pow(2, exp) * sign;
 end
 
-function Revision.ScriptingValue:FloatToInteger(fval)
+function Swift.ScriptingValue:FloatToInteger(fval)
     if(fval == 0) then
         return 0;
     end
@@ -249,7 +249,7 @@ end
 -- local Converted = API.ConvertIntegerToFloat(Value)
 --
 function API.ConvertIntegerToFloat(_Value)
-    return Revision.ScriptingValue:IntegerToFloat(_Value);
+    return Swift.ScriptingValue:IntegerToFloat(_Value);
 end
 
 ---
@@ -263,5 +263,5 @@ end
 -- local Converted = API.ConvertFloatToInteger(Value)
 --
 function API.ConvertFloatToInteger(_Value)
-    return Revision.ScriptingValue:FloatToInteger(_Value);
+    return Swift.ScriptingValue:FloatToInteger(_Value);
 end

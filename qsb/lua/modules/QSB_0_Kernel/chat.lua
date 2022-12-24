@@ -14,29 +14,29 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.Chat = {
+Swift.Chat = {
     DebugInput = {};
 };
 
-function Revision.Chat:Initalize()
-    QSB.ScriptEvents.ChatOpened = Revision.Event:CreateScriptEvent("Event_ChatOpened");
-    QSB.ScriptEvents.ChatClosed = Revision.Event:CreateScriptEvent("Event_ChatClosed");
+function Swift.Chat:Initalize()
+    QSB.ScriptEvents.ChatOpened = Swift.Event:CreateScriptEvent("Event_ChatOpened");
+    QSB.ScriptEvents.ChatClosed = Swift.Event:CreateScriptEvent("Event_ChatClosed");
     for i= 1, 8 do
         self.DebugInput[i] = {};
     end
 end
 
-function Revision.Chat:OnSaveGameLoaded()
+function Swift.Chat:OnSaveGameLoaded()
 end
 
-function Revision.Chat:ShowTextInput(_PlayerID, _AllowDebug)
-    if  Revision.GameVersion == QSB.GameVersion.HISTORY_EDITION
+function Swift.Chat:ShowTextInput(_PlayerID, _AllowDebug)
+    if  Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION
     and Framework.IsNetworkGame() then
         return;
     end
     if not GUI then
         Logic.ExecuteInLuaLocalState(string.format(
-            [[Revision.Chat:ShowTextInput(%d, %s)]],
+            [[Swift.Chat:ShowTextInput(%d, %s)]],
             _PlayerID,
             tostring(_AllowDebug == true)
         ))
@@ -47,13 +47,13 @@ function Revision.Chat:ShowTextInput(_PlayerID, _AllowDebug)
     self:ShowInputBox(_PlayerID, _AllowDebug == true);
 end
 
-function Revision.Chat:ShowInputBox(_PlayerID, _Debug)
+function Swift.Chat:ShowInputBox(_PlayerID, _Debug)
     if GUI.GetPlayerID() ~= _PlayerID then
         return;
     end
     self.DebugInput[_PlayerID] = _Debug == true;
 
-    Revision.Job:CreateEventJob(
+    Swift.Job:CreateEventJob(
         Events.LOGIC_EVENT_EVERY_TURN,
         function()
             -- Open chat
@@ -62,14 +62,14 @@ function Revision.Chat:ShowInputBox(_PlayerID, _Debug)
             XGUIEng.ShowWidget("/InGame/Root/Normal/ChatInput", 1);
             XGUIEng.SetFocus("/InGame/Root/Normal/ChatInput/ChatInput");
             -- Send event to global script
-            Revision.Event:DispatchScriptCommand(
+            Swift.Event:DispatchScriptCommand(
                 QSB.ScriptCommands.SendScriptEvent,
                 GUI.GetPlayerID(),
                 "ChatOpened",
                 _PlayerID
             );
             -- Send event to local script
-            Revision.Event:DispatchScriptEvent(
+            Swift.Event:DispatchScriptEvent(
                 QSB.ScriptEvents.ChatOpened,
                 _PlayerID
             );
@@ -84,20 +84,20 @@ function Revision.Chat:ShowInputBox(_PlayerID, _Debug)
     )
 end
 
-function Revision.Chat:PrepareInputVariable(_PlayerID)
-    if Revision.Environment == QSB.Environment.GLOBAL then
+function Swift.Chat:PrepareInputVariable(_PlayerID)
+    if Swift.Environment == QSB.Environment.GLOBAL then
         return;
     end
 
-    GUI_Chat.Abort_Orig_Revision = GUI_Chat.Abort_Orig_Revision or GUI_Chat.Abort;
-    GUI_Chat.Confirm_Orig_Revision = GUI_Chat.Confirm_Orig_Revision or GUI_Chat.Confirm;
+    GUI_Chat.Abort_Orig_Swift = GUI_Chat.Abort_Orig_Swift or GUI_Chat.Abort;
+    GUI_Chat.Confirm_Orig_Swift = GUI_Chat.Confirm_Orig_Swift or GUI_Chat.Confirm;
 
     GUI_Chat.Confirm = function()
         XGUIEng.ShowWidget("/InGame/Root/Normal/ChatInput", 0);
         local ChatMessage = XGUIEng.GetText("/InGame/Root/Normal/ChatInput/ChatInput");
-        local IsDebug = Revision.Chat.DebugInput[_PlayerID];
-        Revision.ChatBoxInput = ChatMessage;
-        Revision.Chat:SendInputToGlobalScript(ChatMessage, IsDebug);
+        local IsDebug = Swift.Chat.DebugInput[_PlayerID];
+        Swift.ChatBoxInput = ChatMessage;
+        Swift.Chat:SendInputToGlobalScript(ChatMessage, IsDebug);
         g_Chat.JustClosed = 1;
         if not Framework.IsNetworkGame() then
             Game.GameTimeSetFactor(_PlayerID, 1);
@@ -121,11 +121,11 @@ function Revision.Chat:PrepareInputVariable(_PlayerID)
     end
 end
 
-function Revision.Chat:SendInputToGlobalScript(_Text, _Debug)
+function Swift.Chat:SendInputToGlobalScript(_Text, _Debug)
     _Text = (_Text == nil and "") or _Text;
     local PlayerID = GUI.GetPlayerID();
     -- Send chat input to global script
-    Revision.Event:DispatchScriptCommand(
+    Swift.Event:DispatchScriptCommand(
         QSB.ScriptCommands.SendScriptEvent,
         0,
         "ChatClosed",
@@ -134,7 +134,7 @@ function Revision.Chat:SendInputToGlobalScript(_Text, _Debug)
         _Debug == true
     );
     -- Send chat input to local script
-    Revision.Event:DispatchScriptEvent(
+    Swift.Event:DispatchScriptEvent(
         QSB.ScriptEvents.ChatClosed,
         (_Text or "<<<ES>>>"),
         GUI.GetPlayerID(),
@@ -158,6 +158,6 @@ end
 -- @within System
 --
 function API.ShowTextInput(_PlayerID, _AllowDebug)
-    Revision.Chat:ShowTextInput(_PlayerID, _AllowDebug);
+    Swift.Chat:ShowTextInput(_PlayerID, _AllowDebug);
 end
 

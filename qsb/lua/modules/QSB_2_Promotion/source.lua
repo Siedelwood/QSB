@@ -1058,5 +1058,5 @@ ModuleKnightTitleRequirements.Local.Description = {
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleKnightTitleRequirements);
+Swift:RegisterModule(ModuleKnightTitleRequirements);
 

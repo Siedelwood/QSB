@@ -59,7 +59,7 @@ function B_Goal_ActivateSeveralObjects:GetMsgKey()
     return "Quest_Object_Activate"
 end
 
-Revision:RegisterBehavior(B_Goal_ActivateSeveralObjects);
+Swift:RegisterBehavior(B_Goal_ActivateSeveralObjects);
 
 -- -------------------------------------------------------------------------- --
 

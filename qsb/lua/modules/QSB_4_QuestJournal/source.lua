@@ -295,5 +295,5 @@ end
 
 -- -------------------------------------------------------------------------- --
 
-Revision:RegisterModule(ModuleQuestJournal);
+Swift:RegisterModule(ModuleQuestJournal);
 

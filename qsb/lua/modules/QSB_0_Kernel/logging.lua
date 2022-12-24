@@ -15,7 +15,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.Logging = {
+Swift.Logging = {
     FileLogLevel = 3,
     LogLevel = 2,
 };
@@ -28,26 +28,26 @@ QSB.LogLevel = {
     OFF     = 0;
 }
 
-function Revision.Logging:Initalize()
+function Swift.Logging:Initalize()
 end
 
-function Revision.Logging:OnSaveGameLoaded()
+function Swift.Logging:OnSaveGameLoaded()
 end
 
-function Revision.Logging:Log(_Text, _Level, _Verbose)
+function Swift.Logging:Log(_Text, _Level, _Verbose)
     if self.FileLogLevel >= _Level then
         local Level = _Text:sub(1, _Text:find(":"));
         local Text = _Text:sub(_Text:find(":")+1);
         Text = string.format(
             " (%s) %s%s",
-            (Revision.Environment == QSB.Environment.LOCAL and "local") or "global",
+            (Swift.Environment == QSB.Environment.LOCAL and "local") or "global",
             Framework.GetSystemTimeDateString(),
             Text
         )
         Framework.WriteToLog(Level .. Text);
     end
     if _Verbose then
-        if Revision.Environment == QSB.Environment.GLOBAL then
+        if Swift.Environment == QSB.Environment.GLOBAL then
             if self.LogLevel >= _Level then
                 Logic.ExecuteInLuaLocalState(string.format(
                     [[GUI.AddStaticNote("%s")]],
@@ -62,14 +62,14 @@ function Revision.Logging:Log(_Text, _Level, _Verbose)
     end
 end
 
-function Revision.Logging:SetLogLevel(_ScreenLogLevel, _FileLogLevel)
-    if Revision.Environment == QSB.Environment.GLOBAL then
+function Swift.Logging:SetLogLevel(_ScreenLogLevel, _FileLogLevel)
+    if Swift.Environment == QSB.Environment.GLOBAL then
         Logic.ExecuteInLuaLocalState(string.format(
-            [[Revision.Logging.FileLogLevel = %d]],
+            [[Swift.Logging.FileLogLevel = %d]],
             (_FileLogLevel or 0)
         ));
         Logic.ExecuteInLuaLocalState(string.format(
-            [[Revision.Logging.LogLevel = %d]],
+            [[Swift.Logging.LogLevel = %d]],
             (_ScreenLogLevel or 0)
         ));
         self.FileLogLevel = (_FileLogLevel or 0);
@@ -78,16 +78,16 @@ function Revision.Logging:SetLogLevel(_ScreenLogLevel, _FileLogLevel)
 end
 
 function debug(_Text, _Silent)
-    Revision.Logging:Log("DEBUG: " .._Text, QSB.LogLevel.ALL, not _Silent);
+    Swift.Logging:Log("DEBUG: " .._Text, QSB.LogLevel.ALL, not _Silent);
 end
 function info(_Text, _Silent)
-    Revision.Logging:Log("INFO: " .._Text, QSB.LogLevel.INFO, not _Silent);
+    Swift.Logging:Log("INFO: " .._Text, QSB.LogLevel.INFO, not _Silent);
 end
 function warn(_Text, _Silent)
-    Revision.Logging:Log("WARNING: " .._Text, QSB.LogLevel.WARNING, not _Silent);
+    Swift.Logging:Log("WARNING: " .._Text, QSB.LogLevel.WARNING, not _Silent);
 end
 function error(_Text, _Silent)
-    Revision.Logging:Log("ERROR: " .._Text, QSB.LogLevel.ERROR, not _Silent);
+    Swift.Logging:Log("ERROR: " .._Text, QSB.LogLevel.ERROR, not _Silent);
 end
 
 -- -------------------------------------------------------------------------- --
@@ -137,6 +137,6 @@ end
 -- API.SetLogLevel(QSB.LogLevel.ERROR, QSB.LogLevel.WARNING);
 --
 function API.SetLogLevel(_ScreenLogLevel, _FileLogLevel)
-    Revision.Logging:SetLogLevel(_ScreenLogLevel, _FileLogLevel);
+    Swift.Logging:SetLogLevel(_ScreenLogLevel, _FileLogLevel);
 end
 

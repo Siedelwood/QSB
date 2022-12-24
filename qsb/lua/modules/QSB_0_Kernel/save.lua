@@ -14,18 +14,18 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.Save = {
+Swift.Save = {
     HistoryEditionQuickSave = false,
     SavingDisabled = false,
     LoadingDisabled = false,
 };
 
-function Revision.Save:Initalize()
+function Swift.Save:Initalize()
     self:SetupQuicksaveKeyCallback();
     self:SetupQuicksaveKeyTrigger();
 end
 
-function Revision.Save:OnSaveGameLoaded()
+function Swift.Save:OnSaveGameLoaded()
     self:SetupQuicksaveKeyTrigger();
     self:UpdateLoadButtons();
     self:UpdateSaveButtons();
@@ -34,9 +34,9 @@ end
 -- -------------------------------------------------------------------------- --
 -- HE Quicksave
 
-function Revision.Save:SetupQuicksaveKeyTrigger()
-    if Revision.Environment == QSB.Environment.LOCAL then
-        Revision.Job:CreateEventJob(
+function Swift.Save:SetupQuicksaveKeyTrigger()
+    if Swift.Environment == QSB.Environment.LOCAL then
+        Swift.Job:CreateEventJob(
             Events.LOGIC_EVENT_EVERY_TURN,
             function()
                 Input.KeyBindDown(
@@ -51,20 +51,20 @@ function Revision.Save:SetupQuicksaveKeyTrigger()
     end
 end
 
-function Revision.Save:SetupQuicksaveKeyCallback()
-    if Revision.Environment == QSB.Environment.LOCAL then
-        KeyBindings_SaveGame_Orig_Revision = KeyBindings_SaveGame;
+function Swift.Save:SetupQuicksaveKeyCallback()
+    if Swift.Environment == QSB.Environment.LOCAL then
+        KeyBindings_SaveGame_Orig_Swift = KeyBindings_SaveGame;
         KeyBindings_SaveGame = function(...)
             -- No quicksave if saving disabled
-            if Revision.Save.SavingDisabled then
+            if Swift.Save.SavingDisabled then
                 return;
             end
             -- No quicksave if forced by History Edition
-            if not Revision.Save.HistoryEditionQuickSave and not arg[1] then
+            if not Swift.Save.HistoryEditionQuickSave and not arg[1] then
                 return;
             end
             -- Do quicksave
-            KeyBindings_SaveGame_Orig_Revision();
+            KeyBindings_SaveGame_Orig_Swift();
         end
     end
 end
@@ -72,11 +72,11 @@ end
 -- -------------------------------------------------------------------------- --
 -- Disable Save
 
-function Revision.Save:DisableSaving(_Flag)
+function Swift.Save:DisableSaving(_Flag)
     self.SavingDisabled = _Flag == true;
-    if Revision.Environment == QSB.Environment.GLOBAL then
+    if Swift.Environment == QSB.Environment.GLOBAL then
         Logic.ExecuteInLuaLocalState(string.format(
-            [[Revision.Save:DisableSaving(%s)]],
+            [[Swift.Save:DisableSaving(%s)]],
             tostring(_Flag)
         ))
     else
@@ -84,8 +84,8 @@ function Revision.Save:DisableSaving(_Flag)
     end
 end
 
-function Revision.Save:UpdateSaveButtons()
-    if Revision.Environment == QSB.Environment.LOCAL then
+function Swift.Save:UpdateSaveButtons()
+    if Swift.Environment == QSB.Environment.LOCAL then
         local VisibleFlag = (self.SavingDisabled and 0) or 1;
         XGUIEng.ShowWidget("/InGame/InGame/MainMenu/Container/QuickSave", VisibleFlag);
         XGUIEng.ShowWidget("/InGame/InGame/MainMenu/Container/SaveGame", VisibleFlag);
@@ -95,11 +95,11 @@ end
 -- -------------------------------------------------------------------------- --
 -- Disable Load
 
-function Revision.Save:DisableLoading(_Flag)
+function Swift.Save:DisableLoading(_Flag)
     self.LoadingDisabled = _Flag == true;
-    if Revision.Environment == QSB.Environment.GLOBAL then
+    if Swift.Environment == QSB.Environment.GLOBAL then
         Logic.ExecuteInLuaLocalState(string.format(
-            [[Revision.Save:DisableLoading(%s)]],
+            [[Swift.Save:DisableLoading(%s)]],
             tostring(_Flag)
         ))
     else
@@ -107,8 +107,8 @@ function Revision.Save:DisableLoading(_Flag)
     end
 end
 
-function Revision.Save:UpdateLoadButtons()
-    if Revision.Environment == QSB.Environment.LOCAL then
+function Swift.Save:UpdateLoadButtons()
+    if Swift.Environment == QSB.Environment.LOCAL then
         local VisibleFlag = (self.LoadingDisabled and 0) or 1;
         XGUIEng.ShowWidget("/InGame/InGame/MainMenu/Container/LoadGame", VisibleFlag);
         XGUIEng.ShowWidget("/InGame/InGame/MainMenu/Container/QuickLoad", VisibleFlag);
@@ -124,10 +124,10 @@ end
 -- @within Spielstand
 --
 function API.DisableAutoSave(_Flag)
-    if Revision.Environment == QSB.Environment.GLOBAL then
-        Revision.Save.HistoryEditionQuickSave = _Flag == true;
+    if Swift.Environment == QSB.Environment.GLOBAL then
+        Swift.Save.HistoryEditionQuickSave = _Flag == true;
         Logic.ExecuteInLuaLocalState(string.format(
-            [[Revision.Save.HistoryEditionQuickSave = %s]],
+            [[Swift.Save.HistoryEditionQuickSave = %s]],
             tostring(_Flag == true)
         ))
     end
@@ -139,7 +139,7 @@ end
 -- @within Spielstand
 --
 function API.DisableSaving(_Flag)
-    Revision.Save:DisableSaving(_Flag);
+    Swift.Save:DisableSaving(_Flag);
 end
 
 ---
@@ -148,6 +148,6 @@ end
 -- @within Spielstand
 --
 function API.DisableLoading(_Flag)
-    Revision.Save:DisableLoading(_Flag);
+    Swift.Save:DisableLoading(_Flag);
 end
 

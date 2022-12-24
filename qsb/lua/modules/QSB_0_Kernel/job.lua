@@ -14,7 +14,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.Job = {
+Swift.Job = {
     EventJobMappingID = 0;
     EventJobMapping = {},
     EventJobs = {},
@@ -23,24 +23,24 @@ Revision.Job = {
     LastTimeStamp = 0;
 };
 
-function Revision.Job:Initalize()
+function Swift.Job:Initalize()
     self:StartJobs();
 end
 
-function Revision.Job:OnSaveGameLoaded()
+function Swift.Job:OnSaveGameLoaded()
 end
 
-function Revision.Job:StartJobs()
+function Swift.Job:StartJobs()
     -- Update Real time variable
     self:CreateEventJob(
         Events.LOGIC_EVENT_EVERY_TURN,
         function()
-            Revision.Job:RealtimeController();
+            Swift.Job:RealtimeController();
         end
     )
 end
 
-function Revision.Job:CreateEventJob(_Type, _Function, ...)
+function Swift.Job:CreateEventJob(_Type, _Function, ...)
     self.EventJobMappingID = self.EventJobMappingID +1;
     local ID = Trigger.RequestTrigger(
         _Type,
@@ -55,7 +55,7 @@ function Revision.Job:CreateEventJob(_Type, _Function, ...)
     return ID;
 end
 
-function Revision.Job:EventJobExecutor(_MappingID)
+function Swift.Job:EventJobExecutor(_MappingID)
     local ID = self.EventJobMapping[_MappingID];
     if ID and self.EventJobs[ID] and self.EventJobs[ID][2] then
         local Parameter = self.EventJobs[ID][4];
@@ -65,7 +65,7 @@ function Revision.Job:EventJobExecutor(_MappingID)
     end
 end
 
-function Revision.Job:RealtimeController()
+function Swift.Job:RealtimeController()
     if not self.LastTimeStamp then
         self.LastTimeStamp = math.floor(Framework.TimeGetTime());
     end
@@ -81,7 +81,7 @@ end
 -- Helper Jobs
 
 function QSB_EventJob_EventJobExecutor(_MappingID)
-    Revision.Job:EventJobExecutor(_MappingID);
+    Swift.Job:EventJobExecutor(_MappingID);
 end
 
 -- -------------------------------------------------------------------------- --
@@ -96,7 +96,7 @@ end
 -- local RealTime = API.RealTimeGetSecondsPassedSinceGameStart();
 --
 function API.RealTimeGetSecondsPassedSinceGameStart()
-    return Revision.Job.SecondsSinceGameStart;
+    return Swift.Job.SecondsSinceGameStart;
 end
 
 ---
@@ -129,7 +129,7 @@ function API.StartJobByEventType(_EventType, _Function, ...)
         error("API.StartJobByEventType: Can not find function!");
         return;
     end
-    return Revision.Job:CreateEventJob(_EventType, _Function, unpack(arg));
+    return Swift.Job:CreateEventJob(_EventType, _Function, unpack(arg));
 end
 
 ---
@@ -200,9 +200,9 @@ StartSimpleHiResJobEx = API.StartHiResJob;
 -- API.EndJob(AnyJobID);
 --
 function API.EndJob(_JobID)
-    if Revision.Job.EventJobs[_JobID] then
-        Trigger.UnrequestTrigger(Revision.Job.EventJobs[_JobID][1]);
-        Revision.Job.EventJobs[_JobID] = nil;
+    if Swift.Job.EventJobs[_JobID] then
+        Trigger.UnrequestTrigger(Swift.Job.EventJobs[_JobID][1]);
+        Swift.Job.EventJobs[_JobID] = nil;
         return;
     end
     EndJob(_JobID);
@@ -221,8 +221,8 @@ end
 -- end;
 --
 function API.JobIsRunning(_JobID)
-    if Revision.Job.EventJobs[_JobID] then
-        return Revision.Job.EventJobs[_JobID][2] == true;
+    if Swift.Job.EventJobs[_JobID] then
+        return Swift.Job.EventJobs[_JobID][2] == true;
     end
     return JobIsRunning(_JobID);
 end
@@ -237,9 +237,9 @@ end
 -- API.ResumeJob(AnyJobID);
 --
 function API.ResumeJob(_JobID)
-    if Revision.Job.EventJobs[_JobID] then
-        if Revision.Job.EventJobs[_JobID][2] ~= true then
-            Revision.Job.EventJobs[_JobID][2] = true;
+    if Swift.Job.EventJobs[_JobID] then
+        if Swift.Job.EventJobs[_JobID][2] ~= true then
+            Swift.Job.EventJobs[_JobID][2] = true;
         end
         return;
     end
@@ -256,9 +256,9 @@ end
 -- API.YieldJob(AnyJobID);
 --
 function API.YieldJob(_JobID)
-    if Revision.Job.EventJobs[_JobID] then
-        if Revision.Job.EventJobs[_JobID][2] == true then
-            Revision.Job.EventJobs[_JobID][2] = false;
+    if Swift.Job.EventJobs[_JobID] then
+        if Swift.Job.EventJobs[_JobID][2] == true then
+            Swift.Job.EventJobs[_JobID][2] = false;
         end
         return;
     end
@@ -380,12 +380,12 @@ function API.StartRealTimeDelay(_Waittime, _Function, ...)
     end
     return API.StartHiResJob(
         function(_StartTime, _Delay, _Callback, _Arguments)
-            if (Revision.Job.SecondsSinceGameStart >= _StartTime + _Delay) then
+            if (Swift.Job.SecondsSinceGameStart >= _StartTime + _Delay) then
                 _Callback(unpack(_Arguments or {}));
                 return true;
             end
         end,
-        Revision.Job.SecondsSinceGameStart,
+        Swift.Job.SecondsSinceGameStart,
         _Waittime,
         _Function,
         {...}

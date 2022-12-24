@@ -15,27 +15,27 @@ You may use and modify this file unter the terms of the MIT licence.
 -- @local
 --
 
-Revision.Bugfix = {};
+Swift.Bugfix = {};
 
-function Revision.Bugfix:Initalize()
-    if Revision.Environment == QSB.Environment.GLOBAL then
+function Swift.Bugfix:Initalize()
+    if Swift.Environment == QSB.Environment.GLOBAL then
         self:FixResourceSlotsInStorehouses();
         self:OverrideConstructionCompleteCallback();
         self:OverrideIsMerchantArrived();
         self:OverrideIsObjectiveCompleted();
     end
-    if Revision.Environment == QSB.Environment.LOCAL then
+    if Swift.Environment == QSB.Environment.LOCAL then
         self:FixInteractiveObjectClicked();
     end
 end
 
-function Revision.Bugfix:OnSaveGameLoaded()
+function Swift.Bugfix:OnSaveGameLoaded()
 end
 
 -- -------------------------------------------------------------------------- --
 -- Luxury for NPCs
 
-function Revision.Bugfix:FixResourceSlotsInStorehouses()
+function Swift.Bugfix:FixResourceSlotsInStorehouses()
     for i= 1, 8 do
         local StoreHouseID = Logic.GetStoreHouse(i);
         if StoreHouseID ~= 0 then
@@ -48,7 +48,7 @@ end
 -- -------------------------------------------------------------------------- --
 -- Respawning for ME barracks
 
-function Revision.Bugfix:OverrideConstructionCompleteCallback()
+function Swift.Bugfix:OverrideConstructionCompleteCallback()
     GameCallback_OnBuildingConstructionComplete_Orig_QSB_Core = GameCallback_OnBuildingConstructionComplete;
     GameCallback_OnBuildingConstructionComplete = function(_PlayerID, _EntityID)
         GameCallback_OnBuildingConstructionComplete_Orig_QSB_Core(_PlayerID, _EntityID);
@@ -68,7 +68,7 @@ end
 -- -------------------------------------------------------------------------- --
 -- Delivery checkpoint
 
-function Revision.Bugfix:OverrideIsMerchantArrived()
+function Swift.Bugfix:OverrideIsMerchantArrived()
     function QuestTemplate:IsMerchantArrived(objective)
         if objective.Data[3] ~= nil then
             if objective.Data[3] == 1 then
@@ -112,7 +112,7 @@ end
 -- -------------------------------------------------------------------------- --
 -- IO costs
 
-function Revision.Bugfix:FixInteractiveObjectClicked()
+function Swift.Bugfix:FixInteractiveObjectClicked()
     GUI_Interaction.InteractiveObjectClicked = function()
         local ButtonNumber = tonumber(XGUIEng.GetWidgetNameByID(XGUIEng.GetCurrentWidgetID()));
         local ObjectID = g_Interaction.ActiveObjectsOnScreen[ButtonNumber];
@@ -171,7 +171,7 @@ end
 -- -------------------------------------------------------------------------- --
 -- Destroy all units
 
-function Revision.Bugfix:OverrideIsObjectiveCompleted()
+function Swift.Bugfix:OverrideIsObjectiveCompleted()
     QuestTemplate.IsObjectiveCompleted_Orig_QSB_Kernel = QuestTemplate.IsObjectiveCompleted;
     QuestTemplate.IsObjectiveCompleted = function(self, objective)
         local objectiveType = objective.Type;
@@ -203,7 +203,7 @@ function Revision.Bugfix:OverrideIsObjectiveCompleted()
                 objective.Completed = true;
             end
         elseif objectiveType == Objective.Distance then
-            objective.Completed = Revision.Behavior:IsQuestPositionReached(self, objective);
+            objective.Completed = Swift.Behavior:IsQuestPositionReached(self, objective);
         else
             return self:IsObjectiveCompleted_Orig_QSB_Kernel(objective);
         end
