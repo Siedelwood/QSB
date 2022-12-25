@@ -35,6 +35,9 @@ for d in ../../demo/* ; do
     fn=$(basename -- "$d")
     if test -f "../../demo/$fn/demomap.s6xmap"; then
         echo "copy: ../../demo/$fn/demomap.s6xmap to ../var/build/modules/$fn"
+        rm "../../demo/$fn/demomap.s6xmap.unpacked/maps/externalmap/demomap/script/qsb_idc.lua"
+        cp "../var/build/qsb_idc.lua" "../../demo/$fn/demomap.s6xmap.unpacked/maps/externalmap/demomap/script/qsb_idc.lua"
+        ../../exe/bba6.exe "../../demo/$fn/demomap.s6xmap.unpacked" &>/dev/null
         cp "../../demo/$fn/demomap.s6xmap" "../var/build/modules/$fn" &>/dev/null
     fi
 done

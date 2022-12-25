@@ -12,7 +12,7 @@ API = {};
 SCP = {Core = {}};
 
 QSB = {};
-QSB.Version = "4.0.0 (ALPHA 1.0.0)";
+QSB.Version = "3.0.0 (BETA 2.0.0)";
 
 ---
 -- Stellt wichtige Kernfunktionen bereit.
@@ -29,35 +29,13 @@ QSB.Version = "4.0.0 (ALPHA 1.0.0)";
 -- schlagen Lieferungen bei bestimmten Lagerhäusern nicht mehr fehl.</li>
 -- <li>Bei interaktiven Objekten können jetzt auch nur zwei Rohstoffe anstatt
 -- von Gold und einem Rohstoff als Kosten benutzt werden.</li>
--- <li>Spezielle Script Entities werden nicht mehr fälschlich mitgezählt.</li>
--- </ul>
---
--- <h5>Scripting Values</h5>
--- Bei den Scripting Values handelt es sich um einige Werte, die direkt im
--- Arbeitsspeicher manipuliert werden können und Auswirkungen auf Entities
--- haben.
---
--- Liste der derzeit unterstützten Werte:
--- <ul>
--- <li><b>QSB.ScriptingValue.Destination.X</b><br>
--- Gibt die Z-Koordinate des Bewegungsziels als Float zurück.</li>
--- <li><b>QSB.ScriptingValue.Destination.Y</b><br>
--- Gibt die Y-Koordinate des Bewegungsziels als Float zurück.</li>
--- <li><b>QSB.ScriptingValue.Health</b><br>
--- Setzt die Gesundheit eines Entity ohne Folgeaktionen zu triggern.</li>
--- <li><b>QSB.ScriptingValue.Player</b><br>
--- Setzt den Besitzer des Entity ohne Plausibelitätsprüfungen.</li>
--- <li><b>QSB.ScriptingValue.Size</b><br>
--- Setzt den Größenfaktor eines Entities als Float.</li>
--- <li><b>QSB.ScriptingValue.Visible</b><br>
--- Sichtbarkeit eines Entities abfragen (801280 == sichtbar)</li>
--- <li><b>QSB.ScriptingValue.NPC</b><br>
--- NPC-Flag eines Siedlers setzen (0 = inaktiv, 1 - 4 = aktiv)</li>
+-- <li>Spezielle Script Entities werden bei Goal_DestroyAllPlayerUnids nicht
+-- mehr fälschlich mitgezählt.</li>
 -- </ul>
 --
 -- <h5>Platzhalter</h5>
 --
--- <u>Mehrsprachige Texte:</u>
+-- <u>Mehrsprachige Texte:</u><br>
 -- Anstatt eines Strings wird ein Table mit dem gleichen Text in verschiedenen
 -- Sprachen angegeben. Der richtige Text wird anhand der eingestellten Sprache
 -- gewählt. Wenn nichts vorgegeben wird, ist die Systemsprache voreingestellt.
@@ -67,12 +45,18 @@ QSB.Version = "4.0.0 (ALPHA 1.0.0)";
 -- Einige Features lokalisieren Texte automatisch. <br>
 -- (Siehe dazu: <a href="#API.Localize">API.Localize</a>)
 --
--- <u>Platzhalter in Texten:</u>
+-- <u>Platzhalter in Texten:</u><br>
 -- In Texten können vordefinierte Farben, Namen für Entity-Typen und benannte
 -- Entities, sowie Inhalte von Variablen ersetzt werden. Dies wird von einigen
 -- QSB-Features automatisch vorgenommen. Es kann Mittels API-Funktion auch
 -- manuell angestoßen werden. <br>
 -- (Siehe dazu: <a href="#API.ConvertPlaceholders">API.ConvertPlaceholders</a>)
+--
+-- <h5>Scripting Values</h5>
+-- Bei den Scripting Values handelt es sich um einige Werte, die direkt im
+-- Arbeitsspeicher manipuliert werden können und Auswirkungen auf Entities
+-- haben.<br>
+-- (Siehe dazu: <a href="#ScriptingValue">QSB.ScriptingValue</a>)
 --
 -- <h5>Entwicklungsmodus</h5>
 --
@@ -93,22 +77,24 @@ QSB.Version = "4.0.0 (ALPHA 1.0.0)";
 -- <td>Map sofort neu starten</td>
 -- </tr>
 -- <tr>
--- <td>&gt; [Befehl]</td>
+-- <td>&gt; Befehl</td>
 -- <td>Einen Lua Befehl im globalen Skript ausführen.
--- (Die Zeichen", ', {, } können nicht verwendet werden)</td>
+-- (Die Zeichen " ' { } können nicht verwendet werden)</td>
 -- </tr>
 -- <tr>
--- <td>&gt;&gt; [Befehl]</td>
+-- <td>&gt;&gt; Befehl</td>
 -- <td>Einen Lua Befehl im lokalen Skript ausführen.
--- (Die Zeichen", ', {, } können nicht verwendet werden)</td>
+-- (Die Zeichen " ' { } können nicht verwendet werden)</td>
 -- </tr>
 -- <tr>
--- <td>&lt; [Pfad]</td>
--- <td>Lua-Datei zur Laufzeit ins globale Skript laden.</td>
+-- <td>&lt; Pfad</td>
+-- <td>Lua-Datei zur Laufzeit ins globale Skript laden.
+-- (Es muss / anstatt \ verwendet werden)</td>
 -- </tr>
 -- <tr>
--- <td>&lt;&lt; [Pfad]</td>
--- <td>Lua-Datei zur Laufzeit ins lokale Skript laden.</td>
+-- <td>&lt;&lt; Pfad</td>
+-- <td>Lua-Datei zur Laufzeit ins lokale Skript laden.
+-- (Es muss / anstatt \ verwendet werden)</td>
 -- </tr>
 -- </table>
 --
@@ -450,6 +436,7 @@ end
 -- @field QuestSuccess     Ein Quest wurde erfolgreich abgeschlossen (Parameter: QuestID)
 -- @field QuestTrigger     Ein Quest wurde aktiviert (Parameter: QuestID)
 -- @field LoadscreenClosed Der Ladebildschirm wurde beendet.
+-- @within Event
 --
 QSB.ScriptEvents = QSB.ScriptEvents or {};
 
@@ -457,6 +444,7 @@ QSB.ScriptEvents = QSB.ScriptEvents or {};
 -- Konstanten der Script Environments
 -- @field GLOBAL Die globale Skriptumgebung
 -- @field LOCAL  Die lokale Skriptumgebung
+-- @within Konstanten
 --
 QSB.Environment = {
     GLOBAL = 1,
@@ -467,6 +455,7 @@ QSB.Environment = {
 -- Konstanten der Spielversionen
 -- @field ORIGINAL        Das Originalspiel
 -- @field HISTORY_EDITION Die History Edition
+-- @within Konstanten
 --
 QSB.GameVersion = {
     ORIGINAL        = 1,
@@ -477,6 +466,7 @@ QSB.GameVersion = {
 -- Konstanten der Spielvarianten
 -- @field VANILLA   Das unmodifizierte Spiel
 -- @field COMMUNITY Der Community Patch
+-- @within Konstanten
 --
 QSB.GameVariant = {
     VANILLA   = 1,
@@ -4943,8 +4933,6 @@ function Swift.ScriptingValue:OnSaveGameLoaded()
     QSB.ScriptingValue = self.SV[self.SV.Game];
 end
 
-QSB.ScriptingValue = {};
-
 -- -------------------------------------------------------------------------- --
 -- Conversion Methods
 
@@ -5051,6 +5039,29 @@ end
 
 -- -------------------------------------------------------------------------- --
 -- API
+
+---
+-- Liste der unterstützten Scripting Values.
+--
+-- <ul>
+-- <li><b>QSB.ScriptingValue.Destination.X</b><br>
+-- Gibt die Z-Koordinate des Bewegungsziels als Float zurück.</li>
+-- <li><b>QSB.ScriptingValue.Destination.Y</b><br>
+-- Gibt die Y-Koordinate des Bewegungsziels als Float zurück.</li>
+-- <li><b>QSB.ScriptingValue.Health</b><br>
+-- Setzt die Gesundheit eines Entity ohne Folgeaktionen zu triggern.</li>
+-- <li><b>QSB.ScriptingValue.Player</b><br>
+-- Setzt den Besitzer des Entity ohne Plausibelitätsprüfungen.</li>
+-- <li><b>QSB.ScriptingValue.Size</b><br>
+-- Setzt den Größenfaktor eines Entities als Float.</li>
+-- <li><b>QSB.ScriptingValue.Visible</b><br>
+-- Sichtbarkeit eines Entities abfragen (801280 == sichtbar)</li>
+-- <li><b>QSB.ScriptingValue.NPC</b><br>
+-- NPC-Flag eines Siedlers setzen (0 = inaktiv, 1 - 4 = aktiv)</li>
+-- </ul>
+-- @within ScriptingValue
+--
+QSB.ScriptingValue = {};
 
 ---
 -- Gibt den Wert auf dem übergebenen Index für das Entity zurück.
@@ -14029,7 +14040,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleEntity = {
     Properties = {
         Name = "ModuleEntity",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -14507,7 +14518,8 @@ You may use and modify this file unter the terms of the MIT licence.
 -- Ermöglicht, Entities suchen und auf bestimmte Ereignisse reagieren.
 --
 -- <h5>Entity Suche</h5>
--- TODO
+-- Es kann entweder mit vordefinierten Funktionen oder mit eigenen Filtern
+-- nach allen Entities gesucht werden.
 --
 -- <h5>Diebstahleffekte</h5>
 -- Die Effekte von Diebstählen können deaktiviert und mittels Event neu
@@ -14854,7 +14866,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleGuiControl = {
     Properties = {
         Name = "ModuleGuiControl",
-        Version = "4.0.0 (ALPHA 1.0.0)"
+        Version = "3.0.0 (BETA 2.0.0)"
     },
 
     Global = {},
@@ -15110,14 +15122,14 @@ function ModuleGuiControl.Local:SetIcon(_WidgetID, _Coordinates, _Size, _Name)
 end
 
 function ModuleGuiControl.Local:TooltipNormal(_title, _text, _disabledText)
-    if _title and _title:find("[A-Za-z0-9]+/[A-Za-z0-9]+$") then
+    if _title and _title:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _title = XGUIEng.GetStringTableText(_title);
     end
-    if _text and _text:find("[A-Za-z0-9]+/[A-Za-z0-9]+$") then
+    if _text and _text:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _text = XGUIEng.GetStringTableText(_text);
     end
     _disabledText = _disabledText or "";
-    if _disabledText and _disabledText:find("[A-Za-z0-9]+/[A-Za-z0-9]+$") then
+    if _disabledText and _disabledText:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _disabledText = XGUIEng.GetStringTableText(_disabledText);
     end
 
@@ -15156,13 +15168,13 @@ function ModuleGuiControl.Local:TooltipCosts(_title,_text,_disabledText,_costs,_
     for i= 1, 4, 1 do
         Costs[i] = _costs[i];
     end
-    if _title and _title:find("[A-Za-z0-9]+/[A-Za-z0-9]+$") then
+    if _title and _title:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _title = XGUIEng.GetStringTableText(_title);
     end
-    if _text and _text:find("[A-Za-z0-9]+/[A-Za-z0-9]+$") then
+    if _text and _text:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _text = XGUIEng.GetStringTableText(_text);
     end
-    if _disabledText and _disabledText:find("^[A-Za-z0-9]+/[A-Za-z0-9]+$") then
+    if _disabledText and _disabledText:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _disabledText = XGUIEng.GetStringTableText(_disabledText);
     end
 
@@ -15316,7 +15328,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Die Anzeige von Menüoptionen steuern.
+-- Ermöglicht, die Anzeige von Menüoptionen zu steuern.
 --
 -- Es können verschiedene Anzeigen ausgetauscht werden.
 -- <ul>
@@ -15886,7 +15898,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleGuiEffects = {
     Properties = {
         Name = "ModuleGuiEffects",
-        Version = "4.0.0 (ALPHA 1.0.0)"
+        Version = "3.0.0 (BETA 2.0.0)"
     },
 
     Global = {
@@ -16542,9 +16554,9 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Verschiedene Anzeigeeffekte nutzen und Kinoevents bereitstellen.
+-- Ermöglicht die Nutzung von verschiedenen Anzeigeeffekte.
 --
--- <h5>Cinematic Event</h5>
+-- <h5>Cinematic Event</h5> 
 -- <u>Ein Kinoevent hat nichts mit den Script Events zu tun!</u> <br>
 -- Es handelt sich um eine Markierung, ob für einen Spieler gerade ein Ereignis
 -- stattfindet, das das normale Spielinterface manipuliert und den normalen
@@ -16940,7 +16952,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleRequester = {
     Properties = {
         Name = "ModuleRequester",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {},
@@ -17504,7 +17516,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Stellt verschiedene Dialogfenster zur Verfügung.
+-- Stellt verschiedene Dialog- oder Textfenster zur Verfügung.
 --
 -- <b>Vorausgesetzte Module:</b>
 -- <ul>
@@ -17768,7 +17780,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleEntityMovement = {
     Properties = {
         Name = "ModuleEntityMovement",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -18308,7 +18320,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Ein Modul für die Bewegung von Entities.
+-- Ermoglicht die Bewegung von Entities und Berechnung von Pfaden.
 --
 -- <b>Vorausgesetzte Module:</b>
 -- <ul>
@@ -18751,7 +18763,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleSound = {
     Properties = {
         Name = "ModuleSound",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {},
@@ -18842,7 +18854,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ]]
 
 ---
--- Steuerung der Lautstärke und der Sound-Ausgabe.
+-- Ermöglicht die Steuerung der Laufstärke und Ausgabe von Sounds.
 --
 -- <b>Vorausgesetzte Module:</b>
 -- <ul>
@@ -19207,7 +19219,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleTrade = {
     Properties = {
         Name = "ModuleTrade",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -20801,7 +20813,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleBuildRestriction = {
     Properties = {
         Name = "ModuleBuildRestriction",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {},
@@ -21770,7 +21782,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleBuildingButtons = {
     Properties = {
         Name = "ModuleBuildingButtons",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {},
@@ -22417,8 +22429,8 @@ function ModuleBuildingButtons.Local:BindButtons(_ID)
         self.BuildingButtons.Configuration[ButtonName].Bind = ButtonOverride[i];
         XGUIEng.ShowWidget("/InGame/Root/Normal/BuildingButtons/" ..ButtonName, 1);
         XGUIEng.DisableButton("/InGame/Root/Normal/BuildingButtons/" ..ButtonName, 0);
-        local X = ButtonOverride[i][1];
-        local Y = ButtonOverride[i][2];
+        local X = ButtonOverride[i].Position[1];
+        local Y = ButtonOverride[i].Position[2];
         if not X or not Y then
             local AnchorPosition = {12, 296};
             X = AnchorPosition[1] + (64 * (i-1));
@@ -22453,7 +22465,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Zusätzliche Buttons im Gebäudemenü platzieren.
+-- Ermöglicht es zusätzliche Buttons im Gebäudemenü platzieren.
 --
 -- <b>Vorausgesetzte Module:</b>
 -- <ul>
@@ -22703,7 +22715,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleCamera = {
     Properties = {
         Name = "ModuleCamera",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {},
@@ -22944,7 +22956,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleBehaviorCollection = {
     Properties = {
         Name = "ModuleBehaviorCollection",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -25545,7 +25557,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleNpcInteraction = {
     Properties = {
         Name = "ModuleNpcInteraction",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -26059,7 +26071,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Dieses Modul erlaubt NPC-Charaktere interaktiv zu machen.
+-- Ermöglicht die Interaktion mit NPC-Charakteren.
 --
 -- Ein NPC ist ein Charakter, der durch den Helden eines Spielers angesprochen
 -- werden kann. Auf das Ansprechen kann eine beliebige Aktion folgen. Mittels
@@ -26445,7 +26457,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleObjectInteraction = {
     Properties = {
         Name = "ModuleObjectInteraction",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -27142,7 +27154,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Einfachere und erweitere Handhabe von Interaktiven Objekten.
+-- Erweitert die Möglichkeiten für die interaktiven Objekte.
 --
 -- <b>Befehle:</b><br>
 -- <i>Diese Befehle können über die Konsole (SHIFT + ^) eingegeben werden, wenn
@@ -27611,7 +27623,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleKnightTitleRequirements = {
     Properties = {
         Name = "ModuleKnightTitleRequirements",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {};
@@ -29825,7 +29837,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleQuest = {
     Properties = {
         Name = "ModuleQuest",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -30693,7 +30705,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleSelection = {
     Properties = {
         Name = "ModuleSelection",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -31664,6 +31676,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleBriefingSystem = {
     Properties = {
         Name = "ModuleBriefingSystem",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -32934,7 +32947,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Ermöglicht es Briefing zu verwenden.
+-- Ermöglicht Briefings für verschiedene Verwendungszwecke.
 --
 -- Briefings dienen zur Darstellung von Dialogen oder zur näheren Erleuterung
 -- der aktuellen Spielsituation. Mit Multiple Choice können dem Spieler mehrere
@@ -33856,6 +33869,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleCutsceneSystem = {
     Properties = {
         Name = "ModuleCutsceneSystem",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -34596,7 +34610,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Ermöglicht es Cutscene zu verwenden.
+-- Ermöglicht die Verwendung von echten Kameraflügen.
 --
 -- Cutscenes sind Kameraflüge, die zur szenerischen Untermalung gedacht sind.
 -- Texte sind kurz zu halten oder ganz wegzulassen, da der Spieler die Animation
@@ -35067,6 +35081,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleDialogSystem = {
     Properties = {
         Name = "ModuleDialogSystem",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -36034,7 +36049,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Ermöglicht es Dialoge zu verwenden.
+-- Dialoge können verwendet werden, um Gespräche darzustellen.
 --
 -- Dialoge dienen zur Darstellung von Gesprächen. Mit Multiple Choice können
 -- dem Spieler mehrere Auswahlmöglichkeiten gegeben, multiple Handlungsstränge
@@ -36685,7 +36700,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleLifestockBreeding = {
     Properties = {
         Name = "ModuleLifestockBreeding",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -37136,7 +37151,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Ermöglicht die Aufzucht von Schafe und Kühe durch den Spieler.
+-- Schafe und Kühe können vom Spieler gezüchtet werden.
 -- 
 -- Verschiedene Kenngrößen können angepasst werden.
 --
@@ -37445,7 +37460,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleShipSalesment = {
     Properties = {
         Name = "ModuleShipSalesment",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -38121,6 +38136,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleInteractiveMines = {
     Properties = {
         Name = "ModuleInteractiveMines",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -38291,7 +38307,9 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Der Mapper kann eine Stein- oder Eisenmine restaurieren, die zuerst durch
+-- Stellt Minen bereit, die wie Ruinen aktiviert werden können.
+-- 
+-- Der Spieler kann eine Stein- oder Eisenmine restaurieren, die zuerst durch
 -- Begleichen der Kosten aufgebaut werden muss, bevor sie genutzt werden kann.
 -- <br>Optional kann die Mine einstürzen, wenn sie ausgebeutet wurde.
 --
@@ -38615,7 +38633,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleQuestJournal = {
     Properties = {
         Name = "ModuleQuestJournal",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -39556,6 +39574,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleInteractiveSites = {
     Properties = {
         Name = "ModuleInteractiveSites",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -39712,7 +39731,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Ermöglicht Baustellen als interaktive Objekte zu setzen.
+-- Ermöglicht mit interaktiven Objekten Baustellen zu setzen.
 --
 -- Die Baustelle muss durch den Helden aktiviert werden. Ein Siedler wird aus
 -- dem Lagerhaus kommen und das Gebäude bauen.
@@ -39837,6 +39856,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleTreasure = {
     Properties = {
         Name = "ModuleTreasure",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
@@ -40032,7 +40052,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Es können Schatztruhen mit zufälligem Inhalt erzeugt werden.
+-- Es können Schatztruhen und Ruinen mit Inhalten bestückt werden.
 -- 
 -- Der Schatz einer Kiste oder Ruine wird nach Aktivierung in einem Karren
 -- abtransportiert.
