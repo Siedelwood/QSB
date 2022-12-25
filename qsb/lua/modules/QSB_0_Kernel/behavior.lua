@@ -1093,13 +1093,7 @@ function B_Goal_UnitsOnTerritory:AddParameter(_Index, _Parameter)
 end
 
 function B_Goal_UnitsOnTerritory:CustomFunction(_Quest)
-    local PlayerEntities;
-    if API.SearchEntitiesOfCategoryInTerritory then
-        local PlayerID = (self.PlayerID == -1 and nil) or self.PlayerID;
-        PlayerEntities = API.SearchEntitiesOfCategoryInTerritory(self.TerritoryID, EntityCategories[self.Category], PlayerID);
-    else
-        PlayerEntities = self:GetEntities(self.TerritoryID, self.PlayerID, EntityCategories[self.Category]);
-    end
+    local PlayerEntities = self:GetEntities(self.TerritoryID, self.PlayerID, EntityCategories[self.Category]);
     if self.bRelSmallerThan == false and #PlayerEntities >= self.NumberOfUnits then
         return true;
     elseif self.bRelSmallerThan == true and #PlayerEntities < self.NumberOfUnits then
