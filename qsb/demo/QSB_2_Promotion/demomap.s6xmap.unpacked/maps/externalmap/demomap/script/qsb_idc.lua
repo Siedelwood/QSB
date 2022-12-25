@@ -6262,13 +6262,7 @@ function B_Goal_UnitsOnTerritory:AddParameter(_Index, _Parameter)
 end
 
 function B_Goal_UnitsOnTerritory:CustomFunction(_Quest)
-    local PlayerEntities;
-    if API.SearchEntitiesOfCategoryInTerritory then
-        local PlayerID = (self.PlayerID == -1 and nil) or self.PlayerID;
-        PlayerEntities = API.SearchEntitiesOfCategoryInTerritory(self.TerritoryID, EntityCategories[self.Category], PlayerID);
-    else
-        PlayerEntities = self:GetEntities(self.TerritoryID, self.PlayerID, EntityCategories[self.Category]);
-    end
+    local PlayerEntities = self:GetEntities(self.TerritoryID, self.PlayerID, EntityCategories[self.Category]);
     if self.bRelSmallerThan == false and #PlayerEntities >= self.NumberOfUnits then
         return true;
     elseif self.bRelSmallerThan == true and #PlayerEntities < self.NumberOfUnits then
@@ -25746,6 +25740,12 @@ function ModuleNpcInteraction.Global:InteractionIsAppropriateHero(_ScriptName)
     return Appropriate;
 end
 
+function ModuleNpcInteraction.Global:GetEntityMovementTarget(_EntityID)
+    local X = API.GetFloat(_EntityID, QSB.ScriptingValue.Destination.X);
+    local Y = API.GetFloat(_EntityID, QSB.ScriptingValue.Destination.Y);
+    return {X= X, Y= Y};
+end
+
 function ModuleNpcInteraction.Global:RotateActorsToEachother(_PlayerID)
     local PlayerKnights = {};
     Logic.GetKnights(_PlayerID, PlayerKnights);
@@ -25763,7 +25763,7 @@ function ModuleNpcInteraction.Global:RotateActorsToEachother(_PlayerID)
 end
 
 function ModuleNpcInteraction.Global:AdjustHeroTalkingDistance(_Distance)
-    local Distance = _Distance * API.GetEntityScale(QSB.Npc.LastNpcEntityID);
+    local Distance = _Distance * API.GetFloat(QSB.Npc.LastNpcEntityID, QSB.ScriptingValue.Size);
     if API.GetDistance(QSB.Npc.LastHeroEntityID, QSB.Npc.LastNpcEntityID) <= Distance * 0.7 then
         local Orientation = Logic.GetEntityOrientation(QSB.Npc.LastNpcEntityID);
         local x1, y1, z1 = Logic.EntityGetPos(QSB.Npc.LastHeroEntityID);
