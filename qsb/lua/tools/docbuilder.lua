@@ -63,7 +63,14 @@ function QsbDoc_CreateDocumentationIndex()
 end
 
 function QsbDoc_GetDirectLinks()
-    local Format = '<div id="%s" class="result method"><a href="%s">%s</a><br>%s<span class="docInvisibleContent">%s</span></div>';
+    local Format = [[
+        <div id="%s" class="result method">
+            <!-- Display text -->
+            <a href="%s">%s</a><br>%s%s
+            <!-- Full text search target -->
+            <span class="docInvisibleContent">%s</span>
+        </div>
+    ]];
     local HTML = "";
 
     for i= 1, #QsbDoc_Data.Modules, 1 do
@@ -76,6 +83,7 @@ function QsbDoc_GetDirectLinks()
                 Link,
                 Name,
                 v[3],
+                QsbDoc_FormatTagsInHtml(v[5] or ""),
                 v[4] or ""
             );
         end
@@ -157,7 +165,6 @@ function QsbDoc_ReadModule(_Module)
         QsbDoc_Data.Modules[index+1].Name = _Module[1];
         QsbDoc_Data.Modules[index+1].DisplayName = _Module[2];
         QsbDoc_Data.Modules[index+1].Description = "";
-        QsbDoc_Data.Modules[index+1].HTML = HTML;
 
         -- Read infos
         local Description = HTML:select("#content > p");
@@ -179,6 +186,10 @@ function QsbDoc_ReadModule(_Module)
         for i= 1, #info, 1 do
             local Content = info[i]:getcontent():gsub("<", "&#x3C;"):gsub(">", "&#x3E;");
             QsbDoc_Data.Modules[index+1].Data[i][4] = Content;
+            local s, e = info[i]:getcontent():find("<tags>[a-z0-9, -]+</tags>");
+            if s and e then
+                QsbDoc_Data.Modules[index+1].Data[i][5] = info[i]:getcontent():sub(s, e);
+            end
         end
     end
 end
@@ -232,20 +243,22 @@ end
 
 function QsbDoc_FormatTagsInHtml(_Content)
     local Content = _Content;
-    local s, e = Content:find("<tags>[a-z0-9, -]+</tags>\n");
-    while s and e do
-        local Before = Content:sub(0, s-1);
-        local After = Content:sub(e+1);
-        local Inner = Content:sub(s+6, e-8);
+    if Content then
+        local s, e = Content:find("<tags>[a-z0-9, -]+</tags>");
+        while s and e do
+            local Before = Content:sub(0, s-1);
+            local After = Content:sub(e+1);
+            local Inner = Content:sub(s+6, e-7);
 
-        local TagList = "";
-        for str in Inner:gmatch("([^,]+)") do
-            TagList = TagList .. "<li>" ..str:gsub("%s", "").. "</li>";
+            local TagList = "";
+            for str in Inner:gmatch("([^,]+)") do
+                TagList = TagList .. "<li>" ..str:gsub("%s", "").. "</li>";
+            end
+            local Tags = string.format("<ul class=\"tags-inline\">%s</ul>", TagList);
+
+            Content = Before .. Tags .. After;
+            s, e = Content:find("<tags>[a-z0-9, -]+</tags>");
         end
-        local Tags = string.format("<p><ul class=\"tags-inline\">%s</ul></p>", TagList);
-
-        Content = Before .. Tags .. After;
-        s, e = Content:find("<tags>[a-z0-9, -]+</tags>\n");
     end
     return Content;
 end

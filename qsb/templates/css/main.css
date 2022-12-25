@@ -89,3 +89,21 @@ body {
     background: #eeeeee;
     color: #333333;
 }
+
+ul.tags-inline {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.tags-inline li {
+    border: 1px solid #aaaaaa;
+    border-radius: 8px;
+    background: #666666;
+    color: #ffffff;
+    font-weight: bolder;
+    display: inline-block;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin: 0px 3px 0px 0px;
+}
