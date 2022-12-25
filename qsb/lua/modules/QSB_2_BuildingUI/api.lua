@@ -9,7 +9,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Zusätzliche Buttons im Gebäudemenü platzieren.
+-- Ermöglicht es zusätzliche Buttons im Gebäudemenü platzieren.
 --
 -- <b>Vorausgesetzte Module:</b>
 -- <ul>

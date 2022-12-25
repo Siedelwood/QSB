@@ -7,7 +7,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ]]
 
 ---
--- Steuerung der Lautstärke und der Sound-Ausgabe.
+-- Ermöglicht die Steuerung der Laufstärke und Ausgabe von Sounds.
 --
 -- <b>Vorausgesetzte Module:</b>
 -- <ul>

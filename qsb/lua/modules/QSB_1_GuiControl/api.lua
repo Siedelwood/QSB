@@ -9,7 +9,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Die Anzeige von Menüoptionen steuern.
+-- Ermöglicht, die Anzeige von Menüoptionen zu steuern.
 --
 -- Es können verschiedene Anzeigen ausgetauscht werden.
 -- <ul>

@@ -42,6 +42,7 @@ echo 'done!'
 
 # copy example scripts
 echo 'copy example scripts...'
+cp ../../sample/readme.md ../var/build/readme.md
 for d in ../../sample/* ; do
     fn=$(basename -- "$d")
     if test -f "../../sample/$fn/readme.md"; then

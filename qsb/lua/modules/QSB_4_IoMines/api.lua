@@ -9,7 +9,9 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Der Mapper kann eine Stein- oder Eisenmine restaurieren, die zuerst durch
+-- Stellt Minen bereit, die wie Ruinen aktiviert werden können.
+-- 
+-- Der Spieler kann eine Stein- oder Eisenmine restaurieren, die zuerst durch
 -- Begleichen der Kosten aufgebaut werden muss, bevor sie genutzt werden kann.
 -- <br>Optional kann die Mine einstürzen, wenn sie ausgebeutet wurde.
 --

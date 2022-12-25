@@ -9,7 +9,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Stellt verschiedene Dialogfenster zur Verfügung.
+-- Stellt verschiedene Dialog- oder Textfenster zur Verfügung.
 --
 -- <b>Vorausgesetzte Module:</b>
 -- <ul>

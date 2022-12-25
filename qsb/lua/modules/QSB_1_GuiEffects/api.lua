@@ -9,9 +9,9 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Verschiedene Anzeigeeffekte nutzen und Kinoevents bereitstellen.
+-- Ermöglicht die Nutzung von verschiedenen Anzeigeeffekte.
 --
--- <h5>Cinematic Event</h5>
+-- <h5>Cinematic Event</h5> 
 -- <u>Ein Kinoevent hat nichts mit den Script Events zu tun!</u> <br>
 -- Es handelt sich um eine Markierung, ob für einen Spieler gerade ein Ereignis
 -- stattfindet, das das normale Spielinterface manipuliert und den normalen

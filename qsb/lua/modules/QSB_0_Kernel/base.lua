@@ -29,35 +29,13 @@ QSB.Version = "3.0.0 (BETA 2.0.0)";
 -- schlagen Lieferungen bei bestimmten Lagerhäusern nicht mehr fehl.</li>
 -- <li>Bei interaktiven Objekten können jetzt auch nur zwei Rohstoffe anstatt
 -- von Gold und einem Rohstoff als Kosten benutzt werden.</li>
--- <li>Spezielle Script Entities werden nicht mehr fälschlich mitgezählt.</li>
--- </ul>
---
--- <h5>Scripting Values</h5>
--- Bei den Scripting Values handelt es sich um einige Werte, die direkt im
--- Arbeitsspeicher manipuliert werden können und Auswirkungen auf Entities
--- haben.
---
--- Liste der derzeit unterstützten Werte:
--- <ul>
--- <li><b>QSB.ScriptingValue.Destination.X</b><br>
--- Gibt die Z-Koordinate des Bewegungsziels als Float zurück.</li>
--- <li><b>QSB.ScriptingValue.Destination.Y</b><br>
--- Gibt die Y-Koordinate des Bewegungsziels als Float zurück.</li>
--- <li><b>QSB.ScriptingValue.Health</b><br>
--- Setzt die Gesundheit eines Entity ohne Folgeaktionen zu triggern.</li>
--- <li><b>QSB.ScriptingValue.Player</b><br>
--- Setzt den Besitzer des Entity ohne Plausibelitätsprüfungen.</li>
--- <li><b>QSB.ScriptingValue.Size</b><br>
--- Setzt den Größenfaktor eines Entities als Float.</li>
--- <li><b>QSB.ScriptingValue.Visible</b><br>
--- Sichtbarkeit eines Entities abfragen (801280 == sichtbar)</li>
--- <li><b>QSB.ScriptingValue.NPC</b><br>
--- NPC-Flag eines Siedlers setzen (0 = inaktiv, 1 - 4 = aktiv)</li>
+-- <li>Spezielle Script Entities werden bei Goal_DestroyAllPlayerUnids nicht
+-- mehr fälschlich mitgezählt.</li>
 -- </ul>
 --
 -- <h5>Platzhalter</h5>
 --
--- <u>Mehrsprachige Texte:</u>
+-- <u>Mehrsprachige Texte:</u><br>
 -- Anstatt eines Strings wird ein Table mit dem gleichen Text in verschiedenen
 -- Sprachen angegeben. Der richtige Text wird anhand der eingestellten Sprache
 -- gewählt. Wenn nichts vorgegeben wird, ist die Systemsprache voreingestellt.
@@ -67,12 +45,18 @@ QSB.Version = "3.0.0 (BETA 2.0.0)";
 -- Einige Features lokalisieren Texte automatisch. <br>
 -- (Siehe dazu: <a href="#API.Localize">API.Localize</a>)
 --
--- <u>Platzhalter in Texten:</u>
+-- <u>Platzhalter in Texten:</u><br>
 -- In Texten können vordefinierte Farben, Namen für Entity-Typen und benannte
 -- Entities, sowie Inhalte von Variablen ersetzt werden. Dies wird von einigen
 -- QSB-Features automatisch vorgenommen. Es kann Mittels API-Funktion auch
 -- manuell angestoßen werden. <br>
 -- (Siehe dazu: <a href="#API.ConvertPlaceholders">API.ConvertPlaceholders</a>)
+--
+-- <h5>Scripting Values</h5>
+-- Bei den Scripting Values handelt es sich um einige Werte, die direkt im
+-- Arbeitsspeicher manipuliert werden können und Auswirkungen auf Entities
+-- haben.<br>
+-- (Siehe dazu: <a href="#ScriptingValue">QSB.ScriptingValue</a>)
 --
 -- <h5>Entwicklungsmodus</h5>
 --
@@ -93,22 +77,24 @@ QSB.Version = "3.0.0 (BETA 2.0.0)";
 -- <td>Map sofort neu starten</td>
 -- </tr>
 -- <tr>
--- <td>&gt; [Befehl]</td>
+-- <td>&gt; Befehl</td>
 -- <td>Einen Lua Befehl im globalen Skript ausführen.
--- (Die Zeichen", ', {, } können nicht verwendet werden)</td>
+-- (Die Zeichen " ' { } können nicht verwendet werden)</td>
 -- </tr>
 -- <tr>
--- <td>&gt;&gt; [Befehl]</td>
+-- <td>&gt;&gt; Befehl</td>
 -- <td>Einen Lua Befehl im lokalen Skript ausführen.
--- (Die Zeichen", ', {, } können nicht verwendet werden)</td>
+-- (Die Zeichen " ' { } können nicht verwendet werden)</td>
 -- </tr>
 -- <tr>
--- <td>&lt; [Pfad]</td>
--- <td>Lua-Datei zur Laufzeit ins globale Skript laden.</td>
+-- <td>&lt; Pfad</td>
+-- <td>Lua-Datei zur Laufzeit ins globale Skript laden.
+-- (Es muss / anstatt \ verwendet werden)</td>
 -- </tr>
 -- <tr>
--- <td>&lt;&lt; [Pfad]</td>
--- <td>Lua-Datei zur Laufzeit ins lokale Skript laden.</td>
+-- <td>&lt;&lt; Pfad</td>
+-- <td>Lua-Datei zur Laufzeit ins lokale Skript laden.
+-- (Es muss / anstatt \ verwendet werden)</td>
 -- </tr>
 -- </table>
 --
@@ -450,6 +436,7 @@ end
 -- @field QuestSuccess     Ein Quest wurde erfolgreich abgeschlossen (Parameter: QuestID)
 -- @field QuestTrigger     Ein Quest wurde aktiviert (Parameter: QuestID)
 -- @field LoadscreenClosed Der Ladebildschirm wurde beendet.
+-- @within Event
 --
 QSB.ScriptEvents = QSB.ScriptEvents or {};
 
@@ -457,6 +444,7 @@ QSB.ScriptEvents = QSB.ScriptEvents or {};
 -- Konstanten der Script Environments
 -- @field GLOBAL Die globale Skriptumgebung
 -- @field LOCAL  Die lokale Skriptumgebung
+-- @within Konstanten
 --
 QSB.Environment = {
     GLOBAL = 1,
@@ -467,6 +455,7 @@ QSB.Environment = {
 -- Konstanten der Spielversionen
 -- @field ORIGINAL        Das Originalspiel
 -- @field HISTORY_EDITION Die History Edition
+-- @within Konstanten
 --
 QSB.GameVersion = {
     ORIGINAL        = 1,
@@ -477,6 +466,7 @@ QSB.GameVersion = {
 -- Konstanten der Spielvarianten
 -- @field VANILLA   Das unmodifizierte Spiel
 -- @field COMMUNITY Der Community Patch
+-- @within Konstanten
 --
 QSB.GameVariant = {
     VANILLA   = 1,

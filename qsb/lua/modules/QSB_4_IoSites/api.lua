@@ -9,7 +9,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Ermöglicht Baustellen als interaktive Objekte zu setzen.
+-- Ermöglicht mit interaktiven Objekten Baustellen zu setzen.
 --
 -- Die Baustelle muss durch den Helden aktiviert werden. Ein Siedler wird aus
 -- dem Lagerhaus kommen und das Gebäude bauen.

@@ -9,7 +9,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Ermöglicht es Cutscene zu verwenden.
+-- Ermöglicht die Verwendung von echten Kameraflügen.
 --
 -- Cutscenes sind Kameraflüge, die zur szenerischen Untermalung gedacht sind.
 -- Texte sind kurz zu halten oder ganz wegzulassen, da der Spieler die Animation

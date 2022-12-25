@@ -12,7 +12,8 @@ You may use and modify this file unter the terms of the MIT licence.
 -- Ermöglicht, Entities suchen und auf bestimmte Ereignisse reagieren.
 --
 -- <h5>Entity Suche</h5>
--- TODO
+-- Es kann entweder mit vordefinierten Funktionen oder mit eigenen Filtern
+-- nach allen Entities gesucht werden.
 --
 -- <h5>Diebstahleffekte</h5>
 -- Die Effekte von Diebstählen können deaktiviert und mittels Event neu

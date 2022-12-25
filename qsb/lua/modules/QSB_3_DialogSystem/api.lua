@@ -9,7 +9,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Ermöglicht es Dialoge zu verwenden.
+-- Dialoge können verwendet werden, um Gespräche darzustellen.
 --
 -- Dialoge dienen zur Darstellung von Gesprächen. Mit Multiple Choice können
 -- dem Spieler mehrere Auswahlmöglichkeiten gegeben, multiple Handlungsstränge

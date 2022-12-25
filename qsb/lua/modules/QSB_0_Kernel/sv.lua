@@ -52,8 +52,6 @@ function Swift.ScriptingValue:OnSaveGameLoaded()
     QSB.ScriptingValue = self.SV[self.SV.Game];
 end
 
-QSB.ScriptingValue = {};
-
 -- -------------------------------------------------------------------------- --
 -- Conversion Methods
 
@@ -160,6 +158,29 @@ end
 
 -- -------------------------------------------------------------------------- --
 -- API
+
+---
+-- Liste der unterstützten Scripting Values.
+--
+-- <ul>
+-- <li><b>QSB.ScriptingValue.Destination.X</b><br>
+-- Gibt die Z-Koordinate des Bewegungsziels als Float zurück.</li>
+-- <li><b>QSB.ScriptingValue.Destination.Y</b><br>
+-- Gibt die Y-Koordinate des Bewegungsziels als Float zurück.</li>
+-- <li><b>QSB.ScriptingValue.Health</b><br>
+-- Setzt die Gesundheit eines Entity ohne Folgeaktionen zu triggern.</li>
+-- <li><b>QSB.ScriptingValue.Player</b><br>
+-- Setzt den Besitzer des Entity ohne Plausibelitätsprüfungen.</li>
+-- <li><b>QSB.ScriptingValue.Size</b><br>
+-- Setzt den Größenfaktor eines Entities als Float.</li>
+-- <li><b>QSB.ScriptingValue.Visible</b><br>
+-- Sichtbarkeit eines Entities abfragen (801280 == sichtbar)</li>
+-- <li><b>QSB.ScriptingValue.NPC</b><br>
+-- NPC-Flag eines Siedlers setzen (0 = inaktiv, 1 - 4 = aktiv)</li>
+-- </ul>
+-- @within ScriptingValue
+--
+QSB.ScriptingValue = {};
 
 ---
 -- Gibt den Wert auf dem übergebenen Index für das Entity zurück.

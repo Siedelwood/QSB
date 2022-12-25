@@ -1,4 +1,4 @@
-Ermöglicht die Interaktion mit NPC-Charakteren.
+Stellt Funktionen für die RTS-Camera bereit.
 
 # Changelog
 

@@ -9,7 +9,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Einfachere und erweitere Handhabe von Interaktiven Objekten.
+-- Erweitert die Möglichkeiten für die interaktiven Objekte.
 --
 -- <b>Befehle:</b><br>
 -- <i>Diese Befehle können über die Konsole (SHIFT + ^) eingegeben werden, wenn

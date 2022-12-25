@@ -9,7 +9,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Ein Modul für die Bewegung von Entities.
+-- Ermoglicht die Bewegung von Entities und Berechnung von Pfaden.
 --
 -- <b>Vorausgesetzte Module:</b>
 -- <ul>

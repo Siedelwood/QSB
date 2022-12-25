@@ -9,7 +9,7 @@ You may use and modify this file unter the terms of the MIT licence.
 -- -------------------------------------------------------------------------- --
 
 ---
--- Ermöglicht die Aufzucht von Schafe und Kühe durch den Spieler.
+-- Schafe und Kühe können vom Spieler gezüchtet werden.
 -- 
 -- Verschiedene Kenngrößen können angepasst werden.
 --
