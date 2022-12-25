@@ -255,7 +255,7 @@ function Swift.LuaBase:ConvertTableToString(_Table)
             key = "\""..k.."\"";
         end
         if type(v) == "table" then
-            String = String .. "[" .. key .. "] = " .. table.tostring(v) .. ", ";
+            String = String .. "[" .. key .. "] = " .. self:ConvertTableToString(v) .. ", ";
         elseif type(v) == "number" then
             String = String .. "[" .. key .. "] = " .. v .. ", ";
         elseif type(v) == "string" then

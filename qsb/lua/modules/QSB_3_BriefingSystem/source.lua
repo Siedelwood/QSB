@@ -244,7 +244,7 @@ end
 function ModuleBriefingSystem.Global:CreateBriefingAddMCPage(_Briefing)
     _Briefing.AddMCPage = function(self, _Page)
         -- Create base page
-        local Page = self:AddPage(_Briefing);
+        local Page = self:AddPage(_Page);
 
         -- Multiple choice selection
         Page.GetSelected = function(self)
@@ -255,14 +255,14 @@ function ModuleBriefingSystem.Global:CreateBriefingAddMCPage(_Briefing)
         end
 
         -- Multiple Choice
-        if _Page.MC then
-            for i= 1, #_Page.MC do
-                _Page.MC[i][1] = API.Localize(_Page.MC[i][1]);
-                _Page.MC[i].ID = _Page.MC[i].ID or i;
+        if Page.MC then
+            for i= 1, #Page.MC do
+                Page.MC[i][1] = API.Localize(Page.MC[i][1]);
+                Page.MC[i].ID = Page.MC[i].ID or i;
             end
-            _Page.BigBars = true;
-            _Page.DisableSkipping = true;
-            _Page.Duration = -1;
+            Page.BigBars = true;
+            Page.DisableSkipping = true;
+            Page.Duration = -1;
         end
         -- Return page
         return Page;
@@ -356,9 +356,9 @@ function ModuleBriefingSystem.Global:TransformAnimations(_PlayerID)
                         Entry.Duration = v[i][1] or (2 * 60);
                         Entry.Start = {
                             Position = (type(v[i][2]) ~= "table" and {v[i][2],0}) or v[i][2],
-                            Rotation = v[i][3] or -45,
-                            Zoom     = v[i][4] or 9000,
-                            Angle    = v[i][5] or 47,
+                            Rotation = v[i][3] or QSB.Briefing.CAMERA_ROTATIONDEFAULT,
+                            Zoom     = v[i][4] or QSB.Briefing.CAMERA_ZOOMDEFAULT,
+                            Angle    = v[i][5] or QSB.Briefing.CAMERA_ANGLEDEFAULT,
                         };
                         local EndPosition = v[i][6] or Entry.Start.Position;
                         Entry.End = {

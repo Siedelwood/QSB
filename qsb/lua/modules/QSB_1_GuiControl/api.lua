@@ -124,6 +124,7 @@ function API.SetPlayerName(_playerID,_name)
             _playerID,
             _name
         ));
+        return;
     end
     GUI_MissionStatistic.PlayerNames[_playerID] = _name
     QSB.PlayerNames[_playerID] = _name;
