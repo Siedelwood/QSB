@@ -11,7 +11,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleCamera = {
     Properties = {
         Name = "ModuleCamera",
-        Version = "4.0.0 (ALPHA 1.0.0)",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {},

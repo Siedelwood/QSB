@@ -11,6 +11,7 @@ You may use and modify this file unter the terms of the MIT licence.
 ModuleDialogSystem = {
     Properties = {
         Name = "ModuleDialogSystem",
+        Version = "3.0.0 (BETA 2.0.0)",
     },
 
     Global = {
