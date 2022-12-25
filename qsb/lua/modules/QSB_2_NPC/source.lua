@@ -199,6 +199,12 @@ function ModuleNpcInteraction.Global:InteractionIsAppropriateHero(_ScriptName)
     return Appropriate;
 end
 
+function ModuleNpcInteraction.Global:GetEntityMovementTarget(_EntityID)
+    local X = API.GetFloat(_EntityID, QSB.ScriptingValue.Destination.X);
+    local Y = API.GetFloat(_EntityID, QSB.ScriptingValue.Destination.Y);
+    return {X= X, Y= Y};
+end
+
 function ModuleNpcInteraction.Global:RotateActorsToEachother(_PlayerID)
     local PlayerKnights = {};
     Logic.GetKnights(_PlayerID, PlayerKnights);
@@ -216,7 +222,7 @@ function ModuleNpcInteraction.Global:RotateActorsToEachother(_PlayerID)
 end
 
 function ModuleNpcInteraction.Global:AdjustHeroTalkingDistance(_Distance)
-    local Distance = _Distance * API.GetEntityScale(QSB.Npc.LastNpcEntityID);
+    local Distance = _Distance * API.GetFloat(QSB.Npc.LastNpcEntityID, QSB.ScriptingValue.Size);
     if API.GetDistance(QSB.Npc.LastHeroEntityID, QSB.Npc.LastNpcEntityID) <= Distance * 0.7 then
         local Orientation = Logic.GetEntityOrientation(QSB.Npc.LastNpcEntityID);
         local x1, y1, z1 = Logic.EntityGetPos(QSB.Npc.LastHeroEntityID);
