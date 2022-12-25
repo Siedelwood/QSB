@@ -224,9 +224,30 @@ function QsbDoc_ReplaceInHtmlFile(_Module)
         Content = Content:gsub("<strong>" ..ModuleName.. "</strong>", "<strong>" ..DisplayName.. "</strong>");
         Content = Content:gsub("<code>" ..ModuleName.. "</code>", "<code>" ..DisplayName.. "</code>");
         Content = Content:gsub(ModuleName.. "</a></li>", DisplayName.. "</a></li>");
+        Content = QsbDoc_FormatTagsInHtml(Content);
     end
     -- replace file
     QsbDoc_WriteFile(Path, Content);
+end
+
+function QsbDoc_FormatTagsInHtml(_Content)
+    local Content = _Content;
+    local s, e = Content:find("<tags>[a-z0-9, -]+</tags>\n");
+    while s and e do
+        local Before = Content:sub(0, s-1);
+        local After = Content:sub(e+1);
+        local Inner = Content:sub(s+6, e-8);
+
+        local TagList = "";
+        for str in Inner:gmatch("([^,]+)") do
+            TagList = TagList .. "<li>" ..str:gsub("%s", "").. "</li>";
+        end
+        local Tags = string.format("<p><ul class=\"tags-inline\">%s</ul></p>", TagList);
+
+        Content = Before .. Tags .. After;
+        s, e = Content:find("<tags>[a-z0-9, -]+</tags>\n");
+    end
+    return Content;
 end
 
 function QsbDoc_WriteFile(_Path, _Content)
