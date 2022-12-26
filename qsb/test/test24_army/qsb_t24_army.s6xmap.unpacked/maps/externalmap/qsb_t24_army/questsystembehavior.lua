@@ -1,0 +1,1 @@
+Script.Load("E:/Repositories/revision/qsb/lua/var/build/qsb_idc.lua");

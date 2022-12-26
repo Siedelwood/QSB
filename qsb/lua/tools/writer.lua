@@ -93,6 +93,14 @@ QsbWriter_ModuleFiles = {
         "source.lua",
         "api.lua",
     }},
+    {"QSB_3_ArmySystem", {
+        "source.lua",
+        "api.lua",
+        "army.lua",
+        "path.lua",
+        "commands.lua",
+        "behavior.lua",
+    }},
     {"QSB_3_BriefingSystem", {
         "source.lua",
         "api.lua",

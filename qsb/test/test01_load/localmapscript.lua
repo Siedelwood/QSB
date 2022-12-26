@@ -43,6 +43,7 @@ function Mission_LoadFiles()
         Path.. "qsb_2_promotion/qsb_2_promotion.lua",
         Path.. "qsb_2_quest/qsb_2_quest.lua",
         Path.. "qsb_2_selection/qsb_2_selection.lua",
+        Path.. "qsb_3_armysystem/qsb_3_armysystem.lua",
         Path.. "qsb_3_briefingsystem/qsb_3_briefingsystem.lua",
         Path.. "qsb_3_cutscenesystem/qsb_3_cutscenesystem.lua",
         Path.. "qsb_3_dialogsystem/qsb_3_dialogsystem.lua",

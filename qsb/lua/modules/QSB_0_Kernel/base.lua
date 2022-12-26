@@ -14,6 +14,10 @@ SCP = {Core = {}};
 QSB = {};
 QSB.Version = "3.0.0 (BETA 2.0.0)";
 
+-- Its not vanity, its a placeholder. The QSB table is not supposed to hold
+-- objects anymore. Only constants are allowed. So we need another table.
+TWA = TWA or {};
+
 ---
 -- Stellt wichtige Kernfunktionen bereit.
 --
