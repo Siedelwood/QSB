@@ -52,6 +52,12 @@ ModuleRequester = {
 -- Global
 
 function ModuleRequester.Global:OnGameStart()
+    API.RegisterScriptCommand(
+        "Cmd_SetLanguageResult",
+        function(_PlayerID, _Language)
+            Swift.Text:OnLanguageChanged(_PlayerID, nil, _Language);
+        end
+    );
 end
 
 function ModuleRequester.Global:OnEvent(_ID, ...)
