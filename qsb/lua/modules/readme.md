@@ -26,7 +26,7 @@ Module müssen in den Tools-Skripten registiert werden.
 
 * In qsb/lua/tools/writer.lua:
 
-```
+```lua
 QsbWriter_ModuleFiles = {
     ...
     {"NAME_OF_MODULE", {
@@ -39,7 +39,7 @@ QsbWriter_ModuleFiles = {
 
 * In qsb/lua/tools/docbuilder.lua:
 
-```
+```lua
 QsbDoc_FileList = {
     ...
     {"modules/NAME_OF_MODULE/name_of_module.lua", "Anzeigename"},
