@@ -18,7 +18,8 @@ for folder in *; do
         if [ $folder = "QSB_0_Kernel" ]; then
             echo "build qsb"
             DESTINATION="../../var/build/qsb.lua"
-            find . -maxdepth 1 -iname "*.lua" -not -name "selfload.lua" -type f -exec cat {} +> $DESTINATION
+            find . -maxdepth 1 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -type f -exec cat {} +> $DESTINATION
+            cat "behavior.lua" >> $DESTINATION
             cat "selfload.lua" >> $DESTINATION
         else
             echo "build module ${folder}"
@@ -30,7 +31,8 @@ done
 
 echo "build qsb_idc"
 DESTINATION="../var/build/qsb_idc.lua"
-find . -maxdepth 2 -iname "*.lua" -not -name "selfload.lua" -type f -exec cat {} +> $DESTINATION
+find . -maxdepth 2 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -type f -exec cat {} +> $DESTINATION
+cat "QSB_0_Kernel/behavior.lua" >> $DESTINATION
 cat "QSB_0_Kernel/selfload.lua" >> $DESTINATION
 cd ../../../
 
