@@ -386,7 +386,7 @@ B_Goal_Diplomacy = {
         fr = "Objectif: les relations avec un joueur doivent être soit améliorées, soit détériorées.",
     },
     Parameter = {
-        { ParameterType.PlayerID, en = "Party", de = "Partei", fr = "Faction" },
+        { ParameterType.PlayerID, en = "PlayerID", de = "PlayerID", fr = "PlayerID" },
         { ParameterType.Custom,   en = "Relation", de = "Relation", fr = "Relation" },
         { ParameterType.Custom,   en = "Diplomacy state", de = "Diplomatische Beziehung", fr = "Relations diplomatiques" },
     },

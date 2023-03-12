@@ -29,8 +29,8 @@ for folder in *; do
     fi 
 done
 
-echo "build qsb_idc"
-DESTINATION="../var/build/qsb_idc.lua"
+echo "build qsb_all"
+DESTINATION="../var/build/qsb_all.lua"
 find . -maxdepth 2 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -type f -exec cat {} +> $DESTINATION
 cat "QSB_0_Kernel/behavior.lua" >> $DESTINATION
 cat "QSB_0_Kernel/selfload.lua" >> $DESTINATION
