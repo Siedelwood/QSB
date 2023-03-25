@@ -18,12 +18,14 @@ for folder in *; do
         if [ $folder = "QSB_0_Kernel" ]; then
             echo "build qsb"
             DESTINATION="../../var/build/qsb.lua"
-            find . -maxdepth 1 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -type f -exec cat {} +> $DESTINATION
+            find . -maxdepth 1 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -not -name "alias.lua" -type f -exec cat {} +> $DESTINATION
             cat "behavior.lua" >> $DESTINATION
             cat "selfload.lua" >> $DESTINATION
         else
             echo "build module ${folder}"
-            cat *.lua > "../../var/build/modules/${folder,,}.lua"
+            # cat *.lua > "../../var/build/modules/${folder,,}.lua"
+            DESTINATION="../../var/build/modules/${folder,,}.lua"
+            find . -maxdepth 1 -iname "*.lua" -not -name "alias.lua" -type f -exec cat {} +> $DESTINATION
         fi
         cd ../
     fi 
@@ -31,9 +33,15 @@ done
 
 echo "build qsb_all"
 DESTINATION="../var/build/qsb_all.lua"
+find . -maxdepth 2 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -not -name "alias.lua" -type f -exec cat {} +> $DESTINATION
+cat "QSB_0_Kernel/behavior.lua" >> $DESTINATION
+cat "QSB_0_Kernel/selfload.lua" >> $DESTINATION
+
+echo "build qsb_comp"
+DESTINATION="../var/build/qsb_comp.lua"
 find . -maxdepth 2 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -type f -exec cat {} +> $DESTINATION
 cat "QSB_0_Kernel/behavior.lua" >> $DESTINATION
 cat "QSB_0_Kernel/selfload.lua" >> $DESTINATION
-cd ../../../
 
+cd ../../../
 echo "QSB ready"
