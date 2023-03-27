@@ -64,7 +64,7 @@ function ModuleMilitaryLimit.Global:OnGameStart()
     end);
 end
 
-function ModuleMilitaryLimit.Global:OnEvent(_ID, _Name, ...)
+function ModuleMilitaryLimit.Global:OnEvent(_ID, ...)
     if _ID == QSB.ScriptEvents.EntityKilled then
         self:OnEntityKilledController(arg[1], arg[2], arg[3], arg[4]);
     end
