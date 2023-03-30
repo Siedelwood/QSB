@@ -1,11 +1,3 @@
---[[
-Copyright (C) 2023 totalwarANGEL - All Rights Reserved.
-
-This file is part of the QSB-R. QSB-R is created by totalwarANGEL.
-You may use and modify this file unter the terms of the MIT licence.
-(See https://en.wikipedia.org/wiki/MIT_License)
-]]
-
 -- -------------------------------------------------------------------------- --
 
 ---
@@ -26,6 +18,7 @@ function Swift.Bugfix:Initalize()
     end
     if Swift.Environment == QSB.Environment.LOCAL then
         self:FixInteractiveObjectClicked();
+		self:FixCathedralName();
     end
 end
 
@@ -210,3 +203,23 @@ function Swift.Bugfix:OverrideIsObjectiveCompleted()
     end
 end
 
+
+-- -------------------------------------------------------------------------- --
+-- Cathedral name
+
+function Swift.Bugfix:FixCathedralName()
+	GUI_BuildingInfo.BuildingNameUpdate_Orig_QSB_Kernel = GUI_BuildingInfo.BuildingNameUpdate;
+	GUI_BuildingInfo.BuildingNameUpdate = function()
+		GUI_BuildingInfo.BuildingNameUpdate_Orig_QSB_Kernel()
+		local CurrentWidgetID = XGUIEng.GetCurrentWidgetID()
+		if XGUIEng.GetText(CurrentWidgetID) == "{center}B_Cathedral_Big" then
+			local CurrentLanguage = Network.GetDesiredLanguage()
+			if CurrentLanguage == "de" then
+				XGUIEng.SetText(CurrentWidgetID, "{center}Kathedrale")
+			else
+				XGUIEng.SetText(CurrentWidgetID, "{center}Cathedral")
+			end
+		end
+	end
+end
+--#EOF
