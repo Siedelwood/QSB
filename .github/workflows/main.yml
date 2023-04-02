@@ -4,16 +4,17 @@ on:
 jobs:
   my_job:
     name: test echo
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: checkout repo
         uses: actions/checkout@v2.7.0
       - name: Change Directory and Print
         run: |
-          pwd
-          ls -a
-          echo done with testing
-          cd qsb/lua/tools
-          ls -a
-          pwd
-          ls -a
+          echo Building QSB
+          bash qsb/exe/build_source
+          echo Pushing QSB
+          git config --global user.name 'Automated Generation'
+          git config --global user.email 'automaticGen@users.noreply.github.com'
+          git commit -am "Automated Generation"
+          git push
+          echo QSB done
