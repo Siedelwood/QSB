@@ -21,14 +21,11 @@ jobs:
           echo QSB done
       - name: Make QSB-Zip for Release
         run: zip -r QSB_Release.zip qsb/lua/var/build
-      - run: |
-          export TEXT="Test-Release"
-          echo "::set-env name=RELEASE_NAME::$TEXT"
       - name: Git Release
         uses: anton-yurchenko/git-release@v5.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          #RELEASE_NAME: QSB-Release
+          RELEASE_NAME: QSB-Release
           ALLOW_EMPTY_CHANGELOG: "true"
         with:
           args: QSB_Release.zip
