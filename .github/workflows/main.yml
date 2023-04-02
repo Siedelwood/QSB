@@ -9,4 +9,6 @@ jobs:
       - name: Echotest
         run: |
           pwd
-          echo done
+          ls -a
+          echo done with testing
+          cd ../qsb/lua/tools
