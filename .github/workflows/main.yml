@@ -19,11 +19,12 @@ jobs:
           echo Building QSB
           bash qsb/exe/build_source
           echo QSB done
-      - name: Get ZIP Action and make QSB-Zip for Release
+      - name: Make QSB-Zip for Release
         run: zip -r QSB_Release.zip qsb/lua/var/build
-      - name: Test For zip
-        run: ls -a
       - name: Git Release
         uses: anton-yurchenko/git-release@v5.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: QSB_Release.zip
+          RELEASE_NAME: QSB-Release
