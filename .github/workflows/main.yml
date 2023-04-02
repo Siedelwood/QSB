@@ -9,7 +9,7 @@ on:
 
 jobs:
   my_job:
-    name: test echo
+    name: Creating QSB Release
     runs-on: ubuntu-20.04
     steps:
       - name: checkout repo
@@ -28,3 +28,4 @@ jobs:
         with:
           args: QSB_Release.zip
           RELEASE_NAME: QSB-Release
+          ALLOW_EMPTY_CHANGELOG: true
