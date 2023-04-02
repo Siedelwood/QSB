@@ -8,15 +8,12 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v2.7.0
-      - name: pwd output
-        run: pwd
-      - name: ls output
-        run: ls -a
-      - name: Done Outputs
-        run: echo done with testing
-      - name: Trying Change Directory
-        run: cd qsb/lua/tools
-      - name: pwd output
-        run: pwd
-      - name: ls output
-        run: ls -a
+      - name: Change Directory and Print
+        run: |
+          pwd
+          ls -a
+          echo done with testing
+          cd qsb/lua/tools
+          ls -a
+          pwd
+          ls -a
