@@ -1,6 +1,6 @@
 # Welcome the Siedelwood QSB contributing guide
 
-Thank you for investing your time in contributing to our project! Any contribution you make will be reflected on [docs.github.com](https://docs.github.com/en) :sparkles:.
+Thank you for investing your time in contributing to our project!
 
 Read our [Code of Conduct](./CODE_OF_CONDUCT.md) to keep our community approachable and respectable.
 
@@ -12,34 +12,34 @@ To get an overview of the project, read the [README](README.md). Here are some r
 
 - [Finding ways to contribute to open source on GitHub](https://docs.github.com/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)
 - [Set up Git](https://docs.github.com/en/get-started/quickstart/set-up-git)
-- [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow)
 - [Collaborating with pull requests](https://docs.github.com/en/github/collaborating-with-pull-requests)
 
 ## Getting started
 
-To navigate our codebase with confidence, see [the introduction to working in the docs repository](/contributing/working-in-docs-repository.md) :confetti_ball:. For more information on how we write our markdown files, see [the GitHub Markdown reference](contributing/content-markup-reference.md).
+You can find the qsb and its modules in the folder qsb/lua/modules. The folder qsb/lua/default contains the default scripts to be added to the map. In the folder qsb/exe you will find the tools to build the QSB. For any help or questions you can see us at our [Siedelwood Discord](https://discord.gg/Duhxe7jThs) server.
 
-Check to see what [types of contributions](/contributing/types-of-contributions.md) we accept before making changes. Some of them don't even require writing a single line of code :sparkles:.
+There are different types of contributions you can do:
+
+- you can review our documentation and wiki to help us avoiding errors.
+- you can use the QSB and report us errors you might find in it.
+- you can help us with th fixin of known bugs.
+- you can write addons to be added to the QSB.
 
 ### Issues
 
 #### Create a new issue
 
-If you spot a problem with the docs, [search if an issue already exists](https://docs.github.com/en/github/searching-for-information-on-github/searching-on-github/searching-issues-and-pull-requests#search-by-the-title-body-or-comments). If a related issue doesn't exist, you can open a new issue using a relevant [issue form](https://github.com/github/docs/issues/new/choose).
+If you spot a problem with the documentation, have a crash using the QSB or find any other type of errors, [search if an issue already exists](https://docs.github.com/en/github/searching-for-information-on-github/searching-on-github/searching-issues-and-pull-requests#search-by-the-title-body-or-comments). If a related issue doesn't exist, you can open a new issue using a relevant [issue form](https://github.com/Siedelwood/Revision/issues/new/choose). Bare in mind that we also collect Problems in the QSB in our [Siedelwood Discord](https://discord.gg/Duhxe7jThs) server.
 
 #### Solve an issue
 
-Scan through our [existing issues](https://github.com/github/docs/issues) to find one that interests you. You can narrow down the search using `labels` as filters. See [Labels](/contributing/how-to-use-labels.md) for more information. As a general rule, we don’t assign issues to anyone. If you find an issue to work on, you are welcome to open a PR with a fix.
+Scan through our [existing issues](https://github.com/Siedelwood/Revision/issues) to find one that interests you. As a general rule, we don’t assign issues to anyone. If you find an issue to work on, you are welcome to open a PR with a fix.
 
 ### Make Changes
 
 #### Make changes in the UI
 
-Click **Make a contribution** at the bottom of any docs page to make small changes such as a typo, sentence fix, or a broken link. This takes you to the `.md` file where you can make your changes and [create a pull request](#pull-request) for a review.
-
-#### Make changes in a codespace
-
-For more information about using a codespace for working on GitHub documentation, see "[Working in a codespace](https://github.com/github/docs/blob/main/contributing/codespace.md)."
+Click **Make a contribution** at the bottom of any readme or wiki page to make small changes such as a typo, sentence fix, or a broken link. This takes you to the `.md` file where you can make your changes and [create a pull request](#pull-request) for a review. Keep in mind that the wiki sites for the QSB documentation itself are generated automatically and therefor your changes will be overwritten at some point. Those changes need to be done in the lua files.
 
 #### Make changes locally
 
@@ -51,13 +51,15 @@ For more information about using a codespace for working on GitHub documentation
 - Using the command line:
   - [Fork the repo](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo#fork-an-example-repository) so that you can make your changes without affecting the original project until you're ready to merge them.
 
-2. Install or update to **Node.js**, at the version specified in `.node-version`. For more information, see [the development guide](contributing/development.md).
+2. Install an editor that allows you to work with lua in a way you are confortable with.
 
-3. Create a working branch and start with your changes!
+3. If you intend to build the QSB you created or worked on you might need some additional tools like a working lua installation or the github bash on windows.
+
+4. Create a working branch and start with your changes!
 
 ### Commit your update
 
-Commit the changes once you are happy with them. Don't forget to [self-review](/contributing/self-review.md) to speed up the review process:zap:.
+Commit the changes once you are happy with them. Don't forget to self-review to speed up the review process.
 
 ### Pull Request
 
@@ -72,11 +74,11 @@ Once you submit your PR, a Docs team member will review your proposal. We may as
 
 ### Your PR is merged!
 
-Congratulations :tada::tada: The GitHub team thanks you :sparkles:.
+Once your PR is merged, your contributions will be publicly visible on the [Siedelwood Repository](https://github.com/Siedelwood/Revision).
 
-Once your PR is merged, your contributions will be publicly visible on the [GitHub docs](https://docs.github.com/en).
+## Our Workflow
 
-Now that you are part of the GitHub docs community, see how else you can [contribute to the docs](/contributing/types-of-contributions.md).
+The QSB has to active versions. There is the release version that is stable and meant to be used by the mappers of the Settlers-RoaE. The development version contains current development features, that might still contain some bugs or an API that might still change. If you are using the release version you can be sure, that the API we provide will be stable over time and releases. Both these versions will be represented by a branch. One other important branch is the release-hotfix branch that is only meant to fix errors in the release version. If you want to contribute to our Project, make sure to always branch the release-hotfix or the development branches. We will not consider any PRs coming from other branches.
 
 ## Windows
 
