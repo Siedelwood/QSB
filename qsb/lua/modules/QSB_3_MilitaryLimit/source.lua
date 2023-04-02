@@ -1,12 +1,3 @@
---[[
-Copyright (C) 2021 - 2022 totalwarANGEL - All Rights Reserved.
-
-This file is part of the QSB-R. QSB-R is created by totalwarANGEL.
-This File was modified by Jelumar.
-You may use and modify this file unter the terms of the MIT licence.
-(See https://en.wikipedia.org/wiki/MIT_License)
-]]
-
 SCP.MilitaryLimit = {};
 
 function SCP.MilitaryLimit.ProduceUnits(_PlayerID, _BarrackID, _EntityType, _Costs)
