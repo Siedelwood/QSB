@@ -6,6 +6,8 @@ jobs:
     name: test echo
     runs-on: ubuntu-18.04
     steps:
+      - name: checkout repo
+        uses: actions/checkout@latest
       - name: pwd output
         run: pwd
       - name: ls output
@@ -13,7 +15,7 @@ jobs:
       - name: Done Outputs
         run: echo done with testing
       - name: Trying Change Directory
-        run: cd ..
+        run: cd qsb/lua/tools
       - name: pwd output
         run: pwd
       - name: ls output
