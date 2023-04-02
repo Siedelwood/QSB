@@ -8,6 +8,5 @@ jobs:
     steps:
       - name: Echotest
         run: |
-          cd qsb/lua/tools
           pwd
           echo done
