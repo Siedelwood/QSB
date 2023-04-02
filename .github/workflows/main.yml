@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: checkout repo
-        uses: actions/checkout@latest
+        uses: actions/checkout@v2.7.0
       - name: pwd output
         run: pwd
       - name: ls output
