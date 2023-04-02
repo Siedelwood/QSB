@@ -1,11 +1,3 @@
---[[
-Copyright (C) 2023 totalwarANGEL - All Rights Reserved.
-
-This file is part of the QSB-R. QSB-R is created by totalwarANGEL.
-You may use and modify this file unter the terms of the MIT licence.
-(See https://en.wikipedia.org/wiki/MIT_License)
-]]
-
 -- -------------------------------------------------------------------------- --
 
 ---
@@ -135,8 +127,8 @@ function Swift.Event:EncodeScriptCommandParameters(...)
     for i= 1, #arg do
         local Parameter = arg[i];
         if type(Parameter) == "string" then
-            Parameter = string.replaceAll(Parameter, '#', "<<<HT>>>");
-            Parameter = string.replaceAll(Parameter, '"', "<<<QT>>>");
+            Parameter = string.gsub(Parameter, '#', "<<<HT>>>");
+            Parameter = string.gsub(Parameter, '"', "<<<QT>>>");
             if Parameter:len() == 0 then
                 Parameter = "<<<ES>>>";
             end

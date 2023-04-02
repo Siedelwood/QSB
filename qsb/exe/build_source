@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# This shell script combines the source files into the qsb and the modules.
+# The output is copied to qsb/lua/var/build
+
+echo 'build QSB'
+
+# create folder
+echo 'create destination directory'
+rm -rf qsb/lua/var &>/dev/null
+mkdir -p qsb/lua/var/build/modules
+
+# create files
+cd qsb/lua/modules
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+        if [ $folder = "QSB_0_Kernel" ]; then
+            echo "build qsb"
+            DESTINATION="../../var/build/qsb.lua"
+            find . -maxdepth 1 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -not -name "alias.lua" -type f -exec cat {} +> $DESTINATION
+            cat "behavior.lua" >> $DESTINATION
+            cat "selfload.lua" >> $DESTINATION
+        else
+            echo "build module ${folder}"
+            # cat *.lua > "../../var/build/modules/${folder,,}.lua"
+            DESTINATION="../../var/build/modules/${folder,,}.lua"
+            find . -maxdepth 1 -iname "*.lua" -not -name "alias.lua" -type f -exec cat {} +> $DESTINATION
+        fi
+        cd ../
+    fi 
+done
+
+echo "build qsb_all"
+DESTINATION="../var/build/qsb_all.lua"
+find . -maxdepth 2 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -not -name "alias.lua" -type f -exec cat {} +> $DESTINATION
+cat "QSB_0_Kernel/behavior.lua" >> $DESTINATION
+cat "QSB_0_Kernel/selfload.lua" >> $DESTINATION
+
+echo "build qsb_comp"
+DESTINATION="../var/build/qsb_comp.lua"
+find . -maxdepth 2 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -type f -exec cat {} +> $DESTINATION
+cat "QSB_0_Kernel/behavior.lua" >> $DESTINATION
+cat "QSB_0_Kernel/selfload.lua" >> $DESTINATION
+
+cd ../../../
+echo "QSB ready"

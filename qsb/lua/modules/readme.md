@@ -2,46 +2,58 @@ Dieses Verzeichnis ist für die Module der QSB.
 
 # Module
 
-## Aufbau
+Alle Module wurden von der Siedelwood Community erzeugt und sind unter der MIT-Lizenz frei nutzbar.
 
-Ein Modul ist verteilt an 3 Stellen anzulegen. Über das Build Script werden 
-Module später automatisch zusammen gebaut, wenn alles entsprechend in den 
-Verzeichnissen angelegt wurde.
+## Aufbau
 
 Verzeichnisse:
 
-* `qsb/lua/modules/*` Hier liegen die Skripte. In der Regel besteht ein Modul 
-aus einer `source.lua`, einer `api.lua` und ggf. einer `behavior.lua`. Weitere 
-Skripte sind möglich. Die Quelldatei ist zum ausprogrammieren der Features 
-gedacht. Die API-Datei für die Benutzerschnittstelle.
-* `qsb/demo/*` Hier liegen die Demo-Maps. Eine Demo-Map muss als S6XMAP 
-vorliegen und ebenso als entpackter Ordner. Das Format des Ordners richtet
-sich nach der Version des verwendeten BBA-Tool.
-* `qsb/sample/*` Hier liegen die Beispiele. Ein Beispiel ist eine PDF-Datei 
-mit verschiedenen Skriptausschnitten und Erklärungen.
+* `qsb/lua/modules/*` Hier liegen die Skripte. In der Regel besteht ein Modul aus einer `source.lua`, einer `api.lua` und ggf. einer `behavior.lua`.
+Weitere Skripte sind möglich. Die Quelldatei ist zum ausprogrammieren der Features gedacht. Die API-Datei für die Benutzerschnittstelle.
+* `demo_maps/*` Hier liegen die Demo-Maps. Eine Demo-Map muss als S6XMAP vorliegen und sollte ebenso als entpackter Ordner vorhanden sein. Das Format des Ordners richtet sich nach der Version des verwendeten BBA-Tool.
 
-## Registierung
+## Buildprozess
 
-Module müssen in den Tools-Skripten registiert werden.
+### Source build
 
-* In qsb/lua/tools/writer.lua:
+Sofern ein Modul in dem Ordner für die Module liegt, wird es automatish mit den anderen Modulen zur QSB gebaut.
 
-```
-QsbWriter_ModuleFiles = {
+### Dokumentation
+
+Damit zu einem Modul die ldoc Dokumentation automatisch erzeugt werden kann, muss dieses in qsb/lua/tools/docbuilder.lua mit aufgelistet werden:
+
+```lua
+QsbDoc_FileList = {
     ...
-    {"NAME_OF_MODULE", {
-        "file1.lua",
-        "file2.lua",
-        ...
-    }},
+    {"modules/name_of_module.lua", "Anzeigename"},
 };
 ```
 
-* In qsb/lua/tools/docbuilder.lua:
+# Addons
 
-```
+Addons werden von einzelnen Mitgliedern der Siedelwood Community zur Verfügung gestellt. Dadurch werden diese automatisch unter der MIT-Lizenz frei nutzbar.
+
+## Aufbau
+
+Verzeichnisse:
+
+* `qsb/lua/addons/*` Hier liegen die Skripte. In der Regel besteht ein Modul aus einer `source.lua`, einer `api.lua` und ggf. einer `behavior.lua`.
+Weitere Skripte sind möglich. Die Quelldatei ist zum ausprogrammieren der Features gedacht. Die API-Datei für die Benutzerschnittstelle.
+* `demo_maps/*` Hier liegen die Demo-Maps. Eine Demo-Map muss als S6XMAP vorliegen und sollte ebenso als entpackter Ordner vorhanden sein. Das Format des Ordners richtet sich nach der Version des verwendeten BBA-Tool.
+
+## Buildprozess
+
+### Source build
+
+Noch werden Addons nicht automatisch generiert.
+
+### Dokumentation
+
+Damit zu einem Addon die ldoc Dokumentation automatisch erzeugt werden kann, muss dieses in qsb/lua/tools/docbuilder.lua mit aufgelistet werden:
+
+```lua
 QsbDoc_FileList = {
     ...
-    {"modules/NAME_OF_MODULE/name_of_module.lua", "Anzeigename"},
+    {"addons/name_of_addon.lua", "Anzeigename"},
 };
 ```

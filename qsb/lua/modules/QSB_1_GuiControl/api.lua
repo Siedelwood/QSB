@@ -1,11 +1,3 @@
---[[
-Copyright (C) 2023 totalwarANGEL - All Rights Reserved.
-
-This file is part of the QSB-R. QSB-R is created by totalwarANGEL.
-You may use and modify this file unter the terms of the MIT licence.
-(See https://en.wikipedia.org/wiki/MIT_License)
-]]
-
 -- -------------------------------------------------------------------------- --
 
 ---
@@ -111,23 +103,23 @@ GetPlayerName = API.GetPlayerName;
 -- <b>hinweis</b>: Die Änderung des Spielernamens betrifft sowohl die Anzeige
 -- bei den Quests als auch im Diplomatiemenü.
 --
--- @param[type=number] _playerID ID des Spielers
--- @param[type=string] _name Name des Spielers
+-- @param[type=number] _PlayerID ID des Spielers
+-- @param[type=string] _Name Name des Spielers
 -- @within Anwenderfunktionen
 --
-function API.SetPlayerName(_playerID,_name)
-    assert(type(_playerID) == "number");
-    assert(type(_name) == "string");
+function API.SetPlayerName(_PlayerID, _Name)
+    assert(type(_PlayerID) == "number");
+    assert(type(_Name) == "string");
     if not GUI then
         Logic.ExecuteInLuaLocalState(string.format(
             [[API.SetPlayerName(%d, "%s")]],
-            _playerID,
-            _name
+            _PlayerID,
+            _Name
         ));
         return;
     end
-    GUI_MissionStatistic.PlayerNames[_playerID] = _name
-    QSB.PlayerNames[_playerID] = _name;
+    GUI_MissionStatistic.PlayerNames[_PlayerID] = _Name
+    QSB.PlayerNames[_PlayerID] = _Name;
 end
 SetPlayerName = API.SetPlayerName;
 
@@ -319,16 +311,16 @@ end
 -- wenn es sich um eine deutsche Spielversion handelt. Andernfalls wird
 -- immer der englische Text verwendet.
 --
--- @param[type=string] _title        Titel des Tooltip
--- @param[type=string] _text         Text des Tooltip
--- @param[type=string] _disabledText Textzusatz wenn inaktiv
+-- @param[type=string] _Title        Titel des Tooltip
+-- @param[type=string] _Text         Text des Tooltip
+-- @param[type=string] _DisabledText Textzusatz wenn inaktiv
 -- @within Anwenderfunktionen
 --
-function API.SetTooltipNormal(_title, _text, _disabledText)
+function API.SetTooltipNormal(_Title, _Text, _DisabledText)
     if not GUI then
         return;
     end
-    ModuleGuiControl.Local:TooltipNormal(_title, _text, _disabledText);
+    ModuleGuiControl.Local:TooltipNormal(_Title, _Text, _DisabledText);
 end
 
 ---
@@ -339,18 +331,18 @@ end
 --
 -- @see API.SetTooltipNormal
 --
--- @param[type=string]  _title        Titel des Tooltip
--- @param[type=string]  _text         Text des Tooltip
--- @param[type=string]  _disabledText Textzusatz wenn inaktiv
--- @param[type=table]   _costs        Kostentabelle
--- @param[type=boolean] _inSettlement Kosten in Siedlung suchen
+-- @param[type=string]  _Title        Titel des Tooltip
+-- @param[type=string]  _Text         Text des Tooltip
+-- @param[type=string]  _DisabledText Textzusatz wenn inaktiv
+-- @param[type=table]   _Costs        Kostentabelle
+-- @param[type=boolean] _InSettlement Kosten in Siedlung suchen
 -- @within Anwenderfunktionen
 --
-function API.SetTooltipCosts(_title,_text,_disabledText,_costs,_inSettlement)
+function API.SetTooltipCosts(_Title, _Text, _DisabledText, _Costs, _InSettlement)
     if not GUI then
         return;
     end
-    ModuleGuiControl.Local:TooltipCosts(_title,_text,_disabledText,_costs,_inSettlement);
+    ModuleGuiControl.Local:TooltipCosts(_Title,_Text,_DisabledText,_Costs,_InSettlement);
 end
 
 ---

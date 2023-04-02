@@ -1,11 +1,3 @@
---[[
-Copyright (C) 2023 totalwarANGEL - All Rights Reserved.
-
-This file is part of the QSB-R. QSB-R is created by totalwarANGEL.
-You may use and modify this file unter the terms of the MIT licence.
-(See https://en.wikipedia.org/wiki/MIT_License)
-]]
-
 -- -------------------------------------------------------------------------- --
 
 ---
@@ -588,18 +580,18 @@ SetPosition = API.SetPosition;
 -- Das ist der Fall bei negativen Werten oder Werten, welche die Größe
 -- der Welt übersteigen.
 --
--- @param[type=table] _pos Positionstable {X= x, Y= y}
+-- @param[type=table] _Pos Positionstable {X= x, Y= y}
 -- @return[type=boolean] Position ist valide
 -- @within Position
 --
-function API.IsValidPosition(_pos)
-    if type(_pos) == "table" then
-        if (_pos.X ~= nil and type(_pos.X) == "number") and (_pos.Y ~= nil and type(_pos.Y) == "number") then
+function API.IsValidPosition(_Pos)
+    if type(_Pos) == "table" then
+        if (_Pos.X ~= nil and type(_Pos.X) == "number") and (_Pos.Y ~= nil and type(_Pos.Y) == "number") then
             local world = {Logic.WorldGetSize()};
-            if _pos.Z and _pos.Z < 0 then
+            if _Pos.Z and _Pos.Z < 0 then
                 return false;
             end
-            if _pos.X < world[1] and _pos.X > 0 and _pos.Y < world[2] and _pos.Y > 0 then
+            if _Pos.X < world[1] and _Pos.X > 0 and _Pos.Y < world[2] and _Pos.Y > 0 then
                 return true;
             end
         end
@@ -616,26 +608,26 @@ end
 --
 -- Wenn die Distanz nicht bestimmt werden kann, wird -1 zurückgegeben.
 --
--- @param _pos1 Erste Vergleichsposition (Skriptname, ID oder Positions-Table)
--- @param _pos2 Zweite Vergleichsposition (Skriptname, ID oder Positions-Table)
+-- @param _Pos1 Erste Vergleichsposition (Skriptname, ID oder Positions-Table)
+-- @param _Pos2 Zweite Vergleichsposition (Skriptname, ID oder Positions-Table)
 -- @return[type=number] Entfernung zwischen den Punkten
 -- @within Math
 -- @usage
 -- local Distance = API.GetDistance("HQ1", Logic.GetKnightID(1))
 --
-function API.GetDistance( _pos1, _pos2 )
-    if (type(_pos1) == "string") or (type(_pos1) == "number") then
-        _pos1 = API.GetPosition(_pos1);
+function API.GetDistance( _Pos1, _Pos2 )
+    if (type(_Pos1) == "string") or (type(_Pos1) == "number") then
+        _Pos1 = API.GetPosition(_Pos1);
     end
-    if (type(_pos2) == "string") or (type(_pos2) == "number") then
-        _pos2 = API.GetPosition(_pos2);
+    if (type(_Pos2) == "string") or (type(_Pos2) == "number") then
+        _Pos2 = API.GetPosition(_Pos2);
     end
-    if type(_pos1) ~= "table" or type(_pos2) ~= "table" then
+    if type(_Pos1) ~= "table" or type(_Pos2) ~= "table" then
         warn("API.GetDistance: Distance could not be calculated!");
         return -1;
     end
-    local xDistance = (_pos1.X - _pos2.X);
-    local yDistance = (_pos1.Y - _pos2.Y);
+    local xDistance = (_Pos1.X - _Pos2.X);
+    local yDistance = (_Pos1.Y - _Pos2.Y);
     return math.sqrt((xDistance^2) + (yDistance^2));
 end
 GetDistance = API.GetDistance;
