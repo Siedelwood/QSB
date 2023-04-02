@@ -15,6 +15,7 @@ jobs:
           echo Pushing QSB
           git config --global user.name 'Automated Generation'
           git config --global user.email 'automaticGen@users.noreply.github.com'
-          git commit -am "Automated Generation"
+          git add -A
+          git commit -m "Automated Generation"
           git push
           echo QSB done
