@@ -1,0 +1,13 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  my_job:
+    name: test echo
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Echotest
+        run: |
+          cd qsb/lua/tools
+          pwd
+          echo done
