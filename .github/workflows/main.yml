@@ -6,9 +6,15 @@ jobs:
     name: test echo
     runs-on: ubuntu-18.04
     steps:
-      - name: Echotest
-        run: |
-          pwd
-          ls -a
-          echo done with testing
-          cd ../qsb/lua/tools
+      - name: pwd output
+        run: pwd
+      - name: ls output
+        run: ls -a
+      - name: Done Outputs
+        run: echo done with testing
+      - name: Trying Change Directory
+        run: cd ..
+      - name: pwd output
+        run: pwd
+      - name: ls output
+        run: ls -a
