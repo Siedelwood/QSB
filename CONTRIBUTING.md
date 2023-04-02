@@ -82,4 +82,4 @@ The QSB has to active versions. There is the release version that is stable and 
 
 ## Windows
 
-The QSB can be developed on any system, though the came using it will only run on Windows.
+The QSB can be developed on any system, though the Game using it, The Settlers RoaE, will only run on Windows.
