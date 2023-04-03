@@ -8,9 +8,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  my_job:
+  buildJob:
     name: Creating QSB Release
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-20.040
+    env:
+     GH_TOKEN: ${{ github.token }}
     steps:
       - name: checkout repo
         uses: actions/checkout@v2.7.0
