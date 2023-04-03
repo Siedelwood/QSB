@@ -10,7 +10,7 @@ on:
 jobs:
   buildJob:
     name: Creating QSB Release
-    runs-on: ubuntu-20.040
+    runs-on: ubuntu-latest
     steps:
       - name: checkout repo
         uses: actions/checkout@v2.7.0
