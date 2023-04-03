@@ -22,10 +22,4 @@ jobs:
       - name: Make QSB-Zip for Release
         run: zip -r QSB_Release.zip qsb/lua/var/build
       - name: Git Release
-        uses: anton-yurchenko/git-release@v5.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_NAME: QSB-Release
-          ALLOW_EMPTY_CHANGELOG: "true"
-        with:
-          args: QSB_Release.zip
+        run: gh release create --latest --title "Test-Release" --notes "Test-Notes" "QSB_Release.zip"
