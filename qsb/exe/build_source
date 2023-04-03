@@ -20,14 +20,14 @@ for folder in *; do
             # create core qsb
             echo "build qsb"
             DESTINATION="../../var/build/qsb.lua"
-            find . -maxdepth 1 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -not -name "alias.lua" -type f -exec cat {} +> $DESTINATION
+            find . -maxdepth 1 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
             cat "behavior.lua" >> $DESTINATION
             cat "selfload.lua" >> $DESTINATION
         else
             # create module
             echo "build module ${folder}"
             DESTINATION="../../var/build/modules/${folder,,}.lua"
-            find . -maxdepth 1 -iname "*.lua" -not -name "alias.lua" -type f -exec cat {} +> $DESTINATION
+            find . -maxdepth 1 -iname "*.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
         fi
         cd ../
     fi 
@@ -36,7 +36,7 @@ done
 # create qsb with all modules
 echo "build qsb_all"
 DESTINATION="../var/build/qsb_all.lua"
-find . -maxdepth 2 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -not -name "alias.lua" -type f -exec cat {} +> $DESTINATION
+find . -maxdepth 2 -iname "*.lua" -not -name "behavior.lua" -not -name "selfload.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
 cat "QSB_0_Kernel/behavior.lua" >> $DESTINATION
 cat "QSB_0_Kernel/selfload.lua" >> $DESTINATION
 
