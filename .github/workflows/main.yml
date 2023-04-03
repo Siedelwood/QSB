@@ -21,7 +21,11 @@ jobs:
           echo QSB done
       - name: Make QSB-Zip for Release
         run: zip -r QSB_Release.zip qsb/lua/var/build
+      - name: Get Tag of Branch
+        run: echo "{ReleaseTag}=$(git describe -tags)" >> $GITHUB_ENV
       - name: Git Release
         env:
          GH_TOKEN: ${{ github.token }}
-        run: gh release create --latest --title "Test-Release" --notes "Test-Notes" "QSB_Release.zip"
+        run: |
+          gh release create ${{ env.ReleaseTag }} --latest --title "Test-Release" --notes "Test-Notes"
+          gh release upload ${{ env.ReleaseTag }} QSB_Release.zip
