@@ -11,8 +11,6 @@ jobs:
   buildJob:
     name: Creating QSB Release
     runs-on: ubuntu-20.040
-    env:
-     GH_TOKEN: ${{ github.token }}
     steps:
       - name: checkout repo
         uses: actions/checkout@v2.7.0
@@ -24,4 +22,6 @@ jobs:
       - name: Make QSB-Zip for Release
         run: zip -r QSB_Release.zip qsb/lua/var/build
       - name: Git Release
+        env:
+         GH_TOKEN: ${{ github.token }}
         run: gh release create --latest --title "Test-Release" --notes "Test-Notes" "QSB_Release.zip"
