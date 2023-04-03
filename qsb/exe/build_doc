@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# This shell script combines the source files into the qsb, the modules and the addons.
+# The output is copied to qsb/lua/var/build
+
+echo 'build QSB documentation'
