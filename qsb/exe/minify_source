@@ -14,24 +14,26 @@ cd qsb/lua/var/build
 
 # minify qsb
 echo 'minify QSB files'
-cp qsb.lua ../minified/qsb_min.lua
-cp qsb_all.lua ../minified/qsb_all_min.lua
-cp qsb_comp.lua ../minified/qsb_comp_min.lua
+lua ../lua/tools/luaminifier/CommandLineMinify.lua qsb.lua ../minified/qsb_min.lua
+lua ../lua/tools/luaminifier/CommandLineMinify.lua qsb_all.lua ../minified/qsb_all_min.lua
+lua ../lua/tools/luaminifier/CommandLineMinify.lua qsb_comp.lua ../minified/qsb_comp_min.lua
 
 # minify qsb modules
 echo 'minify module files'
 cd modules
-for file in *.lua do
-    cp "${file}" ../../minified/modules/"${file/_*/}".lua
+for file in *.lua; do
+    lua ../lua/tools/luaminifier/CommandLineMinify.lua "$file" "../../minified/modules/${file}"
 done
 cd ../
 
 # minify qsb addons
 echo 'minify addon files'
 cd addons
-for file in *.lua do
-    cp "${file}" ../../minified/addons/"${file/_*/}".lua
+for file in *.lua; do
+    lua ../lua/tools/luaminifier/CommandLineMinify.lua "$file" "../../minified/addons/${file}"
 done
 cd ../
 
 cd ../../../..
+
+echo 'QSB minified'
