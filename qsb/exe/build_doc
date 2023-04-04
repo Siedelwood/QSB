@@ -4,3 +4,13 @@
 # The output is copied to qsb/lua/var/build
 
 echo 'build QSB documentation'
+
+# create html documentation
+
+# create markdown documentation
+for file in *; do
+    if ! ([ -f "$file" ];) then
+        echo "create documentation for ${folder}"
+        # do something
+    fi 
+done

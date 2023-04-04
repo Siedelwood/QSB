@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# This shell script compiles the qsb files, the modules and the addons to improve load times.
+
+echo 'compile QSB'
+
+# create folder
+echo 'create destination directories'
+mkdir -p qsb/lua/var/bytecode/modules
+mkdir -p qsb/lua/var/bytecode/addons
+
+cd qsb/lua/var/minified
+
+# compile qsb
+echo 'compile QSB files'
+luac -o ../bytecode/qsb.luac qsb_min.lua
+luac -o ../bytecode/qsb_all.luac qsb_all_min.lua
+luac -o ../bytecode/qsb_comp.luac qsb_comp_min.lua
+
+# compile qsb modules
+echo 'compile module files'
+cd modules
+# TODO
+cd ../
+
+# compile qsb addons
+echo 'compile addon files'
+cd addons
+# TODO
+cd ../
+
+cd ../../../..

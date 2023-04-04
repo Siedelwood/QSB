@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# This shell script minifies the qsb files, the modules and the addons to use less disk space.
+# temporary only copy to mimic minifying
+
+echo 'minify QSB'
+
+# create folder
+echo 'create destination directories'
+mkdir -p qsb/lua/var/minified/modules
+mkdir -p qsb/lua/var/minified/addons
+
+cd qsb/lua/var/build
+
+# minify qsb
+echo 'minify QSB files'
+cp qsb.lua ../minified/qsb_min.lua
+cp qsb_all.lua ../minified/qsb_all_min.lua
+cp qsb_comp.lua ../minified/qsb_comp_min.lua
+
+# minify qsb modules
+echo 'minify module files'
+cd modules
+for file in *.lua do
+    cp "${file}" ../../minified/modules/"${file/_*/}".lua
+done
+cd ../
+
+# minify qsb addons
+echo 'minify addon files'
+cd addons
+for file in *.lua do
+    cp "${file}" ../../minified/addons/"${file/_*/}".lua
+done
+cd ../
+
+cd ../../../..

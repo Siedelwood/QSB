@@ -6,7 +6,7 @@
 echo 'build QSB'
 
 # create folder
-echo 'create destination directory'
+echo 'create destination directories'
 rm -rf qsb/lua/var &>/dev/null
 mkdir -p qsb/lua/var/build/modules
 mkdir -p qsb/lua/var/build/addons
