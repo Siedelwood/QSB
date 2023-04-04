@@ -17,30 +17,26 @@ jobs:
         uses: actions/checkout@v2.7.0
         
       - name: Create QSB-Scripts
-        run: |
-          echo Building QSB
-          bash qsb/exe/build_source
-          echo QSB done
+        run: bash qsb/exe/build_source
           
       - name: Install Lua
         uses: leafo/gh-actions-lua@v10
         with:
          luaVersion: "5.1.1"
       
+      #TODO: build-doc einfuegen
+      - name: Build Doc
+        run: bash qsb/exe/build_doc
+      
+      - name: Minify Lua Files
+        run: bash qsb/exe/minify_source
+      
       - name: Create Compiled LuaFiles
-        run: |
-         cd qsb/lua/var/build
-         luac -o qsb.luac qsb.lua
-         luac -o qsb_all.luac qsb_all.lua
-         luac -o qsb_comp.luac qsb_comp.lua
-         cd ../../../..
-         
-      - name: Make QSB-Zip for Release
-        run: zip -rj QSB_Release.zip qsb/lua/var/build
-        
-      #- name: Get Tag of Branch
-        #run: echo "{ReleaseTag}=$(git describe -tags)" >> $GITHUB_ENV
-        #run: echo '{ReleaseTag}={v0.1-alpha}' >> $GITHUB_ENV
+        run: bash qsb/exe/compile_source
+      
+      #TODO: ZIP richtig anlegen und Dateien aus den Verzeichnissen nehmen
+      #- name: Make QSB-Zip for Release
+      #  run: zip -rj QSB_Release.zip qsb/lua/var/build
         
       - name: Git Release
         env:
