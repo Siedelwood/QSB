@@ -12,20 +12,8 @@ Die Hier entwickelte QSB gibt es in drei Varianten:
 
 Um zu erfahren, wie du an der Entwicklung der QSB teilnehmen kannst schau dir gern unsere Seite zum [Mitmachen an der QSB](./CONTRIBUTING.md) an.
 
-### Dokumentation bauen
+Wenn du ein Addon für die QSB entwickeln willst, schau dir unser [QSB-Addon Tutorial](./qsb/lua/addons/readme.md) an.
 
-Damit die HTML-Dokumentation gebaut werden kann, wird der HTML-Parser von
-msva benötig. Dieser kann mittels LuaRocks installiert werden.
+# Die QSB selbst bauen
 
-```
-$ luarocks install htmlparser
-```
-
-Sollte das nicht funktionieren, kann der HTML-Parser auch direkt in das
-Bibliotheksverzeichnis geschoben werden. Der Lua Quellcode kann unter dem
-folgenden Link heruntergeladen werden:
-
-`https://github.com/msva/lua-htmlparser/tree/master/src`
-
-Der Inhalt des Ordners muss nach `lib\lua` im Installationsverzeichnis
-von Lua for Windows kopiert werden.
+Die QSB wird bei jeder veröffentlichten Version von uns gebaut und als release zur Verfügung gestellt. Wenn du gerne Dinge anpassen möchtest und deine Version bauen willst kannst du dir die [Bauanleitung](./qsb/exe/readme.md) ansehen.
