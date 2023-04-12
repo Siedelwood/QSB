@@ -2,7 +2,9 @@
 
 Jedes Addon erhält einen eigenen Ordner im Addons-Ordner der so benannt ist wie die Addon-Datei dann heißen soll.
 Entsprechend der Konvention der Module empfiehlt sich folgendes Muster:
+
 Addon_X_Template
+
 X ist hier eine Zahl die um eins höher sein sollte als bei Modulen die für dieses Addon benötigt werden damit alles funktioniert.
 
 ## Dateien
@@ -25,14 +27,14 @@ Die folgenden Erklärungen enthalten jeweils Teile des darin enthaltenen Codings
 Die Funktionen die der Mapper benutzen können soll, sollten mit einer ldoc Dokumentation versehen sein, sodass beim Bauen der Dokumentation diese automatisch hinzugefügt werden.
 Wie diese für eine Funktion aussehen sollte siehst du anhand des folgenden Beispiels:
 
-''' lua
+``` lua
 ---
 -- Doku Beispiel
 ---
 function API.Beispiel()
 
 end
-'''
+```
 
 ## Addontabelle
 
@@ -40,29 +42,29 @@ Dieser Abschnitt betrifft den Inhalt des Addons, welcher sich in der source.lua 
 Damit ein Addon auch geladen wird und in einer Map Funktionen anbieten kann müssen ein paar Voraussetzungen erfüllt sein.
 Zum einen sollte für das addon eine Tabelle definiert werden, welche  ihren Namen preisgibt und eine lokale und globale unter Tabelle enthält.
 
-''' lua
+``` lua
 Addon_Template = {
     Name = "Addon_Template",
     Global = {},
     Local = {},
 }
-'''
+```
 
 In den globalen und lokalen Tabellen werden jeweils die Teile des Codings eingefügt welche im globalen oder lokalen Script liegen sollen.
 Für beide gibt es die verpflichtende Funktion OnGameStart, welche zum Start des Spieles aufgerufen wird und die genutzt werden kann um alle Daten für das Addon zu initialen.
 Optionale Funktionen sind zB OnEvent.
 
-''' lua
+``` lua
 function Addon_Template.Global:OnGameStart()
     -- do initialization stuff
 end
-'''
+```
 
 Am Ende der Datei befindet sich folgender Aufruf, der dafür sorgt, dass die QSB dieses Addon lädt.
 
-''' lua
+``` lua
 Swift:LoadModule(Addon_Template)
-'''
+```
 
 ## Behaviors hinzufügen
 
