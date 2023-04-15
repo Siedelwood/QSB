@@ -6,6 +6,7 @@ Entsprechend der Konvention der Module empfiehlt sich folgendes Muster:
 Addon_X_Template
 
 X ist hier eine Zahl die um eins höher sein sollte als bei Modulen die für dieses Addon benötigt werden damit alles funktioniert.
+Alle folgenden Punkte können in dem genannten Ordner eingesehen werden wie diese zusammen zu einem Addon aufgebaut werden.
 
 ## Dateien
 
@@ -24,15 +25,27 @@ Die folgenden Erklärungen enthalten jeweils Teile des darin enthaltenen Codings
 
 ## Doku der Öffentlichen Schnittstelle
 
-Die Funktionen die der Mapper benutzen können soll, sollten mit einer ldoc Dokumentation versehen sein, sodass beim Bauen der Dokumentation diese automatisch hinzugefügt werden.
+Die Funktionen die der Mapper benutzen können soll (welche im Normalfall in der api.lua liegen), sollten mit einer ldoc Dokumentation versehen sein, sodass beim Bauen der Dokumentation diese automatisch hinzugefügt werden.
 Wie diese für eine Funktion aussehen sollte siehst du anhand des folgenden Beispiels:
 
 ``` lua
 ---
--- Doku Beispiel
----
-function API.Beispiel()
-
+-- Dies ist die Doku zu einer DemoFunktion
+--
+-- Die DemoFunktion kann eine Ausführliche Beschreibung enthalten. Was alles möglich ist sollte in der Dokumentation von ldoc nachgeschlagen werden.
+--
+-- Bei der Angabe von Parametern kann jeweils angegeben werden welchen Type diese haben sollten, diese Information kann aber auch weggelassen werden.
+--
+-- @param[type=number] _Parameter1 Ein Paramter
+-- @param[type=string] _Parameter2 (Optional) ein anderer Parameter
+-- @return[type=table] Liste mit Ergebnissen
+-- @within Anwenderfunktionen
+--
+-- @usage
+-- API.DemoFunktion(1, "_Parameter2")
+--
+function API.DemoFunktion(_Parameter1, _Parameter2)
+    ...
 end
 ```
 
@@ -44,8 +57,12 @@ Zum einen sollte für das addon eine Tabelle definiert werden, welche  ihren Nam
 
 ``` lua
 Addon_Template = {
-    Name = "Addon_Template",
+    Properties = {
+        Name = "Addon_Template",
+    },
+
     Global = {},
+
     Local = {},
 }
 ```
@@ -63,10 +80,29 @@ end
 Am Ende der Datei befindet sich folgender Aufruf, der dafür sorgt, dass die QSB dieses Addon lädt.
 
 ``` lua
-Swift:LoadModule(Addon_Template)
+Swift:RegisterModule(Addon_Template)
 ```
 
 ## Behaviors hinzufügen
 
-So können Quests hinzugefügt werden.
-Was sind die Funktionen und Strings die definiert werden sollen.
+Ein Behavior (üblicherweise sollte dieser in der behavior.lua abgelegt werden), also für eine Quest entweder ein Trigger, Reward, Reprisal oder Goal, ist eine Tabelle welche bestimmte Daten und Funktionen enthält.
+
+``` lua
+B_Reprisal_Useless = {
+    Name = "Reprisal_Useless",
+    Description = {
+        ...
+    },
+    Parameter = {
+        { ParameterType.PlayerID, en = "PlayerID", de = "SpielerID", fr = "PlayerID", },
+        ...
+    },
+}
+```
+Mehr Details zu den Funktionen die ein Behavior braucht und wie diese zu verwenden sind kann der Beispieldatei entnommen werden.
+
+Am Ende der Definition eines Behaviors muss dieses der QSB übergeben werden, sodass es für Quests zur Verfügung steht und im Questassistenten des Editors benutzt werden kann.
+
+``` lua
+Swift:RegisterBehavior(B_Reprisal_Useless)
+```
