@@ -13,7 +13,7 @@ Das Bauen der Dokumentation und hinzufügen einer kompilierten Version wird mit 
 
 # Technische Voraussetzungen
 
-Da die aufgelisteten Scripte bash Scripte sind muss die Voraussetzung diese laufen zu lassen gegeben sein.
-Auf Linux sollte das von vornerein gegen. Für Windows  sich eine kompatible Konsole zu installieren (bspw. Gitbash).
+Da die aufgelisteten Scripte bash Scripte sind muss es als Voraussetzung möglich sein diese laufen zu lassen.
+Auf Linux sollte das von vornerein gehen. Für Windows empfiehlt es sich eine kompatible Konsole zu installieren (bspw. Gitbash).
 
-Für alle Schritte außer dem Bauen der QSB ist eine lua Installation auf dem Rechner notwendig, da die Script intern lua Scripte ausführen.
+Für alle Schritte (außer dem Bauen der QSB) ist eine lua Installation auf dem Rechner notwendig, da die Bash-Scripte intern auch lua-Scripte ausführen.

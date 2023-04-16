@@ -1,7 +1,7 @@
 # Einleitung
 
-Dieses Projekt befasst sich mit der Questbibliothek QSB der Siedelwood-Community für das Spiel "DIE SIEDLER - Aufstieg eines Königreiches".
-Ziel ist es, allen Mappern der Community eine umfangreiche Sammlung an Quests und Funktionen anzubieten, die bei Fehlern zeitnah korrigiert werden und dabei möglichst beste Kompatibilität mit bisherigen damit entwickelten Maps bietet.
+Dieses Projekt befasst sich mit der Questbibliothek (QSB) der Siedelwood-Community für das Spiel "DIE SIEDLER - Aufstieg eines Königreiches".
+Ziel ist es allen Mappern der Community eine umfangreiche Sammlung an Quests und Funktionen anzubieten, die bei Fehlern zeitnah korrigiert werden und dabei möglichst beste Kompatibilität mit bisherigen damit entwickelten Maps bietet.
 
 Die Hier entwickelte QSB gibt es in drei Varianten:
 - die Kern-QSB (qsb.lua), in der nur die minimalsten Features enthalten sind bei der alle Module vom Mapper nach bedarf selbst hinzugeladen werden können.
@@ -10,10 +10,10 @@ Die Hier entwickelte QSB gibt es in drei Varianten:
 
 # Entwicklung
 
-Um zu erfahren, wie du an der Entwicklung der QSB teilnehmen kannst schau dir gern unsere Seite zum [Mitmachen an der QSB](./CONTRIBUTING.md) an.
+Wenn du ein Addon für die QSB entwickeln möchtest, schau dir unser [QSB-Addon Tutorial](./qsb/lua/addons/readme.md) an.
 
-Wenn du ein Addon für die QSB entwickeln willst, schau dir unser [QSB-Addon Tutorial](./qsb/lua/addons/readme.md) an.
+Um zu erfahren, wie du an der Entwicklung der QSB teilnehmen kannst schau dir gern unsere Seite zum [Mitmachen an der QSB](./CONTRIBUTING.md) an.
 
 # Die QSB selbst bauen
 
-Die QSB wird bei jeder veröffentlichten Version von uns gebaut und als release zur Verfügung gestellt. Wenn du gerne Dinge anpassen möchtest und deine Version bauen willst kannst du dir die [Bauanleitung](./qsb/exe/readme.md) ansehen.
+Die QSB wird bei jeder veröffentlichten Version von uns gebaut und als release zur Verfügung gestellt. Wenn du gerne Dinge anpassen möchtest und deine Version bauen möchtest kannst du dir die [Bauanleitung](./qsb/exe/readme.md) ansehen.
