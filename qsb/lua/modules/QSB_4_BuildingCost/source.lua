@@ -1081,14 +1081,14 @@ function ModuleBuildingCost.Local:OverwriteGetCostLogics()
 		self.Data.Original.GetEntityTypeFullCost = Logic.GetEntityTypeFullCost;
 	end
 	Logic.GetEntityTypeFullCost = function(_buildingType)
-		local OriginalCosts = self.Data.Original.GetEntityTypeFullCost(_buildingType)
-		local Costs = self:GetCostByCostTable(Logic.GetUpgradeCategoryByBuildingType(_buildingType))
-		if (Costs == nil or Costs == 0) then
-			return OriginalCosts
-		else
-			return OriginalCosts, Costs[1], Costs[2], Costs[3]
-		end
-	end
+        local Costs = self:GetCostByCostTable(Logic.GetUpgradeCategoryByBuildingType(_buildingType))
+        if (Costs == nil or Costs == 0) then
+            return self.Data.Original.GetEntityTypeFullCost(_buildingType);
+        else
+            local OriginalCosts = {self.Data.Original.GetEntityTypeFullCost(_buildingType)}
+            return OriginalCosts[1], Costs[1], Costs[2], Costs[3];
+        end
+    end
 
 	if self.Data.Original.GetCostForWall == nil then
 		self.Data.Original.GetCostForWall = Logic.GetCostForWall;
@@ -1450,7 +1450,6 @@ function ModuleBuildingCost.Local:InitializeBuildingCostSystem()
 	self:OverwriteEndScreenCallback()
 	self:FestivalCostsHandler()
 	self:OverwriteTooltipHandling()
-	self:OverwriteOptionalBugfixFunctions() --Not needed, just nice to have
 
 	self.Data.CurrentWallTypeForClimate = GetUpgradeCategoryForClimatezone("WallSegment")
 
@@ -1609,24 +1608,6 @@ function ModuleBuildingCost.Local:ResetWallTurretPositions()
 	
 	EndTurretX = 1
 	EndTurretY = 1
-end
-
-function ModuleBuildingCost.Local:OverwriteOptionalBugfixFunctions()
-	if self.Data.Original.BuildingNameUpdate == nil then
-		self.Data.Original.BuildingNameUpdate = GUI_BuildingInfo.BuildingNameUpdate;	
-	end
-	GUI_BuildingInfo.BuildingNameUpdate = function()
-		self.Data.Original.BuildingNameUpdate()
-		local CurrentWidgetID = XGUIEng.GetCurrentWidgetID()
-		if XGUIEng.GetText(CurrentWidgetID) == "{center}B_Cathedral_Big" then
-			local CurrentLanguage = Network.GetDesiredLanguage()
-			if CurrentLanguage == "de" then
-				XGUIEng.SetText(CurrentWidgetID, "{center}Kathedrale")
-			else
-				XGUIEng.SetText(CurrentWidgetID, "{center}Cathedral")
-			end
-		end
-	end
 end
 
 function ModuleBuildingCost.Local:FestivalCostsHandler()
