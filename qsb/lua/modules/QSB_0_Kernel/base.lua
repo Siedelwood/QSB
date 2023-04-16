@@ -435,6 +435,7 @@ end
 -- @field QuestSuccess     Ein Quest wurde erfolgreich abgeschlossen (Parameter: QuestID)
 -- @field QuestTrigger     Ein Quest wurde aktiviert (Parameter: QuestID)
 -- @field LoadscreenClosed Der Ladebildschirm wurde beendet.
+-- @field SaveGameLoaded   Der Spielstand wurde geladen.
 -- @within Event
 --
 QSB.ScriptEvents = QSB.ScriptEvents or {};
