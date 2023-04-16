@@ -563,7 +563,8 @@ function ModuleBuildingCost.Local:RemoveCostsFromOutStock(_upgradeCategory)
 
 		CurrentID = self:GetEntityIDToAddToOutStock(Costs[3])
 		if CurrentID == false then
-			BCS.RemoveCostsFromOutStockCityGoods(Costs[3], SAmountToRemove, PlayerID, self.Data.MarketplaceGoodsCount)
+			self:RemoveCostsFromOutStockCityGoods(Costs[3], SAmountToRemove, PlayerID, self.Data.MarketplaceGoodsCount)
+		else
 			local SGoodCurrentAmount = Logic.GetAmountOnOutStockByGoodType(CurrentID, Costs[3])
 			if SGoodCurrentAmount < SAmountToRemove then
 				GUI.RemoveGoodFromStock(CurrentID, Costs[3], SGoodCurrentAmount)
