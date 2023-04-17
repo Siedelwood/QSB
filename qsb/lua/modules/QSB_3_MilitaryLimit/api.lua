@@ -6,9 +6,7 @@
 --
 -- <b>Vorausgesetzte Module:</b>
 -- <ul>
--- <li><a href="Swift_1_EntityEventCore.api.html">(1) Entity Event Core</a></li>
--- <li><a href="Swift_1_InterfaceCore.api.html">(1) Interface Core</a></li>
--- <li><a href="Swift_1_JobsCore.api.html">(1) Jobs Core</a></li>
+-- <li><a href="qsb.html">(0) Basismodul</a></li>
 -- </ul>
 --
 -- @within Beschreibung
