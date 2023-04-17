@@ -66,8 +66,6 @@ qsb3/lua/mods/doc
 qsb3/Swift
 qsb/lua/core.lua
 tmp/
-var/
-var/build/
 qsb3/var/qsb/
 qsb/doc/html/
 */combined.lua
