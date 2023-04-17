@@ -7,7 +7,10 @@ echo 'build QSB documentation'
 
 # create folder
 echo 'create destination directories'
+rm -rf qsb/lua/var/build/doc &>/dev/null
+rm -rf qsb/lua/var/md_doc &>/dev/null
 mkdir -p qsb/lua/var/build/doc/temp/
+mkdir -p qsb/lua/var/md_doc/
 
 # create html documentation
 cd qsb/lua/tools
@@ -76,13 +79,40 @@ cp ../default/* ../var/build
 
 cd ../../../
 
+rm -rf qsb/lua/var/build/doc/temp &>/dev/null
+
 # create markdown documentation
-# for file in *; do
-#     if ! ([ -f "$file" ];) then
-#         echo "create documentation for ${folder}"
-#         # do something
-#     fi 
-# done
+cd qsb/lua/modules
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+
+        FILENAME="modules/${folder,,}.lua"
+        if [ $folder = "QSB_0_Kernel" ]; then
+            FILENAME="qsb.lua"
+        fi
+        lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/${FILENAME}.md" "../var/build/source/${FILENAME}" &>/dev/null
+
+        cd ../
+    fi
+done
+cd ../../../
+
+cd qsb/lua/addons
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+
+        FILENAME="addons/${folder,,}.lua"
+        if [ $folder = "Addon_X_Template" ]; then
+            FILENAME="qsb.lua"
+        fi
+        lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/${FILENAME}.md" "../var/build/source/${FILENAME}" &>/dev/null
+
+        cd ../
+    fi
+done
+cd ../../../
 
 
 # rm -rf qsb/lua/var/build/doc/temp &>/dev/null
