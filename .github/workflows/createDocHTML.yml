@@ -26,6 +26,9 @@ jobs:
       
       - name: Install lua-Penlight
         run: luarocks install penlight
+        
+      - name: Install lua-htmlparser
+        run: luarocks install htmlparser
       
       - name: Create Compiled LuaFiles
         run: bash qsb/exe/build_doc
