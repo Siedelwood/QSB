@@ -20,6 +20,12 @@ jobs:
         uses: leafo/gh-actions-lua@v10
         with:
          luaVersion: "5.1.1"
+         
+      - name: Install luaRocks
+        uses: leafo/gh-actions-luarocks@v4.3.0
+      
+      - name: Install lua-Penlight
+        run: luarocks install penlight
       
       - name: Create Compiled LuaFiles
         run: bash qsb/exe/build_doc
