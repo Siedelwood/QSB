@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/addons.addon_1_singlebuttons.html">addons.addon_1_singlebuttons</a></li>
+  <li><a href="../modules/modules.qsb_1_entity.html">modules.qsb_1_entity</a></li>
+  <li><a href="../modules/modules.qsb_1_guicontrol.html">modules.qsb_1_guicontrol</a></li>
+  <li><a href="../modules/modules.qsb_1_guieffects.html">modules.qsb_1_guieffects</a></li>
+  <li><a href="../modules/modules.qsb_1_movement.html">modules.qsb_1_movement</a></li>
+  <li><a href="../modules/modules.qsb_1_requester.html">modules.qsb_1_requester</a></li>
+  <li><a href="../modules/modules.qsb_1_sound.html">modules.qsb_1_sound</a></li>
+  <li><a href="../modules/modules.qsb_1_trade.html">modules.qsb_1_trade</a></li>
+  <li><a href="../modules/modules.qsb_2_buildingcost.html">modules.qsb_2_buildingcost</a></li>
+  <li><a href="../modules/modules.qsb_2_buildingui.html">modules.qsb_2_buildingui</a></li>
+  <li><a href="../modules/modules.qsb_2_buildrestriction.html">modules.qsb_2_buildrestriction</a></li>
+  <li><strong>modules.qsb_2_camera</strong></li>
+  <li><a href="../modules/modules.qsb_2_newbehavior.html">modules.qsb_2_newbehavior</a></li>
+  <li><a href="../modules/modules.qsb_2_npc.html">modules.qsb_2_npc</a></li>
+  <li><a href="../modules/modules.qsb_2_objects.html">modules.qsb_2_objects</a></li>
+  <li><a href="../modules/modules.qsb_2_promotion.html">modules.qsb_2_promotion</a></li>
+  <li><a href="../modules/modules.qsb_2_quest.html">modules.qsb_2_quest</a></li>
+  <li><a href="../modules/modules.qsb_2_selection.html">modules.qsb_2_selection</a></li>
+  <li><a href="../modules/modules.qsb_3_briefingsystem.html">modules.qsb_3_briefingsystem</a></li>
+  <li><a href="../modules/modules.qsb_3_cutscenesystem.html">modules.qsb_3_cutscenesystem</a></li>
+  <li><a href="../modules/modules.qsb_3_dialogsystem.html">modules.qsb_3_dialogsystem</a></li>
+  <li><a href="../modules/modules.qsb_3_lifestock.html">modules.qsb_3_lifestock</a></li>
+  <li><a href="../modules/modules.qsb_3_militarylimit.html">modules.qsb_3_militarylimit</a></li>
+  <li><a href="../modules/modules.qsb_3_traderoutes.html">modules.qsb_3_traderoutes</a></li>
+  <li><a href="../modules/modules.qsb_4_iomines.html">modules.qsb_4_iomines</a></li>
+  <li><a href="../modules/modules.qsb_4_iosites.html">modules.qsb_4_iosites</a></li>
+  <li><a href="../modules/modules.qsb_4_iotreasure.html">modules.qsb_4_iotreasure</a></li>
+  <li><a href="../modules/modules.qsb_4_questjournal.html">modules.qsb_4_questjournal</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>modules.qsb_2_camera</code></h1>
+<p>Stellt Funktionen für die RTS-Camera bereit.</p>
+<p>
+<p> <b>Vorausgesetzte Module:</b>
+ <ul>
+ <li><a href="qsb.html">(0) Basismodul</a></li>
+ <li><a href="modules.QSB_1_GuiControl.QSB_1_GuiControl.html">(1) Anzeigekontrolle</a></li>
+ <li><a href="modules.QSB_1_GuiEffects.QSB_1_GuiEffects.html">(1) Anzeigeeffekte</a></li>
+ </ul>
+</p>
+
+
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.AllowExtendedZoom">API.AllowExtendedZoom (_Flag)</a></td>
+	<td class="summary">Aktiviert oder deaktiviert den erweiterten Zoom.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.FocusCameraOnEntity">API.FocusCameraOnEntity (_Entity, _Rotation, _ZoomFactor)</a></td>
+	<td class="summary">Fokusiert die Kamera auf dem Entity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.FocusCameraOnKnight">API.FocusCameraOnKnight (_Player, _Rotation, _ZoomFactor)</a></td>
+	<td class="summary">Fokusiert die Kamera auf dem Primärritter des Spielers.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.AllowExtendedZoom"></a>
+    <strong>API.AllowExtendedZoom (_Flag)</strong>
+    </dt>
+    <dd>
+    Aktiviert oder deaktiviert den erweiterten Zoom.
+<p> Der maximale Zoom wird erweitert. Dabei entsteht eine fast völlige
+ Draufsicht. Dies kann nütztlich sein, wenn der Spieler ein größeres
+ Sichtfeld benötigt.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Erweiterter Zoom gestattet
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Erweitere Kamera einschalten
+</span>API.AllowExtendedZoom(<span class="keyword">true</span>);
+<span class="comment">-- Erweitere Kamera abschalten
+</span>API.AllowExtendedZoom(<span class="keyword">false</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.FocusCameraOnEntity"></a>
+    <strong>API.FocusCameraOnEntity (_Entity, _Rotation, _ZoomFactor)</strong>
+    </dt>
+    <dd>
+    Fokusiert die Kamera auf dem Entity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Entity</span>
+         Entity (Skriptname oder ID)
+        </li>
+        <li><span class="parameter">_Rotation</span>
+            <span class="types"><span class="type">number</span></span>
+         Kamerawinkel
+        </li>
+        <li><span class="parameter">_ZoomFactor</span>
+            <span class="types"><span class="type">number</span></span>
+         Zoomfaktor
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Zentriert die Kamera über dem Entity mit dem Skriptnamen "HansWurst".
+</span>API.FocusCameraOnKnight(<span class="string">"HansWurst"</span>, -<span class="number">45</span>, <span class="number">0.2</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.FocusCameraOnKnight"></a>
+    <strong>API.FocusCameraOnKnight (_Player, _Rotation, _ZoomFactor)</strong>
+    </dt>
+    <dd>
+    Fokusiert die Kamera auf dem Primärritter des Spielers.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Player</span>
+            <span class="types"><span class="type">number</span></span>
+         Partei
+        </li>
+        <li><span class="parameter">_Rotation</span>
+            <span class="types"><span class="type">number</span></span>
+         Kamerawinkel
+        </li>
+        <li><span class="parameter">_ZoomFactor</span>
+            <span class="types"><span class="type">number</span></span>
+         Zoomfaktor
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Zentriert die Kamera über den Helden von Spieler 3.
+</span>API.FocusCameraOnKnight(<span class="number">3</span>, <span class="number">90</span>, <span class="number">0.5</span>);</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-04-17 13:43:22 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>
