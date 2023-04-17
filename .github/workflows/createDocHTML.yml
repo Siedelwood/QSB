@@ -22,7 +22,7 @@ jobs:
          luaVersion: "5.1.1"
       
       - name: Create Compiled LuaFiles
-        run: bash /qsb/exe/build_doc
+        run: bash qsb/exe/build_doc
                   
       - name: Push Result
         run: |
