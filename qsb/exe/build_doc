@@ -11,9 +11,9 @@ mkdir -p qsb/lua/var/build/doc/temp/
 
 # create html documentation
 cd qsb/lua/tools
-cp docbuilderstart.txt ../var/build/doc/temp/docbuilder.lua
-cp docbuilderstart.txt ../var/build/doc/temp/docbuilderstart.txt
-cp docbuilderend.txt ../var/build/doc/temp/docbuilderend.txt
+cp docbuilderStart.txt ../var/build/doc/temp/docbuilder.lua
+cp docbuilderStart.txt ../var/build/doc/temp/docbuilderStart.txt
+cp docbuilderEnd.txt ../var/build/doc/temp/docbuilderEnd.txt
 cd ../../../
 
 cd qsb/lua/modules
@@ -52,7 +52,7 @@ done
 cd ../../../
 
 cd qsb/lua/var/build/doc/temp
-cat "docbuilderend.txt" >> "docbuilder.lua"
+cat "docbuilderEnd.txt" >> "docbuilder.lua"
 cd ../../../../../../
 
 cd qsb/lua/tools
@@ -60,7 +60,7 @@ mv ../var/build/source/qsb_all.lua ../var/qsb_all.lua
 mv ../var/build/source/qsb_comp.lua ../var/qsb_comp.lua
 
 # builds the documentations of the single modules
-lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/ &>/dev/null
+lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/
 
 mv ../var/qsb_all.lua ../var/build/source/qsb_all.lua
 mv ../var/qsb_comp.lua ../var/build/source/qsb_comp.lua
