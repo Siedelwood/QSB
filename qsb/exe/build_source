@@ -37,7 +37,7 @@ done
 echo "build qsb_all"
 DESTINATION="../var/build/source/qsb_all.lua"
 find . -maxdepth 2 -iname "*.lua" -not -name "corebehavior.lua" -not -name "selfload.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
-cat "QSB_0_Kernel/behavior.lua" >> $DESTINATION
+cat "QSB_0_Kernel/corebehavior.lua" >> $DESTINATION
 cat "QSB_0_Kernel/selfload.lua" >> $DESTINATION
 
 # create qsb with all modules and compatibility features

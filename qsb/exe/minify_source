@@ -10,19 +10,19 @@ echo 'create destination directories'
 mkdir -p qsb/lua/var/minified/modules
 mkdir -p qsb/lua/var/minified/addons
 
-cd qsb/lua/var/build
+cd qsb/lua/var/build/source
 
 # minify qsb
 echo 'minify QSB files'
-lua ../lua/tools/luaminifier/CommandLineMinify.lua qsb.lua ../minified/qsb_min.lua
-lua ../lua/tools/luaminifier/CommandLineMinify.lua qsb_all.lua ../minified/qsb_all_min.lua
-lua ../lua/tools/luaminifier/CommandLineMinify.lua qsb_comp.lua ../minified/qsb_comp_min.lua
+lua ../../lua/tools/luaminifier/CommandLineMinify.lua qsb.lua ../../minified/qsb_min.lua
+lua ../../lua/tools/luaminifier/CommandLineMinify.lua qsb_all.lua ../../minified/qsb_all_min.lua
+lua ../../lua/tools/luaminifier/CommandLineMinify.lua qsb_comp.lua ../../minified/qsb_comp_min.lua
 
 # minify qsb modules
 echo 'minify module files'
 cd modules
 for file in *.lua; do
-    lua ../lua/tools/luaminifier/CommandLineMinify.lua "$file" "../../minified/modules/${file}"
+    lua ../../lua/tools/luaminifier/CommandLineMinify.lua "$file" "../../../minified/modules/${file}"
 done
 cd ../
 
@@ -30,10 +30,10 @@ cd ../
 echo 'minify addon files'
 cd addons
 for file in *.lua; do
-    lua ../lua/tools/luaminifier/CommandLineMinify.lua "$file" "../../minified/addons/${file}"
+    lua ../../lua/tools/luaminifier/CommandLineMinify.lua "$file" "../../../minified/addons/${file}"
 done
 cd ../
 
-cd ../../../..
+cd ../../../../..
 
 echo 'QSB minified'
