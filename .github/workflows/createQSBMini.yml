@@ -22,7 +22,7 @@ jobs:
          luaVersion: "5.1.1"
       
       - name: Create Compiled LuaFiles
-        run: bash /qsb/exe/minify_source
+        run: bash qsb/exe/minify_source
                   
       - name: Push Result
         run: |
