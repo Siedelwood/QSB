@@ -17,6 +17,7 @@ Addon_SingleButtons = {
                 SingleReserve = nil,
                 SingleKnockDown = nil,
             },
+            DowngradeCosts = 0,
         },
     },
 }
@@ -40,15 +41,12 @@ function Addon_SingleButtons.Local:AddSingleStopButton()
             local IsStopped = Logic.IsBuildingStopped(_EntityID)
             GUI.SetStoppedState(_EntityID, not IsStopped)
         end,
-        function(WidgetID, EntityID)
+        function(_WidgetID, _EntityID)
             local Title = "Produktion anhalten"
-            local Text = "- Gebäude produziert keine Waren {cr}- Siedler "..
-                         " verbrauchen keine Güter {cr}- Bedürfnisse müssen "..
-                         " nicht erfüllt werden"
+            local Text = "- Gebäude produziert keine Waren {cr}- Siedler verbrauchen keine Güter {cr}- Bedürfnisse müssen nicht erfüllt werden"
             if Logic.IsBuildingStopped(_EntityID) then
                 Title = "Produktion fortführen";
-                Text = "- Gebäude produziert Waren {cr}- Siedler verbrauchen"..
-                       " Güter {cr}- Bedürfnisse müssen erfüllt werden"
+                Text = "- Gebäude produziert Waren {cr}- Siedler verbrauchen Güter {cr}- Bedürfnisse müssen erfüllt werden"
             end
             API.SetTooltipCosts(Title, Text)
         end,
@@ -108,21 +106,22 @@ function Addon_SingleButtons.Local:AddSingleDowngradeButton()
         return
     end
     self.Data.Button.SingleKnockDown = API.AddBuildingButton(
+        -- TODO: refactor in a way that the Button cannot be clicked when the downgradecosts are too high
         function(_WidgetID, _BuildingID)
             local CastleID = Logic.GetHeadquarters(GUI.GetPlayerID())
-            if Logic.GetAmountOnOutStockByGoodType(CastleID, Goods.G_Gold) >= USDowngradeCost then
-                GUI.RemoveGoodFromStock(CastleID, Goods.G_Gold, USDowngradeCost)
+            if Logic.GetAmountOnOutStockByGoodType(CastleID, Goods.G_Gold) >= self.Data.DowngradeCosts then
+                GUI.RemoveGoodFromStock(CastleID, Goods.G_Gold, self.Data.DowngradeCosts)
                 local Health = Logic.GetEntityHealth(_BuildingID)
                 local MaxHealth = Logic.GetEntityMaxHealth(_BuildingID)
                 GUI.SendScriptCommand("Logic.HurtEntity(".._BuildingID..", ("..Health.." - ("..MaxHealth.."/2)))")
                 Sound.FXPlay2DSound("ui\\menu_click")
                 GUI.DeselectEntity(_BuildingID)
             else
-                Message("Nicht genug Gold!")
+                API.Message("Nicht genug Gold!")
             end
         end,
         function(_WidgetID, _BuildingID)
-            API.SetTooltipCosts("Rückbau", "- Baut das Gebäude um eine Stufe zurück!", "Momentan nicht möglich", {Goods.G_Gold, USDowngradeCost})
+            API.SetTooltipCosts("Rückbau", "- Baut das Gebäude um eine Stufe zurück!", "Momentan nicht möglich", {Goods.G_Gold, self.Data.DowngradeCosts})
         end,
         function(_WidgetID, _BuildingID)
             local ID01 = Logic.IsEntityInCategory(_BuildingID, EntityCategories.CityBuilding)
@@ -136,7 +135,7 @@ function Addon_SingleButtons.Local:AddSingleDowngradeButton()
                 XGUIEng.ShowWidget(_WidgetID, 1)
                 SetIcon(_WidgetID, {3, 15})
             else
-                XGUIEng.ShowWidget(_WidgetID, 0)        
+                XGUIEng.ShowWidget(_WidgetID, 0)
             end
         end
     );

@@ -14,6 +14,7 @@
 --
 
 API = API or {}
+-- TODO: Make global Compatible
 
 ---
 -- Aktiviert oder deaktiviert die Single Stop Buttons. Single Stop ermöglicht
@@ -82,4 +83,21 @@ function API.UseDowngrade(_Flag)
     else
         Addon_SingleButtons.Local:DropSingleDowngradeButton()
     end
+end
+
+---
+-- Setze die Kosten für den Rückbau von Gebäuden
+--
+-- @param[type=number] _Amount Setze Kosten für den Rückbau von Gebäuden
+-- @within Anwenderfunktionen
+-- @see API.AddBuildingButton
+--
+-- @usage
+-- -- Downgrade Kosten auf 50 Gold setzen
+-- API.SetDowngradeCosts(50)
+-- -- Downgrade Kosten zurücksetzen
+-- API.SetDowngradeCosts(0)
+--
+function API.SetDowngradeCosts(_Amount)
+    -- TODO: Implement
 end
