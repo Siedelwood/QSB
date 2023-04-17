@@ -31,7 +31,7 @@ for folder in *; do
         echo "{\"${FILENAME}\", \"${TITLE}\"}," >> $DESTINATION
 
         cd ../
-    fi 
+    fi
 done
 cd ../../../
 
@@ -39,16 +39,15 @@ cd qsb/lua/var/build/doc/temp
 cat "docbuilderend.txt" >> "docbuilder.lua"
 cd ../../../../../../
 
-# TODO: call docbuilder with right parameters
-# cd qsb/lua/tools
-# lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/ &>/dev/null
-# lua docbuilder.lua
-# rm -rf ../var/build/doc/js
-# cp -r ../../templates/js ../var/build/doc
-# rm -rf ../var/build/doc/css
-# cp -r ../../templates/css ../var/build/doc
-# cp ../default/* ../var/build
-# cd ../../../
+cd qsb/lua/tools
+lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/ &>/dev/null
+lua ../var/build/doc/temp/docbuilder.lua
+rm -rf ../var/build/doc/js
+cp -r ../../templates/js ../var/build/doc
+rm -rf ../var/build/doc/css
+cp -r ../../templates/css ../var/build/doc
+cp ../default/* ../var/build
+cd ../../../
 
 # create markdown documentation
 # for file in *; do
