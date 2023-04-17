@@ -1,0 +1,33 @@
+          #git config --global user.name 'Automatic Action'
+          #git config --global user.email 'automaticAction@users.noreply.github.com'
+          #git add -A
+          #git commit -m "Automated Generation"
+          #git push
+
+on:
+  workflow_dispatch:
+
+jobs:
+  buildJob:
+    name: Creating QSB Release
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: checkout repo
+        uses: actions/checkout@v2.7.0
+        
+      - name: Install Lua
+        uses: leafo/gh-actions-lua@v10
+        with:
+         luaVersion: "5.1.1"
+      
+      - name: Create Compiled LuaFiles
+        run: bash /qsb/exe/minify_source
+                  
+      - name: Push Result
+        run: |
+          git config --global user.name 'Automatic Action'
+          git config --global user.email 'automaticAction@users.noreply.github.com'
+          git add -A
+          git commit -m "Automated Generation"
+          git push
