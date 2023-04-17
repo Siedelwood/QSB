@@ -1,0 +1,90 @@
+#!/bin/bash
+
+# This shell script combines the source files into the qsb, the modules and the addons.
+# The output is copied to qsb/lua/var/build
+
+echo 'build QSB documentation'
+
+# create folder
+echo 'create destination directories'
+mkdir -p qsb/lua/var/build/doc/temp/
+
+# create html documentation
+cd qsb/lua/tools
+cp docbuilderstart.txt ../var/build/doc/temp/docbuilder.lua
+cp docbuilderstart.txt ../var/build/doc/temp/docbuilderstart.txt
+cp docbuilderend.txt ../var/build/doc/temp/docbuilderend.txt
+cd ../../../
+
+cd qsb/lua/modules
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+
+        DESTINATION="../../var/build/doc/temp/docbuilder.lua"
+        FILENAME="modules/${folder,,}.lua"
+        if [ $folder = "QSB_0_Kernel" ]; then
+            FILENAME="qsb.lua"
+        fi
+        TITLE=$(head -n 1 title.txt)
+        echo "{\"${FILENAME}\", \"${TITLE}\"}," >> $DESTINATION
+
+        cd ../
+    fi
+done
+cd ../../../
+
+cd qsb/lua/addons
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+
+        DESTINATION="../../var/build/doc/temp/docbuilder.lua"
+        FILENAME="addons/${folder,,}.lua"
+        if ! ([ $folder = "Addon_X_Template" ];) then
+            TITLE=$(head -n 1 title.txt)
+            echo "{\"${FILENAME}\", \"${TITLE}\"}," >> $DESTINATION
+        fi
+
+        cd ../
+    fi
+done
+cd ../../../
+
+cd qsb/lua/var/build/doc/temp
+cat "docbuilderend.txt" >> "docbuilder.lua"
+cd ../../../../../../
+
+cd qsb/lua/tools
+mv ../var/build/source/qsb_all.lua ../var/qsb_all.lua
+mv ../var/build/source/qsb_comp.lua ../var/qsb_comp.lua
+
+# builds the documentations of the single modules
+lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/ &>/dev/null
+
+mv ../var/qsb_all.lua ../var/build/source/qsb_all.lua
+mv ../var/qsb_comp.lua ../var/build/source/qsb_comp.lua
+
+# builds the documentation stat page
+lua ../var/build/doc/temp/docbuilder.lua
+
+rm -rf ../var/build/doc/js
+cp -r ../../templates/js ../var/build/doc
+rm -rf ../var/build/doc/css
+cp -r ../../templates/css ../var/build/doc
+cp ../default/* ../var/build
+
+cd ../../../
+
+# create markdown documentation
+# for file in *; do
+#     if ! ([ -f "$file" ];) then
+#         echo "create documentation for ${folder}"
+#         # do something
+#     fi 
+# done
+
+
+# rm -rf qsb/lua/var/build/doc/temp &>/dev/null
+
+echo 'documentation ready'
