@@ -148,6 +148,11 @@ function Addon_SingleButtons.Local:DropSingleDowngradeButton()
     end
 end
 
+
+function Addon_SingleButtons.Local:SetDowngradeCosts(_Amount)
+    self.Data.DowngradeCosts = _Amount
+end
+
 -- -------------------------------------------------------------------------- --
 
 Swift:RegisterModule(Addon_SingleButtons)
