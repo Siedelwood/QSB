@@ -15,7 +15,6 @@ mkdir -p qsb/lua/var/md_doc/
 # create html documentation
 cd qsb/lua/tools
 cp docbuilderstart.txt ../var/build/doc/temp/docbuilder.lua
-cp docbuilderstart.txt ../var/build/doc/temp/docbuilderstart.txt
 cp docbuilderend.txt ../var/build/doc/temp/docbuilderend.txt
 cd ../../../
 
@@ -113,8 +112,5 @@ for folder in *; do
     fi
 done
 cd ../../../
-
-
-# rm -rf qsb/lua/var/build/doc/temp &>/dev/null
 
 echo 'documentation ready'
