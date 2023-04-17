@@ -5,14 +5,60 @@
 
 echo 'build QSB documentation'
 
-# create html documentation
+# create folder
+echo 'create destination directories'
+mkdir -p qsb/lua/var/build/doc/temp/
 
-# create markdown documentation
-for file in *; do
-    if ! ([ -f "$file" ];) then
-        echo "create documentation for ${folder}"
-        # do something
+# create html documentation
+cd qsb/lua/tools
+cp docbuilderstart.txt ../var/build/doc/temp/docbuilder.lua
+cp docbuilderstart.txt ../var/build/doc/temp/docbuilderstart.txt
+cp docbuilderend.txt ../var/build/doc/temp/docbuilderend.txt
+cd ../../../
+
+cd qsb/lua/modules
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+
+        # create module
+        DESTINATION="../../var/build/doc/temp/docbuilder.lua"
+        FILENAME="modules/${folder,,}.lua"
+        if [ $folder = "QSB_0_Kernel" ]; then
+            FILENAME="qsb.lua"
+        fi
+        TITLE=$(head -n 1 title.txt)
+        echo "{\"${FILENAME}\", \"${TITLE}\"}," >> $DESTINATION
+
+        cd ../
     fi 
 done
+cd ../../../
+
+cd qsb/lua/var/build/doc/temp
+cat "docbuilderend.txt" >> "docbuilder.lua"
+cd ../../../../../../
+
+# TODO: call docbuilder with right parameters
+# cd qsb/lua/tools
+# lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/ &>/dev/null
+# lua docbuilder.lua
+# rm -rf ../var/build/doc/js
+# cp -r ../../templates/js ../var/build/doc
+# rm -rf ../var/build/doc/css
+# cp -r ../../templates/css ../var/build/doc
+# cp ../default/* ../var/build
+# cd ../../../
+
+# create markdown documentation
+# for file in *; do
+#     if ! ([ -f "$file" ];) then
+#         echo "create documentation for ${folder}"
+#         # do something
+#     fi 
+# done
+
+
+# rm -rf qsb/lua/var/build/doc/temp &>/dev/null
 
 echo 'documentation ready'
