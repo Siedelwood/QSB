@@ -138,9 +138,12 @@ function ModuleBuildingCost.Local:OnGameStart()
 	-- BuildingCosts
 	self:InitializeBuildingCostSystem()
 	self:AddBuildingCostScriptEvents()
-	API.AddScriptEventListener(QSB.ScriptEvents.SaveGameLoaded, function()
+end
+
+function ModuleBuildingCost.Local:OnEvent(_ID, ...)
+    if _ID == QSB.ScriptEvents.SaveGameLoaded then
         self:InitializeBuildingCostSystem()
-    end)
+    end
 end
 
 function ModuleBuildingCost.Local:SetHakimUpgradeDiscount(_Discount)

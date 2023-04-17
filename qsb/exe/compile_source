@@ -6,22 +6,22 @@ echo 'compile QSB'
 
 # create folder
 echo 'create destination directories'
-mkdir -p qsb/lua/var/bytecode/modules
-mkdir -p qsb/lua/var/bytecode/addons
+mkdir -p qsb/lua/var/source/bytecode/modules
+mkdir -p qsb/lua/var/source/bytecode/addons
 
 cd qsb/lua/var/minified
 
 # compile qsb
 echo 'compile QSB files'
-luac -o ../bytecode/qsb.luac qsb_min.lua
-luac -o ../bytecode/qsb_all.luac qsb_all_min.lua
-luac -o ../bytecode/qsb_comp.luac qsb_comp_min.lua
+luac -o ../source/bytecode/qsb.luac qsb_min.lua
+luac -o ../source/bytecode/qsb_all.luac qsb_all_min.lua
+luac -o ../source/bytecode/qsb_comp.luac qsb_comp_min.lua
 
 # compile qsb modules
 echo 'compile module files'
 cd modules
 for file in *.lua; do
-    luac -o "../../bytecode/modules/${file/.lua/.luac}" "$file"
+    luac -o "../../source/bytecode/modules/${file/.lua/.luac}" "$file"
 done
 cd ../
 
@@ -29,7 +29,7 @@ cd ../
 echo 'compile addon files'
 cd addons
 for file in *.lua; do
-    luac -o "../../bytecode/addons/${file/.lua/.luac}" "$file"
+    luac -o "../../source/bytecode/addons/${file/.lua/.luac}" "$file"
 done
 cd ../
 
