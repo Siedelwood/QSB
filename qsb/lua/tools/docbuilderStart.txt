@@ -1,0 +1,5 @@
+local htmlparser = require("htmlparser");
+
+-- -------------------------------------------------------------------------- --
+
+QsbDoc_FileList = {
