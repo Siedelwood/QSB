@@ -59,6 +59,10 @@ for folder in *; do
         fi
     fi 
 done
-
 cd ../../../
+
+# Copy default files
+echo "copy default files"
+cp qsb/lua/default/* qsb/lua/var/build
+
 echo "QSB ready"

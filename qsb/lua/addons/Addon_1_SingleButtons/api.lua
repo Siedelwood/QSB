@@ -10,6 +10,7 @@
 --
 -- @within Modulbeschreibung
 -- @set sort=true
+-- @author EisenMonoxid, totalwarANGEL, Jelumar
 --
 
 API = API or {}
