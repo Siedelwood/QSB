@@ -8,8 +8,6 @@
 --
 -- @within Reward
 --
--- -------------------------------------------------------------------------- --
-
 function Reward_ToggleCommunityFeatures(...)
     return b_Reward_ToggleCommunityFeatures:new(...);
 end
@@ -85,8 +83,6 @@ Swift:RegisterBehavior(b_Reward_ToggleCommunityFeatures);
 --
 -- @within Reward
 --
--- -------------------------------------------------------------------------- --
-
 function Reward_EditBuildingConstructionCosts(...)
     return b_Reward_EditBuildingConstructionCosts:new(...);
 end
