@@ -116,10 +116,10 @@ for folder in *; do
         cd $folder
 
         FILENAME="modules/${folder,,}.lua"
-        if [ $folder = "QSB_0_Kernel" ]; then
-            FILENAME="qsb.lua"
+        MDNAME="${folder,,}"
+        if ! ( [ $folder = "QSB_0_Kernel" ]; ) then
+            lua ../../../exe/tools/ldoc/ldoc.lua -d ../../var/md_doc/ -o $MDNAME -v -f markdown -x "md" "../../var/build/source/${FILENAME}" #&>/dev/null
         fi
-        lua ../../../exe/tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../../var/build/source/${FILENAME}" #&>/dev/null
 
         cd ../
     fi
