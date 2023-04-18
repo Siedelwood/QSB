@@ -121,7 +121,7 @@ for folder in *; do
         cd $folder
 
         FILENAME="addons/${folder,,}.lua"
-        if [ $folder = "Addon_X_Template" ]; then
+        if [ $folder = "QSB_X_Addon_X_Template" ]; then
             FILENAME="qsb.lua"
         fi
         lua ../../tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../var/../build/source/${FILENAME}" #&>/dev/null
