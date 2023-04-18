@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Bietet erweiterte Möglichkeiten mit Jobs erweitern.
 -- @set sort=true
 -- @local
@@ -386,7 +386,7 @@ end
 
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Eine Sammlung von nützlichen Hilfsfunktionen.
 -- @set sort=true
 -- @local
@@ -498,11 +498,10 @@ end
 --
 -- @param[type=boolean] _Name  Name der Custom Variable
 -- @param               _Value Neuer Wert
--- @within System
--- @local
+-- @within Intern
 --
 -- @usage
--- local Value = API.ObtainCustomVariable("MyVariable", 0);
+-- API.SaveCustomVariable("MyVariable", 0);
 --
 function API.SaveCustomVariable(_Name, _Value)
     Swift.Utils:SetCustomVariable(_Name, _Value);
@@ -513,8 +512,7 @@ end
 -- @param[type=boolean] _Name    Name der Custom Variable
 -- @param               _Default (Optional) Defaultwert falls leer
 -- @return Wert
--- @within System
--- @local
+-- @within Intern
 --
 -- @usage
 -- local Value = API.ObtainCustomVariable("MyVariable", 0);
@@ -573,7 +571,6 @@ ReplaceEntity = API.ReplaceEntity;
 -- @param               _Entity Entity (Scriptname oder ID)
 -- @param[type=boolean] _Flag Verwundbar
 -- @within Entity
--- @local
 --
 function API.SetEntityVulnerableFlag(_Entity, _Flag)
     if GUI then
@@ -839,7 +836,6 @@ QSB.PossibleSettlerTypes = {
 --
 -- @return[type=number] Zufälliger Typ
 -- @within Entity
--- @local
 --
 function API.GetRandomSettlerType()
     local Gender = (math.random(1, 2) == 1 and "Male") or "Female";
@@ -853,7 +849,6 @@ end
 --
 -- @return[type=number] Zufälliger Typ
 -- @within Entity
--- @local
 --
 function API.GetRandomMaleSettlerType()
     local Type = math.random(1, #QSB.PossibleSettlerTypes.Male);
@@ -866,7 +861,6 @@ end
 --
 -- @return[type=number] Zufälliger Typ
 -- @within Entity
--- @local
 --
 function API.GetRandomFemaleSettlerType()
     local Type = math.random(1, #QSB.PossibleSettlerTypes.Female);
@@ -1390,7 +1384,7 @@ InteractiveObjectDeactivate = API.InteractiveObjectDeactivate;
 
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Interne Funktionalität zum Schreiben von Ausgaben ins Log.
 --
 -- @set sort=true
@@ -1512,8 +1506,7 @@ end
 --
 -- @param[type=number] _ScreenLogLevel Level für Bildschirmausgabe
 -- @param[type=number] _FileLogLevel   Level für Dateiausgaabe
--- @within Base
--- @local
+-- @within Entwicklung
 --
 -- @usage
 -- API.SetLogLevel(QSB.LogLevel.ERROR, QSB.LogLevel.WARNING);
@@ -2337,7 +2330,7 @@ end
 -- -------------------------------------------------------------------------- --
 -- API
 
----
+--
 -- Installiert Swift.
 --
 -- @within Base
@@ -2509,7 +2502,7 @@ end
 
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Grundlegende Steuerung von Quests mittels Funktionen und Events.
 -- @set sort=true
 -- @local
@@ -2848,2252 +2841,7 @@ end
 
 -- -------------------------------------------------------------------------- --
 
----
--- Kommunikation von Komponenten über Events aus dem Skript.
 --
--- @set sort=true
--- @local
---
-
-Swift.Event = {
-    ScriptEventRegister   = {};
-    ScriptEventListener   = {};
-    ScriptCommandRegister = {};
-};
-
-QSB.ScriptCommandSequence = 2;
-QSB.ScriptCommands = {};
-QSB.ScriptEvents = {};
-
-function Swift.Event:Initalize()
-    self:OverrideSoldierPayment();
-    if Swift.Environment == QSB.Environment.GLOBAL then
-        self:CreateScriptCommand("Cmd_SendScriptEvent", function(_Event, ...)
-            assert(QSB.ScriptEvents[_Event] ~= nil);
-            API.SendScriptEvent(QSB.ScriptEvents[_Event], unpack(arg));
-        end);
-    end
-end
-
-function Swift.Event:OnSaveGameLoaded()
-end
-
--- -------------------------------------------------------------------------- --
--- Script Commands
-
-function Swift.Event:OverrideSoldierPayment()
-    GameCallback_SetSoldierPaymentLevel_Orig_Swift = GameCallback_SetSoldierPaymentLevel;
-    GameCallback_SetSoldierPaymentLevel = function(_PlayerID, _Level)
-        if _Level <= 2 then
-            return GameCallback_SetSoldierPaymentLevel_Orig_Swift(_PlayerID, _Level);
-        end
-        Swift.Event:ProcessScriptCommand(_PlayerID, _Level);
-    end
-end
-
-function Swift.Event:CreateScriptCommand(_Name, _Function)
-    if Swift.Environment == QSB.Environment.LOCAL then
-        return 0;
-    end
-    QSB.ScriptCommandSequence = QSB.ScriptCommandSequence +1;
-    local ID = QSB.ScriptCommandSequence;
-    local Name = _Name;
-    if string.find(_Name, "^Cmd_") then
-        Name = string.sub(_Name, 5);
-    end
-    self.ScriptCommandRegister[ID] = {Name, _Function};
-    Logic.ExecuteInLuaLocalState(string.format(
-        [[
-            local ID = %d
-            local Name = "%s"
-            Swift.Event.ScriptCommandRegister[ID] = Name
-            QSB.ScriptCommands[Name] = ID
-        ]],
-        ID,
-        Name
-    ));
-    QSB.ScriptCommands[Name] = ID;
-    return ID;
-end
-
-function Swift.Event:DispatchScriptCommand(_ID, ...)
-    if Swift.Environment == QSB.Environment.GLOBAL then
-        return;
-    end
-    assert(_ID ~= nil);
-    if self.ScriptCommandRegister[_ID] then
-        local PlayerID = GUI.GetPlayerID();
-        local NamePlayerID = PlayerID +4;
-        local PlayerName = Logic.GetPlayerName(NamePlayerID);
-        local Parameters = self:EncodeScriptCommandParameters(unpack(arg));
-
-        if Framework.IsNetworkGame() and Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
-            GUI.SetPlayerName(NamePlayerID, Parameters);
-            GUI.SetSoldierPaymentLevel(_ID);
-        else
-            GUI.SendScriptCommand(string.format(
-                [[Swift.Event:ProcessScriptCommand(%d, %d, "%s")]],
-                arg[1],
-                _ID,
-                Parameters
-            ));
-        end
-        debug(string.format(
-            "Dispatching script command %s to global.",
-            self.ScriptCommandRegister[_ID]
-        ), true);
-
-        if Framework.IsNetworkGame() and Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
-            GUI.SetPlayerName(NamePlayerID, PlayerName);
-            GUI.SetSoldierPaymentLevel(PlayerSoldierPaymentLevel[PlayerID]);
-        end
-    end
-end
-
-function Swift.Event:ProcessScriptCommand(_PlayerID, _ID, _ParameterString)
-    if not self.ScriptCommandRegister[_ID] then
-        return;
-    end
-    local PlayerName = _ParameterString;
-    if Framework.IsNetworkGame() and Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
-        PlayerName = Logic.GetPlayerName(_PlayerID +4);
-    end
-    local Parameters = self:DecodeScriptCommandParameters(PlayerName);
-    local PlayerID = table.remove(Parameters, 1);
-    if PlayerID ~= 0 and PlayerID ~= _PlayerID then
-        return;
-    end
-    debug(string.format(
-        "Processing script command %s in global.",
-        self.ScriptCommandRegister[_ID][1]
-    ), true);
-    self.ScriptCommandRegister[_ID][2](unpack(Parameters));
-end
-
-function Swift.Event:EncodeScriptCommandParameters(...)
-    local Query = "";
-    for i= 1, #arg do
-        local Parameter = arg[i];
-        if type(Parameter) == "string" then
-            Parameter = string.gsub(Parameter, '#', "<<<HT>>>");
-            Parameter = string.gsub(Parameter, '"', "<<<QT>>>");
-            if Parameter:len() == 0 then
-                Parameter = "<<<ES>>>";
-            end
-        elseif type(Parameter) == "table" then
-            Parameter = "{" ..table.concat(Parameter, ",") .."}";
-        end
-        if string.len(Query) > 0 then
-            Query = Query .. "#";
-        end
-        Query = Query .. tostring(Parameter);
-    end
-    return Query;
-end
-
-function Swift.Event:DecodeScriptCommandParameters(_Query)
-    local Parameters = {};
-    for k, v in pairs(string.slice(_Query, "#")) do
-        local Value = v;
-        Value = string.replaceAll(Value, "<<<HT>>>", '#');
-        Value = string.replaceAll(Value, "<<<QT>>>", '"');
-        Value = string.replaceAll(Value, "<<<ES>>>", '');
-        if Value == nil then
-            Value = nil;
-        elseif Value == "true" or Value == "false" then
-            Value = Value == "true";
-        elseif string.indexOf(Value, "{") == 1 then
-            local ValueTable = string.slice(string.sub(Value, 2, string.len(Value)-1), ",");
-            Value = {};
-            for i= 1, #ValueTable do
-                Value[i] = (tonumber(ValueTable[i]) ~= nil and tonumber(ValueTable[i]) or ValueTable);
-            end
-        elseif tonumber(Value) ~= nil then
-            Value = tonumber(Value);
-        end
-        table.insert(Parameters, Value);
-    end
-    return Parameters;
-end
-
--- -------------------------------------------------------------------------- --
--- Script Events
-
-function Swift.Event:CreateScriptEvent(_Name)
-    for i= 1, #self.ScriptEventRegister, 1 do
-        if self.ScriptEventRegister[i] == _Name then
-            return 0;
-        end
-    end
-    local ID = #self.ScriptEventRegister+1;
-    debug(string.format("Create script event %s", _Name), true);
-    self.ScriptEventRegister[ID] = _Name;
-    return ID;
-end
-
-function Swift.Event:DispatchScriptEvent(_ID, ...)
-    if not self.ScriptEventRegister[_ID] then
-        return;
-    end
-    -- Dispatch module events
-    for i= 1, #Swift.ModuleRegister, 1 do
-        local Env = (Swift.Environment == QSB.Environment.GLOBAL and "Global") or "Local";
-        if Swift.ModuleRegister[i][Env] and Swift.ModuleRegister[i][Env].OnEvent then
-            Swift.ModuleRegister[i][Env]:OnEvent(_ID, unpack(arg));
-        end
-    end
-    -- Call event game callback
-    if GameCallback_QSB_OnEventReceived then
-        GameCallback_QSB_OnEventReceived(_ID, unpack(arg));
-    end
-    -- Call event listeners
-    if self.ScriptEventListener[_ID] then
-        for k, v in pairs(self.ScriptEventListener[_ID]) do
-            if tonumber(k) then
-                v(unpack(arg));
-            end
-        end
-    end
-end
-
--- -------------------------------------------------------------------------- --
--- API
-
-function API.RegisterScriptCommand(_Name, _Function)
-    return Swift.Event:CreateScriptCommand(_Name, _Function);
-end
-
-function API.BroadcastScriptCommand(_NameOrID, ...)
-    local ID = _NameOrID;
-    if type(ID) == "string" then
-        for i= 1, #Swift.Event.ScriptCommandRegister, 1 do
-            if Swift.Event.ScriptCommandRegister[i][1] == _NameOrID then
-                ID = i;
-            end
-        end
-    end
-    assert(type(ID) == "number");
-    if not GUI then
-        return;
-    end
-    Swift.Event:DispatchScriptCommand(ID, 0, unpack(arg));
-end
-
--- Does this function makes any sense? Calling the synchronization but only for
--- one player seems to be stupid...
-function API.SendScriptCommand(_NameOrID, ...)
-    local ID = _NameOrID;
-    if type(ID) == "string" then
-        for i= 1, #Swift.Event.ScriptCommandRegister, 1 do
-            if Swift.Event.ScriptCommandRegister[i][1] == _NameOrID then
-                ID = i;
-            end
-        end
-    end
-    assert(type(ID) == "number");
-    if not GUI then
-        return;
-    end
-    Swift.Event:DispatchScriptCommand(ID, GUI.GetPlayerID(), unpack(arg));
-end
-
----
--- Legt ein neues Script Event an.
---
--- @param[type=string]   _Name     Identifier des Event
--- @return[type=number] ID des neuen Script Event
--- @within Event
--- @local
---
--- @usage
--- local EventID = API.RegisterScriptEvent("MyNewEvent");
---
-function API.RegisterScriptEvent(_Name)
-    return Swift.Event:CreateScriptEvent(_Name);
-end
-
----
--- Sendet das Script Event mit der übergebenen ID und überträgt optional
--- Parameter.
---
--- <h5>Multiplayer</h5>
--- Im Multiplayer kann diese Funktion nicht benutzt werden, um Script Events
--- synchron oder asynchron aus dem lokalen im globalen Skript auszuführen.
---
--- @param[type=number] _EventID ID des Event
--- @param              ... Optionale Parameter (nil, string, number, boolean, (array) table)
--- @within Event
--- @local
---
--- @usage
--- API.SendScriptEvent(SomeEventID, Param1, Param2, ...);
---
-function API.SendScriptEvent(_EventID, ...)
-    Swift.Event:DispatchScriptEvent(_EventID, unpack(arg));
-end
-
----
--- Triggerd ein Script Event im globalen Skript aus dem lokalen Skript.
---
--- Das Event wird synchron für alle Spieler gesendet.
---
--- @param[type=number] _EventName Name des Event
--- @param              ... Optionale Parameter (nil, string, number, boolean, (array) table)
--- @within Event
--- @local
---
--- @usage
--- API.SendScriptEventToGlobal("SomeEventName", Param1, Param2, ...);
---
-function API.BroadcastScriptEventToGlobal(_EventName, ...)
-    if not GUI then
-        return;
-    end
-    Swift.Event:DispatchScriptCommand(
-        QSB.ScriptCommands.SendScriptEvent,
-        0,
-        _EventName,
-        unpack(arg)
-    );
-end
-
----
--- Triggerd ein Script Event im globalen Skript aus dem lokalen Skript.
---
--- Das Event wird asynchron für den kontrollierenden Spieler gesendet.
---
--- @param[type=number] _EventName Name des Event
--- @param              ... Optionale Parameter (nil, string, number, boolean, (array) table)
--- @within Event
--- @local
---
--- @usage
--- API.SendScriptEventToGlobal("SomeEventName", Param1, Param2, ...);
---
-function API.SendScriptEventToGlobal(_EventName, ...)
-    if not GUI then
-        return;
-    end
-    Swift.Event:DispatchScriptCommand(
-        QSB.ScriptCommands.SendScriptEvent,
-        GUI.GetPlayerID(),
-        _EventName,
-        unpack(arg)
-    );
-end
-
----
--- Erstellt einen neuen Listener für das Event.
---
--- An den Listener werden die gleichen Parameter übergeben, die für das Event
--- auch bei GameCallback_QSB_OnEventReceived übergeben werden.
---
--- <b>Hinweis</b>: Event Listener für ein spezifisches Event werden nach
--- GameCallback_QSB_OnEventReceived aufgerufen.
---
--- @param[type=number]   _EventID  ID des Event
--- @param[type=function] _Function Listener Funktion
--- @return[type=number] ID des Listener
--- @within Event
--- @see API.RemoveScriptEventListener
---
--- @usage
--- local ListenerID = API.AddScriptEventListener(QSB.ScriptEvents.SaveGameLoaded, function()
---     Logic.DEBUG_AddNote("A save has been loaded!");
--- end);
---
-function API.AddScriptEventListener(_EventID, _Function)
-    if not Swift.Event.ScriptEventListener[_EventID] then
-        Swift.Event.ScriptEventListener[_EventID] = {
-            IDSequence = 0;
-        }
-    end
-    local Data = Swift.Event.ScriptEventListener[_EventID];
-    assert(type(_Function) == "function");
-    Swift.Event.ScriptEventListener[_EventID].IDSequence = Data.IDSequence +1;
-    Swift.Event.ScriptEventListener[_EventID][Data.IDSequence] = _Function;
-    return Data.IDSequence;
-end
-
----
--- Entfernt einen Listener von dem Event.
---
--- @param[type=number] _EventID ID des Event
--- @param[type=number] _ID      ID des Listener
--- @within Event
--- @see API.AddScriptEventListener
---
-function API.RemoveScriptEventListener(_EventID, _ID)
-    if Swift.Event.ScriptEventListener[_EventID] then
-        Swift.Event.ScriptEventListener[_EventID][_ID] = nil;
-    end
-end
-
--- -------------------------------------------------------------------------- --
-
----
--- Scripting Values lesen und schreiben.
--- @set sort=true
--- @local
---
-
-Swift.ScriptingValue = {
-    SV = {
-        Game = "Vanilla",
-        Vanilla = {
-            Destination = {X = 19, Y= 20},
-            Health      = -41,
-            Player      = -71,
-            Size        = -45,
-            Visible     = -50,
-            NPC         = 6,
-        },
-        HistoryEdition = {
-            Destination = {X = 17, Y= 18},
-            Health      = -38,
-            Player      = -68,
-            Size        = -42,
-            Visible     = -47,
-            NPC         = 6,
-        }
-    }
-}
-
-function Swift.ScriptingValue:Initalize()
-    if Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
-        self.SV.Game = "HistoryEdition";
-    end
-    QSB.ScriptingValue = self.SV[self.SV.Game];
-end
-
-function Swift.ScriptingValue:OnSaveGameLoaded()
-    -- Porting savegames between game versions
-    -- (Not recommended but we try to support it)
-    if Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
-        self.SV.Game = "HistoryEdition";
-    end
-    QSB.ScriptingValue = self.SV[self.SV.Game];
-end
-
--- -------------------------------------------------------------------------- --
--- Conversion Methods
-
-function Swift.ScriptingValue:BitsInteger(num)
-    local t = {};
-    while num > 0 do
-        rest = math.qmod(num, 2);
-        table.insert(t,1,rest);
-        num=(num-rest)/2;
-    end
-    table.remove(t, 1);
-    return t;
-end
-
-function Swift.ScriptingValue:BitsFraction(num, t)
-    for i = 1, 48 do
-        num = num * 2;
-        if(num >= 1) then
-            table.insert(t, 1);
-            num = num - 1;
-        else
-            table.insert(t, 0);
-        end
-        if(num == 0) then
-            return t;
-        end
-    end
-    return t;
-end
-
-function Swift.ScriptingValue:IntegerToFloat(num)
-    if(num == 0) then
-        return 0;
-    end
-    local sign = 1;
-    if (num < 0) then
-        num = 2147483648 + num;
-        sign = -1;
-    end
-    local frac = math.qmod(num, 8388608);
-    local headPart = (num-frac)/8388608;
-    local expNoSign = math.qmod(headPart, 256);
-    local exp = expNoSign-127;
-    local fraction = 1;
-    local fp = 0.5;
-    local check = 4194304;
-    for i = 23, 0, -1 do
-        if (frac - check) > 0 then
-            fraction = fraction + fp;
-            frac = frac - check;
-        end
-        check = check / 2;
-        fp = fp / 2;
-    end
-    return fraction * math.pow(2, exp) * sign;
-end
-
-function Swift.ScriptingValue:FloatToInteger(fval)
-    if(fval == 0) then
-        return 0;
-    end
-    local signed = false;
-    if (fval < 0) then
-        signed = true;
-        fval = fval * -1;
-    end
-    local outval = 0;
-    local bits;
-    local exp = 0;
-    if fval >= 1 then
-        local intPart = math.floor(fval);
-        local fracPart = fval - intPart;
-        bits = self:BitsInteger(intPart);
-        exp = #bits;
-        self:BitsFraction(fracPart, bits);
-    else
-        bits = {};
-        self:BitsFraction(fval, bits);
-        while(bits[1] == 0) do
-            exp = exp - 1;
-            table.remove(bits, 1);
-        end
-        exp = exp - 1;
-        table.remove(bits, 1);
-    end
-    local bitVal = 4194304;
-    local start = 1;
-    for bpos = start, 23 do
-        local bit = bits[bpos];
-        if(not bit) then
-            break;
-        end
-        if(bit == 1) then
-            outval = outval + bitVal;
-        end
-        bitVal = bitVal / 2;
-    end
-    outval = outval + (exp+127)*8388608;
-    if(signed) then
-        outval = outval - 2147483648;
-    end
-    return outval;
-end
-
--- -------------------------------------------------------------------------- --
--- API
-
----
--- Liste der unterstützten Scripting Values.
---
--- <ul>
--- <li><b>QSB.ScriptingValue.Destination.X</b><br>
--- Gibt die Z-Koordinate des Bewegungsziels als Float zurück.</li>
--- <li><b>QSB.ScriptingValue.Destination.Y</b><br>
--- Gibt die Y-Koordinate des Bewegungsziels als Float zurück.</li>
--- <li><b>QSB.ScriptingValue.Health</b><br>
--- Setzt die Gesundheit eines Entity ohne Folgeaktionen zu triggern.</li>
--- <li><b>QSB.ScriptingValue.Player</b><br>
--- Setzt den Besitzer des Entity ohne Plausibelitätsprüfungen.</li>
--- <li><b>QSB.ScriptingValue.Size</b><br>
--- Setzt den Größenfaktor eines Entities als Float.</li>
--- <li><b>QSB.ScriptingValue.Visible</b><br>
--- Sichtbarkeit eines Entities abfragen (801280 == sichtbar)</li>
--- <li><b>QSB.ScriptingValue.NPC</b><br>
--- NPC-Flag eines Siedlers setzen (0 = inaktiv, 1 - 4 = aktiv)</li>
--- </ul>
--- @within ScriptingValue
---
-QSB.ScriptingValue = {};
-
----
--- Gibt den Wert auf dem übergebenen Index für das Entity zurück.
---
--- @param[type=number] _Entity Entity
--- @param[type=number] _SV     Typ der Scripting Value
--- @return[type=number] Ermittelter Wert
--- @within ScriptingValue
---
--- @usage
--- local PlayerID = API.GetInteger("HansWurst", QSB.ScriptingValue.Player);
---
-function API.GetInteger(_Entity, _SV)
-    local ID = GetID(_Entity);
-    if not IsExisting(ID) then
-        return;
-    end
-    return Logic.GetEntityScriptingValue(ID, _SV);
-end
-
----
--- Gibt den Wert auf dem übergebenen Index für das Entity zurück.
---
--- @param[type=number] _Entity Entity
--- @param[type=number] _SV     Typ der Scripting Value
--- @return[type=number] Ermittelter Wert
--- @within ScriptingValue
---
--- @usage
--- local Size = API.GetFloat("HansWurst", QSB.ScriptingValue.Size);
---
-function API.GetFloat(_Entity, _SV)
-    local ID = GetID(_Entity);
-    if not IsExisting(ID) then
-        return;
-    end
-    local Value = Logic.GetEntityScriptingValue(ID, _SV);
-    return API.ConvertIntegerToFloat(Value);
-end
-
----
--- Setzt den Wert auf dem übergebenen Index für das Entity.
--- 
--- @param[type=number] _Entity Entity
--- @param[type=number] _SV     Typ der Scripting Value
--- @param[type=number] _Value  Zu setzender Wert
--- @within ScriptingValue
---
--- @usage
--- API.SetInteger("HansWurst", QSB.ScriptingValue.Player, 2);
---
-function API.SetInteger(_Entity, _SV, _Value)
-    local ID = GetID(_Entity);
-    if GUI or not IsExisting(ID) then
-        return;
-    end
-    Logic.SetEntityScriptingValue(ID, _SV, _Value);
-end
-
----
--- Setzt den Wert auf dem übergebenen Index für das Entity.
---
--- @param[type=number] _Entity Entity
--- @param[type=number] _SV     Typ der Scripting Value
--- @param[type=number] _Value  Zu setzender Wert
--- @within ScriptingValue
---
--- @usage
--- API.SetFloat("HansWurst", QSB.ScriptingValue.Size, 1.5);
---
-function API.SetFloat(_Entity, _SV, _Value)
-    local ID = GetID(_Entity);
-    if GUI or not IsExisting(ID) then
-        return;
-    end
-    Logic.SetEntityScriptingValue(ID, _SV, API.ConvertFloatToInteger(_Value));
-end
-
----
--- Konvertirert den Wert in eine Ganzzahl.
---
--- @param[type=number] _Value Gleitkommazahl
--- @return[type=number] Konvertierte Ganzzahl
--- @within ScriptingValue
---
--- @usage
--- local Converted = API.ConvertIntegerToFloat(Value)
---
-function API.ConvertIntegerToFloat(_Value)
-    return Swift.ScriptingValue:IntegerToFloat(_Value);
-end
-
----
--- Konvertirert den Wert in eine Gleitkommazahl.
---
--- @param[type=number] _Value Gleitkommazahl
--- @return[type=number] Konvertierte Ganzzahl
--- @within ScriptingValue
---
--- @usage
--- local Converted = API.ConvertFloatToInteger(Value)
---
-function API.ConvertFloatToInteger(_Value)
-    return Swift.ScriptingValue:FloatToInteger(_Value);
-end
--- -------------------------------------------------------------------------- --
-
----
--- Es werden einige Fehler im Spiel behoben.
---
--- @set sort=true
--- @local
---
-
-Swift.Bugfix = {};
-
-function Swift.Bugfix:Initalize()
-    if Swift.Environment == QSB.Environment.GLOBAL then
-        self:FixResourceSlotsInStorehouses();
-        self:OverrideConstructionCompleteCallback();
-        self:OverrideIsMerchantArrived();
-        self:OverrideIsObjectiveCompleted();
-    end
-    if Swift.Environment == QSB.Environment.LOCAL then
-        self:FixInteractiveObjectClicked();
-		self:FixCathedralName();
-    end
-end
-
-function Swift.Bugfix:OnSaveGameLoaded()
-end
-
--- -------------------------------------------------------------------------- --
--- Luxury for NPCs
-
-function Swift.Bugfix:FixResourceSlotsInStorehouses()
-    for i= 1, 8 do
-        local StoreHouseID = Logic.GetStoreHouse(i);
-        if StoreHouseID ~= 0 then
-            Logic.AddGoodToStock(StoreHouseID, Goods.G_Salt, 0, true, true);
-            Logic.AddGoodToStock(StoreHouseID, Goods.G_Dye, 0, true, true);
-        end
-    end
-end
-
--- -------------------------------------------------------------------------- --
--- Respawning for ME barracks
-
-function Swift.Bugfix:OverrideConstructionCompleteCallback()
-    GameCallback_OnBuildingConstructionComplete_Orig_QSB_Core = GameCallback_OnBuildingConstructionComplete;
-    GameCallback_OnBuildingConstructionComplete = function(_PlayerID, _EntityID)
-        GameCallback_OnBuildingConstructionComplete_Orig_QSB_Core(_PlayerID, _EntityID);
-        local EntityType = Logic.GetEntityType(_EntityID);
-        if EntityType == Entities.B_NPC_Barracks_ME then
-            Logic.RespawnResourceSetMaxSpawn(_EntityID, 0.01);
-            Logic.RespawnResourceSetMinSpawn(_EntityID, 0.01);
-        end
-    end
-
-    for k, v in pairs(Logic.GetEntitiesOfType(Entities.B_NPC_Barracks_ME)) do
-        Logic.RespawnResourceSetMaxSpawn(v, 0.01);
-        Logic.RespawnResourceSetMinSpawn(v, 0.01);
-    end
-end
-
--- -------------------------------------------------------------------------- --
--- Delivery checkpoint
-
-function Swift.Bugfix:OverrideIsMerchantArrived()
-    function QuestTemplate:IsMerchantArrived(objective)
-        if objective.Data[3] ~= nil then
-            if objective.Data[3] == 1 then
-                if objective.Data[5].ID ~= nil then
-                    objective.Data[3] = objective.Data[5].ID;
-                    DeleteQuestMerchantWithID(objective.Data[3]);
-                    if MapCallback_DeliverCartSpawned then
-                        MapCallback_DeliverCartSpawned(self, objective.Data[3], objective.Data[1]);
-                    end
-                end
-            elseif Logic.IsEntityDestroyed(objective.Data[3]) then
-                DeleteQuestMerchantWithID(objective.Data[3]);
-                objective.Data[3] = nil;
-                objective.Data[5].ID = nil;
-            else
-                local Target = objective.Data[6] and objective.Data[6] or self.SendingPlayer;
-                local StorehouseID = Logic.GetStoreHouse(Target);
-                local MarketplaceID = Logic.GetStoreHouse(Target);
-                local HeadquartersID = Logic.GetStoreHouse(Target);
-                local HasArrived = nil;
-
-                if StorehouseID > 0 then
-                    local x,y = Logic.GetBuildingApproachPosition(StorehouseID);
-                    HasArrived = API.GetDistance(objective.Data[3], {X= x, Y= y}) < 1000;
-                end
-                if MarketplaceID > 0 then
-                    local x,y = Logic.GetBuildingApproachPosition(MarketplaceID);
-                    HasArrived = HasArrived or API.GetDistance(objective.Data[3], {X= x, Y= y}) < 1000;
-                end
-                if HeadquartersID > 0 then
-                    local x,y = Logic.GetBuildingApproachPosition(HeadquartersID);
-                    HasArrived = HasArrived or API.GetDistance(objective.Data[3], {X= x, Y= y}) < 1000;
-                end
-                return HasArrived;
-            end
-        end
-        return false;
-    end
-end
-
--- -------------------------------------------------------------------------- --
--- IO costs
-
-function Swift.Bugfix:FixInteractiveObjectClicked()
-    GUI_Interaction.InteractiveObjectClicked = function()
-        local ButtonNumber = tonumber(XGUIEng.GetWidgetNameByID(XGUIEng.GetCurrentWidgetID()));
-        local ObjectID = g_Interaction.ActiveObjectsOnScreen[ButtonNumber];
-        if ObjectID == nil or not Logic.InteractiveObjectGetAvailability(ObjectID) then
-            return;
-        end
-        local PlayerID = GUI.GetPlayerID();
-        local Costs = {Logic.InteractiveObjectGetEffectiveCosts(ObjectID, PlayerID)};
-        local CanNotBuyString = XGUIEng.GetStringTableText("Feedback_TextLines/TextLine_NotEnough_Resources");
-
-        -- Check activation costs
-        local Affordable = true;
-        if Affordable and Costs ~= nil and Costs[1] ~= nil then
-            if Costs[1] == Goods.G_Gold then
-                CanNotBuyString = XGUIEng.GetStringTableText("Feedback_TextLines/TextLine_NotEnough_G_Gold");
-            end
-            if Costs[1] ~= Goods.G_Gold and Logic.GetGoodCategoryForGoodType(Costs[1]) ~= GoodCategories.GC_Resource then
-                error("Only resources can be used as costs for objects!");
-                Affordable = false;
-            end
-            Affordable = Affordable and GetPlayerGoodsInSettlement(Costs[1], PlayerID, false) >= Costs[2];
-        end
-        if Affordable and Costs ~= nil and Costs[3] ~= nil then
-            if Costs[3] == Goods.G_Gold then
-                CanNotBuyString = XGUIEng.GetStringTableText("Feedback_TextLines/TextLine_NotEnough_G_Gold");
-            end
-            if Costs[3] ~= Goods.G_Gold and Logic.GetGoodCategoryForGoodType(Costs[3]) ~= GoodCategories.GC_Resource then
-                error("Only resources can be used as costs for objects!");
-                Affordable = false;
-            end
-            Affordable = Affordable and GetPlayerGoodsInSettlement(Costs[3], PlayerID, false) >= Costs[4];
-        end
-        if not Affordable then
-            Message(CanNotBuyString);
-            return;
-        end
-
-        -- Check click override
-        if not GUI_Interaction.InteractionClickOverride
-        or not GUI_Interaction.InteractionClickOverride(ObjectID) then
-            Sound.FXPlay2DSound( "ui\\menu_click");
-        end
-        -- Check feedback speech override
-        if not GUI_Interaction.InteractionSpeechFeedbackOverride
-        or not GUI_Interaction.InteractionSpeechFeedbackOverride(ObjectID) then
-            GUI_FeedbackSpeech.Add("SpeechOnly_CartsSent", g_FeedbackSpeech.Categories.CartsUnderway, nil, nil);
-        end
-        -- Check action override and perform action
-        if not Mission_Callback_OverrideObjectInteraction
-        or not Mission_Callback_OverrideObjectInteraction(ObjectID, PlayerID, Costs) then
-            GUI.ExecuteObjectInteraction(ObjectID, PlayerID);
-        end
-    end
-end
-
--- -------------------------------------------------------------------------- --
--- Destroy all units
-
-function Swift.Bugfix:OverrideIsObjectiveCompleted()
-    QuestTemplate.IsObjectiveCompleted_Orig_QSB_Kernel = QuestTemplate.IsObjectiveCompleted;
-    QuestTemplate.IsObjectiveCompleted = function(self, objective)
-        local objectiveType = objective.Type;
-        if objective.Completed ~= nil then
-            return objective.Completed;
-        end
-        local data = objective.Data;
-
-        -- Solves the problem that special entities and construction sites
-        -- let the script beleave that the player is still alive.
-        if objectiveType == Objective.DestroyAllPlayerUnits then
-            local PlayerEntities = GetPlayerEntities(data, 0);
-            local IllegalEntities = {};
-
-            for i= #PlayerEntities, 1, -1 do
-                local Type = Logic.GetEntityType(PlayerEntities[i]);
-                if Logic.IsEntityInCategory(PlayerEntities[i], EntityCategories.AttackableBuilding) == 0 or Logic.IsEntityInCategory(PlayerEntities[i], EntityCategories.Wall) == 0 then
-                    if Logic.IsConstructionComplete(PlayerEntities[i]) == 0 then
-                        table.insert(IllegalEntities, PlayerEntities[i]);
-                    end
-                end
-                local IndestructableEntities = {Entities.XD_ScriptEntity, Entities.S_AIHomePosition, Entities.S_AIAreaDefinition};
-                if table.contains(IndestructableEntities, Type) then
-                    table.insert(IllegalEntities, PlayerEntities[i]);
-                end
-            end
-
-            if #PlayerEntities == 0 or #PlayerEntities - #IllegalEntities == 0 then
-                objective.Completed = true;
-            end
-        elseif objectiveType == Objective.Distance then
-            objective.Completed = Swift.Behavior:IsQuestPositionReached(self, objective);
-        else
-            return self:IsObjectiveCompleted_Orig_QSB_Kernel(objective);
-        end
-    end
-end
-
-
--- -------------------------------------------------------------------------- --
--- Cathedral name
-
-function Swift.Bugfix:FixCathedralName()
-	GUI_BuildingInfo.BuildingNameUpdate_Orig_QSB_Kernel = GUI_BuildingInfo.BuildingNameUpdate;
-	GUI_BuildingInfo.BuildingNameUpdate = function()
-		GUI_BuildingInfo.BuildingNameUpdate_Orig_QSB_Kernel()
-		local CurrentWidgetID = XGUIEng.GetCurrentWidgetID()
-		if XGUIEng.GetText(CurrentWidgetID) == "{center}B_Cathedral_Big" then
-			local CurrentLanguage = Network.GetDesiredLanguage()
-			if CurrentLanguage == "de" then
-				XGUIEng.SetText(CurrentWidgetID, "{center}Kathedrale")
-			else
-				XGUIEng.SetText(CurrentWidgetID, "{center}Cathedral")
-			end
-		end
-	end
-end
---#EOF-- -------------------------------------------------------------------------- --
-
----
--- Erweitert die Lua-Basisfunktionen um weitere Funktionen.
--- @set sort=true
--- @local
---
-
-Swift.LuaBase = {};
-
-QSB.Metatable = {Init = false, Weak = {}, Metas = {}, Key = 0};
-
-function Swift.LuaBase:Initalize()
-    self:OverrideTable();
-    self:OverrideString();
-    self:OverrideMath();
-end
-
-function Swift.LuaBase:OnSaveGameLoaded()
-    self:OverrideTable();
-    self:OverrideString();
-    self:OverrideMath();
-end
-
-function Swift.LuaBase:OverrideTable()
-    table.compare = function(t1, t2, fx)
-        assert(type(t1) == "table");
-        assert(type(t2) == "table");
-        fx = fx or function(t1, t2)
-            return tostring(t1) < tostring(t2);
-        end
-        assert(type(fx) == "function");
-        return fx(t1, t2);
-    end
-
-    table.equals = function(t1, t2)
-        assert(type(t1) == "table");
-        assert(type(t2) == "table");
-        for k, v in pairs(t1) do
-            if type(v) == "table" then
-                if not t2[k] or not table.equals(t2[k], v) then
-                    return false;
-                end
-            elseif type(v) ~= "thread" and type(v) ~= "userdata" then
-                if not t2[k] or t2[k] ~= v then
-                    return false;
-                end
-            end
-        end
-        return true;
-    end
-
-    table.contains = function (t, e)
-        assert(type(t) == "table");
-        for k, v in pairs(t) do
-            if v == e then
-                return true;
-            end
-        end
-        return false;
-    end
-
-    table.length = function(t)
-        local c = 0;
-        for k, v in pairs(t) do
-            if tonumber(k) then
-                c = c +1;
-            end
-        end
-        return c;
-    end
-
-    table.size = function(t)
-        local c = 0;
-        for k, v in pairs(t) do
-            -- Ignore n if set
-            if k ~= "n" or (k == "n" and type(v) ~= "number") then
-                c = c +1;
-            end
-        end
-        return c;
-    end
-
-    table.isEmpty = function(t)
-        return table.size(t) == 0;
-    end
-
-    table.copy = function (t1, t2)
-        t2 = t2 or {};
-        assert(type(t1) == "table");
-        assert(type(t2) == "table");
-        return Swift.LuaBase:CopyTable(t1, t2);
-    end
-
-    table.invert = function (t1)
-        assert(type(t1) == "table");
-        local t2 = {};
-        for i= table.length(t1), 1, -1 do
-            table.insert(t2, t1[i]);
-        end
-        return t2;
-    end
-
-    table.push = function (t, e)
-        assert(type(t) == "table");
-        table.insert(t, 1, e);
-    end
-
-    table.pop = function (t)
-        assert(type(t) == "table");
-        return table.remove(t, 1);
-    end
-
-    table.tostring = function(t)
-        return Swift.LuaBase:ConvertTableToString(t);
-    end
-
-    -- FIXME: Does not work?
-    table.insertAll = function(t, ...)
-        for i= 1, #arg do
-            if not table.contains(t, arg[i]) then
-                table.insert(t, arg[i]);
-            end
-        end
-        return t;
-    end
-
-    -- FIXME: Does not work?
-    table.removeAll = function(t, ...)
-        for i= 1, #arg do
-            for k, v in pairs(t) do
-                if type(v) == "table" and type(arg[i]) then
-                    if table.equals(v, arg[i]) then
-                        t[k] = nil;
-                    end
-                else
-                    if v == arg[i] then
-                        t[k] = nil;
-                    end
-                end
-            end
-        end
-        -- Set n as table remove would do
-        t.n = table.length(t);
-        return t;
-    end
-
-    table.setMetatable = function(t, meta)
-        assert(type(t) == "table");
-        assert(type(meta) == "table" or meta == nil);
-
-        local oldmeta = meta;
-        meta = {};
-        for k,v in pairs(oldmeta) do
-            meta[k] = v;
-        end
-        oldmeta = getmetatable(t);
-        setmetatable(t, meta);
-        local k = 0;
-        if oldmeta and oldmeta.KeySave and t == QSB.Metatable.Weak[oldmeta.KeySave] then
-            k = oldmeta.KeySave;
-            if meta == nil then
-                QSB.Metatable.Weak[k] = nil;
-                QSB.Metatablele.Metas[k] = nil;
-                return;
-            end
-        else
-            k = QSB.Metatable.Key + 1;
-            QSB.Metatable.Key = k;
-        end
-        QSB.Metatable.Weak[k] = t;
-        QSB.Metatable.Metas[k] = meta;
-        meta.KeySave = k;
-    end
-
-    table.restoreMetatables = function()
-        for k, tab in pairs(QSB.Metatable.Weak) do
-            setmetatable(tab, QSB.Metatable.Metas[k]);
-        end
-        setmetatable(QSB.Metatable.Weak, {__mode = "v"});
-        setmetatable(QSB.Metatable.Metas, {__mode = "v"});
-    end
-    table.restoreMetatables();
-end
-
-function Swift.LuaBase:OverrideString()
-    string.contains = function (self, s)
-        return self:find(s) ~= nil;
-    end
-
-    string.indexOf = function (self, s)
-        return self:find(s);
-    end
-
-    string.slice = function(self, _sep)
-        _sep = _sep or "%s";
-        if self then
-            local t = {};
-            for str in self:gmatch("([^".._sep.."]+)") do
-                table.insert(t, str);
-            end
-            return t;
-        end
-    end
-
-    string.join = function(self, ...)
-        local s = "";
-        local parts = {self, unpack(arg)};
-        for i= 1, #parts do
-            if type("part") == "table" then
-                s = s .. string.join(unpack(parts[i]));
-            else
-                s = s .. tostring(parts[i]);
-            end
-        end
-        return s;
-    end
-
-    string.replace = function(self, p, r)
-        return self:gsub(p, r, 1);
-    end
-
-    string.replaceAll = function(self, p, r)
-        return self:gsub(p, r);
-    end
-end
-
-function Swift.LuaBase:OverrideMath()
-    math.lerp = function(s, c, e)
-        local f = (c - s) / e;
-        return (f > 1 and 1) or f;
-    end
-
-    math.qmod = function(a, b)
-        return a - math.floor(a/b)*b;
-    end
-end
-
-function Swift.LuaBase:ConvertTableToString(_Table)
-    assert(type(_Table) == "table");
-    local String = "{";
-    for k, v in pairs(_Table) do
-        local key;
-        if (tonumber(k)) then
-            key = ""..k;
-        else
-            key = "\""..k.."\"";
-        end
-        if type(v) == "table" then
-            String = String .. "[" .. key .. "] = " .. self:ConvertTableToString(v) .. ", ";
-        elseif type(v) == "number" then
-            String = String .. "[" .. key .. "] = " .. v .. ", ";
-        elseif type(v) == "string" then
-            String = String .. "[" .. key .. "] = \"" .. v .. "\", ";
-        elseif type(v) == "boolean" or type(v) == "nil" then
-            String = String .. "[" .. key .. "] = " .. tostring(v) .. ", ";
-        else
-            String = String .. "[" .. key .. "] = \"" .. tostring(v) .. "\", ";
-        end
-    end
-    String = String .. "}";
-    return String;
-end
-
-function Swift.LuaBase:CopyTable(_Table1, _Table2)
-    _Table1 = _Table1 or {};
-    _Table2 = _Table2 or {};
-    for k, v in pairs(_Table1) do
-        if "table" == type(v) then
-            _Table2[k] = _Table2[k] or {};
-            for kk, vv in pairs(self:CopyTable(v, _Table2[k])) do
-                _Table2[k][kk] = _Table2[k][kk] or vv;
-            end
-        else
-            _Table2[k] = v;
-        end
-    end
-    return _Table2;
-end
-
-function Swift.LuaBase:ToBoolean(_Input)
-    if type(_Input) == "boolean" then
-        return _Input;
-    end
-    if _Input == 1 or string.find(string.lower(tostring(_Input)), "^[1tjy\\+].*$") then
-        return true;
-    end
-    return false;
-end
-
--- -------------------------------------------------------------------------- --
--- API
-
----
--- Wandelt underschiedliche Darstellungen einer Boolean in eine echte um.
---
--- Jeder String, der mit j, t, y oder + beginnt, wird als true interpretiert.
--- Alles andere als false.
---
--- Ist die Eingabe bereits ein Boolean wird es direkt zurückgegeben.
---
--- @param _Value Wahrheitswert
--- @return[type=boolean] Wahrheitswert
--- @within Base
--- @local
---
--- @usage local Bool = API.ToBoolean("+")  --> Bool = true
--- local Bool = API.ToBoolean("1")  --> Bool = true
--- local Bool = API.ToBoolean(1)  --> Bool = true
--- local Bool = API.ToBoolean("no") --> Bool = false
---
-function API.ToBoolean(_Value)
-    return Swift.LuaBase:ToBoolean(_Value);
-end
-
----
--- Schreibt ein genaues Abbild der Table ins Log. Funktionen, Threads und
--- Metatables werden als Adresse geschrieben.
---
--- @param[type=table]  _Table Tabelle, die gedumpt wird
--- @param[type=string] _Name Optionaler Name im Log
--- @within Base
--- @local
--- @usage
--- Table = {1, 2, 3, {a = true}}
--- API.DumpTable(Table)
---
-function API.DumpTable(_Table, _Name)
-    local Start = "{";
-    if _Name then
-        Start = _Name.. " = \n" ..Start;
-    end
-    Framework.WriteToLog(Start);
-
-    for k, v in pairs(_Table) do
-        if type(v) == "table" then
-            Framework.WriteToLog("[" ..k.. "] = ");
-            API.DumpTable(v);
-        elseif type(v) == "string" then
-            Framework.WriteToLog("[" ..k.. "] = \"" ..v.. "\"");
-        else
-            Framework.WriteToLog("[" ..k.. "] = " ..tostring(v));
-        end
-    end
-    Framework.WriteToLog("}");
-end
-
--- -------------------------------------------------------------------------- --
-
----
--- Steuerung des Chat als Eingabefenster.
--- @set sort=true
--- @local
---
-
-Swift.Chat = {
-    DebugInput = {};
-};
-
-function Swift.Chat:Initalize()
-    QSB.ScriptEvents.ChatOpened = Swift.Event:CreateScriptEvent("Event_ChatOpened");
-    QSB.ScriptEvents.ChatClosed = Swift.Event:CreateScriptEvent("Event_ChatClosed");
-    for i= 1, 8 do
-        self.DebugInput[i] = {};
-    end
-end
-
-function Swift.Chat:OnSaveGameLoaded()
-end
-
-function Swift.Chat:ShowTextInput(_PlayerID, _AllowDebug)
-    if  Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION
-    and Framework.IsNetworkGame() then
-        return;
-    end
-    if not GUI then
-        Logic.ExecuteInLuaLocalState(string.format(
-            [[Swift.Chat:ShowTextInput(%d, %s)]],
-            _PlayerID,
-            tostring(_AllowDebug == true)
-        ))
-        return;
-    end
-    _PlayerID = _PlayerID or GUI.GetPlayerID();
-    self:PrepareInputVariable(_PlayerID);
-    self:ShowInputBox(_PlayerID, _AllowDebug == true);
-end
-
-function Swift.Chat:ShowInputBox(_PlayerID, _Debug)
-    if GUI.GetPlayerID() ~= _PlayerID then
-        return;
-    end
-    self.DebugInput[_PlayerID] = _Debug == true;
-
-    Swift.Job:CreateEventJob(
-        Events.LOGIC_EVENT_EVERY_TURN,
-        function()
-            -- Open chat
-            Input.ChatMode();
-            XGUIEng.SetText("/InGame/Root/Normal/ChatInput/ChatInput", "");
-            XGUIEng.ShowWidget("/InGame/Root/Normal/ChatInput", 1);
-            XGUIEng.SetFocus("/InGame/Root/Normal/ChatInput/ChatInput");
-            -- Send event to global script
-            Swift.Event:DispatchScriptCommand(
-                QSB.ScriptCommands.SendScriptEvent,
-                GUI.GetPlayerID(),
-                "ChatOpened",
-                _PlayerID
-            );
-            -- Send event to local script
-            Swift.Event:DispatchScriptEvent(
-                QSB.ScriptEvents.ChatOpened,
-                _PlayerID
-            );
-            -- Slow down game time. We can not set the game time to 0 because
-            -- then Logic.ExecuteInLuaLocalState and GUI.SendScriptCommand do
-            -- not work anymore.
-            if not Framework.IsNetworkGame() then
-                Game.GameTimeSetFactor(GUI.GetPlayerID(), 0.0000001);
-            end
-            return true;
-        end
-    )
-end
-
-function Swift.Chat:PrepareInputVariable(_PlayerID)
-    if Swift.Environment == QSB.Environment.GLOBAL then
-        return;
-    end
-
-    GUI_Chat.Abort_Orig_Swift = GUI_Chat.Abort_Orig_Swift or GUI_Chat.Abort;
-    GUI_Chat.Confirm_Orig_Swift = GUI_Chat.Confirm_Orig_Swift or GUI_Chat.Confirm;
-
-    GUI_Chat.Confirm = function()
-        XGUIEng.ShowWidget("/InGame/Root/Normal/ChatInput", 0);
-        local ChatMessage = XGUIEng.GetText("/InGame/Root/Normal/ChatInput/ChatInput");
-        local IsDebug = Swift.Chat.DebugInput[_PlayerID];
-        Swift.ChatBoxInput = ChatMessage;
-        Swift.Chat:SendInputToGlobalScript(ChatMessage, IsDebug);
-        g_Chat.JustClosed = 1;
-        if not Framework.IsNetworkGame() then
-            Game.GameTimeSetFactor(_PlayerID, 1);
-        end
-        Input.GameMode();
-        if  ChatMessage:len() > 0
-        and Framework.IsNetworkGame()
-        and not IsDebug then
-            GUI.SendChatMessage(
-                ChatMessage,
-                _PlayerID,
-                g_Chat.CurrentMessageType,
-                g_Chat.CurrentWhisperTarget
-            );
-        end
-    end
-
-    if not Framework.IsNetworkGame() then
-        GUI_Chat.Abort = function()
-        end
-    end
-end
-
-function Swift.Chat:SendInputToGlobalScript(_Text, _Debug)
-    _Text = (_Text == nil and "") or _Text;
-    local PlayerID = GUI.GetPlayerID();
-    -- Send chat input to global script
-    Swift.Event:DispatchScriptCommand(
-        QSB.ScriptCommands.SendScriptEvent,
-        0,
-        "ChatClosed",
-        (_Text or "<<<ES>>>"),
-        GUI.GetPlayerID(),
-        _Debug == true
-    );
-    -- Send chat input to local script
-    Swift.Event:DispatchScriptEvent(
-        QSB.ScriptEvents.ChatClosed,
-        (_Text or "<<<ES>>>"),
-        GUI.GetPlayerID(),
-        _Debug == true
-    );
-    -- Reset debug flag
-    self.DebugInput[PlayerID] = false;
-end
-
--- -------------------------------------------------------------------------- --
--- API
-
----
--- Offnet das Chatfenster für eine Eingabe.
---
--- <b>Hinweis</b>: Im Multiplayer kann der Chat nicht über Skript gesteuert
--- werden.
--- 
--- @param[type=number]  _PlayerID   Spieler für den der Chat geöffnet wird
--- @param[type=boolean] _AllowDebug Debug Eingaben werden bearbeitet
--- @within System
---
-function API.ShowTextInput(_PlayerID, _AllowDebug)
-    Swift.Chat:ShowTextInput(_PlayerID, _AllowDebug);
-end
-
--- -------------------------------------------------------------------------- --
-
----
--- Speichern und Laden von Spielständen kontrollieren.
--- @set sort=true
--- @local
---
-
-Swift.Save = {
-    HistoryEditionQuickSave = false,
-    SavingDisabled = false,
-    LoadingDisabled = false,
-};
-
-function Swift.Save:Initalize()
-    self:SetupQuicksaveKeyCallback();
-    self:SetupQuicksaveKeyTrigger();
-end
-
-function Swift.Save:OnSaveGameLoaded()
-    self:SetupQuicksaveKeyTrigger();
-    self:UpdateLoadButtons();
-    self:UpdateSaveButtons();
-end
-
--- -------------------------------------------------------------------------- --
--- HE Quicksave
-
-function Swift.Save:SetupQuicksaveKeyTrigger()
-    if Swift.Environment == QSB.Environment.LOCAL then
-        Swift.Job:CreateEventJob(
-            Events.LOGIC_EVENT_EVERY_TURN,
-            function()
-                Input.KeyBindDown(
-                    Keys.ModifierControl + Keys.S,
-                    "KeyBindings_SaveGame(true)",
-                    2,
-                    false
-                );
-                return true;
-            end
-        );
-    end
-end
-
-function Swift.Save:SetupQuicksaveKeyCallback()
-    if Swift.Environment == QSB.Environment.LOCAL then
-        KeyBindings_SaveGame_Orig_Swift = KeyBindings_SaveGame;
-        KeyBindings_SaveGame = function(...)
-            -- No quicksave if saving disabled
-            if Swift.Save.SavingDisabled then
-                return;
-            end
-            -- No quicksave if forced by History Edition
-            if not Swift.Save.HistoryEditionQuickSave and not arg[1] then
-                return;
-            end
-            -- Do quicksave
-            KeyBindings_SaveGame_Orig_Swift();
-        end
-    end
-end
-
--- -------------------------------------------------------------------------- --
--- Disable Save
-
-function Swift.Save:DisableSaving(_Flag)
-    self.SavingDisabled = _Flag == true;
-    if Swift.Environment == QSB.Environment.GLOBAL then
-        Logic.ExecuteInLuaLocalState(string.format(
-            [[Swift.Save:DisableSaving(%s)]],
-            tostring(_Flag)
-        ))
-    else
-        self:UpdateSaveButtons();
-    end
-end
-
-function Swift.Save:UpdateSaveButtons()
-    if Swift.Environment == QSB.Environment.LOCAL then
-        local VisibleFlag = (self.SavingDisabled and 0) or 1;
-        XGUIEng.ShowWidget("/InGame/InGame/MainMenu/Container/QuickSave", VisibleFlag);
-        XGUIEng.ShowWidget("/InGame/InGame/MainMenu/Container/SaveGame", VisibleFlag);
-    end
-end
-
--- -------------------------------------------------------------------------- --
--- Disable Load
-
-function Swift.Save:DisableLoading(_Flag)
-    self.LoadingDisabled = _Flag == true;
-    if Swift.Environment == QSB.Environment.GLOBAL then
-        Logic.ExecuteInLuaLocalState(string.format(
-            [[Swift.Save:DisableLoading(%s)]],
-            tostring(_Flag)
-        ))
-    else
-        self:UpdateLoadButtons();
-    end
-end
-
-function Swift.Save:UpdateLoadButtons()
-    if Swift.Environment == QSB.Environment.LOCAL then
-        local VisibleFlag = (self.LoadingDisabled and 0) or 1;
-        XGUIEng.ShowWidget("/InGame/InGame/MainMenu/Container/LoadGame", VisibleFlag);
-        XGUIEng.ShowWidget("/InGame/InGame/MainMenu/Container/QuickLoad", VisibleFlag);
-    end
-end
-
--- -------------------------------------------------------------------------- --
--- API
-
----
--- Deaktiviert das automatische Speichern der History Edition.
--- @param[type=boolean] _Flag Auto-Speichern ist deaktiviert
--- @within Spielstand
---
-function API.DisableAutoSave(_Flag)
-    if Swift.Environment == QSB.Environment.GLOBAL then
-        Swift.Save.HistoryEditionQuickSave = _Flag == true;
-        Logic.ExecuteInLuaLocalState(string.format(
-            [[Swift.Save.HistoryEditionQuickSave = %s]],
-            tostring(_Flag == true)
-        ))
-    end
-end
-
----
--- Deaktiviert das Speichern des Spiels.
--- @param[type=boolean] _Flag Speichern ist deaktiviert
--- @within Spielstand
---
-function API.DisableSaving(_Flag)
-    Swift.Save:DisableSaving(_Flag);
-end
-
----
--- Deaktiviert das Laden von Spielständen.
--- @param[type=boolean] _Flag Laden ist deaktiviert
--- @within Spielstand
---
-function API.DisableLoading(_Flag)
-    Swift.Save:DisableLoading(_Flag);
-end
-
--- -------------------------------------------------------------------------- --
-
----
--- Multilinguale Texte und Platzhalterersetzung in Texten.
--- @set sort=true
--- @local
---
-
-Swift.Text = {
-    Languages = {
-        {"de", "Deutsch", "en"},
-        {"en", "English", "en"},
-        {"fr", "Français", "en"},
-    },
-
-    Colors = {
-        red     = "{@color:255,80,80,255}",
-        blue    = "{@color:104,104,232,255}",
-        yellow  = "{@color:255,255,80,255}",
-        green   = "{@color:80,180,0,255}",
-        white   = "{@color:255,255,255,255}",
-        black   = "{@color:0,0,0,255}",
-        grey    = "{@color:140,140,140,255}",
-        azure   = "{@color:0,160,190,255}",
-        orange  = "{@color:255,176,30,255}",
-        amber   = "{@color:224,197,117,255}",
-        violet  = "{@color:180,100,190,255}",
-        pink    = "{@color:255,170,200,255}",
-        scarlet = "{@color:190,0,0,255}",
-        magenta = "{@color:190,0,89,255}",
-        olive   = "{@color:74,120,0,255}",
-        sky     = "{@color:145,170,210,255}",
-        tooltip = "{@color:51,51,120,255}",
-        lucid   = "{@color:0,0,0,0}",
-        none    = "{@color:none}"
-    },
-
-    Placeholders = {
-        Names = {},
-        EntityTypes = {},
-    },
-}
-
-QSB.Language = "de";
-
-function Swift.Text:Initalize()
-    QSB.ScriptEvents.LanguageSet = Swift.Event:CreateScriptEvent("Event_LanguageSet");
-    self:DetectLanguage();
-end
-
-function Swift.Text:OnSaveGameLoaded()
-end
-
--- -------------------------------------------------------------------------- --
--- Language
-
-function Swift.Text:DetectLanguage()
-    local DefaultLanguage = Network.GetDesiredLanguage();
-    if DefaultLanguage ~= "de" and DefaultLanguage ~= "fr" then
-        DefaultLanguage = "en";
-    end
-    QSB.Language = DefaultLanguage;
-end
-
-function Swift.Text:OnLanguageChanged(_PlayerID, _GUI_PlayerID, _Language)
-    self:ChangeSystemLanguage(_PlayerID, _Language, _GUI_PlayerID);
-end
-
-function Swift.Text:ChangeSystemLanguage(_PlayerID, _Language, _GUI_PlayerID)
-    local OldLanguage = QSB.Language;
-    local NewLanguage = _Language;
-    if _GUI_PlayerID == nil or _GUI_PlayerID == _PlayerID then
-        QSB.Language = _Language;
-    end
-
-    Swift.Event:DispatchScriptEvent(QSB.ScriptEvents.LanguageSet, OldLanguage, NewLanguage);
-    Logic.ExecuteInLuaLocalState(string.format(
-        [[
-            local OldLanguage = "%s"
-            local NewLanguage = "%s"
-            if GUI.GetPlayerID() == %d then
-                QSB.Language = NewLanguage
-            end
-            Swift.Event:DispatchScriptEvent(QSB.ScriptEvents.LanguageSet, OldLanguage, NewLanguage)
-        ]],
-        OldLanguage,
-        NewLanguage,
-        _PlayerID
-    ));
-end
-
-function Swift.Text:Localize(_Text)
-    local LocalizedText;
-    if type(_Text) == "table" then
-        LocalizedText = {};
-        if _Text.en == nil and _Text[QSB.Language] == nil then
-            for k,v in pairs(_Text) do
-                if type(v) == "table" then
-                    LocalizedText[k] = self:Localize(v);
-                end
-            end
-        else
-            if _Text[QSB.Language] then
-                LocalizedText = _Text[QSB.Language];
-            else
-                for k, v in pairs(self.Languages) do
-                    if v[1] == QSB.Language and v[3] ~= nil then
-                        LocalizedText = _Text[v[3]];
-                        break;
-                    end
-                end
-            end
-            if type(LocalizedText) == "table" then
-                LocalizedText = "ERROR_NO_TEXT";
-            end
-        end
-    else
-        LocalizedText = tostring(_Text);
-    end
-    return LocalizedText;
-end
-
--- -------------------------------------------------------------------------- --
--- Placeholder
-
-function Swift.Text:ConvertPlaceholders(_Text)
-    local s1, e1, s2, e2;
-    while true do
-        local Before, Placeholder, After, Replacement, s1, e1, s2, e2;
-        if _Text:find("{n:") then
-            Before, Placeholder, After, s1, e1, s2, e2 = self:SplicePlaceholderText(_Text, "{n:");
-            Replacement = self.Placeholders.Names[Placeholder];
-            _Text = Before .. self:Localize(Replacement or ("n:" ..tostring(Placeholder).. ": not found")) .. After;
-        elseif _Text:find("{t:") then
-            Before, Placeholder, After, s1, e1, s2, e2 = self:SplicePlaceholderText(_Text, "{t:");
-            Replacement = self.Placeholders.EntityTypes[Placeholder];
-            _Text = Before .. self:Localize(Replacement or ("n:" ..tostring(Placeholder).. ": not found")) .. After;
-        elseif _Text:find("{v:") then
-            Before, Placeholder, After, s1, e1, s2, e2 = self:SplicePlaceholderText(_Text, "{v:");
-            Replacement = self:ReplaceValuePlaceholder(Placeholder);
-            _Text = Before .. self:Localize(Replacement or ("v:" ..tostring(Placeholder).. ": not found")) .. After;
-        end
-        if s1 == nil or e1 == nil or s2 == nil or e2 == nil then
-            break;
-        end
-    end
-    _Text = self:ReplaceColorPlaceholders(_Text);
-    return _Text;
-end
-
-function Swift.Text:SplicePlaceholderText(_Text, _Start)
-    local s1, e1 = _Text:find(_Start);
-    local s2, e2 = _Text:find("}", e1);
-
-    local Before      = _Text:sub(1, s1-1);
-    local Placeholder = _Text:sub(e1+1, s2-1);
-    local After       = _Text:sub(e2+1);
-    return Before, Placeholder, After, s1, e1, s2, e2;
-end
-
-function Swift.Text:ReplaceColorPlaceholders(_Text)
-    for k, v in pairs(self.Colors) do
-        _Text = _Text:gsub("{" ..k.. "}", v);
-    end
-    return _Text;
-end
-
-function Swift.Text:ReplaceValuePlaceholder(_Text)
-    local Ref = _G;
-    local Slice = string.slice(_Text, "%.");
-    for i= 1, #Slice do
-        local KeyOrIndex = Slice[i];
-        local Index = tonumber(KeyOrIndex);
-        if Index ~= nil then
-            KeyOrIndex = Index;
-        end
-        if not Ref[KeyOrIndex] then
-            return nil;
-        end
-        Ref = Ref[KeyOrIndex];
-    end
-    return Ref;
-end
-
--- Slices a string of commands into multiple strings by resolving %% and % as
--- command delimiters.
--- * && separates entries from another and makes them different inputs
--- * & copys parameters for all commands chained with it
---
--- Example:
--- foo & bar 1 2 3 && muh 4
---
--- Result:
--- foo 1 2 3
--- bar 1 2 3
--- muh 4
-function Swift.Text:CommandTokenizer(_Input)
-    local Commands = {};
-    if _Input == nil then
-        return Commands;
-    end
-    local DAmberCommands = {_Input};
-    local AmberCommands = {};
-
-    -- parse && delimiter
-    local s, e = string.find(_Input, "%s+&&%s+");
-    if s then
-        DAmberCommands = {};
-        while (s) do
-            local tmp = string.sub(_Input, 1, s-1);
-            table.insert(DAmberCommands, tmp);
-            _Input = string.sub(_Input, e+1);
-            s, e = string.find(_Input, "%s+&&%s+");
-        end
-        if string.len(_Input) > 0 then 
-            table.insert(DAmberCommands, _Input);
-        end
-    end
-
-    -- parse & delimiter
-    for i= 1, #DAmberCommands, 1 do
-        local s, e = string.find(DAmberCommands[i], "%s+&%s+");
-        if s then
-            local LastCommand = "";
-            while (s) do
-                local tmp = string.sub(DAmberCommands[i], 1, s-1);
-                table.insert(AmberCommands, LastCommand .. tmp);
-                if string.find(tmp, " ") then
-                    LastCommand = string.sub(tmp, 1, string.find(tmp, " ")-1) .. " ";
-                end
-                DAmberCommands[i] = string.sub(DAmberCommands[i], e+1);
-                s, e = string.find(DAmberCommands[i], "%s+&%s+");
-            end
-            if string.len(DAmberCommands[i]) > 0 then 
-                table.insert(AmberCommands, LastCommand .. DAmberCommands[i]);
-            end
-        else
-            table.insert(AmberCommands, DAmberCommands[i]);
-        end
-    end
-
-    -- parse spaces
-    for i= 1, #AmberCommands, 1 do
-        local CommandLine = {};
-        local s, e = string.find(AmberCommands[i], "%s+");
-        if s then
-            while (s) do
-                local tmp = string.sub(AmberCommands[i], 1, s-1);
-                table.insert(CommandLine, tmp);
-                AmberCommands[i] = string.sub(AmberCommands[i], e+1);
-                s, e = string.find(AmberCommands[i], "%s+");
-            end
-            table.insert(CommandLine, AmberCommands[i]);
-        else
-            table.insert(CommandLine, AmberCommands[i]);
-        end
-        table.insert(Commands, CommandLine);
-    end
-
-    return Commands;
-end
-
--- -------------------------------------------------------------------------- --
--- API
-
----
--- Ermittelt den lokalisierten Text anhand der eingestellten Sprache der QSB.
---
--- Wird ein normaler String übergeben, wird dieser sofort zurückgegeben.
--- Bei einem Table mit einem passenden Sprach-Key (de, en, fr, ...) wird die
--- entsprechende Sprache zurückgegeben. Sollte ein Nested Table übergeben
--- werden, werden alle Texte innerhalb des Tables rekursiv übersetzt als Table
--- zurückgegeben. Alle anderen Werte sind nicht in der Rückgabe enthalten.
---
--- @param[type=table] _Text Table mit Übersetzungen
--- @return Übersetzten Text oder Table mit Texten
--- @within Text
---
--- @usage
--- -- Beispiel #1: Table lokalisieren
--- local Text = API.Localize({de = "Deutsch", en = "English"});
--- -- Rückgabe: "Deutsch"
---
--- @usage
--- -- Beispiel #2: Mehrstufige (Nested) Tables
--- -- (Nested Tables sind in dem Fall mit Vorsicht zu genießen!)
--- API.Localize{{de = "Deutsch", en = "English"}, {{1,2,3,4, de = "A", en = "B"}}}
--- -- Rückgabe: {"Deutsch", {"A"}}
---
-function API.Localize(_Text)
-    return Swift.Text:Localize(_Text);
-end
-
----
--- Schreibt eine Nachricht in das Debug Window. Der Text erscheint links am
--- Bildschirm und ist nicht statisch.
--- 
--- <i>Platzhalter werden automatisch im aufrufenden Environment ersetzt.</i><br>
--- <i>Multilinguale Texte werden automatisch im aufrufenden Environment übersetzt.</i>
---
--- <b>Hinweis:</b> Texte werden automatisch lokalisiert und Platzhalter ersetzt.
---
--- @param[type=string] _Text Anzeigetext
--- @within Text
---
--- @usage
--- API.Note("Das ist eine flüchtige Information!");
---
-function API.Note(_Text)
-    _Text = Swift.Text:ConvertPlaceholders(Swift.Text:Localize(_Text));
-    if not GUI then
-        Logic.DEBUG_AddNote(_Text);
-        return;
-    end
-    GUI.AddNote(_Text);
-end
-
----
--- Schreibt eine Nachricht in das Debug Window. Der Text erscheint links am
--- Bildschirm und verbleibt dauerhaft am Bildschirm.
--- 
--- <i>Platzhalter werden automatisch im aufrufenden Environment ersetzt.</i><br>
--- <i>Multilinguale Texte werden automatisch im aufrufenden Environment übersetzt.</i>
---
--- <b>Hinweis:</b> Texte werden automatisch lokalisiert und Platzhalter ersetzt.
---
--- @param[type=string] _Text Anzeigetext
--- @within Text
---
--- @usage
--- API.StaticNote("Das ist eine dauerhafte Information!");
---
-function API.StaticNote(_Text)
-    _Text = Swift.Text:ConvertPlaceholders(Swift.Text:Localize(_Text));
-    if not GUI then
-        Logic.ExecuteInLuaLocalState(string.format(
-            [[GUI.AddStaticNote("%s")]],
-            _Text
-        ));
-        return;
-    end
-    GUI.AddStaticNote(_Text);
-end
-
----
--- Schreibt eine Nachricht unten in das Nachrichtenfenster. Die Nachricht
--- verschwindet nach einigen Sekunden.
--- 
--- <i>Platzhalter werden automatisch im aufrufenden Environment ersetzt.</i><br>
--- <i>Multilinguale Texte werden automatisch im aufrufenden Environment übersetzt.</i>
---
--- <b>Hinweis:</b> Texte werden automatisch lokalisiert und Platzhalter ersetzt.
---
--- @param[type=string] _Text  Anzeigetext
--- @param[type=string] _Sound (Optional) Soundeffekt der Nachricht
--- @within Text
---
--- @usage
--- -- Beispiel #1: Einfache Nachricht
--- API.Message("Das ist eine Nachricht!");
---
--- @usage
--- -- Beispiel #2: Nachricht und Ton
--- API.Message("Das ist eine WERTVOLLE Nachricht!", "ui/menu_left_gold_pay");
---
-function API.Message(_Text, _Sound)
-    _Text = Swift.Text:ConvertPlaceholders(Swift.Text:Localize(_Text));
-    if not GUI then
-        Logic.ExecuteInLuaLocalState(string.format(
-            [[API.Message("%s", %s)]],
-            _Text,
-            _Sound
-        ));
-        return;
-    end
-    _Text = Swift.Text:ConvertPlaceholders(API.Localize(_Text));
-    if _Sound then
-        _Sound = _Sound:gsub("/", "\\");
-    end
-    Message(_Text, _Sound);
-end
-
----
--- Löscht alle Nachrichten im Debug Window.
---
--- @within Text
---
--- @usage
--- API.ClearNotes();
---
-function API.ClearNotes()
-    if not GUI then
-        Logic.ExecuteInLuaLocalState([[API.ClearNotes()]]);
-        return;
-    end
-    GUI.ClearNotes();
-end
-
----
--- Ersetzt alle Platzhalter im Text oder in der Table.
---
--- Mögliche Platzhalter:
--- <ul>
--- <li>{n:xyz} - Ersetzt einen Skriptnamen mit dem zuvor gesetzten Wert.</li>
--- <li>{t:xyz} - Ersetzt einen Typen mit dem zuvor gesetzten Wert.</li>
--- <li>{v:xyz} - Ersetzt mit dem Inhalt der angegebenen Variable. Der Wert muss
--- in der Umgebung vorhanden sein, in der er ersetzt wird.</li>
--- </ul>
---
--- Außerdem werden einige Standardfarben ersetzt.
--- <pre>{COLOR}</pre>
--- Ersetze {COLOR} in deinen Texten mit einer der gelisteten Farben.
---
--- <table border="1">
--- <tr><th><b>Platzhalter</b></th><th><b>Farbe</b></th><th><b>RGBA</b></th></tr>
---
--- <tr><td>red</td>     <td>Rot</td>           <td>255,80,80,255</td></tr>
--- <tr><td>blue</td>    <td>Blau</td>          <td>104,104,232,255</td></tr>
--- <tr><td>yellow</td>  <td>Gelp</td>          <td>255,255,80,255</td></tr>
--- <tr><td>green</td>   <td>Grün</td>          <td>80,180,0,255</td></tr>
--- <tr><td>white</td>   <td>Weiß</td>          <td>255,255,255,255</td></tr>
--- <tr><td>black</td>   <td>Schwarz</td>       <td>0,0,0,255</td></tr>
--- <tr><td>grey</td>    <td>Grau</td>          <td>140,140,140,255</td></tr>
--- <tr><td>azure</td>   <td>Azurblau</td>      <td>255,176,30,255</td></tr>
--- <tr><td>orange</td>  <td>Orange</td>        <td>255,176,30,255</td></tr>
--- <tr><td>amber</td>   <td>Bernstein</td>     <td>224,197,117,255</td></tr>
--- <tr><td>violet</td>  <td>Violett</td>       <td>180,100,190,255</td></tr>
--- <tr><td>pink</td>    <td>Rosa</td>          <td>255,170,200,255</td></tr>
--- <tr><td>scarlet</td> <td>Scharlachrot</td>  <td>190,0,0,255</td></tr>
--- <tr><td>magenta</td> <td>Magenta</td>       <td>190,0,89,255</td></tr>
--- <tr><td>olive</td>   <td>Olivgrün</td>      <td>74,120,0,255</td></tr>
--- <tr><td>sky</td>     <td>Himmelsblau</td>   <td>145,170,210,255</td></tr>
--- <tr><td>tooltip</td> <td>Tooltip-Blau</td>  <td>51,51,120,255</td></tr>
--- <tr><td>lucid</td>   <td>Transparent</td>   <td>0,0,0,0</td></tr>
--- <tr><td>none</td>    <td>Standardfarbe</td> <td>(Abhängig vom Widget)</td></tr>
--- </table>
---
--- @param[type=string] _Message Text
--- @return Ersetzter Text
--- @within Text
---
--- @usage
--- -- Beispiel #1: Vordefinierte Farbe austauschen
--- local Replaced = API.ConvertPlaceholders("{scarlet}Dieser Text ist jetzt rot!");
---
--- @usage
--- -- Beispiel #2: Skriptnamen austauschen
--- local Replaced = API.ConvertPlaceholders("{n:placeholder2} wurde ersetzt!");
---
--- @usage
--- -- Beispiel #3: Typen austauschen
--- local Replaced = API.ConvertPlaceholders("{t:U_KnightHealing} wurde ersetzt!");
---
--- @usage
--- -- Beispiel #4: Variable austauschen
--- local Replaced = API.ConvertPlaceholders("{v:MyVariable.1.MyValue} wurde ersetzt!");
---
-function API.ConvertPlaceholders(_Message)
-    if type(_Message) == "table" then
-        for k, v in pairs(_Message) do
-            _Message[k] = Swift.Text:ConvertPlaceholders(v);
-        end
-        return API.Localize(_Message);
-    elseif type(_Message) == "string" then
-        return Swift.Text:ConvertPlaceholders(_Message);
-    else
-        return _Message;
-    end
-end
-
----
--- Fügt einen Platzhalter für den angegebenen Namen hinzu.
---
--- Innerhalb des Textes wird der Plathalter wie folgt geschrieben:
--- <pre>{n:SOME_NAME}</pre>
--- SOME_NAME muss mit dem Namen ersetzt werden.
---
--- @param[type=string] _Name        Name, der ersetzt werden soll
--- @param[type=string] _Replacement Wert, der ersetzt wird
--- @within Text
---
--- @usage
--- API.AddNamePlaceholder("Scriptname", "Horst");
--- API.AddNamePlaceholder("Scriptname", {de = "Kuchen", en = "Cake"});
---
-function API.AddNamePlaceholder(_Name, _Replacement)
-    if type(_Replacement) == "function" or type(_Replacement) == "thread" then
-        error("API.AddNamePlaceholder: Only strings, numbers, or tables are allowed!");
-        return;
-    end
-    Swift.Text.Placeholders.Names[_Name] = _Replacement;
-end
-
----
--- Fügt einen Platzhalter für einen Entity-Typ hinzu.
---
--- Innerhalb des Textes wird der Plathalter wie folgt geschrieben:
--- <pre>{t:ENTITY_TYP}</pre>
--- ENTITY_TYP muss mit einem Entity-Typ ersetzt werden. Der Typ wird ohne
--- Entities. davor geschrieben.
---
--- @param[type=string] _Type        Typname, der ersetzt werden soll
--- @param[type=string] _Replacement Wert, der ersetzt wird
--- @within Text
---
--- @usage
--- API.AddNamePlaceholder("U_KnightHealing", "Arroganze Ziege");
--- API.AddNamePlaceholder("B_Castle_SE", {de = "Festung des Bösen", en = "Fortress of Evil"});
---
-function API.AddEntityTypePlaceholder(_Type, _Replacement)
-    if Entities[_Type] == nil then
-        error("API.AddEntityTypePlaceholder: EntityType does not exist!");
-        return;
-    end
-    Swift.Text.Placeholders.EntityTypes[_Type] = _Replacement;
-end
-
--- -------------------------------------------------------------------------- --
-
----
--- Stellt Cheats und Befehle für einfacheres Testen bereit.
---
--- @set sort=true
--- @within Beschreibung
--- @local
---
-
-Swift.Debug = {
-    CheckAtRun           = false;
-    TraceQuests          = false;
-    DevelopingCheats     = false;
-    DevelopingShell      = false;
-};
-
-function Swift.Debug:Initalize()
-    QSB.ScriptEvents.DebugChatConfirmed = Swift.Event:CreateScriptEvent("Event_DebugChatConfirmed");
-    QSB.ScriptEvents.DebugConfigChanged = Swift.Event:CreateScriptEvent("Event_DebugConfigChanged");
-
-    if Swift.Environment == QSB.Environment.LOCAL then
-        self:InitalizeQsbDebugHotkeys();
-
-        API.AddScriptEventListener(
-            QSB.ScriptEvents.ChatClosed,
-            function(...)
-                Swift.Debug:ProcessDebugInput(unpack(arg));
-            end
-        );
-    end
-end
-
-function Swift.Debug:OnSaveGameLoaded()
-    if Swift.Environment == QSB.Environment.LOCAL then
-        self:InitalizeDebugWidgets();
-        self:InitalizeQsbDebugHotkeys();
-    end
-end
-
-function Swift.Debug:ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _DevelopingShell)
-    if Swift.Environment == QSB.Environment.LOCAL then
-        return;
-    end
-
-    self.CheckAtRun       = _CheckAtRun == true;
-    self.TraceQuests      = _TraceQuests == true;
-    self.DevelopingCheats = _DevelopingCheats == true;
-    self.DevelopingShell  = _DevelopingShell == true;
-
-    Swift.Event:DispatchScriptEvent(
-        QSB.ScriptEvents.DebugModeStatusChanged,
-        self.CheckAtRun,
-        self.TraceQuests,
-        self.DevelopingCheats,
-        self.DevelopingShell
-    );
-
-    Logic.ExecuteInLuaLocalState(string.format(
-        [[
-            Swift.Debug.CheckAtRun       = %s;
-            Swift.Debug.TraceQuests      = %s;
-            Swift.Debug.DevelopingCheats = %s;
-            Swift.Debug.DevelopingShell  = %s;
-
-            Swift.Event:DispatchScriptEvent(
-                QSB.ScriptEvents.DebugModeStatusChanged,
-                Swift.Debug.CheckAtRun,
-                Swift.Debug.TraceQuests,
-                Swift.Debug.DevelopingCheats,
-                Swift.Debug.DevelopingShell
-            );
-            Swift.Debug:InitalizeDebugWidgets();
-        ]],
-        tostring(self.CheckAtRun),
-        tostring(self.TraceQuests),
-        tostring(self.DevelopingCheats),
-        tostring(self.DevelopingShell)
-    ));
-end
-
-function Swift.Debug:InitalizeDebugWidgets()
-    if Network.IsNATReady ~= nil and Framework.IsNetworkGame() then
-        return;
-    end
-    if self.DevelopingCheats then
-        KeyBindings_EnableDebugMode(1);
-        KeyBindings_EnableDebugMode(2);
-        KeyBindings_EnableDebugMode(3);
-        XGUIEng.ShowWidget("/InGame/Root/Normal/AlignTopLeft/GameClock", 1);
-        self.GameClock = true;
-    else
-        KeyBindings_EnableDebugMode(0);
-        XGUIEng.ShowWidget("/InGame/Root/Normal/AlignTopLeft/GameClock", 0);
-        self.GameClock = false;
-    end
-end
-
-function Swift.Debug:InitalizeQsbDebugHotkeys()
-    if Framework.IsNetworkGame() then
-        return;
-    end
-    -- Restart map
-    Input.KeyBindDown(
-        Keys.ModifierControl + Keys.ModifierShift + Keys.ModifierAlt + Keys.R,
-        "Swift.Debug:ProcessDebugShortcut('RestartMap')",
-        30,
-        false
-    );
-    -- Open chat
-    Input.KeyBindDown(
-        Keys.ModifierShift + Keys.OemPipe,
-        "Swift.Debug:ProcessDebugShortcut('Terminal')",
-        30,
-        false
-    );
-end
-
-function Swift.Debug:ProcessDebugShortcut(_Type, _Params)
-    if self.DevelopingCheats then
-        if _Type == "RestartMap" then
-            Framework.RestartMap();
-        elseif _Type == "Terminal" then
-            API.ShowTextInput(GUI.GetPlayerID(), true);
-        end
-    end
-end
-
-function Swift.Debug:ProcessDebugInput(_Input, _PlayerID, _DebugAllowed)
-    if _DebugAllowed then
-        if _Input:lower():find("^restartmap") then
-            self:ProcessDebugShortcut("RestartMap");
-        elseif _Input:lower():find("^clear") then
-            GUI.ClearNotes();
-        elseif _Input:lower():find("^version") then
-            local Slices = _Input:slice(" ");
-            if Slices[2] then
-                for i= 1, #Swift.ModuleRegister do
-                    if Swift.ModuleRegister[i].Properties.Name ==  Slices[2] then
-                        GUI.AddStaticNote("Version: " ..Swift.ModuleRegister[i].Properties.Version);
-                    end
-                end
-                return;
-            end
-            GUI.AddStaticNote("Version: " ..QSB.Version);
-        elseif _Input:find("^> ") then
-            GUI.SendScriptCommand(_Input:sub(3), true);
-        elseif _Input:find("^>> ") then
-            GUI.SendScriptCommand(string.format(
-                "Logic.ExecuteInLuaLocalState(\"%s\")",
-                _Input:sub(4)
-            ), true);
-        elseif _Input:find("^< ") then
-            GUI.SendScriptCommand(string.format(
-                [[Script.Load("%s")]],
-                _Input:sub(3)
-            ));
-        elseif _Input:find("^<< ") then
-            Script.Load(_Input:sub(4));
-        end
-    end
-end
-
--- -------------------------------------------------------------------------- --
--- API
-
----
--- Aktiviert oder deaktiviert Optionen des Debug Mode.
---
--- <b>Hinweis:</b> Du kannst alle Optionen unbegrenzt oft beliebig ein-
--- und ausschalten.
---
--- <ul>
--- <li><u>Prüfung zum Spielbeginn</u>: <br>
--- Quests werden auf konsistenz geprüft, bevor sie starten. </li>
--- <li><u>Questverfolgung</u>: <br>
--- Jede Statusänderung an einem Quest löst eine Nachricht auf dem Bildschirm
--- aus, die die Änderung wiedergibt. </li>
--- <li><u>Eintwickler Cheaks</u>: <br>
--- Aktivier die Entwickler Cheats. </li>
--- <li><u>Debug Chat-Eingabe</u>: <br>
--- Die Chat-Eingabe kann zur Eingabe von Befehlen genutzt werden. </li>
--- </ul>
---
--- @param[type=boolean] _CheckAtRun       Custom Behavior prüfen an/aus
--- @param[type=boolean] _TraceQuests      Quest Trace an/aus
--- @param[type=boolean] _DevelopingCheats Cheats an/aus
--- @param[type=boolean] _DevelopingShell  Eingabeaufforderung an/aus
--- @within System
---
-function API.ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _DevelopingShell)
-    Swift.Debug:ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _DevelopingShell);
-end
-
--- -------------------------------------------------------------------------- --
-
----
 -- Eine Sammlung von vielen Behavior.
 -- @set sort=true
 -- @local
@@ -13942,6 +11690,2245 @@ function B_Trigger_OnEffectDestroyed:Debug(_Quest)
 	end
 end
 Swift:RegisterBehavior(B_Trigger_OnEffectDestroyed)
+
+-- -------------------------------------------------------------------------- --
+
+--
+-- Kommunikation von Komponenten über Events aus dem Skript.
+--
+-- @set sort=true
+-- @local
+--
+
+Swift.Event = {
+    ScriptEventRegister   = {};
+    ScriptEventListener   = {};
+    ScriptCommandRegister = {};
+};
+
+QSB.ScriptCommandSequence = 2;
+QSB.ScriptCommands = {};
+QSB.ScriptEvents = {};
+
+function Swift.Event:Initalize()
+    self:OverrideSoldierPayment();
+    if Swift.Environment == QSB.Environment.GLOBAL then
+        self:CreateScriptCommand("Cmd_SendScriptEvent", function(_Event, ...)
+            assert(QSB.ScriptEvents[_Event] ~= nil);
+            API.SendScriptEvent(QSB.ScriptEvents[_Event], unpack(arg));
+        end);
+    end
+end
+
+function Swift.Event:OnSaveGameLoaded()
+end
+
+-- -------------------------------------------------------------------------- --
+-- Script Commands
+
+function Swift.Event:OverrideSoldierPayment()
+    GameCallback_SetSoldierPaymentLevel_Orig_Swift = GameCallback_SetSoldierPaymentLevel;
+    GameCallback_SetSoldierPaymentLevel = function(_PlayerID, _Level)
+        if _Level <= 2 then
+            return GameCallback_SetSoldierPaymentLevel_Orig_Swift(_PlayerID, _Level);
+        end
+        Swift.Event:ProcessScriptCommand(_PlayerID, _Level);
+    end
+end
+
+function Swift.Event:CreateScriptCommand(_Name, _Function)
+    if Swift.Environment == QSB.Environment.LOCAL then
+        return 0;
+    end
+    QSB.ScriptCommandSequence = QSB.ScriptCommandSequence +1;
+    local ID = QSB.ScriptCommandSequence;
+    local Name = _Name;
+    if string.find(_Name, "^Cmd_") then
+        Name = string.sub(_Name, 5);
+    end
+    self.ScriptCommandRegister[ID] = {Name, _Function};
+    Logic.ExecuteInLuaLocalState(string.format(
+        [[
+            local ID = %d
+            local Name = "%s"
+            Swift.Event.ScriptCommandRegister[ID] = Name
+            QSB.ScriptCommands[Name] = ID
+        ]],
+        ID,
+        Name
+    ));
+    QSB.ScriptCommands[Name] = ID;
+    return ID;
+end
+
+function Swift.Event:DispatchScriptCommand(_ID, ...)
+    if Swift.Environment == QSB.Environment.GLOBAL then
+        return;
+    end
+    assert(_ID ~= nil);
+    if self.ScriptCommandRegister[_ID] then
+        local PlayerID = GUI.GetPlayerID();
+        local NamePlayerID = PlayerID +4;
+        local PlayerName = Logic.GetPlayerName(NamePlayerID);
+        local Parameters = self:EncodeScriptCommandParameters(unpack(arg));
+
+        if Framework.IsNetworkGame() and Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
+            GUI.SetPlayerName(NamePlayerID, Parameters);
+            GUI.SetSoldierPaymentLevel(_ID);
+        else
+            GUI.SendScriptCommand(string.format(
+                [[Swift.Event:ProcessScriptCommand(%d, %d, "%s")]],
+                arg[1],
+                _ID,
+                Parameters
+            ));
+        end
+        debug(string.format(
+            "Dispatching script command %s to global.",
+            self.ScriptCommandRegister[_ID]
+        ), true);
+
+        if Framework.IsNetworkGame() and Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
+            GUI.SetPlayerName(NamePlayerID, PlayerName);
+            GUI.SetSoldierPaymentLevel(PlayerSoldierPaymentLevel[PlayerID]);
+        end
+    end
+end
+
+function Swift.Event:ProcessScriptCommand(_PlayerID, _ID, _ParameterString)
+    if not self.ScriptCommandRegister[_ID] then
+        return;
+    end
+    local PlayerName = _ParameterString;
+    if Framework.IsNetworkGame() and Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
+        PlayerName = Logic.GetPlayerName(_PlayerID +4);
+    end
+    local Parameters = self:DecodeScriptCommandParameters(PlayerName);
+    local PlayerID = table.remove(Parameters, 1);
+    if PlayerID ~= 0 and PlayerID ~= _PlayerID then
+        return;
+    end
+    debug(string.format(
+        "Processing script command %s in global.",
+        self.ScriptCommandRegister[_ID][1]
+    ), true);
+    self.ScriptCommandRegister[_ID][2](unpack(Parameters));
+end
+
+function Swift.Event:EncodeScriptCommandParameters(...)
+    local Query = "";
+    for i= 1, #arg do
+        local Parameter = arg[i];
+        if type(Parameter) == "string" then
+            Parameter = string.gsub(Parameter, '#', "<<<HT>>>");
+            Parameter = string.gsub(Parameter, '"', "<<<QT>>>");
+            if Parameter:len() == 0 then
+                Parameter = "<<<ES>>>";
+            end
+        elseif type(Parameter) == "table" then
+            Parameter = "{" ..table.concat(Parameter, ",") .."}";
+        end
+        if string.len(Query) > 0 then
+            Query = Query .. "#";
+        end
+        Query = Query .. tostring(Parameter);
+    end
+    return Query;
+end
+
+function Swift.Event:DecodeScriptCommandParameters(_Query)
+    local Parameters = {};
+    for k, v in pairs(string.slice(_Query, "#")) do
+        local Value = v;
+        Value = string.replaceAll(Value, "<<<HT>>>", '#');
+        Value = string.replaceAll(Value, "<<<QT>>>", '"');
+        Value = string.replaceAll(Value, "<<<ES>>>", '');
+        if Value == nil then
+            Value = nil;
+        elseif Value == "true" or Value == "false" then
+            Value = Value == "true";
+        elseif string.indexOf(Value, "{") == 1 then
+            local ValueTable = string.slice(string.sub(Value, 2, string.len(Value)-1), ",");
+            Value = {};
+            for i= 1, #ValueTable do
+                Value[i] = (tonumber(ValueTable[i]) ~= nil and tonumber(ValueTable[i]) or ValueTable);
+            end
+        elseif tonumber(Value) ~= nil then
+            Value = tonumber(Value);
+        end
+        table.insert(Parameters, Value);
+    end
+    return Parameters;
+end
+
+-- -------------------------------------------------------------------------- --
+-- Script Events
+
+function Swift.Event:CreateScriptEvent(_Name)
+    for i= 1, #self.ScriptEventRegister, 1 do
+        if self.ScriptEventRegister[i] == _Name then
+            return 0;
+        end
+    end
+    local ID = #self.ScriptEventRegister+1;
+    debug(string.format("Create script event %s", _Name), true);
+    self.ScriptEventRegister[ID] = _Name;
+    return ID;
+end
+
+function Swift.Event:DispatchScriptEvent(_ID, ...)
+    if not self.ScriptEventRegister[_ID] then
+        return;
+    end
+    -- Dispatch module events
+    for i= 1, #Swift.ModuleRegister, 1 do
+        local Env = (Swift.Environment == QSB.Environment.GLOBAL and "Global") or "Local";
+        if Swift.ModuleRegister[i][Env] and Swift.ModuleRegister[i][Env].OnEvent then
+            Swift.ModuleRegister[i][Env]:OnEvent(_ID, unpack(arg));
+        end
+    end
+    -- Call event game callback
+    if GameCallback_QSB_OnEventReceived then
+        GameCallback_QSB_OnEventReceived(_ID, unpack(arg));
+    end
+    -- Call event listeners
+    if self.ScriptEventListener[_ID] then
+        for k, v in pairs(self.ScriptEventListener[_ID]) do
+            if tonumber(k) then
+                v(unpack(arg));
+            end
+        end
+    end
+end
+
+-- -------------------------------------------------------------------------- --
+-- API
+
+function API.RegisterScriptCommand(_Name, _Function)
+    return Swift.Event:CreateScriptCommand(_Name, _Function);
+end
+
+function API.BroadcastScriptCommand(_NameOrID, ...)
+    local ID = _NameOrID;
+    if type(ID) == "string" then
+        for i= 1, #Swift.Event.ScriptCommandRegister, 1 do
+            if Swift.Event.ScriptCommandRegister[i][1] == _NameOrID then
+                ID = i;
+            end
+        end
+    end
+    assert(type(ID) == "number");
+    if not GUI then
+        return;
+    end
+    Swift.Event:DispatchScriptCommand(ID, 0, unpack(arg));
+end
+
+-- Does this function makes any sense? Calling the synchronization but only for
+-- one player seems to be stupid...
+function API.SendScriptCommand(_NameOrID, ...)
+    local ID = _NameOrID;
+    if type(ID) == "string" then
+        for i= 1, #Swift.Event.ScriptCommandRegister, 1 do
+            if Swift.Event.ScriptCommandRegister[i][1] == _NameOrID then
+                ID = i;
+            end
+        end
+    end
+    assert(type(ID) == "number");
+    if not GUI then
+        return;
+    end
+    Swift.Event:DispatchScriptCommand(ID, GUI.GetPlayerID(), unpack(arg));
+end
+
+---
+-- Legt ein neues Script Event an.
+--
+-- @param[type=string]   _Name     Identifier des Event
+-- @return[type=number] ID des neuen Script Event
+-- @within Intern
+--
+-- @usage
+-- local EventID = API.RegisterScriptEvent("MyNewEvent");
+--
+function API.RegisterScriptEvent(_Name)
+    return Swift.Event:CreateScriptEvent(_Name);
+end
+
+---
+-- Sendet das Script Event mit der übergebenen ID und überträgt optional
+-- Parameter.
+--
+-- <h5>Multiplayer</h5>
+-- Im Multiplayer kann diese Funktion nicht benutzt werden, um Script Events
+-- synchron oder asynchron aus dem lokalen im globalen Skript auszuführen.
+--
+-- @param[type=number] _EventID ID des Event
+-- @param              ... Optionale Parameter (nil, string, number, boolean, (array) table)
+-- @within Intern
+--
+-- @usage
+-- API.SendScriptEvent(SomeEventID, Param1, Param2, ...);
+--
+function API.SendScriptEvent(_EventID, ...)
+    Swift.Event:DispatchScriptEvent(_EventID, unpack(arg));
+end
+
+---
+-- Triggerd ein Script Event im globalen Skript aus dem lokalen Skript.
+--
+-- Das Event wird synchron für alle Spieler gesendet.
+--
+-- @param[type=number] _EventName Name des Event
+-- @param              ... Optionale Parameter (nil, string, number, boolean, (array) table)
+-- @within Intern
+--
+-- @usage
+-- API.SendScriptEventToGlobal("SomeEventName", Param1, Param2, ...);
+--
+function API.BroadcastScriptEventToGlobal(_EventName, ...)
+    if not GUI then
+        return;
+    end
+    Swift.Event:DispatchScriptCommand(
+        QSB.ScriptCommands.SendScriptEvent,
+        0,
+        _EventName,
+        unpack(arg)
+    );
+end
+
+---
+-- Triggerd ein Script Event im globalen Skript aus dem lokalen Skript.
+--
+-- Das Event wird asynchron für den kontrollierenden Spieler gesendet.
+--
+-- @param[type=number] _EventName Name des Event
+-- @param              ... Optionale Parameter (nil, string, number, boolean, (array) table)
+-- @within Intern
+--
+-- @usage
+-- API.SendScriptEventToGlobal("SomeEventName", Param1, Param2, ...);
+--
+function API.SendScriptEventToGlobal(_EventName, ...)
+    if not GUI then
+        return;
+    end
+    Swift.Event:DispatchScriptCommand(
+        QSB.ScriptCommands.SendScriptEvent,
+        GUI.GetPlayerID(),
+        _EventName,
+        unpack(arg)
+    );
+end
+
+---
+-- Erstellt einen neuen Listener für das Event.
+--
+-- An den Listener werden die gleichen Parameter übergeben, die für das Event
+-- auch bei GameCallback_QSB_OnEventReceived übergeben werden.
+--
+-- <b>Hinweis</b>: Event Listener für ein spezifisches Event werden nach
+-- GameCallback_QSB_OnEventReceived aufgerufen.
+--
+-- @param[type=number]   _EventID  ID des Event
+-- @param[type=function] _Function Listener Funktion
+-- @return[type=number] ID des Listener
+-- @within Event
+-- @see API.RemoveScriptEventListener
+--
+-- @usage
+-- local ListenerID = API.AddScriptEventListener(QSB.ScriptEvents.SaveGameLoaded, function()
+--     Logic.DEBUG_AddNote("A save has been loaded!");
+-- end);
+--
+function API.AddScriptEventListener(_EventID, _Function)
+    if not Swift.Event.ScriptEventListener[_EventID] then
+        Swift.Event.ScriptEventListener[_EventID] = {
+            IDSequence = 0;
+        }
+    end
+    local Data = Swift.Event.ScriptEventListener[_EventID];
+    assert(type(_Function) == "function");
+    Swift.Event.ScriptEventListener[_EventID].IDSequence = Data.IDSequence +1;
+    Swift.Event.ScriptEventListener[_EventID][Data.IDSequence] = _Function;
+    return Data.IDSequence;
+end
+
+---
+-- Entfernt einen Listener von dem Event.
+--
+-- @param[type=number] _EventID ID des Event
+-- @param[type=number] _ID      ID des Listener
+-- @within Event
+-- @see API.AddScriptEventListener
+--
+function API.RemoveScriptEventListener(_EventID, _ID)
+    if Swift.Event.ScriptEventListener[_EventID] then
+        Swift.Event.ScriptEventListener[_EventID][_ID] = nil;
+    end
+end
+
+-- -------------------------------------------------------------------------- --
+
+--
+-- Scripting Values lesen und schreiben.
+-- @set sort=true
+-- @local
+--
+
+Swift.ScriptingValue = {
+    SV = {
+        Game = "Vanilla",
+        Vanilla = {
+            Destination = {X = 19, Y= 20},
+            Health      = -41,
+            Player      = -71,
+            Size        = -45,
+            Visible     = -50,
+            NPC         = 6,
+        },
+        HistoryEdition = {
+            Destination = {X = 17, Y= 18},
+            Health      = -38,
+            Player      = -68,
+            Size        = -42,
+            Visible     = -47,
+            NPC         = 6,
+        }
+    }
+}
+
+function Swift.ScriptingValue:Initalize()
+    if Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
+        self.SV.Game = "HistoryEdition";
+    end
+    QSB.ScriptingValue = self.SV[self.SV.Game];
+end
+
+function Swift.ScriptingValue:OnSaveGameLoaded()
+    -- Porting savegames between game versions
+    -- (Not recommended but we try to support it)
+    if Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
+        self.SV.Game = "HistoryEdition";
+    end
+    QSB.ScriptingValue = self.SV[self.SV.Game];
+end
+
+-- -------------------------------------------------------------------------- --
+-- Conversion Methods
+
+function Swift.ScriptingValue:BitsInteger(num)
+    local t = {};
+    while num > 0 do
+        rest = math.qmod(num, 2);
+        table.insert(t,1,rest);
+        num=(num-rest)/2;
+    end
+    table.remove(t, 1);
+    return t;
+end
+
+function Swift.ScriptingValue:BitsFraction(num, t)
+    for i = 1, 48 do
+        num = num * 2;
+        if(num >= 1) then
+            table.insert(t, 1);
+            num = num - 1;
+        else
+            table.insert(t, 0);
+        end
+        if(num == 0) then
+            return t;
+        end
+    end
+    return t;
+end
+
+function Swift.ScriptingValue:IntegerToFloat(num)
+    if(num == 0) then
+        return 0;
+    end
+    local sign = 1;
+    if (num < 0) then
+        num = 2147483648 + num;
+        sign = -1;
+    end
+    local frac = math.qmod(num, 8388608);
+    local headPart = (num-frac)/8388608;
+    local expNoSign = math.qmod(headPart, 256);
+    local exp = expNoSign-127;
+    local fraction = 1;
+    local fp = 0.5;
+    local check = 4194304;
+    for i = 23, 0, -1 do
+        if (frac - check) > 0 then
+            fraction = fraction + fp;
+            frac = frac - check;
+        end
+        check = check / 2;
+        fp = fp / 2;
+    end
+    return fraction * math.pow(2, exp) * sign;
+end
+
+function Swift.ScriptingValue:FloatToInteger(fval)
+    if(fval == 0) then
+        return 0;
+    end
+    local signed = false;
+    if (fval < 0) then
+        signed = true;
+        fval = fval * -1;
+    end
+    local outval = 0;
+    local bits;
+    local exp = 0;
+    if fval >= 1 then
+        local intPart = math.floor(fval);
+        local fracPart = fval - intPart;
+        bits = self:BitsInteger(intPart);
+        exp = #bits;
+        self:BitsFraction(fracPart, bits);
+    else
+        bits = {};
+        self:BitsFraction(fval, bits);
+        while(bits[1] == 0) do
+            exp = exp - 1;
+            table.remove(bits, 1);
+        end
+        exp = exp - 1;
+        table.remove(bits, 1);
+    end
+    local bitVal = 4194304;
+    local start = 1;
+    for bpos = start, 23 do
+        local bit = bits[bpos];
+        if(not bit) then
+            break;
+        end
+        if(bit == 1) then
+            outval = outval + bitVal;
+        end
+        bitVal = bitVal / 2;
+    end
+    outval = outval + (exp+127)*8388608;
+    if(signed) then
+        outval = outval - 2147483648;
+    end
+    return outval;
+end
+
+-- -------------------------------------------------------------------------- --
+-- API
+
+---
+-- Liste der unterstützten Scripting Values.
+--
+-- <ul>
+-- <li><b>QSB.ScriptingValue.Destination.X</b><br>
+-- Gibt die Z-Koordinate des Bewegungsziels als Float zurück.</li>
+-- <li><b>QSB.ScriptingValue.Destination.Y</b><br>
+-- Gibt die Y-Koordinate des Bewegungsziels als Float zurück.</li>
+-- <li><b>QSB.ScriptingValue.Health</b><br>
+-- Setzt die Gesundheit eines Entity ohne Folgeaktionen zu triggern.</li>
+-- <li><b>QSB.ScriptingValue.Player</b><br>
+-- Setzt den Besitzer des Entity ohne Plausibelitätsprüfungen.</li>
+-- <li><b>QSB.ScriptingValue.Size</b><br>
+-- Setzt den Größenfaktor eines Entities als Float.</li>
+-- <li><b>QSB.ScriptingValue.Visible</b><br>
+-- Sichtbarkeit eines Entities abfragen (801280 == sichtbar)</li>
+-- <li><b>QSB.ScriptingValue.NPC</b><br>
+-- NPC-Flag eines Siedlers setzen (0 = inaktiv, 1 - 4 = aktiv)</li>
+-- </ul>
+-- @within ScriptingValue
+--
+QSB.ScriptingValue = {};
+
+---
+-- Gibt den Wert auf dem übergebenen Index für das Entity zurück.
+--
+-- @param[type=number] _Entity Entity
+-- @param[type=number] _SV     Typ der Scripting Value
+-- @return[type=number] Ermittelter Wert
+-- @within ScriptingValue
+--
+-- @usage
+-- local PlayerID = API.GetInteger("HansWurst", QSB.ScriptingValue.Player);
+--
+function API.GetInteger(_Entity, _SV)
+    local ID = GetID(_Entity);
+    if not IsExisting(ID) then
+        return;
+    end
+    return Logic.GetEntityScriptingValue(ID, _SV);
+end
+
+---
+-- Gibt den Wert auf dem übergebenen Index für das Entity zurück.
+--
+-- @param[type=number] _Entity Entity
+-- @param[type=number] _SV     Typ der Scripting Value
+-- @return[type=number] Ermittelter Wert
+-- @within ScriptingValue
+--
+-- @usage
+-- local Size = API.GetFloat("HansWurst", QSB.ScriptingValue.Size);
+--
+function API.GetFloat(_Entity, _SV)
+    local ID = GetID(_Entity);
+    if not IsExisting(ID) then
+        return;
+    end
+    local Value = Logic.GetEntityScriptingValue(ID, _SV);
+    return API.ConvertIntegerToFloat(Value);
+end
+
+---
+-- Setzt den Wert auf dem übergebenen Index für das Entity.
+-- 
+-- @param[type=number] _Entity Entity
+-- @param[type=number] _SV     Typ der Scripting Value
+-- @param[type=number] _Value  Zu setzender Wert
+-- @within ScriptingValue
+--
+-- @usage
+-- API.SetInteger("HansWurst", QSB.ScriptingValue.Player, 2);
+--
+function API.SetInteger(_Entity, _SV, _Value)
+    local ID = GetID(_Entity);
+    if GUI or not IsExisting(ID) then
+        return;
+    end
+    Logic.SetEntityScriptingValue(ID, _SV, _Value);
+end
+
+---
+-- Setzt den Wert auf dem übergebenen Index für das Entity.
+--
+-- @param[type=number] _Entity Entity
+-- @param[type=number] _SV     Typ der Scripting Value
+-- @param[type=number] _Value  Zu setzender Wert
+-- @within ScriptingValue
+--
+-- @usage
+-- API.SetFloat("HansWurst", QSB.ScriptingValue.Size, 1.5);
+--
+function API.SetFloat(_Entity, _SV, _Value)
+    local ID = GetID(_Entity);
+    if GUI or not IsExisting(ID) then
+        return;
+    end
+    Logic.SetEntityScriptingValue(ID, _SV, API.ConvertFloatToInteger(_Value));
+end
+
+---
+-- Konvertirert den Wert in eine Ganzzahl.
+--
+-- @param[type=number] _Value Gleitkommazahl
+-- @return[type=number] Konvertierte Ganzzahl
+-- @within ScriptingValue
+--
+-- @usage
+-- local Converted = API.ConvertIntegerToFloat(Value)
+--
+function API.ConvertIntegerToFloat(_Value)
+    return Swift.ScriptingValue:IntegerToFloat(_Value);
+end
+
+---
+-- Konvertirert den Wert in eine Gleitkommazahl.
+--
+-- @param[type=number] _Value Gleitkommazahl
+-- @return[type=number] Konvertierte Ganzzahl
+-- @within ScriptingValue
+--
+-- @usage
+-- local Converted = API.ConvertFloatToInteger(Value)
+--
+function API.ConvertFloatToInteger(_Value)
+    return Swift.ScriptingValue:FloatToInteger(_Value);
+end
+-- -------------------------------------------------------------------------- --
+
+--
+-- Es werden einige Fehler im Spiel behoben.
+--
+-- @set sort=true
+-- @local
+--
+
+Swift.Bugfix = {};
+
+function Swift.Bugfix:Initalize()
+    if Swift.Environment == QSB.Environment.GLOBAL then
+        self:FixResourceSlotsInStorehouses();
+        self:OverrideConstructionCompleteCallback();
+        self:OverrideIsMerchantArrived();
+        self:OverrideIsObjectiveCompleted();
+    end
+    if Swift.Environment == QSB.Environment.LOCAL then
+        self:FixInteractiveObjectClicked();
+		self:FixCathedralName();
+    end
+end
+
+function Swift.Bugfix:OnSaveGameLoaded()
+end
+
+-- -------------------------------------------------------------------------- --
+-- Luxury for NPCs
+
+function Swift.Bugfix:FixResourceSlotsInStorehouses()
+    for i= 1, 8 do
+        local StoreHouseID = Logic.GetStoreHouse(i);
+        if StoreHouseID ~= 0 then
+            Logic.AddGoodToStock(StoreHouseID, Goods.G_Salt, 0, true, true);
+            Logic.AddGoodToStock(StoreHouseID, Goods.G_Dye, 0, true, true);
+        end
+    end
+end
+
+-- -------------------------------------------------------------------------- --
+-- Respawning for ME barracks
+
+function Swift.Bugfix:OverrideConstructionCompleteCallback()
+    GameCallback_OnBuildingConstructionComplete_Orig_QSB_Core = GameCallback_OnBuildingConstructionComplete;
+    GameCallback_OnBuildingConstructionComplete = function(_PlayerID, _EntityID)
+        GameCallback_OnBuildingConstructionComplete_Orig_QSB_Core(_PlayerID, _EntityID);
+        local EntityType = Logic.GetEntityType(_EntityID);
+        if EntityType == Entities.B_NPC_Barracks_ME then
+            Logic.RespawnResourceSetMaxSpawn(_EntityID, 0.01);
+            Logic.RespawnResourceSetMinSpawn(_EntityID, 0.01);
+        end
+    end
+
+    for k, v in pairs(Logic.GetEntitiesOfType(Entities.B_NPC_Barracks_ME)) do
+        Logic.RespawnResourceSetMaxSpawn(v, 0.01);
+        Logic.RespawnResourceSetMinSpawn(v, 0.01);
+    end
+end
+
+-- -------------------------------------------------------------------------- --
+-- Delivery checkpoint
+
+function Swift.Bugfix:OverrideIsMerchantArrived()
+    function QuestTemplate:IsMerchantArrived(objective)
+        if objective.Data[3] ~= nil then
+            if objective.Data[3] == 1 then
+                if objective.Data[5].ID ~= nil then
+                    objective.Data[3] = objective.Data[5].ID;
+                    DeleteQuestMerchantWithID(objective.Data[3]);
+                    if MapCallback_DeliverCartSpawned then
+                        MapCallback_DeliverCartSpawned(self, objective.Data[3], objective.Data[1]);
+                    end
+                end
+            elseif Logic.IsEntityDestroyed(objective.Data[3]) then
+                DeleteQuestMerchantWithID(objective.Data[3]);
+                objective.Data[3] = nil;
+                objective.Data[5].ID = nil;
+            else
+                local Target = objective.Data[6] and objective.Data[6] or self.SendingPlayer;
+                local StorehouseID = Logic.GetStoreHouse(Target);
+                local MarketplaceID = Logic.GetStoreHouse(Target);
+                local HeadquartersID = Logic.GetStoreHouse(Target);
+                local HasArrived = nil;
+
+                if StorehouseID > 0 then
+                    local x,y = Logic.GetBuildingApproachPosition(StorehouseID);
+                    HasArrived = API.GetDistance(objective.Data[3], {X= x, Y= y}) < 1000;
+                end
+                if MarketplaceID > 0 then
+                    local x,y = Logic.GetBuildingApproachPosition(MarketplaceID);
+                    HasArrived = HasArrived or API.GetDistance(objective.Data[3], {X= x, Y= y}) < 1000;
+                end
+                if HeadquartersID > 0 then
+                    local x,y = Logic.GetBuildingApproachPosition(HeadquartersID);
+                    HasArrived = HasArrived or API.GetDistance(objective.Data[3], {X= x, Y= y}) < 1000;
+                end
+                return HasArrived;
+            end
+        end
+        return false;
+    end
+end
+
+-- -------------------------------------------------------------------------- --
+-- IO costs
+
+function Swift.Bugfix:FixInteractiveObjectClicked()
+    GUI_Interaction.InteractiveObjectClicked = function()
+        local ButtonNumber = tonumber(XGUIEng.GetWidgetNameByID(XGUIEng.GetCurrentWidgetID()));
+        local ObjectID = g_Interaction.ActiveObjectsOnScreen[ButtonNumber];
+        if ObjectID == nil or not Logic.InteractiveObjectGetAvailability(ObjectID) then
+            return;
+        end
+        local PlayerID = GUI.GetPlayerID();
+        local Costs = {Logic.InteractiveObjectGetEffectiveCosts(ObjectID, PlayerID)};
+        local CanNotBuyString = XGUIEng.GetStringTableText("Feedback_TextLines/TextLine_NotEnough_Resources");
+
+        -- Check activation costs
+        local Affordable = true;
+        if Affordable and Costs ~= nil and Costs[1] ~= nil then
+            if Costs[1] == Goods.G_Gold then
+                CanNotBuyString = XGUIEng.GetStringTableText("Feedback_TextLines/TextLine_NotEnough_G_Gold");
+            end
+            if Costs[1] ~= Goods.G_Gold and Logic.GetGoodCategoryForGoodType(Costs[1]) ~= GoodCategories.GC_Resource then
+                error("Only resources can be used as costs for objects!");
+                Affordable = false;
+            end
+            Affordable = Affordable and GetPlayerGoodsInSettlement(Costs[1], PlayerID, false) >= Costs[2];
+        end
+        if Affordable and Costs ~= nil and Costs[3] ~= nil then
+            if Costs[3] == Goods.G_Gold then
+                CanNotBuyString = XGUIEng.GetStringTableText("Feedback_TextLines/TextLine_NotEnough_G_Gold");
+            end
+            if Costs[3] ~= Goods.G_Gold and Logic.GetGoodCategoryForGoodType(Costs[3]) ~= GoodCategories.GC_Resource then
+                error("Only resources can be used as costs for objects!");
+                Affordable = false;
+            end
+            Affordable = Affordable and GetPlayerGoodsInSettlement(Costs[3], PlayerID, false) >= Costs[4];
+        end
+        if not Affordable then
+            Message(CanNotBuyString);
+            return;
+        end
+
+        -- Check click override
+        if not GUI_Interaction.InteractionClickOverride
+        or not GUI_Interaction.InteractionClickOverride(ObjectID) then
+            Sound.FXPlay2DSound( "ui\\menu_click");
+        end
+        -- Check feedback speech override
+        if not GUI_Interaction.InteractionSpeechFeedbackOverride
+        or not GUI_Interaction.InteractionSpeechFeedbackOverride(ObjectID) then
+            GUI_FeedbackSpeech.Add("SpeechOnly_CartsSent", g_FeedbackSpeech.Categories.CartsUnderway, nil, nil);
+        end
+        -- Check action override and perform action
+        if not Mission_Callback_OverrideObjectInteraction
+        or not Mission_Callback_OverrideObjectInteraction(ObjectID, PlayerID, Costs) then
+            GUI.ExecuteObjectInteraction(ObjectID, PlayerID);
+        end
+    end
+end
+
+-- -------------------------------------------------------------------------- --
+-- Destroy all units
+
+function Swift.Bugfix:OverrideIsObjectiveCompleted()
+    QuestTemplate.IsObjectiveCompleted_Orig_QSB_Kernel = QuestTemplate.IsObjectiveCompleted;
+    QuestTemplate.IsObjectiveCompleted = function(self, objective)
+        local objectiveType = objective.Type;
+        if objective.Completed ~= nil then
+            return objective.Completed;
+        end
+        local data = objective.Data;
+
+        -- Solves the problem that special entities and construction sites
+        -- let the script beleave that the player is still alive.
+        if objectiveType == Objective.DestroyAllPlayerUnits then
+            local PlayerEntities = GetPlayerEntities(data, 0);
+            local IllegalEntities = {};
+
+            for i= #PlayerEntities, 1, -1 do
+                local Type = Logic.GetEntityType(PlayerEntities[i]);
+                if Logic.IsEntityInCategory(PlayerEntities[i], EntityCategories.AttackableBuilding) == 0 or Logic.IsEntityInCategory(PlayerEntities[i], EntityCategories.Wall) == 0 then
+                    if Logic.IsConstructionComplete(PlayerEntities[i]) == 0 then
+                        table.insert(IllegalEntities, PlayerEntities[i]);
+                    end
+                end
+                local IndestructableEntities = {Entities.XD_ScriptEntity, Entities.S_AIHomePosition, Entities.S_AIAreaDefinition};
+                if table.contains(IndestructableEntities, Type) then
+                    table.insert(IllegalEntities, PlayerEntities[i]);
+                end
+            end
+
+            if #PlayerEntities == 0 or #PlayerEntities - #IllegalEntities == 0 then
+                objective.Completed = true;
+            end
+        elseif objectiveType == Objective.Distance then
+            objective.Completed = Swift.Behavior:IsQuestPositionReached(self, objective);
+        else
+            return self:IsObjectiveCompleted_Orig_QSB_Kernel(objective);
+        end
+    end
+end
+
+
+-- -------------------------------------------------------------------------- --
+-- Cathedral name
+
+function Swift.Bugfix:FixCathedralName()
+	GUI_BuildingInfo.BuildingNameUpdate_Orig_QSB_Kernel = GUI_BuildingInfo.BuildingNameUpdate;
+	GUI_BuildingInfo.BuildingNameUpdate = function()
+		GUI_BuildingInfo.BuildingNameUpdate_Orig_QSB_Kernel()
+		local CurrentWidgetID = XGUIEng.GetCurrentWidgetID()
+		if XGUIEng.GetText(CurrentWidgetID) == "{center}B_Cathedral_Big" then
+			local CurrentLanguage = Network.GetDesiredLanguage()
+			if CurrentLanguage == "de" then
+				XGUIEng.SetText(CurrentWidgetID, "{center}Kathedrale")
+			else
+				XGUIEng.SetText(CurrentWidgetID, "{center}Cathedral")
+			end
+		end
+	end
+end
+--#EOF-- -------------------------------------------------------------------------- --
+
+--
+-- Erweitert die Lua-Basisfunktionen um weitere Funktionen.
+-- @set sort=true
+-- @local
+--
+
+Swift.LuaBase = {};
+
+QSB.Metatable = {Init = false, Weak = {}, Metas = {}, Key = 0};
+
+function Swift.LuaBase:Initalize()
+    self:OverrideTable();
+    self:OverrideString();
+    self:OverrideMath();
+end
+
+function Swift.LuaBase:OnSaveGameLoaded()
+    self:OverrideTable();
+    self:OverrideString();
+    self:OverrideMath();
+end
+
+function Swift.LuaBase:OverrideTable()
+    table.compare = function(t1, t2, fx)
+        assert(type(t1) == "table");
+        assert(type(t2) == "table");
+        fx = fx or function(t1, t2)
+            return tostring(t1) < tostring(t2);
+        end
+        assert(type(fx) == "function");
+        return fx(t1, t2);
+    end
+
+    table.equals = function(t1, t2)
+        assert(type(t1) == "table");
+        assert(type(t2) == "table");
+        for k, v in pairs(t1) do
+            if type(v) == "table" then
+                if not t2[k] or not table.equals(t2[k], v) then
+                    return false;
+                end
+            elseif type(v) ~= "thread" and type(v) ~= "userdata" then
+                if not t2[k] or t2[k] ~= v then
+                    return false;
+                end
+            end
+        end
+        return true;
+    end
+
+    table.contains = function (t, e)
+        assert(type(t) == "table");
+        for k, v in pairs(t) do
+            if v == e then
+                return true;
+            end
+        end
+        return false;
+    end
+
+    table.length = function(t)
+        local c = 0;
+        for k, v in pairs(t) do
+            if tonumber(k) then
+                c = c +1;
+            end
+        end
+        return c;
+    end
+
+    table.size = function(t)
+        local c = 0;
+        for k, v in pairs(t) do
+            -- Ignore n if set
+            if k ~= "n" or (k == "n" and type(v) ~= "number") then
+                c = c +1;
+            end
+        end
+        return c;
+    end
+
+    table.isEmpty = function(t)
+        return table.size(t) == 0;
+    end
+
+    table.copy = function (t1, t2)
+        t2 = t2 or {};
+        assert(type(t1) == "table");
+        assert(type(t2) == "table");
+        return Swift.LuaBase:CopyTable(t1, t2);
+    end
+
+    table.invert = function (t1)
+        assert(type(t1) == "table");
+        local t2 = {};
+        for i= table.length(t1), 1, -1 do
+            table.insert(t2, t1[i]);
+        end
+        return t2;
+    end
+
+    table.push = function (t, e)
+        assert(type(t) == "table");
+        table.insert(t, 1, e);
+    end
+
+    table.pop = function (t)
+        assert(type(t) == "table");
+        return table.remove(t, 1);
+    end
+
+    table.tostring = function(t)
+        return Swift.LuaBase:ConvertTableToString(t);
+    end
+
+    -- FIXME: Does not work?
+    table.insertAll = function(t, ...)
+        for i= 1, #arg do
+            if not table.contains(t, arg[i]) then
+                table.insert(t, arg[i]);
+            end
+        end
+        return t;
+    end
+
+    -- FIXME: Does not work?
+    table.removeAll = function(t, ...)
+        for i= 1, #arg do
+            for k, v in pairs(t) do
+                if type(v) == "table" and type(arg[i]) then
+                    if table.equals(v, arg[i]) then
+                        t[k] = nil;
+                    end
+                else
+                    if v == arg[i] then
+                        t[k] = nil;
+                    end
+                end
+            end
+        end
+        -- Set n as table remove would do
+        t.n = table.length(t);
+        return t;
+    end
+
+    table.setMetatable = function(t, meta)
+        assert(type(t) == "table");
+        assert(type(meta) == "table" or meta == nil);
+
+        local oldmeta = meta;
+        meta = {};
+        for k,v in pairs(oldmeta) do
+            meta[k] = v;
+        end
+        oldmeta = getmetatable(t);
+        setmetatable(t, meta);
+        local k = 0;
+        if oldmeta and oldmeta.KeySave and t == QSB.Metatable.Weak[oldmeta.KeySave] then
+            k = oldmeta.KeySave;
+            if meta == nil then
+                QSB.Metatable.Weak[k] = nil;
+                QSB.Metatablele.Metas[k] = nil;
+                return;
+            end
+        else
+            k = QSB.Metatable.Key + 1;
+            QSB.Metatable.Key = k;
+        end
+        QSB.Metatable.Weak[k] = t;
+        QSB.Metatable.Metas[k] = meta;
+        meta.KeySave = k;
+    end
+
+    table.restoreMetatables = function()
+        for k, tab in pairs(QSB.Metatable.Weak) do
+            setmetatable(tab, QSB.Metatable.Metas[k]);
+        end
+        setmetatable(QSB.Metatable.Weak, {__mode = "v"});
+        setmetatable(QSB.Metatable.Metas, {__mode = "v"});
+    end
+    table.restoreMetatables();
+end
+
+function Swift.LuaBase:OverrideString()
+    string.contains = function (self, s)
+        return self:find(s) ~= nil;
+    end
+
+    string.indexOf = function (self, s)
+        return self:find(s);
+    end
+
+    string.slice = function(self, _sep)
+        _sep = _sep or "%s";
+        if self then
+            local t = {};
+            for str in self:gmatch("([^".._sep.."]+)") do
+                table.insert(t, str);
+            end
+            return t;
+        end
+    end
+
+    string.join = function(self, ...)
+        local s = "";
+        local parts = {self, unpack(arg)};
+        for i= 1, #parts do
+            if type("part") == "table" then
+                s = s .. string.join(unpack(parts[i]));
+            else
+                s = s .. tostring(parts[i]);
+            end
+        end
+        return s;
+    end
+
+    string.replace = function(self, p, r)
+        return self:gsub(p, r, 1);
+    end
+
+    string.replaceAll = function(self, p, r)
+        return self:gsub(p, r);
+    end
+end
+
+function Swift.LuaBase:OverrideMath()
+    math.lerp = function(s, c, e)
+        local f = (c - s) / e;
+        return (f > 1 and 1) or f;
+    end
+
+    math.qmod = function(a, b)
+        return a - math.floor(a/b)*b;
+    end
+end
+
+function Swift.LuaBase:ConvertTableToString(_Table)
+    assert(type(_Table) == "table");
+    local String = "{";
+    for k, v in pairs(_Table) do
+        local key;
+        if (tonumber(k)) then
+            key = ""..k;
+        else
+            key = "\""..k.."\"";
+        end
+        if type(v) == "table" then
+            String = String .. "[" .. key .. "] = " .. self:ConvertTableToString(v) .. ", ";
+        elseif type(v) == "number" then
+            String = String .. "[" .. key .. "] = " .. v .. ", ";
+        elseif type(v) == "string" then
+            String = String .. "[" .. key .. "] = \"" .. v .. "\", ";
+        elseif type(v) == "boolean" or type(v) == "nil" then
+            String = String .. "[" .. key .. "] = " .. tostring(v) .. ", ";
+        else
+            String = String .. "[" .. key .. "] = \"" .. tostring(v) .. "\", ";
+        end
+    end
+    String = String .. "}";
+    return String;
+end
+
+function Swift.LuaBase:CopyTable(_Table1, _Table2)
+    _Table1 = _Table1 or {};
+    _Table2 = _Table2 or {};
+    for k, v in pairs(_Table1) do
+        if "table" == type(v) then
+            _Table2[k] = _Table2[k] or {};
+            for kk, vv in pairs(self:CopyTable(v, _Table2[k])) do
+                _Table2[k][kk] = _Table2[k][kk] or vv;
+            end
+        else
+            _Table2[k] = v;
+        end
+    end
+    return _Table2;
+end
+
+function Swift.LuaBase:ToBoolean(_Input)
+    if type(_Input) == "boolean" then
+        return _Input;
+    end
+    if _Input == 1 or string.find(string.lower(tostring(_Input)), "^[1tjy\\+].*$") then
+        return true;
+    end
+    return false;
+end
+
+-- -------------------------------------------------------------------------- --
+-- API
+
+---
+-- Wandelt underschiedliche Darstellungen einer Boolean in eine echte um.
+--
+-- Jeder String, der mit j, t, y oder + beginnt, wird als true interpretiert.
+-- Alles andere als false.
+--
+-- Ist die Eingabe bereits ein Boolean wird es direkt zurückgegeben.
+--
+-- @param _Value Wahrheitswert
+-- @return[type=boolean] Wahrheitswert
+-- @within Intern
+--
+-- @usage local Bool = API.ToBoolean("+")  --> Bool = true
+-- local Bool = API.ToBoolean("1")  --> Bool = true
+-- local Bool = API.ToBoolean(1)  --> Bool = true
+-- local Bool = API.ToBoolean("no") --> Bool = false
+--
+function API.ToBoolean(_Value)
+    return Swift.LuaBase:ToBoolean(_Value);
+end
+
+---
+-- Schreibt ein genaues Abbild der Table ins Log. Funktionen, Threads und
+-- Metatables werden als Adresse geschrieben.
+--
+-- @param[type=table]  _Table Tabelle, die gedumpt wird
+-- @param[type=string] _Name Optionaler Name im Log
+-- @within Intern
+-- @usage
+-- Table = {1, 2, 3, {a = true}}
+-- API.DumpTable(Table)
+--
+function API.DumpTable(_Table, _Name)
+    local Start = "{";
+    if _Name then
+        Start = _Name.. " = \n" ..Start;
+    end
+    Framework.WriteToLog(Start);
+
+    for k, v in pairs(_Table) do
+        if type(v) == "table" then
+            Framework.WriteToLog("[" ..k.. "] = ");
+            API.DumpTable(v);
+        elseif type(v) == "string" then
+            Framework.WriteToLog("[" ..k.. "] = \"" ..v.. "\"");
+        else
+            Framework.WriteToLog("[" ..k.. "] = " ..tostring(v));
+        end
+    end
+    Framework.WriteToLog("}");
+end
+
+-- -------------------------------------------------------------------------- --
+
+--
+-- Steuerung des Chat als Eingabefenster.
+-- @set sort=true
+-- @local
+--
+
+Swift.Chat = {
+    DebugInput = {};
+};
+
+function Swift.Chat:Initalize()
+    QSB.ScriptEvents.ChatOpened = Swift.Event:CreateScriptEvent("Event_ChatOpened");
+    QSB.ScriptEvents.ChatClosed = Swift.Event:CreateScriptEvent("Event_ChatClosed");
+    for i= 1, 8 do
+        self.DebugInput[i] = {};
+    end
+end
+
+function Swift.Chat:OnSaveGameLoaded()
+end
+
+function Swift.Chat:ShowTextInput(_PlayerID, _AllowDebug)
+    if  Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION
+    and Framework.IsNetworkGame() then
+        return;
+    end
+    if not GUI then
+        Logic.ExecuteInLuaLocalState(string.format(
+            [[Swift.Chat:ShowTextInput(%d, %s)]],
+            _PlayerID,
+            tostring(_AllowDebug == true)
+        ))
+        return;
+    end
+    _PlayerID = _PlayerID or GUI.GetPlayerID();
+    self:PrepareInputVariable(_PlayerID);
+    self:ShowInputBox(_PlayerID, _AllowDebug == true);
+end
+
+function Swift.Chat:ShowInputBox(_PlayerID, _Debug)
+    if GUI.GetPlayerID() ~= _PlayerID then
+        return;
+    end
+    self.DebugInput[_PlayerID] = _Debug == true;
+
+    Swift.Job:CreateEventJob(
+        Events.LOGIC_EVENT_EVERY_TURN,
+        function()
+            -- Open chat
+            Input.ChatMode();
+            XGUIEng.SetText("/InGame/Root/Normal/ChatInput/ChatInput", "");
+            XGUIEng.ShowWidget("/InGame/Root/Normal/ChatInput", 1);
+            XGUIEng.SetFocus("/InGame/Root/Normal/ChatInput/ChatInput");
+            -- Send event to global script
+            Swift.Event:DispatchScriptCommand(
+                QSB.ScriptCommands.SendScriptEvent,
+                GUI.GetPlayerID(),
+                "ChatOpened",
+                _PlayerID
+            );
+            -- Send event to local script
+            Swift.Event:DispatchScriptEvent(
+                QSB.ScriptEvents.ChatOpened,
+                _PlayerID
+            );
+            -- Slow down game time. We can not set the game time to 0 because
+            -- then Logic.ExecuteInLuaLocalState and GUI.SendScriptCommand do
+            -- not work anymore.
+            if not Framework.IsNetworkGame() then
+                Game.GameTimeSetFactor(GUI.GetPlayerID(), 0.0000001);
+            end
+            return true;
+        end
+    )
+end
+
+function Swift.Chat:PrepareInputVariable(_PlayerID)
+    if Swift.Environment == QSB.Environment.GLOBAL then
+        return;
+    end
+
+    GUI_Chat.Abort_Orig_Swift = GUI_Chat.Abort_Orig_Swift or GUI_Chat.Abort;
+    GUI_Chat.Confirm_Orig_Swift = GUI_Chat.Confirm_Orig_Swift or GUI_Chat.Confirm;
+
+    GUI_Chat.Confirm = function()
+        XGUIEng.ShowWidget("/InGame/Root/Normal/ChatInput", 0);
+        local ChatMessage = XGUIEng.GetText("/InGame/Root/Normal/ChatInput/ChatInput");
+        local IsDebug = Swift.Chat.DebugInput[_PlayerID];
+        Swift.ChatBoxInput = ChatMessage;
+        Swift.Chat:SendInputToGlobalScript(ChatMessage, IsDebug);
+        g_Chat.JustClosed = 1;
+        if not Framework.IsNetworkGame() then
+            Game.GameTimeSetFactor(_PlayerID, 1);
+        end
+        Input.GameMode();
+        if  ChatMessage:len() > 0
+        and Framework.IsNetworkGame()
+        and not IsDebug then
+            GUI.SendChatMessage(
+                ChatMessage,
+                _PlayerID,
+                g_Chat.CurrentMessageType,
+                g_Chat.CurrentWhisperTarget
+            );
+        end
+    end
+
+    if not Framework.IsNetworkGame() then
+        GUI_Chat.Abort = function()
+        end
+    end
+end
+
+function Swift.Chat:SendInputToGlobalScript(_Text, _Debug)
+    _Text = (_Text == nil and "") or _Text;
+    local PlayerID = GUI.GetPlayerID();
+    -- Send chat input to global script
+    Swift.Event:DispatchScriptCommand(
+        QSB.ScriptCommands.SendScriptEvent,
+        0,
+        "ChatClosed",
+        (_Text or "<<<ES>>>"),
+        GUI.GetPlayerID(),
+        _Debug == true
+    );
+    -- Send chat input to local script
+    Swift.Event:DispatchScriptEvent(
+        QSB.ScriptEvents.ChatClosed,
+        (_Text or "<<<ES>>>"),
+        GUI.GetPlayerID(),
+        _Debug == true
+    );
+    -- Reset debug flag
+    self.DebugInput[PlayerID] = false;
+end
+
+-- -------------------------------------------------------------------------- --
+-- API
+
+---
+-- Offnet das Chatfenster für eine Eingabe.
+--
+-- <b>Hinweis</b>: Im Multiplayer kann der Chat nicht über Skript gesteuert
+-- werden.
+-- 
+-- @param[type=number]  _PlayerID   Spieler für den der Chat geöffnet wird
+-- @param[type=boolean] _AllowDebug Debug Eingaben werden bearbeitet
+-- @within System
+--
+function API.ShowTextInput(_PlayerID, _AllowDebug)
+    Swift.Chat:ShowTextInput(_PlayerID, _AllowDebug);
+end
+
+-- -------------------------------------------------------------------------- --
+
+--
+-- Speichern und Laden von Spielständen kontrollieren.
+-- @set sort=true
+-- @local
+--
+
+Swift.Save = {
+    HistoryEditionQuickSave = false,
+    SavingDisabled = false,
+    LoadingDisabled = false,
+};
+
+function Swift.Save:Initalize()
+    self:SetupQuicksaveKeyCallback();
+    self:SetupQuicksaveKeyTrigger();
+end
+
+function Swift.Save:OnSaveGameLoaded()
+    self:SetupQuicksaveKeyTrigger();
+    self:UpdateLoadButtons();
+    self:UpdateSaveButtons();
+end
+
+-- -------------------------------------------------------------------------- --
+-- HE Quicksave
+
+function Swift.Save:SetupQuicksaveKeyTrigger()
+    if Swift.Environment == QSB.Environment.LOCAL then
+        Swift.Job:CreateEventJob(
+            Events.LOGIC_EVENT_EVERY_TURN,
+            function()
+                Input.KeyBindDown(
+                    Keys.ModifierControl + Keys.S,
+                    "KeyBindings_SaveGame(true)",
+                    2,
+                    false
+                );
+                return true;
+            end
+        );
+    end
+end
+
+function Swift.Save:SetupQuicksaveKeyCallback()
+    if Swift.Environment == QSB.Environment.LOCAL then
+        KeyBindings_SaveGame_Orig_Swift = KeyBindings_SaveGame;
+        KeyBindings_SaveGame = function(...)
+            -- No quicksave if saving disabled
+            if Swift.Save.SavingDisabled then
+                return;
+            end
+            -- No quicksave if forced by History Edition
+            if not Swift.Save.HistoryEditionQuickSave and not arg[1] then
+                return;
+            end
+            -- Do quicksave
+            KeyBindings_SaveGame_Orig_Swift();
+        end
+    end
+end
+
+-- -------------------------------------------------------------------------- --
+-- Disable Save
+
+function Swift.Save:DisableSaving(_Flag)
+    self.SavingDisabled = _Flag == true;
+    if Swift.Environment == QSB.Environment.GLOBAL then
+        Logic.ExecuteInLuaLocalState(string.format(
+            [[Swift.Save:DisableSaving(%s)]],
+            tostring(_Flag)
+        ))
+    else
+        self:UpdateSaveButtons();
+    end
+end
+
+function Swift.Save:UpdateSaveButtons()
+    if Swift.Environment == QSB.Environment.LOCAL then
+        local VisibleFlag = (self.SavingDisabled and 0) or 1;
+        XGUIEng.ShowWidget("/InGame/InGame/MainMenu/Container/QuickSave", VisibleFlag);
+        XGUIEng.ShowWidget("/InGame/InGame/MainMenu/Container/SaveGame", VisibleFlag);
+    end
+end
+
+-- -------------------------------------------------------------------------- --
+-- Disable Load
+
+function Swift.Save:DisableLoading(_Flag)
+    self.LoadingDisabled = _Flag == true;
+    if Swift.Environment == QSB.Environment.GLOBAL then
+        Logic.ExecuteInLuaLocalState(string.format(
+            [[Swift.Save:DisableLoading(%s)]],
+            tostring(_Flag)
+        ))
+    else
+        self:UpdateLoadButtons();
+    end
+end
+
+function Swift.Save:UpdateLoadButtons()
+    if Swift.Environment == QSB.Environment.LOCAL then
+        local VisibleFlag = (self.LoadingDisabled and 0) or 1;
+        XGUIEng.ShowWidget("/InGame/InGame/MainMenu/Container/LoadGame", VisibleFlag);
+        XGUIEng.ShowWidget("/InGame/InGame/MainMenu/Container/QuickLoad", VisibleFlag);
+    end
+end
+
+-- -------------------------------------------------------------------------- --
+-- API
+
+---
+-- Deaktiviert das automatische Speichern der History Edition.
+-- @param[type=boolean] _Flag Auto-Speichern ist deaktiviert
+-- @within Spielstand
+--
+function API.DisableAutoSave(_Flag)
+    if Swift.Environment == QSB.Environment.GLOBAL then
+        Swift.Save.HistoryEditionQuickSave = _Flag == true;
+        Logic.ExecuteInLuaLocalState(string.format(
+            [[Swift.Save.HistoryEditionQuickSave = %s]],
+            tostring(_Flag == true)
+        ))
+    end
+end
+
+---
+-- Deaktiviert das Speichern des Spiels.
+-- @param[type=boolean] _Flag Speichern ist deaktiviert
+-- @within Spielstand
+--
+function API.DisableSaving(_Flag)
+    Swift.Save:DisableSaving(_Flag);
+end
+
+---
+-- Deaktiviert das Laden von Spielständen.
+-- @param[type=boolean] _Flag Laden ist deaktiviert
+-- @within Spielstand
+--
+function API.DisableLoading(_Flag)
+    Swift.Save:DisableLoading(_Flag);
+end
+
+-- -------------------------------------------------------------------------- --
+
+--
+-- Multilinguale Texte und Platzhalterersetzung in Texten.
+-- @set sort=true
+-- @local
+--
+
+Swift.Text = {
+    Languages = {
+        {"de", "Deutsch", "en"},
+        {"en", "English", "en"},
+        {"fr", "Français", "en"},
+    },
+
+    Colors = {
+        red     = "{@color:255,80,80,255}",
+        blue    = "{@color:104,104,232,255}",
+        yellow  = "{@color:255,255,80,255}",
+        green   = "{@color:80,180,0,255}",
+        white   = "{@color:255,255,255,255}",
+        black   = "{@color:0,0,0,255}",
+        grey    = "{@color:140,140,140,255}",
+        azure   = "{@color:0,160,190,255}",
+        orange  = "{@color:255,176,30,255}",
+        amber   = "{@color:224,197,117,255}",
+        violet  = "{@color:180,100,190,255}",
+        pink    = "{@color:255,170,200,255}",
+        scarlet = "{@color:190,0,0,255}",
+        magenta = "{@color:190,0,89,255}",
+        olive   = "{@color:74,120,0,255}",
+        sky     = "{@color:145,170,210,255}",
+        tooltip = "{@color:51,51,120,255}",
+        lucid   = "{@color:0,0,0,0}",
+        none    = "{@color:none}"
+    },
+
+    Placeholders = {
+        Names = {},
+        EntityTypes = {},
+    },
+}
+
+QSB.Language = "de";
+
+function Swift.Text:Initalize()
+    QSB.ScriptEvents.LanguageSet = Swift.Event:CreateScriptEvent("Event_LanguageSet");
+    self:DetectLanguage();
+end
+
+function Swift.Text:OnSaveGameLoaded()
+end
+
+-- -------------------------------------------------------------------------- --
+-- Language
+
+function Swift.Text:DetectLanguage()
+    local DefaultLanguage = Network.GetDesiredLanguage();
+    if DefaultLanguage ~= "de" and DefaultLanguage ~= "fr" then
+        DefaultLanguage = "en";
+    end
+    QSB.Language = DefaultLanguage;
+end
+
+function Swift.Text:OnLanguageChanged(_PlayerID, _GUI_PlayerID, _Language)
+    self:ChangeSystemLanguage(_PlayerID, _Language, _GUI_PlayerID);
+end
+
+function Swift.Text:ChangeSystemLanguage(_PlayerID, _Language, _GUI_PlayerID)
+    local OldLanguage = QSB.Language;
+    local NewLanguage = _Language;
+    if _GUI_PlayerID == nil or _GUI_PlayerID == _PlayerID then
+        QSB.Language = _Language;
+    end
+
+    Swift.Event:DispatchScriptEvent(QSB.ScriptEvents.LanguageSet, OldLanguage, NewLanguage);
+    Logic.ExecuteInLuaLocalState(string.format(
+        [[
+            local OldLanguage = "%s"
+            local NewLanguage = "%s"
+            if GUI.GetPlayerID() == %d then
+                QSB.Language = NewLanguage
+            end
+            Swift.Event:DispatchScriptEvent(QSB.ScriptEvents.LanguageSet, OldLanguage, NewLanguage)
+        ]],
+        OldLanguage,
+        NewLanguage,
+        _PlayerID
+    ));
+end
+
+function Swift.Text:Localize(_Text)
+    local LocalizedText;
+    if type(_Text) == "table" then
+        LocalizedText = {};
+        if _Text.en == nil and _Text[QSB.Language] == nil then
+            for k,v in pairs(_Text) do
+                if type(v) == "table" then
+                    LocalizedText[k] = self:Localize(v);
+                end
+            end
+        else
+            if _Text[QSB.Language] then
+                LocalizedText = _Text[QSB.Language];
+            else
+                for k, v in pairs(self.Languages) do
+                    if v[1] == QSB.Language and v[3] ~= nil then
+                        LocalizedText = _Text[v[3]];
+                        break;
+                    end
+                end
+            end
+            if type(LocalizedText) == "table" then
+                LocalizedText = "ERROR_NO_TEXT";
+            end
+        end
+    else
+        LocalizedText = tostring(_Text);
+    end
+    return LocalizedText;
+end
+
+-- -------------------------------------------------------------------------- --
+-- Placeholder
+
+function Swift.Text:ConvertPlaceholders(_Text)
+    local s1, e1, s2, e2;
+    while true do
+        local Before, Placeholder, After, Replacement, s1, e1, s2, e2;
+        if _Text:find("{n:") then
+            Before, Placeholder, After, s1, e1, s2, e2 = self:SplicePlaceholderText(_Text, "{n:");
+            Replacement = self.Placeholders.Names[Placeholder];
+            _Text = Before .. self:Localize(Replacement or ("n:" ..tostring(Placeholder).. ": not found")) .. After;
+        elseif _Text:find("{t:") then
+            Before, Placeholder, After, s1, e1, s2, e2 = self:SplicePlaceholderText(_Text, "{t:");
+            Replacement = self.Placeholders.EntityTypes[Placeholder];
+            _Text = Before .. self:Localize(Replacement or ("n:" ..tostring(Placeholder).. ": not found")) .. After;
+        elseif _Text:find("{v:") then
+            Before, Placeholder, After, s1, e1, s2, e2 = self:SplicePlaceholderText(_Text, "{v:");
+            Replacement = self:ReplaceValuePlaceholder(Placeholder);
+            _Text = Before .. self:Localize(Replacement or ("v:" ..tostring(Placeholder).. ": not found")) .. After;
+        end
+        if s1 == nil or e1 == nil or s2 == nil or e2 == nil then
+            break;
+        end
+    end
+    _Text = self:ReplaceColorPlaceholders(_Text);
+    return _Text;
+end
+
+function Swift.Text:SplicePlaceholderText(_Text, _Start)
+    local s1, e1 = _Text:find(_Start);
+    local s2, e2 = _Text:find("}", e1);
+
+    local Before      = _Text:sub(1, s1-1);
+    local Placeholder = _Text:sub(e1+1, s2-1);
+    local After       = _Text:sub(e2+1);
+    return Before, Placeholder, After, s1, e1, s2, e2;
+end
+
+function Swift.Text:ReplaceColorPlaceholders(_Text)
+    for k, v in pairs(self.Colors) do
+        _Text = _Text:gsub("{" ..k.. "}", v);
+    end
+    return _Text;
+end
+
+function Swift.Text:ReplaceValuePlaceholder(_Text)
+    local Ref = _G;
+    local Slice = string.slice(_Text, "%.");
+    for i= 1, #Slice do
+        local KeyOrIndex = Slice[i];
+        local Index = tonumber(KeyOrIndex);
+        if Index ~= nil then
+            KeyOrIndex = Index;
+        end
+        if not Ref[KeyOrIndex] then
+            return nil;
+        end
+        Ref = Ref[KeyOrIndex];
+    end
+    return Ref;
+end
+
+-- Slices a string of commands into multiple strings by resolving %% and % as
+-- command delimiters.
+-- * && separates entries from another and makes them different inputs
+-- * & copys parameters for all commands chained with it
+--
+-- Example:
+-- foo & bar 1 2 3 && muh 4
+--
+-- Result:
+-- foo 1 2 3
+-- bar 1 2 3
+-- muh 4
+function Swift.Text:CommandTokenizer(_Input)
+    local Commands = {};
+    if _Input == nil then
+        return Commands;
+    end
+    local DAmberCommands = {_Input};
+    local AmberCommands = {};
+
+    -- parse && delimiter
+    local s, e = string.find(_Input, "%s+&&%s+");
+    if s then
+        DAmberCommands = {};
+        while (s) do
+            local tmp = string.sub(_Input, 1, s-1);
+            table.insert(DAmberCommands, tmp);
+            _Input = string.sub(_Input, e+1);
+            s, e = string.find(_Input, "%s+&&%s+");
+        end
+        if string.len(_Input) > 0 then 
+            table.insert(DAmberCommands, _Input);
+        end
+    end
+
+    -- parse & delimiter
+    for i= 1, #DAmberCommands, 1 do
+        local s, e = string.find(DAmberCommands[i], "%s+&%s+");
+        if s then
+            local LastCommand = "";
+            while (s) do
+                local tmp = string.sub(DAmberCommands[i], 1, s-1);
+                table.insert(AmberCommands, LastCommand .. tmp);
+                if string.find(tmp, " ") then
+                    LastCommand = string.sub(tmp, 1, string.find(tmp, " ")-1) .. " ";
+                end
+                DAmberCommands[i] = string.sub(DAmberCommands[i], e+1);
+                s, e = string.find(DAmberCommands[i], "%s+&%s+");
+            end
+            if string.len(DAmberCommands[i]) > 0 then 
+                table.insert(AmberCommands, LastCommand .. DAmberCommands[i]);
+            end
+        else
+            table.insert(AmberCommands, DAmberCommands[i]);
+        end
+    end
+
+    -- parse spaces
+    for i= 1, #AmberCommands, 1 do
+        local CommandLine = {};
+        local s, e = string.find(AmberCommands[i], "%s+");
+        if s then
+            while (s) do
+                local tmp = string.sub(AmberCommands[i], 1, s-1);
+                table.insert(CommandLine, tmp);
+                AmberCommands[i] = string.sub(AmberCommands[i], e+1);
+                s, e = string.find(AmberCommands[i], "%s+");
+            end
+            table.insert(CommandLine, AmberCommands[i]);
+        else
+            table.insert(CommandLine, AmberCommands[i]);
+        end
+        table.insert(Commands, CommandLine);
+    end
+
+    return Commands;
+end
+
+-- -------------------------------------------------------------------------- --
+-- API
+
+---
+-- Ermittelt den lokalisierten Text anhand der eingestellten Sprache der QSB.
+--
+-- Wird ein normaler String übergeben, wird dieser sofort zurückgegeben.
+-- Bei einem Table mit einem passenden Sprach-Key (de, en, fr, ...) wird die
+-- entsprechende Sprache zurückgegeben. Sollte ein Nested Table übergeben
+-- werden, werden alle Texte innerhalb des Tables rekursiv übersetzt als Table
+-- zurückgegeben. Alle anderen Werte sind nicht in der Rückgabe enthalten.
+--
+-- @param[type=table] _Text Table mit Übersetzungen
+-- @return Übersetzten Text oder Table mit Texten
+-- @within Text
+--
+-- @usage
+-- -- Beispiel #1: Table lokalisieren
+-- local Text = API.Localize({de = "Deutsch", en = "English"});
+-- -- Rückgabe: "Deutsch"
+--
+-- @usage
+-- -- Beispiel #2: Mehrstufige (Nested) Tables
+-- -- (Nested Tables sind in dem Fall mit Vorsicht zu genießen!)
+-- API.Localize{{de = "Deutsch", en = "English"}, {{1,2,3,4, de = "A", en = "B"}}}
+-- -- Rückgabe: {"Deutsch", {"A"}}
+--
+function API.Localize(_Text)
+    return Swift.Text:Localize(_Text);
+end
+
+---
+-- Schreibt eine Nachricht in das Debug Window. Der Text erscheint links am
+-- Bildschirm und ist nicht statisch.
+-- 
+-- <i>Platzhalter werden automatisch im aufrufenden Environment ersetzt.</i><br>
+-- <i>Multilinguale Texte werden automatisch im aufrufenden Environment übersetzt.</i>
+--
+-- <b>Hinweis:</b> Texte werden automatisch lokalisiert und Platzhalter ersetzt.
+--
+-- @param[type=string] _Text Anzeigetext
+-- @within Text
+--
+-- @usage
+-- API.Note("Das ist eine flüchtige Information!");
+--
+function API.Note(_Text)
+    _Text = Swift.Text:ConvertPlaceholders(Swift.Text:Localize(_Text));
+    if not GUI then
+        Logic.DEBUG_AddNote(_Text);
+        return;
+    end
+    GUI.AddNote(_Text);
+end
+
+---
+-- Schreibt eine Nachricht in das Debug Window. Der Text erscheint links am
+-- Bildschirm und verbleibt dauerhaft am Bildschirm.
+-- 
+-- <i>Platzhalter werden automatisch im aufrufenden Environment ersetzt.</i><br>
+-- <i>Multilinguale Texte werden automatisch im aufrufenden Environment übersetzt.</i>
+--
+-- <b>Hinweis:</b> Texte werden automatisch lokalisiert und Platzhalter ersetzt.
+--
+-- @param[type=string] _Text Anzeigetext
+-- @within Text
+--
+-- @usage
+-- API.StaticNote("Das ist eine dauerhafte Information!");
+--
+function API.StaticNote(_Text)
+    _Text = Swift.Text:ConvertPlaceholders(Swift.Text:Localize(_Text));
+    if not GUI then
+        Logic.ExecuteInLuaLocalState(string.format(
+            [[GUI.AddStaticNote("%s")]],
+            _Text
+        ));
+        return;
+    end
+    GUI.AddStaticNote(_Text);
+end
+
+---
+-- Schreibt eine Nachricht unten in das Nachrichtenfenster. Die Nachricht
+-- verschwindet nach einigen Sekunden.
+-- 
+-- <i>Platzhalter werden automatisch im aufrufenden Environment ersetzt.</i><br>
+-- <i>Multilinguale Texte werden automatisch im aufrufenden Environment übersetzt.</i>
+--
+-- <b>Hinweis:</b> Texte werden automatisch lokalisiert und Platzhalter ersetzt.
+--
+-- @param[type=string] _Text  Anzeigetext
+-- @param[type=string] _Sound (Optional) Soundeffekt der Nachricht
+-- @within Text
+--
+-- @usage
+-- -- Beispiel #1: Einfache Nachricht
+-- API.Message("Das ist eine Nachricht!");
+--
+-- @usage
+-- -- Beispiel #2: Nachricht und Ton
+-- API.Message("Das ist eine WERTVOLLE Nachricht!", "ui/menu_left_gold_pay");
+--
+function API.Message(_Text, _Sound)
+    _Text = Swift.Text:ConvertPlaceholders(Swift.Text:Localize(_Text));
+    if not GUI then
+        Logic.ExecuteInLuaLocalState(string.format(
+            [[API.Message("%s", %s)]],
+            _Text,
+            _Sound
+        ));
+        return;
+    end
+    _Text = Swift.Text:ConvertPlaceholders(API.Localize(_Text));
+    if _Sound then
+        _Sound = _Sound:gsub("/", "\\");
+    end
+    Message(_Text, _Sound);
+end
+
+---
+-- Löscht alle Nachrichten im Debug Window.
+--
+-- @within Text
+--
+-- @usage
+-- API.ClearNotes();
+--
+function API.ClearNotes()
+    if not GUI then
+        Logic.ExecuteInLuaLocalState([[API.ClearNotes()]]);
+        return;
+    end
+    GUI.ClearNotes();
+end
+
+---
+-- Ersetzt alle Platzhalter im Text oder in der Table.
+--
+-- Mögliche Platzhalter:
+-- <ul>
+-- <li>{n:xyz} - Ersetzt einen Skriptnamen mit dem zuvor gesetzten Wert.</li>
+-- <li>{t:xyz} - Ersetzt einen Typen mit dem zuvor gesetzten Wert.</li>
+-- <li>{v:xyz} - Ersetzt mit dem Inhalt der angegebenen Variable. Der Wert muss
+-- in der Umgebung vorhanden sein, in der er ersetzt wird.</li>
+-- </ul>
+--
+-- Außerdem werden einige Standardfarben ersetzt.
+-- <pre>{COLOR}</pre>
+-- Ersetze {COLOR} in deinen Texten mit einer der gelisteten Farben.
+--
+-- <table border="1">
+-- <tr><th><b>Platzhalter</b></th><th><b>Farbe</b></th><th><b>RGBA</b></th></tr>
+--
+-- <tr><td>red</td>     <td>Rot</td>           <td>255,80,80,255</td></tr>
+-- <tr><td>blue</td>    <td>Blau</td>          <td>104,104,232,255</td></tr>
+-- <tr><td>yellow</td>  <td>Gelp</td>          <td>255,255,80,255</td></tr>
+-- <tr><td>green</td>   <td>Grün</td>          <td>80,180,0,255</td></tr>
+-- <tr><td>white</td>   <td>Weiß</td>          <td>255,255,255,255</td></tr>
+-- <tr><td>black</td>   <td>Schwarz</td>       <td>0,0,0,255</td></tr>
+-- <tr><td>grey</td>    <td>Grau</td>          <td>140,140,140,255</td></tr>
+-- <tr><td>azure</td>   <td>Azurblau</td>      <td>255,176,30,255</td></tr>
+-- <tr><td>orange</td>  <td>Orange</td>        <td>255,176,30,255</td></tr>
+-- <tr><td>amber</td>   <td>Bernstein</td>     <td>224,197,117,255</td></tr>
+-- <tr><td>violet</td>  <td>Violett</td>       <td>180,100,190,255</td></tr>
+-- <tr><td>pink</td>    <td>Rosa</td>          <td>255,170,200,255</td></tr>
+-- <tr><td>scarlet</td> <td>Scharlachrot</td>  <td>190,0,0,255</td></tr>
+-- <tr><td>magenta</td> <td>Magenta</td>       <td>190,0,89,255</td></tr>
+-- <tr><td>olive</td>   <td>Olivgrün</td>      <td>74,120,0,255</td></tr>
+-- <tr><td>sky</td>     <td>Himmelsblau</td>   <td>145,170,210,255</td></tr>
+-- <tr><td>tooltip</td> <td>Tooltip-Blau</td>  <td>51,51,120,255</td></tr>
+-- <tr><td>lucid</td>   <td>Transparent</td>   <td>0,0,0,0</td></tr>
+-- <tr><td>none</td>    <td>Standardfarbe</td> <td>(Abhängig vom Widget)</td></tr>
+-- </table>
+--
+-- @param[type=string] _Message Text
+-- @return Ersetzter Text
+-- @within Text
+--
+-- @usage
+-- -- Beispiel #1: Vordefinierte Farbe austauschen
+-- local Replaced = API.ConvertPlaceholders("{scarlet}Dieser Text ist jetzt rot!");
+--
+-- @usage
+-- -- Beispiel #2: Skriptnamen austauschen
+-- local Replaced = API.ConvertPlaceholders("{n:placeholder2} wurde ersetzt!");
+--
+-- @usage
+-- -- Beispiel #3: Typen austauschen
+-- local Replaced = API.ConvertPlaceholders("{t:U_KnightHealing} wurde ersetzt!");
+--
+-- @usage
+-- -- Beispiel #4: Variable austauschen
+-- local Replaced = API.ConvertPlaceholders("{v:MyVariable.1.MyValue} wurde ersetzt!");
+--
+function API.ConvertPlaceholders(_Message)
+    if type(_Message) == "table" then
+        for k, v in pairs(_Message) do
+            _Message[k] = Swift.Text:ConvertPlaceholders(v);
+        end
+        return API.Localize(_Message);
+    elseif type(_Message) == "string" then
+        return Swift.Text:ConvertPlaceholders(_Message);
+    else
+        return _Message;
+    end
+end
+
+---
+-- Fügt einen Platzhalter für den angegebenen Namen hinzu.
+--
+-- Innerhalb des Textes wird der Plathalter wie folgt geschrieben:
+-- <pre>{n:SOME_NAME}</pre>
+-- SOME_NAME muss mit dem Namen ersetzt werden.
+--
+-- @param[type=string] _Name        Name, der ersetzt werden soll
+-- @param[type=string] _Replacement Wert, der ersetzt wird
+-- @within Text
+--
+-- @usage
+-- API.AddNamePlaceholder("Scriptname", "Horst");
+-- API.AddNamePlaceholder("Scriptname", {de = "Kuchen", en = "Cake"});
+--
+function API.AddNamePlaceholder(_Name, _Replacement)
+    if type(_Replacement) == "function" or type(_Replacement) == "thread" then
+        error("API.AddNamePlaceholder: Only strings, numbers, or tables are allowed!");
+        return;
+    end
+    Swift.Text.Placeholders.Names[_Name] = _Replacement;
+end
+
+---
+-- Fügt einen Platzhalter für einen Entity-Typ hinzu.
+--
+-- Innerhalb des Textes wird der Plathalter wie folgt geschrieben:
+-- <pre>{t:ENTITY_TYP}</pre>
+-- ENTITY_TYP muss mit einem Entity-Typ ersetzt werden. Der Typ wird ohne
+-- Entities. davor geschrieben.
+--
+-- @param[type=string] _Type        Typname, der ersetzt werden soll
+-- @param[type=string] _Replacement Wert, der ersetzt wird
+-- @within Text
+--
+-- @usage
+-- API.AddNamePlaceholder("U_KnightHealing", "Arroganze Ziege");
+-- API.AddNamePlaceholder("B_Castle_SE", {de = "Festung des Bösen", en = "Fortress of Evil"});
+--
+function API.AddEntityTypePlaceholder(_Type, _Replacement)
+    if Entities[_Type] == nil then
+        error("API.AddEntityTypePlaceholder: EntityType does not exist!");
+        return;
+    end
+    Swift.Text.Placeholders.EntityTypes[_Type] = _Replacement;
+end
+
+-- -------------------------------------------------------------------------- --
+
+--
+-- Stellt Cheats und Befehle für einfacheres Testen bereit.
+--
+-- @set sort=true
+-- @within Beschreibung
+-- @local
+--
+
+Swift.Debug = {
+    CheckAtRun           = false;
+    TraceQuests          = false;
+    DevelopingCheats     = false;
+    DevelopingShell      = false;
+};
+
+function Swift.Debug:Initalize()
+    QSB.ScriptEvents.DebugChatConfirmed = Swift.Event:CreateScriptEvent("Event_DebugChatConfirmed");
+    QSB.ScriptEvents.DebugConfigChanged = Swift.Event:CreateScriptEvent("Event_DebugConfigChanged");
+
+    if Swift.Environment == QSB.Environment.LOCAL then
+        self:InitalizeQsbDebugHotkeys();
+
+        API.AddScriptEventListener(
+            QSB.ScriptEvents.ChatClosed,
+            function(...)
+                Swift.Debug:ProcessDebugInput(unpack(arg));
+            end
+        );
+    end
+end
+
+function Swift.Debug:OnSaveGameLoaded()
+    if Swift.Environment == QSB.Environment.LOCAL then
+        self:InitalizeDebugWidgets();
+        self:InitalizeQsbDebugHotkeys();
+    end
+end
+
+function Swift.Debug:ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _DevelopingShell)
+    if Swift.Environment == QSB.Environment.LOCAL then
+        return;
+    end
+
+    self.CheckAtRun       = _CheckAtRun == true;
+    self.TraceQuests      = _TraceQuests == true;
+    self.DevelopingCheats = _DevelopingCheats == true;
+    self.DevelopingShell  = _DevelopingShell == true;
+
+    Swift.Event:DispatchScriptEvent(
+        QSB.ScriptEvents.DebugModeStatusChanged,
+        self.CheckAtRun,
+        self.TraceQuests,
+        self.DevelopingCheats,
+        self.DevelopingShell
+    );
+
+    Logic.ExecuteInLuaLocalState(string.format(
+        [[
+            Swift.Debug.CheckAtRun       = %s;
+            Swift.Debug.TraceQuests      = %s;
+            Swift.Debug.DevelopingCheats = %s;
+            Swift.Debug.DevelopingShell  = %s;
+
+            Swift.Event:DispatchScriptEvent(
+                QSB.ScriptEvents.DebugModeStatusChanged,
+                Swift.Debug.CheckAtRun,
+                Swift.Debug.TraceQuests,
+                Swift.Debug.DevelopingCheats,
+                Swift.Debug.DevelopingShell
+            );
+            Swift.Debug:InitalizeDebugWidgets();
+        ]],
+        tostring(self.CheckAtRun),
+        tostring(self.TraceQuests),
+        tostring(self.DevelopingCheats),
+        tostring(self.DevelopingShell)
+    ));
+end
+
+function Swift.Debug:InitalizeDebugWidgets()
+    if Network.IsNATReady ~= nil and Framework.IsNetworkGame() then
+        return;
+    end
+    if self.DevelopingCheats then
+        KeyBindings_EnableDebugMode(1);
+        KeyBindings_EnableDebugMode(2);
+        KeyBindings_EnableDebugMode(3);
+        XGUIEng.ShowWidget("/InGame/Root/Normal/AlignTopLeft/GameClock", 1);
+        self.GameClock = true;
+    else
+        KeyBindings_EnableDebugMode(0);
+        XGUIEng.ShowWidget("/InGame/Root/Normal/AlignTopLeft/GameClock", 0);
+        self.GameClock = false;
+    end
+end
+
+function Swift.Debug:InitalizeQsbDebugHotkeys()
+    if Framework.IsNetworkGame() then
+        return;
+    end
+    -- Restart map
+    Input.KeyBindDown(
+        Keys.ModifierControl + Keys.ModifierShift + Keys.ModifierAlt + Keys.R,
+        "Swift.Debug:ProcessDebugShortcut('RestartMap')",
+        30,
+        false
+    );
+    -- Open chat
+    Input.KeyBindDown(
+        Keys.ModifierShift + Keys.OemPipe,
+        "Swift.Debug:ProcessDebugShortcut('Terminal')",
+        30,
+        false
+    );
+end
+
+function Swift.Debug:ProcessDebugShortcut(_Type, _Params)
+    if self.DevelopingCheats then
+        if _Type == "RestartMap" then
+            Framework.RestartMap();
+        elseif _Type == "Terminal" then
+            API.ShowTextInput(GUI.GetPlayerID(), true);
+        end
+    end
+end
+
+function Swift.Debug:ProcessDebugInput(_Input, _PlayerID, _DebugAllowed)
+    if _DebugAllowed then
+        if _Input:lower():find("^restartmap") then
+            self:ProcessDebugShortcut("RestartMap");
+        elseif _Input:lower():find("^clear") then
+            GUI.ClearNotes();
+        elseif _Input:lower():find("^version") then
+            local Slices = _Input:slice(" ");
+            if Slices[2] then
+                for i= 1, #Swift.ModuleRegister do
+                    if Swift.ModuleRegister[i].Properties.Name ==  Slices[2] then
+                        GUI.AddStaticNote("Version: " ..Swift.ModuleRegister[i].Properties.Version);
+                    end
+                end
+                return;
+            end
+            GUI.AddStaticNote("Version: " ..QSB.Version);
+        elseif _Input:find("^> ") then
+            GUI.SendScriptCommand(_Input:sub(3), true);
+        elseif _Input:find("^>> ") then
+            GUI.SendScriptCommand(string.format(
+                "Logic.ExecuteInLuaLocalState(\"%s\")",
+                _Input:sub(4)
+            ), true);
+        elseif _Input:find("^< ") then
+            GUI.SendScriptCommand(string.format(
+                [[Script.Load("%s")]],
+                _Input:sub(3)
+            ));
+        elseif _Input:find("^<< ") then
+            Script.Load(_Input:sub(4));
+        end
+    end
+end
+
+-- -------------------------------------------------------------------------- --
+-- API
+
+---
+-- Aktiviert oder deaktiviert Optionen des Debug Mode.
+--
+-- <b>Hinweis:</b> Du kannst alle Optionen unbegrenzt oft beliebig ein-
+-- und ausschalten.
+--
+-- <ul>
+-- <li><u>Prüfung zum Spielbeginn</u>: <br>
+-- Quests werden auf konsistenz geprüft, bevor sie starten. </li>
+-- <li><u>Questverfolgung</u>: <br>
+-- Jede Statusänderung an einem Quest löst eine Nachricht auf dem Bildschirm
+-- aus, die die Änderung wiedergibt. </li>
+-- <li><u>Eintwickler Cheaks</u>: <br>
+-- Aktivier die Entwickler Cheats. </li>
+-- <li><u>Debug Chat-Eingabe</u>: <br>
+-- Die Chat-Eingabe kann zur Eingabe von Befehlen genutzt werden. </li>
+-- </ul>
+--
+-- @param[type=boolean] _CheckAtRun       Custom Behavior prüfen an/aus
+-- @param[type=boolean] _TraceQuests      Quest Trace an/aus
+-- @param[type=boolean] _DevelopingCheats Cheats an/aus
+-- @param[type=boolean] _DevelopingShell  Eingabeaufforderung an/aus
+-- @within System
+--
+function API.ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _DevelopingShell)
+    Swift.Debug:ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _DevelopingShell);
+end
 
 -- -------------------------------------------------------------------------- --
 
