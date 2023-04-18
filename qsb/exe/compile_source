@@ -13,9 +13,9 @@ cd qsb/lua/var/minified
 
 # compile qsb
 echo 'compile QSB files'
-luac -o ../build/bytecode/qsb.luac qsb_min.lua
-luac -o ../build/bytecode/qsb_all.luac qsb_all_min.lua
-luac -o ../build/bytecode/qsb_comp.luac qsb_comp_min.lua
+luac -o ../build/bytecode/qsb.luac qsb.lua
+luac -o ../build/bytecode/qsb_all.luac qsb_all.lua
+luac -o ../build/bytecode/qsb_comp.luac qsb_comp.lua
 
 # compile qsb modules
 echo 'compile module files'

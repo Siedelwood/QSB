@@ -24,8 +24,8 @@ function QsbDoc_CreateDocumentationIndex()
     FileText = FileText:gsub("###PLACEHOLDER_DIRECT_LINK###", QsbDoc_GetDirectLinks());
     FileText = FileText:gsub("###PLACEHOLDER_BUNDLE_LINK###", QsbDoc_GetBundleLinks());
 
-    os.remove("../var/build/doc/index.html");
-    local fh = io.open("../var/build/doc/index.html", "w");
+    os.remove("build/doc/index.html");
+    local fh = io.open("build/doc/index.html", "w");
     assert(fh, "File not created: index.html");
     fh:write(FileText);
     fh:close();
@@ -169,7 +169,7 @@ function QsbDoc_ParseHtml(_Module)
     end
     QsbDoc_Data.Parsed[_Module] = true;
 
-    local Path = "../var/build/doc/modules/" .._Module.. ".html";
+    local Path = "build/doc/modules/" .._Module.. ".html";
     local fh = io.open(Path, "r");
     if not fh then
         print ("Could not parse file: ", Path);
@@ -181,19 +181,19 @@ end
 -- -------------------------------------------------------------------------- --
 
 function QsbDoc_ReplaceInHtmlFiles()
-    local Content = QsbDoc_ReadFile("../var/build/doc/index.html");
+    local Content = QsbDoc_ReadFile("build/doc/index.html");
     for i= 1, #QsbDoc_Data.Modules do
         local ModuleName = QsbDoc_Data.Modules[i].Name:gsub("\\.lua", "");
         local DisplayName = QsbDoc_Data.Modules[i].DisplayName;
         Content = Content:gsub(ModuleName.. "</a>", DisplayName.. "</a>");
         QsbDoc_ReplaceInHtmlFile(QsbDoc_Data.Modules[i]);
     end
-    QsbDoc_WriteFile("../var/build/doc/index.html", Content);
+    QsbDoc_WriteFile("build/doc/index.html", Content);
 end
 
 function QsbDoc_ReplaceInHtmlFile(_Module)
     local Name = _Module.Name:gsub("\\.lua", "");
-    local Path = "../var/build/doc/modules/" ..Name.. ".html";
+    local Path = "build/doc/modules/" ..Name.. ".html";
     local Content = QsbDoc_ReadFile(Path);
 
     -- Replace names
