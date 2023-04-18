@@ -78,7 +78,7 @@ mv ../var/build/source/qsb.lua ../var/build/source/modules/qsb.lua
 
 # Builds the documentations of the single modules
 echo "Build the documentations of the single modules"
-lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/ &>/dev/null
+lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/ #&>/dev/null
 
 # Put back those files that need no documentation
 mv ../var/qsb_all.lua ../var/build/source/qsb_all.lua
@@ -107,7 +107,7 @@ for folder in *; do
         if [ $folder = "QSB_0_Kernel" ]; then
             FILENAME="qsb.lua"
         fi
-        lua ../../tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../../var/build/source/${FILENAME}" &>/dev/null
+        lua ../../tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../../var/build/source/${FILENAME}" #&>/dev/null
 
         cd ../
     fi
@@ -124,7 +124,7 @@ for folder in *; do
         if [ $folder = "Addon_X_Template" ]; then
             FILENAME="qsb.lua"
         fi
-        lua ../../tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../var/../build/source/${FILENAME}" &>/dev/null
+        lua ../../tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../var/../build/source/${FILENAME}" #&>/dev/null
 
         cd ../
     fi
@@ -132,12 +132,12 @@ done
 cd ../../../
 
 # Create markdown documentation for compatibility
-lua qsb/lua/tools/ldoc/ldoc.lua --ext md -d "qsb/lua/var/md_doc/qsb_x_acomp.lua.md" "qsb/lua/var/build/source/qsb_x_acomp.lua" &>/dev/null
+lua qsb/lua/tools/ldoc/ldoc.lua --ext md -d "qsb/lua/var/md_doc/qsb_x_acomp.lua.md" "qsb/lua/var/build/source/qsb_x_acomp.lua" #&>/dev/null
 
 # Remove temporary compatibility file
-rm qsb/lua/var/build/source/qsb_x_acomp.lua
+#rm qsb/lua/var/build/source/qsb_x_acomp.lua
 
 # Remove temporary files
-rm -rf qsb/lua/var/build/doc/temp &>/dev/null
+#rm -rf qsb/lua/var/build/doc/temp &>/dev/null
 
 echo 'documentation ready'
