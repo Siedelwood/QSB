@@ -1,0 +1,527 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+<li><a href="#Event">Event</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/addons.qsb_x_addon_1_singlebuttons.html">Addon (1) SingleButtons</a></li>
+  <li><a href="../modules/modules.qsb_1_entity.html">(1) Entitätensteuerung</a></li>
+  <li><a href="../modules/modules.qsb_1_guicontrol.html">(1) Anzeigesteuerung</a></li>
+  <li><a href="../modules/modules.qsb_1_guieffects.html">(1) Anzeigeeffekte</a></li>
+  <li><a href="../modules/modules.qsb_1_movement.html">(1) Bewegung</a></li>
+  <li><a href="../modules/modules.qsb_1_requester.html">(1) Dialogfenster</a></li>
+  <li><a href="../modules/modules.qsb_1_sound.html">(1) Sound</a></li>
+  <li><a href="../modules/modules.qsb_1_trade.html">(1) Handelserweiterung</a></li>
+  <li><a href="../modules/modules.qsb_2_buildingcost.html">(2) Baukostensystem</a></li>
+  <li><a href="../modules/modules.qsb_2_buildingui.html">(2) Gebäudeschalter</a></li>
+  <li><a href="../modules/modules.qsb_2_buildrestriction.html">(2) Baubeschränkung</a></li>
+  <li><a href="../modules/modules.qsb_2_camera.html">(2) Kamerafunktionen</a></li>
+  <li><a href="../modules/modules.qsb_2_newbehavior.html">(2) Neue Behavior</a></li>
+  <li><a href="../modules/modules.qsb_2_npc.html">(2) Ansprechbare Siedler</a></li>
+  <li><strong>(2) Interaktive Objekte</strong></li>
+  <li><a href="../modules/modules.qsb_2_promotion.html">(2) Aufstiegsbedingungen</a></li>
+  <li><a href="../modules/modules.qsb_2_quest.html">(2) Aufträge</a></li>
+  <li><a href="../modules/modules.qsb_2_selection.html">(2) Selektion</a></li>
+  <li><a href="../modules/modules.qsb_3_briefingsystem.html">(3) Briefing System</a></li>
+  <li><a href="../modules/modules.qsb_3_cutscenesystem.html">(3) Cutscene System</a></li>
+  <li><a href="../modules/modules.qsb_3_dialogsystem.html">(3) Dialog System</a></li>
+  <li><a href="../modules/modules.qsb_3_lifestock.html">(3) Viehzucht</a></li>
+  <li><a href="../modules/modules.qsb_3_militarylimit.html">(3) Soldatenlimit</a></li>
+  <li><a href="../modules/modules.qsb_3_traderoutes.html">(3) Handelsrouten</a></li>
+  <li><a href="../modules/modules.qsb_4_iomines.html">(4) Interaktive Minen</a></li>
+  <li><a href="../modules/modules.qsb_4_iosites.html">(4) Interaktive Baustellen</a></li>
+  <li><a href="../modules/modules.qsb_4_iotreasure.html">(4) Interaktive Schätze</a></li>
+  <li><a href="../modules/modules.qsb_4_questjournal.html">(4) Auftragsnotizen</a></li>
+  <li><a href="../modules/qsb_x_acomp.html">(X) Kompatibilität</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>(2) Interaktive Objekte</code></h1>
+<p>Der Spieler muss bis zu 4 interaktive Objekte benutzen.</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.DisposeObject">API.DisposeObject (_ScriptName)</a></td>
+	<td class="summary">Zerstört die Interation mit dem Objekt.</td>
+	</tr>
+</table>
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.InteractiveObjectActivate">API.InteractiveObjectActivate (_ScriptName, _State, ...)</a></td>
+	<td class="summary">Aktiviert ein Interaktives Objekt, sodass es von den Spielern
+ aktiviert werden kann.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.InteractiveObjectDeactivate">API.InteractiveObjectDeactivate (_ScriptName, ...)</a></td>
+	<td class="summary">Deaktiviert ein interaktives Objekt, sodass es nicht mehr von den Spielern
+ benutzt werden kann.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.InteractiveObjectSetQuestName">API.InteractiveObjectSetQuestName (_Key, _Text)</a></td>
+	<td class="summary">Erzeugt eine Beschriftung für Custom Objects.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.ResetObject">API.ResetObject (_ScriptName)</a></td>
+	<td class="summary">Setzt das interaktive Objekt zurück.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SetupObject">API.SetupObject (_Description)</a></td>
+	<td class="summary">Erzeugt ein einfaches interaktives Objekt.</td>
+	</tr>
+</table>
+<h2><a href="#Event">Event</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#QSB.ScriptEvents">QSB.ScriptEvents</a></td>
+	<td class="summary">Events, auf die reagiert werden kann.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.DisposeObject"></a>
+    <strong>API.DisposeObject (_ScriptName)</strong>
+    </dt>
+    <dd>
+    Zerstört die Interation mit dem Objekt.
+<p> <b>Hinweis</b>: Das Entity selbst wird nicht zerstört.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Objektes
+        </li>
+    </ul>
+
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <li><a href="../modules/modules.qsb_2_objects.html#API.SetupObject">API.SetupObject</a></li>
+         <li><a href="../modules/modules.qsb_2_objects.html#API.ResetObject">API.ResetObject</a></li>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.DisposeObject(<span class="string">"MyObject"</span>);</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.InteractiveObjectActivate"></a>
+    <strong>API.InteractiveObjectActivate (_ScriptName, _State, ...)</strong>
+    </dt>
+    <dd>
+    Aktiviert ein Interaktives Objekt, sodass es von den Spielern
+ aktiviert werden kann.
+<p> Optional kann das Objekt nur für einen bestimmten Spieler aktiviert werden.
+<p> Der State bestimmt, ob es immer aktiviert werden kann, oder ob der Spieler
+ einen Helden benutzen muss. Wird der Parameter weggelassen, muss immer ein
+ Held das Objekt aktivieren.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Objektes
+        </li>
+        <li><span class="parameter">_State</span>
+            <span class="types"><span class="type">number</span></span>
+              State des Objektes
+        </li>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">number</span></span>
+                 (Optional) Liste mit PlayerIDs
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.InteractiveObjectDeactivate"></a>
+    <strong>API.InteractiveObjectDeactivate (_ScriptName, ...)</strong>
+    </dt>
+    <dd>
+    Deaktiviert ein interaktives Objekt, sodass es nicht mehr von den Spielern
+ benutzt werden kann.
+<p> Optional kann das Objekt nur für einen bestimmten Spieler deaktiviert werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Scriptname des Objektes
+        </li>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">number</span></span>
+                 (Optional) Liste mit PlayerIDs
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.InteractiveObjectSetQuestName"></a>
+    <strong>API.InteractiveObjectSetQuestName (_Key, _Text)</strong>
+    </dt>
+    <dd>
+    Erzeugt eine Beschriftung für Custom Objects.
+<p> Im Questfenster werden die Namen von Custom Objects als ungesetzt angezeigt.
+ Mit dieser Funktion kann ein Name angelegt werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Key</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+          Typname des Entity
+        </li>
+        <li><span class="parameter">_Text</span>
+         Text der Beschriftung
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <li><pre class="example"><span class="comment">-- Beispiel #1: Einfache Beschriftung
+</span>API.InteractiveObjectSetQuestName(<span class="string">"D_X_ChestOpenEmpty"</span>, <span class="string">"Leere Schatztruhe"</span>);</pre></li>
+        <li><pre class="example"><span class="comment">-- Beispiel #1: Multilinguale Beschriftung
+</span>API.InteractiveObjectSetQuestName(<span class="string">"D_X_ChestClosed"</span>, {de = <span class="string">"Schatztruhe"</span>, en = <span class="string">"Treasure"</span>});</pre></li>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.ResetObject"></a>
+    <strong>API.ResetObject (_ScriptName)</strong>
+    </dt>
+    <dd>
+    Setzt das interaktive Objekt zurück.  Dadurch verhält es sich, wie vor der
+ Aktivierung durch den Spieler.
+<p> <b>Hinweis</b>: Das Objekt muss wieder per Skript aktiviert werden, damit es
+ im Spiel ausgelöst werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Objektes
+        </li>
+    </ul>
+
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <li><a href="../modules/modules.qsb_2_objects.html#API.SetupObject">API.SetupObject</a></li>
+         <li><a href="../modules/modules.qsb_2_objects.html#API.InteractiveObjectActivate">API.InteractiveObjectActivate</a></li>
+         <li><a href="../modules/modules.qsb_2_objects.html#API.InteractiveObjectDeactivate">API.InteractiveObjectDeactivate</a></li>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.ResetObject(<span class="string">"MyObject"</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SetupObject"></a>
+    <strong>API.SetupObject (_Description)</strong>
+    </dt>
+    <dd>
+    Erzeugt ein einfaches interaktives Objekt.
+<p> Dabei können alle Entities als interaktive Objekte behandelt werden, nicht
+ nur die, die eigentlich dafür vorgesehen sind.
+<p> Die Parameter des interaktiven Objektes werden durch seine Beschreibung
+ festgelegt. Die Beschreibung ist eine Table, die bestimmte Werte für das
+ Objekt beinhaltet. Dabei müssen nicht immer alle Werte angegeben werden.
+<p> <b>Achtung</b>: Wird eine Straße über einem Objekt platziert, während die
+ Kosten bereits bezahlt und auf dem Weg sind, läuft die Aktivierung ins Leere.
+ Zwar wird das Objekt zurückgesetzt, doch die bereits geschickten Waren sind
+ dann futsch.
+<p> Mögliche Angaben:
+ <table border="1">
+ <tr>
+ <td><b>Feldname</b></td>
+ <td><b>Typ</b></td>
+ <td><b>Beschreibung</b></td>
+ <td><b>Optional</b></td>
+ </tr>
+ <tr>
+ <td>Name</td>
+ <td>string</td>
+ <td>Der Skriptname des Entity, das zum interaktiven Objekt wird.</td>
+ <td>nein</td>
+ </tr>
+ <tr>
+ <td>Texture</td>
+ <td>table</td>
+ <td>Angezeigtes Icon des Buttons. Die Icons können auf die Icons des Spiels
+ oder auf eigene Icons zugreifen.
+ <br>- Spiel-Icons: {x, y, Spielversion}
+ <br>- Benutzerdefinierte Icons: {x, y, Dateinamenpräfix}</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>Title</td>
+ <td>string</td>
+ <td>Angezeigter Titel des Objekt</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>Text</td>
+ <td>string</td>
+ <td>Angezeigte Beschreibung des Objekt</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>Distance</td>
+ <td>number</td>
+ <td>Die minimale Entfernung zum Objekt, die ein Held benötigt um das
+ objekt zu aktivieren.</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>Player</td>
+ <td>number|table</td>
+ <td>Spieler, der/die das Objekt aktivieren kann/können.</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>Waittime</td>
+ <td>number</td>
+ <td>Die Zeit, die ein Held benötigt, um das Objekt zu aktivieren.</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>Replacement</td>
+ <td>number</td>
+ <td>Entity, mit der das Objekt nach Aktivierung ersetzt wird.</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>Costs</td>
+ <td></td>
+ <td>Eine Table mit dem Typ und der Menge der Kosten. (Format: {Typ, Menge, Typ, Menge})</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>Reward</td>
+ <td>table</td>
+ <td>Der Warentyp und die Menge der gefundenen Waren im Objekt. (Format: {Typ, Menge})</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>State</td>
+ <td>number</td>
+ <td>Bestimmt, wie sich der Button des interaktiven Objektes verhält.</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>Condition</td>
+ <td>function</td>
+ <td>Eine zusätzliche Aktivierungsbedinung als Funktion.</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>ConditionInfo</td>
+ <td>string</td>
+ <td>Nachricht, die angezeigt wird, wenn die Bedinung nicht erfüllt ist.</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>Action</td>
+ <td>function</td>
+ <td>Eine Funktion, die nach der Aktivierung aufgerufen wird.</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>RewardResourceCartType</td>
+ <td>number</td>
+ <td>Erlaubt, einen anderern Karren für Rohstoffkosten einstellen.</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>RewardGoldCartType</td>
+ <td>number</td>
+ <td>Erlaubt, einen anderern Karren für Goldkosten einstellen.</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>CostResourceCartType</td>
+ <td>number</td>
+ <td>Erlaubt, einen anderern Karren für Rohstoffbelohnungen einstellen.</td>
+ <td>ja</td>
+ </tr>
+ <tr>
+ <td>CostGoldCartType</td>
+ <td>number</td>
+ <td>Erlaubt, einen anderern Karren für Goldbelohnung einstellen.</td>
+ <td>ja</td>
+ </tr>
+ </table>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Description</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Beschreibung
+        </li>
+    </ul>
+
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <li><a href="../modules/modules.qsb_2_objects.html#API.ResetObject">API.ResetObject</a></li>
+         <li><a href="../modules/modules.qsb_2_objects.html#API.InteractiveObjectActivate">API.InteractiveObjectActivate</a></li>
+         <li><a href="../modules/modules.qsb_2_objects.html#API.InteractiveObjectDeactivate">API.InteractiveObjectDeactivate</a></li>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SetupObject {
+    Name     = <span class="string">"hut"</span>,
+    Distance = <span class="number">1500</span>,
+    Reward   = {Goods.G_Gold, <span class="number">1000</span>},
+};</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Event"></a>Event</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "QSB.ScriptEvents"></a>
+    <strong>QSB.ScriptEvents</strong>
+    </dt>
+    <dd>
+    Events, auf die reagiert werden kann.
+
+
+    <ul>
+        <li><span class="parameter">ObjectClicked</span>
+             Der Spieler klickt auf den Button des IO (Parameter: ScriptName, KnightID, PlayerID)
+        </li>
+        <li><span class="parameter">ObjectInteraction</span>
+         Es wird mit einem interaktiven Objekt interagiert (Parameter: ScriptName, KnightID, PlayerID)
+        </li>
+        <li><span class="parameter">ObjectDelete</span>
+              Eine Interaktion wird von einem Objekt entfernt (Parameter: ScriptName)
+        </li>
+        <li><span class="parameter">ObjectReset</span>
+               Der Zustand eines interaktiven Objekt wird zurückgesetzt (Parameter: ScriptName)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-04-18 13:55:07 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>
