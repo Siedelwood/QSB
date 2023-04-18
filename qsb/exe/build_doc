@@ -27,6 +27,7 @@ for folder in *; do
         DESTINATION="../../var/build/doc/temp/docbuilder.lua"
         FILENAME="modules/${folder,,}.lua"
         if [ $folder = "QSB_0_Kernel" ]; then
+            echo "" >> $DESTINATION
             FILENAME="qsb_base.lua"
         fi
         TITLE=$(head -n 1 title.txt)
@@ -54,7 +55,7 @@ for folder in *; do
 
         DESTINATION="../../var/build/doc/temp/docbuilder.lua"
         FILENAME="addons/${folder,,}.lua"
-        if ! ([ $folder = "Addon_X_Template" ];) then
+        if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
             TITLE=$(head -n 1 title.txt)
             echo "{\"${FILENAME}\", \"${TITLE}\"}," >> $DESTINATION
         fi
