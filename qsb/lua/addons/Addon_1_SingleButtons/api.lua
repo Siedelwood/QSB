@@ -10,6 +10,7 @@
 --
 -- @within Modulbeschreibung
 -- @set sort=true
+-- @author EisenMonoxid, totalwarANGEL, Jelumar
 --
 
 API = API or {}
@@ -30,11 +31,20 @@ API = API or {}
 -- API.UseSingleStop(false)
 --
 function API.UseSingleStop(_Flag)
-    if _Flag == true then
-        Addon_SingleButtons.Local:AddSingleStopButton()
-    else
-        Addon_SingleButtons.Local:DropSingleStopButton()
-    end
+    if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
+        if _Flag == true then
+            Addon_SingleButtons.Local:AddSingleStopButton()
+        else
+            Addon_SingleButtons.Local:DropSingleStopButton()
+        end
+	else
+		Logic.ExecuteInLuaLocalState(string.format(
+			[[
+				API.UseSingleStop(%s)
+			]],
+            tostring(_Flag)
+		))
+	end
 end
 
 ---
@@ -52,11 +62,20 @@ end
 -- API.UseSingleReserve(false)
 --
 function API.UseSingleReserve(_Flag)
-    if _Flag == true then
-        Addon_SingleButtons.Local:AddSingleReserveButton()
-    else
-        Addon_SingleButtons.Local:DropSingleReserveButton()
-    end
+    if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
+        if _Flag == true then
+            Addon_SingleButtons.Local:AddSingleReserveButton()
+        else
+            Addon_SingleButtons.Local:DropSingleReserveButton()
+        end
+	else
+		Logic.ExecuteInLuaLocalState(string.format(
+			[[
+				API.UseSingleReserve(%s)
+			]],
+            tostring(_Flag)
+		))
+	end
 end
 
 ---
@@ -76,9 +95,45 @@ end
 -- API.UseDowngrade(false)
 --
 function API.UseDowngrade(_Flag)
-    if _Flag == true then
-        Addon_SingleButtons.Local:AddSingleDowngradeButton()
-    else
-        Addon_SingleButtons.Local:DropSingleDowngradeButton()
-    end
+    if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
+        if _Flag == true then
+            Addon_SingleButtons.Local:AddSingleDowngradeButton()
+        else
+            Addon_SingleButtons.Local:DropSingleDowngradeButton()
+        end
+	else
+		Logic.ExecuteInLuaLocalState(string.format(
+			[[
+				API.UseDowngrade(%s)
+			]],
+            tostring(_Flag)
+		))
+	end
+end
+
+---
+-- Setze die Kosten für den Rückbau von Gebäuden
+--
+-- @param[type=number] _Amount Setze Kosten für den Rückbau von Gebäuden
+-- @within Anwenderfunktionen
+-- @see API.AddBuildingButton
+--
+-- @usage
+-- -- Downgrade Kosten auf 50 Gold setzen
+-- API.SetDowngradeCosts(50)
+-- -- Downgrade Kosten zurücksetzen
+-- API.SetDowngradeCosts(0)
+--
+function API.SetDowngradeCosts(_Amount)
+    if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
+        assert(_Amount and type(_Amount) == "number" and _Amount >= 0, " API.SetDowngradeCosts: Costs for downgrade must be positive")
+        Addon_SingleButtons.Local:SetDowngradeCosts(_Amount)
+	else
+		Logic.ExecuteInLuaLocalState(string.format(
+			[[
+				API.SetDowngradeCosts(%d)
+			]],
+            _Amount
+		))
+	end
 end

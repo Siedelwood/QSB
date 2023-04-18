@@ -1,22 +1,24 @@
 #!/bin/bash
 
-# This shell script combines the source files into the qsb, the modules and the addons.
-# The output is copied to qsb/lua/var/build
+# This shell script creates the documentation for qsb, modules and addons.
 
 echo 'build QSB documentation'
 
 # create folder
 echo 'create destination directories'
+rm -rf qsb/lua/var/build/doc &>/dev/null
+rm -rf qsb/lua/var/md_doc &>/dev/null
 mkdir -p qsb/lua/var/build/doc/temp/
+mkdir -p qsb/lua/var/md_doc/
 
 # create html documentation
 cd qsb/lua/tools
-cp docbuilderStart.txt ../var/build/doc/temp/docbuilder.lua
-cp docbuilderStart.txt ../var/build/doc/temp/docbuilderStart.txt
-cp docbuilderEnd.txt ../var/build/doc/temp/docbuilderEnd.txt
+cp docbuilderstart.txt ../var/build/doc/temp/docbuilder.lua
+cp docbuilderend.txt ../var/build/doc/temp/docbuilderend.txt
 cd ../../../
 
 cd qsb/lua/modules
+# Add modules to html documentation index
 for folder in *; do
     if ! ([ -f "$folder" ];) then
         cd $folder
@@ -32,9 +34,16 @@ for folder in *; do
         cd ../
     fi
 done
+
+# Add compatibility files to html documentation index
+echo "{\"comp.lua\", \"(X) Kompatibilität\"}," >> $DESTINATION
+DESTINATION="../var/build/source/comp.lua"
+find . -maxdepth 2 -iname "compatibility.lua" -type f -exec cat {} +> $DESTINATION
+
 cd ../../../
 
 cd qsb/lua/addons
+# Add addons to html documentation index
 for folder in *; do
     if ! ([ -f "$folder" ];) then
         cd $folder
@@ -51,40 +60,75 @@ for folder in *; do
 done
 cd ../../../
 
+# Finish creating docbuilder
 cd qsb/lua/var/build/doc/temp
-cat "docbuilderEnd.txt" >> "docbuilder.lua"
+cat "docbuilderend.txt" >> "docbuilder.lua"
 cd ../../../../../../
 
 cd qsb/lua/tools
+#Temporary remove those files that need no documentation
 mv ../var/build/source/qsb_all.lua ../var/qsb_all.lua
 mv ../var/build/source/qsb_comp.lua ../var/qsb_comp.lua
 
-# builds the documentations of the single modules
-lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/
+# Builds the documentations of the single modules
+lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/ &>/dev/null
 
+# Put back those files that need no documentation
 mv ../var/qsb_all.lua ../var/build/source/qsb_all.lua
 mv ../var/qsb_comp.lua ../var/build/source/qsb_comp.lua
 
-# builds the documentation stat page
+# Builds the documentation start page
 lua ../var/build/doc/temp/docbuilder.lua
 
+# Move html files into the build directory
 rm -rf ../var/build/doc/js
 cp -r ../../templates/js ../var/build/doc
 rm -rf ../var/build/doc/css
 cp -r ../../templates/css ../var/build/doc
-cp ../default/* ../var/build
 
 cd ../../../
 
-# create markdown documentation
-# for file in *; do
-#     if ! ([ -f "$file" ];) then
-#         echo "create documentation for ${folder}"
-#         # do something
-#     fi 
-# done
+# Create markdown documentation for modules
+cd qsb/lua/modules
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
 
+        FILENAME="modules/${folder,,}.lua"
+        if [ $folder = "QSB_0_Kernel" ]; then
+            FILENAME="qsb.lua"
+        fi
+        lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/${FILENAME}.md" "../var/build/source/${FILENAME}" &>/dev/null
 
-# rm -rf qsb/lua/var/build/doc/temp &>/dev/null
+        cd ../
+    fi
+done
+cd ../../../
+
+# Create markdown documentation for addons
+cd qsb/lua/addons
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+
+        FILENAME="addons/${folder,,}.lua"
+        if [ $folder = "Addon_X_Template" ]; then
+            FILENAME="qsb.lua"
+        fi
+        lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/${FILENAME}.md" "../var/build/source/${FILENAME}" &>/dev/null
+
+        cd ../
+    fi
+done
+cd ../../../
+
+# Create markdown documentation for compatibility
+lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/comp.lua.md" "../var/build/source/comp.lua" &>/dev/null
+
+# Remove temporary compatibility file
+rm ../var/build/source/comp.lua
+
+# Remove temporary files
+rm -rf qsb/lua/var/build/doc/temp &>/dev/null
 
 echo 'documentation ready'

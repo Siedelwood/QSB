@@ -1,3 +1,5 @@
+-- -------------------------------------------------------------------------- --
+
 SCP.MilitaryLimit = {};
 
 function SCP.MilitaryLimit.ProduceUnits(_PlayerID, _BarrackID, _EntityType, _Costs)
