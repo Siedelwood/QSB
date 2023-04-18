@@ -37,36 +37,52 @@ function Addon_SingleButtons.Local:AddSingleStopButton()
         return
     end
     self.Data.Button.SingleStop = API.AddBuildingButton(
-        function(_WidgetID, _EntityID)
-            local IsStopped = Logic.IsBuildingStopped(_EntityID)
-            GUI.SetStoppedState(_EntityID, not IsStopped)
+        function(_WidgetID, _BuildingID)
+            local IsStopped = Logic.IsBuildingStopped(_BuildingID)
+            GUI.SetStoppedState(_BuildingID, not IsStopped)
         end,
-        function(_WidgetID, _EntityID)
-            local Title = "Produktion anhalten"
-            local Text = "- Gebäude produziert keine Waren {cr}- Siedler verbrauchen keine Güter {cr}- Bedürfnisse müssen nicht erfüllt werden"
-            if Logic.IsBuildingStopped(_EntityID) then
-                Title = "Produktion fortführen";
-                Text = "- Gebäude produziert Waren {cr}- Siedler verbrauchen Güter {cr}- Bedürfnisse müssen erfüllt werden"
+        function(_WidgetID, _BuildingID)
+            local Title = {
+                de = "Produktion anhalten",
+                en = "Stop production",
+                fr = "Arrêter la production",
+            }
+            local Text = {
+                de = "- Gebäude produziert keine Waren {cr}- Siedler verbrauchen keine Güter {cr}- Bedürfnisse müssen nicht erfüllt werden",
+                en = "- Building does not produce goods {cr}- Settlers do not consume goods {cr}- Needs do not have to be met",
+                fr = "- le bâtiment ne produit pas de biens {cr}- les settlers ne consomment pas de biens {cr}- les besoins ne doivent pas être satisfaits",
+            }
+            if Logic.IsBuildingStopped(_BuildingID) then
+                Title = {
+                    de = "Produktion fortführen",
+                    en = "Continue production",
+                    fr = "Poursuivre la production",
+                }
+                Text = {
+                    de = "- Gebäude produziert Waren {cr}- Siedler verbrauchen Güter {cr}- Bedürfnisse müssen erfüllt werden",
+                    en = "- Building produces goods {cr}- settlers consume goods {cr}- needs must be met",
+                    fr = "- Le bâtiment produit des biens {cr}- Les settlers consomment des biens {cr}- Les besoins doivent être satisfaits",
+                }
             end
             API.SetTooltipCosts(Title, Text)
         end,
-        function(_WidgetID, _EntityID)
-            if Logic.IsEntityInCategory(_EntityID, EntityCategories.OuterRimBuilding) == 0
-            or Logic.IsEntityInCategory(_EntityID, EntityCategories.CityBuilding) == 0
-            or Logic.IsConstructionComplete(_EntityID) == 0 then
+        function(_WidgetID, _BuildingID)
+            if Logic.IsEntityInCategory(_BuildingID, EntityCategories.OuterRimBuilding) == 0
+            and Logic.IsEntityInCategory(_BuildingID, EntityCategories.CityBuilding) == 0
+            or Logic.IsConstructionComplete(_BuildingID) == 0 then
                 XGUIEng.ShowWidget(_WidgetID, 0)
             else
                 XGUIEng.ShowWidget(_WidgetID, 1)
             end
-            if Logic.IsBuildingBeingUpgraded(_EntityID)
-            or Logic.IsBuildingBeingKnockedDown(_EntityID)
-            or Logic.IsBurning(_EntityID) then
+            if Logic.IsBuildingBeingUpgraded(_BuildingID)
+            or Logic.IsBuildingBeingKnockedDown(_BuildingID)
+            or Logic.IsBurning(_BuildingID) then
                 XGUIEng.DisableButton(_WidgetID, 1)
             else
                 XGUIEng.DisableButton(_WidgetID, 0)
             end
             SetIcon(_WidgetID, {4, 13})
-            if Logic.IsBuildingStopped(_EntityID) then
+            if Logic.IsBuildingStopped(_BuildingID) then
                 SetIcon(_WidgetID, {4, 12})
             end
         end
@@ -85,11 +101,11 @@ function Addon_SingleButtons.Local:AddSingleReserveButton()
         return
     end
     self.Data.Button.SingleReserve = API.AddBuildingButton(
-        function(_WidgetID, _EntityID)
+        function(_WidgetID, _BuildingID)
         end,
-        function(WidgetID, EntityID)
+        function(WidgetID, _BuildingID)
         end,
-        function(_WidgetID, _EntityID)
+        function(_WidgetID, _BuildingID)
         end
     )
 end
@@ -108,37 +124,63 @@ function Addon_SingleButtons.Local:AddSingleDowngradeButton()
     self.Data.Button.SingleKnockDown = API.AddBuildingButton(
         -- TODO: refactor in a way that the Button cannot be clicked when the downgradecosts are too high
         function(_WidgetID, _BuildingID)
-            local CastleID = Logic.GetHeadquarters(GUI.GetPlayerID())
-            if Logic.GetAmountOnOutStockByGoodType(CastleID, Goods.G_Gold) >= self.Data.DowngradeCosts then
-                GUI.RemoveGoodFromStock(CastleID, Goods.G_Gold, self.Data.DowngradeCosts)
-                local Health = Logic.GetEntityHealth(_BuildingID)
-                local MaxHealth = Logic.GetEntityMaxHealth(_BuildingID)
-                GUI.SendScriptCommand("Logic.HurtEntity(".._BuildingID..", ("..Health.." - ("..MaxHealth.."/2)))")
-                Sound.FXPlay2DSound("ui\\menu_click")
-                GUI.DeselectEntity(_BuildingID)
+            if self.Data.DowngradeCosts > 0 then
+                local CastleID = Logic.GetHeadquarters(GUI.GetPlayerID())
+                if Logic.GetAmountOnOutStockByGoodType(CastleID, Goods.G_Gold) >= self.Data.DowngradeCosts then
+                    GUI.RemoveGoodFromStock(CastleID, Goods.G_Gold, self.Data.DowngradeCosts)
+                else
+                    API.Message("Nicht genug Gold!")
+                    return
+                end
+            end
+            local Health = Logic.GetEntityHealth(_BuildingID)
+            local MaxHealth = Logic.GetEntityMaxHealth(_BuildingID)
+            GUI.SendScriptCommand("Logic.HurtEntity(".._BuildingID..", ("..Health.." - ("..MaxHealth.."/2)))")
+            Sound.FXPlay2DSound("ui\\menu_click")
+            GUI.DeselectEntity(_BuildingID)
+        end,
+        function(_WidgetID, _BuildingID)
+            Text = {
+                de = "Rückbau",
+                en = "Downgrade",
+                fr = "Déconstruction",
+            }
+            Title = {
+                de = "- Baut das Gebäude um eine Stufe zurück!",
+                en = "- Downgrades the building by one level!",
+                fr = "- Réduit le niveau du bâtiment d'un niveau !",
+            }
+            Error = {
+                de = "Momentan nicht möglich",
+                en = "Currently not possible",
+                fr = "Pas possible pour le moment",
+            }
+            if self.Data.DowngradeCosts > 0 then
+                API.SetTooltipCosts(Text, Title, Error, {Goods.G_Gold, self.Data.DowngradeCosts})
             else
-                API.Message("Nicht genug Gold!")
+                API.SetTooltipCosts(Text, Title)
             end
         end,
         function(_WidgetID, _BuildingID)
-            API.SetTooltipCosts("Rückbau", "- Baut das Gebäude um eine Stufe zurück!", "Momentan nicht möglich", {Goods.G_Gold, self.Data.DowngradeCosts})
-        end,
-        function(_WidgetID, _BuildingID)
-            local ID01 = Logic.IsEntityInCategory(_BuildingID, EntityCategories.CityBuilding)
-            local ID02 = Logic.IsEntityInCategory(_BuildingID, EntityCategories.OuterRimBuilding)
-            local ID03 = Logic.CanCancelUpgradeBuilding(_BuildingID)
-            local ID05 = Logic.CanCancelKnockDownBuilding(_BuildingID)
-            local ID06 = Logic.IsConstructionComplete(_BuildingID)
-            local ID07 = Logic.IsBurning(_BuildingID) 
-            local ID08 = Logic.IsBuildingUpgradable(_BuildingID, true)
-            if (ID06 == 1) and (ID05 == false) and (ID03 == false) and (ID02 == 1 or ID01 == 1) and (ID07 == false and ID08 == false) then
-                XGUIEng.ShowWidget(_WidgetID, 1)
-                SetIcon(_WidgetID, {3, 15})
-            else
+            if Logic.IsEntityInCategory(_BuildingID, EntityCategories.OuterRimBuilding) == 0
+            and Logic.IsEntityInCategory(_BuildingID, EntityCategories.CityBuilding) == 0
+            or Logic.IsConstructionComplete(_BuildingID) == 0 then
                 XGUIEng.ShowWidget(_WidgetID, 0)
+            else
+                XGUIEng.ShowWidget(_WidgetID, 1)
             end
+            if Logic.IsBuildingBeingUpgraded(_BuildingID)
+            or Logic.IsBuildingBeingKnockedDown(_BuildingID)
+            or Logic.IsBurning(_BuildingID)
+            or Logic.CanCancelUpgradeBuilding(_BuildingID)
+            or Logic.CanCancelKnockDownBuilding(_BuildingID) then
+                XGUIEng.DisableButton(_WidgetID, 1)
+            else
+                XGUIEng.DisableButton(_WidgetID, 0)
+            end
+            SetIcon(_WidgetID, {3, 15})
         end
-    );
+    )
 end
 
 function Addon_SingleButtons.Local:DropSingleDowngradeButton()
