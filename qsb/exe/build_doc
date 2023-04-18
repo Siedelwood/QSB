@@ -106,7 +106,9 @@ cp -r qsb/templates/css qsb/lua/var/build/doc
 
 # Create markdown documentation for qsb
 echo "Create markdown documentation for qsb"
-lua qsb/exe/tools/ldoc/ldoc.lua -d qsb/lua/var/md_doc/ -o qsb -v -f markdown -x "md" qsb/lua/var/build/source/qsb.lua #&>/dev/null
+cd qsb/lua/var/md_doc
+lua ../../../exe/tools/ldoc/ldoc.lua -o qsb -v -f markdown -x "md" ../build/source/qsb.lua #&>/dev/null
+cd ../../../../
 
 # Create markdown documentation for modules
 echo "Create markdown documentation for modules"
@@ -118,7 +120,10 @@ for folder in *; do
         FILENAME="modules/${folder,,}.lua"
         MDNAME="${folder,,}"
         if ! ( [ $folder = "QSB_0_Kernel" ]; ) then
-            lua ../../../exe/tools/ldoc/ldoc.lua -d ../../var/md_doc/ -o $MDNAME -v -f markdown -x "md" "../../var/build/source/${FILENAME}" #&>/dev/null
+            cd ../../var/md_doc
+            lua ../../../exe/tools/ldoc/ldoc.lua -o $MDNAME -v -f markdown -x "md" "../build/source/${FILENAME}" #&>/dev/null
+            cd ../../modules
+            cd $folder
         fi
 
         cd ../
@@ -136,7 +141,10 @@ for folder in *; do
         FILENAME="addons/${folder,,}.lua"
         MDNAME="${folder,,}"
         if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
-            lua ../../../exe/tools/ldoc/ldoc.lua -d ../../var/md_doc/ -o $MDNAME -v -f markdown -x "md" "../../var/build/source/${FILENAME}" #&>/dev/null
+            cd ../../var/md_doc
+            lua ../../../exe/tools/ldoc/ldoc.lua -o $MDNAME -v -f markdown -x "md" "../build/source/${FILENAME}" #&>/dev/null
+            cd ../../modules
+            cd $folder
         fi
 
         cd ../
@@ -146,7 +154,9 @@ cd ../../../
 
 # Create markdown documentation for compatibility
 echo "Create markdown documentation for compatibility"
-lua qsb/exe/tools/ldoc/ldoc.lua -d qsb/lua/var/md_doc/ -o compatibility -v -f markdown -x "md" qsb/lua/var/build/source/qsb_x_acomp.lua #&>/dev/null
+cd qsb/lua/var/md_doc
+lua ../../../exe/tools/ldoc/ldoc.lua -o compatibility -v -f markdown -x "md" ../build/source/qsb_x_acomp.lua #&>/dev/null
+cd ../../../../
 
 # Remove temporary compatibility file
 #rm qsb/lua/var/build/source/qsb_x_acomp.lua
