@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Stellt Cheats und Befehle für einfacheres Testen bereit.
 --
 -- @set sort=true

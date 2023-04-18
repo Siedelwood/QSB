@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Multilinguale Texte und Platzhalterersetzung in Texten.
 -- @set sort=true
 -- @local

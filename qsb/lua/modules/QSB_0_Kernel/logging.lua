@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Interne Funktionalität zum Schreiben von Ausgaben ins Log.
 --
 -- @set sort=true
@@ -122,8 +122,7 @@ end
 --
 -- @param[type=number] _ScreenLogLevel Level für Bildschirmausgabe
 -- @param[type=number] _FileLogLevel   Level für Dateiausgaabe
--- @within Base
--- @local
+-- @within Entwicklung
 --
 -- @usage
 -- API.SetLogLevel(QSB.LogLevel.ERROR, QSB.LogLevel.WARNING);
