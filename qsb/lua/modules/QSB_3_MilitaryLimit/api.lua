@@ -30,7 +30,9 @@ QSB.ScriptEvents = QSB.ScriptEvents or {}
 -- @param[type=number] _PlayerID ID des Spielers
 -- @return[type=number] Aktuelles Soldatenlimit
 -- @within Anwenderfunktionen
--- @usage local Limit = API.GetPlayerSoldierLimit(1);
+--
+-- @usage
+-- local Limit = API.GetPlayerSoldierLimit(1);
 --
 function API.GetPlayerSoldierLimit(_PlayerID)
     return ModuleMilitaryLimit.Shared:GetLimitForPlayer(_PlayerID);
@@ -45,10 +47,12 @@ end
 -- @param[type=number]   _PlayerID ID des Spielers
 -- @param[type=function] _Function (Optional) Funktion zur Ermittlung
 -- @within Anwenderfunktionen
+--
+-- @usage
 -- -- Verwende den Standard (25, 43, 61, 91)
--- @usage API.SetPlayerSoldierLimit(1);
+-- API.SetPlayerSoldierLimit(1);
 -- -- Verwende eigene Funktion (Limit ist für den Spieler immer 2000)
--- @usage API.SetPlayerSoldierLimit(1, function(_PlayerID)
+-- API.SetPlayerSoldierLimit(1, function(_PlayerID)
 --     return 2000;
 -- end);
 --

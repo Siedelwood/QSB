@@ -27,7 +27,7 @@ for folder in *; do
         DESTINATION="../../var/build/doc/temp/docbuilder.lua"
         FILENAME="modules/${folder,,}.lua"
         if [ $folder = "QSB_0_Kernel" ]; then
-            FILENAME="qsb.lua"
+            FILENAME="qsb_base.lua"
         fi
         TITLE=$(head -n 1 title.txt)
         echo "{\"${FILENAME}\", \"${TITLE}\"}," >> $DESTINATION
@@ -74,7 +74,6 @@ cd qsb/lua/tools
 #Temporary remove those files that need no documentation
 mv ../var/build/source/qsb_all.lua ../var/qsb_all.lua
 mv ../var/build/source/qsb_comp.lua ../var/qsb_comp.lua
-mv ../var/build/source/qsb.lua ../var/build/source/modules/qsb.lua
 
 # Builds the documentations of the single modules
 echo "Build the documentations of the single modules"
@@ -83,7 +82,6 @@ lua ldoc/ldoc.lua -d ../var/build/doc -v ../var/build/source/ #&>/dev/null
 # Put back those files that need no documentation
 mv ../var/qsb_all.lua ../var/build/source/qsb_all.lua
 mv ../var/qsb_comp.lua ../var/build/source/qsb_comp.lua
-mv ../var/build/source/modules/qsb.lua ../var/build/source/qsb.lua
 
 # Builds the documentation start page
 echo "Build the documentations of the start page"
@@ -96,6 +94,9 @@ rm -rf ../var/build/doc/css
 cp -r ../../templates/css ../var/build/doc
 
 cd ../../../
+
+# Create markdown documentation for qsb
+lua qsb/lua/tools/ldoc/ldoc.lua --ext md -d "qsb/lua/var/md_doc/qsb_base.lua.md" "qsb/lua/var/build/source/qsb_base.lua" #&>/dev/null
 
 # Create markdown documentation for modules
 cd qsb/lua/modules

@@ -15,8 +15,15 @@
 -- @author Eisenmonoxid, Jelumar
 --
 
--- TODO: Check BuildingUpgraded Event
-
+---
+-- Upgradelevel für die Gebäudekosten
+--
+-- @field UpgradeToOne Upgrade auf Gebäudelevel 1
+-- @field UpgradeToTwo Upgrade auf Gebäudelevel 2 (kein Aussenposten)
+-- @field UpgradeThree Upgrade auf Gebäudelevel 3 (Nur Hauptgebäude)
+--
+-- @within Baukostensystem
+--
 BCS = BCS or {
     UpgradeToOne = 1,
     UpgradeToTwo = 2,
