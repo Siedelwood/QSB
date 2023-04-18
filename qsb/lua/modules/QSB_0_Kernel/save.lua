@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Speichern und Laden von Spielständen kontrollieren.
 -- @set sort=true
 -- @local

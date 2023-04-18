@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Steuerung des Chat als Eingabefenster.
 -- @set sort=true
 -- @local

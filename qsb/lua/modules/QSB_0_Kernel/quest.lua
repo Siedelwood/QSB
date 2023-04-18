@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Grundlegende Steuerung von Quests mittels Funktionen und Events.
 -- @set sort=true
 -- @local

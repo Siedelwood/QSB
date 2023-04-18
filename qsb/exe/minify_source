@@ -14,9 +14,9 @@ cd qsb/lua/var/build/source
 
 # minify qsb
 echo 'minify QSB files'
-lua ../../lua/tools/luaminifier/CommandLineMinify.lua qsb.lua ../../minified/qsb_min.lua
-lua ../../lua/tools/luaminifier/CommandLineMinify.lua qsb_all.lua ../../minified/qsb_all_min.lua
-lua ../../lua/tools/luaminifier/CommandLineMinify.lua qsb_comp.lua ../../minified/qsb_comp_min.lua
+lua ../../lua/tools/luaminifier/CommandLineMinify.lua qsb.lua ../../minified/qsb.lua
+lua ../../lua/tools/luaminifier/CommandLineMinify.lua qsb_all.lua ../../minified/qsb_all.lua
+lua ../../lua/tools/luaminifier/CommandLineMinify.lua qsb_comp.lua ../../minified/qsb_comp.lua
 
 # minify qsb modules
 echo 'minify module files'

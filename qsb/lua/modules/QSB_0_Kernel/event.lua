@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Kommunikation von Komponenten über Events aus dem Skript.
 --
 -- @set sort=true
@@ -254,8 +254,7 @@ end
 --
 -- @param[type=string]   _Name     Identifier des Event
 -- @return[type=number] ID des neuen Script Event
--- @within Event
--- @local
+-- @within Intern
 --
 -- @usage
 -- local EventID = API.RegisterScriptEvent("MyNewEvent");
@@ -274,8 +273,7 @@ end
 --
 -- @param[type=number] _EventID ID des Event
 -- @param              ... Optionale Parameter (nil, string, number, boolean, (array) table)
--- @within Event
--- @local
+-- @within Intern
 --
 -- @usage
 -- API.SendScriptEvent(SomeEventID, Param1, Param2, ...);
@@ -291,8 +289,7 @@ end
 --
 -- @param[type=number] _EventName Name des Event
 -- @param              ... Optionale Parameter (nil, string, number, boolean, (array) table)
--- @within Event
--- @local
+-- @within Intern
 --
 -- @usage
 -- API.SendScriptEventToGlobal("SomeEventName", Param1, Param2, ...);
@@ -316,8 +313,7 @@ end
 --
 -- @param[type=number] _EventName Name des Event
 -- @param              ... Optionale Parameter (nil, string, number, boolean, (array) table)
--- @within Event
--- @local
+-- @within Intern
 --
 -- @usage
 -- API.SendScriptEventToGlobal("SomeEventName", Param1, Param2, ...);

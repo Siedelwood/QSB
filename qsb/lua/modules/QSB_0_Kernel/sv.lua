@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Scripting Values lesen und schreiben.
 -- @set sort=true
 -- @local
