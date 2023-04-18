@@ -19,6 +19,7 @@ cd ../../../
 
 cd qsb/lua/modules
 # Add modules to html documentation index
+echo "Add modules to html documentation index"
 for folder in *; do
     if ! ([ -f "$folder" ];) then
         cd $folder
@@ -36,6 +37,8 @@ for folder in *; do
 done
 
 # Add compatibility files to html documentation index
+echo "Add compatibility files to html documentation index"
+DESTINATION="../var/build/doc/temp/docbuilder.lua"
 echo "{\"comp.lua\", \"(X) Kompatibilität\"}," >> $DESTINATION
 DESTINATION="../var/build/source/comp.lua"
 find . -maxdepth 2 -iname "compatibility.lua" -type f -exec cat {} +> $DESTINATION
@@ -44,6 +47,7 @@ cd ../../../
 
 cd qsb/lua/addons
 # Add addons to html documentation index
+echo "Add addons to html documentation index"
 for folder in *; do
     if ! ([ -f "$folder" ];) then
         cd $folder
@@ -61,6 +65,7 @@ done
 cd ../../../
 
 # Finish creating docbuilder
+echo "Finish creating docbuilder"
 cd qsb/lua/var/build/doc/temp
 cat "docbuilderend.txt" >> "docbuilder.lua"
 cd ../../../../../../
@@ -71,6 +76,7 @@ mv ../var/build/source/qsb_all.lua ../var/qsb_all.lua
 mv ../var/build/source/qsb_comp.lua ../var/qsb_comp.lua
 
 # Builds the documentations of the single modules
+echo "Build the documentations of the single modules"
 lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/ &>/dev/null
 
 # Put back those files that need no documentation
@@ -78,6 +84,7 @@ mv ../var/qsb_all.lua ../var/build/source/qsb_all.lua
 mv ../var/qsb_comp.lua ../var/build/source/qsb_comp.lua
 
 # Builds the documentation start page
+echo "Build the documentations of the start page"
 lua ../var/build/doc/temp/docbuilder.lua
 
 # Move html files into the build directory
@@ -123,10 +130,10 @@ done
 cd ../../../
 
 # Create markdown documentation for compatibility
-lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/comp.lua.md" "../var/build/source/comp.lua" &>/dev/null
+lua qsb/lua/tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/comp.lua.md" "../var/build/source/comp.lua" &>/dev/null
 
 # Remove temporary compatibility file
-rm ../var/build/source/comp.lua
+rm qsb/lua/var/build/source/comp.lua
 
 # Remove temporary files
 rm -rf qsb/lua/var/build/doc/temp &>/dev/null
