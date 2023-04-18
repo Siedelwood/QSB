@@ -127,25 +127,26 @@ done
 cd ../../../
 
 # Create markdown documentation for addons
-echo "Create markdown documentation for addons"
-cd qsb/lua/addons
-for folder in *; do
-    if ! ([ -f "$folder" ];) then
-        cd $folder
 
-        FILENAME="addons/${folder,,}.lua"
-        if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
-            lua ../../../exe/tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../var/../build/source/${FILENAME}" #&>/dev/null
-        fi
-
-        cd ../
-    fi
-done
-cd ../../../
+#echo "Create markdown documentation for addons"
+#cd qsb/lua/addons
+#for folder in *; do
+#    if ! ([ -f "$folder" ];) then
+#        cd $folder
+#
+#        FILENAME="addons/${folder,,}.lua"
+#        if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
+#            lua ../../../exe/tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../var/../build/source/${FILENAME}" #&>/dev/null
+#        fi
+#
+#        cd ../
+#    fi
+#done
+#cd ../../../
 
 # Create markdown documentation for compatibility
 echo "Create markdown documentation for compatibility"
-lua qsb/exe/tools/ldoc/ldoc.lua --ext md -d "qsb/lua/var/md_doc/qsb_x_acomp.lua.md" "qsb/lua/var/build/source/qsb_x_acomp.lua" #&>/dev/null
+#lua qsb/exe/tools/ldoc/ldoc.lua --ext md -d "qsb/lua/var/md_doc/qsb_x_acomp.lua.md" "qsb/lua/var/build/source/qsb_x_acomp.lua" #&>/dev/null
 
 # Remove temporary compatibility file
 #rm qsb/lua/var/build/source/qsb_x_acomp.lua
