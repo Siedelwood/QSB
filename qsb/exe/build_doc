@@ -71,7 +71,7 @@ mv ../var/build/source/qsb_all.lua ../var/qsb_all.lua
 mv ../var/build/source/qsb_comp.lua ../var/qsb_comp.lua
 
 # Builds the documentations of the single modules
-lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/ &>/dev/null
+lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/
 
 # Put back those files that need no documentation
 mv ../var/qsb_all.lua ../var/build/source/qsb_all.lua
@@ -98,7 +98,7 @@ for folder in *; do
         if [ $folder = "QSB_0_Kernel" ]; then
             FILENAME="qsb.lua"
         fi
-        lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/${FILENAME}.md" "../var/build/source/${FILENAME}" &>/dev/null
+        lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/${FILENAME}.md" "../var/build/source/${FILENAME}"
 
         cd ../
     fi
@@ -115,7 +115,7 @@ for folder in *; do
         if [ $folder = "Addon_X_Template" ]; then
             FILENAME="qsb.lua"
         fi
-        lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/${FILENAME}.md" "../var/build/source/${FILENAME}" &>/dev/null
+        lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/${FILENAME}.md" "../var/build/source/${FILENAME}"
 
         cd ../
     fi
@@ -123,7 +123,7 @@ done
 cd ../../../
 
 # Create markdown documentation for compatibility
-lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/comp.lua.md" "../var/build/source/comp.lua" &>/dev/null
+lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/comp.lua.md" "../var/build/source/comp.lua"
 
 # Remove temporary compatibility file
 rm ../var/build/source/comp.lua
