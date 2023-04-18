@@ -100,10 +100,12 @@ rm -rf qsb/lua/var/build/doc/css
 cp -r qsb/templates/css qsb/lua/var/build/doc
 
 # Create markdown documentation for qsb
+echo "Create markdown documentation for qsb"
 lua qsb/exe/tools/ldoc/ldoc.lua --ext md -o "qsb/lua/var/md_doc/qsb.lua.md" "qsb/lua/var/build/source/qsb.lua" #&>/dev/null
 
 # Create markdown documentation for modules
 cd qsb/lua/modules
+echo "Create markdown documentation for modules"
 for folder in *; do
     if ! ([ -f "$folder" ];) then
         cd $folder
@@ -120,6 +122,7 @@ done
 cd ../../../
 
 # Create markdown documentation for addons
+echo "Create markdown documentation for addons"
 cd qsb/lua/addons
 for folder in *; do
     if ! ([ -f "$folder" ];) then
@@ -137,6 +140,7 @@ done
 cd ../../../
 
 # Create markdown documentation for compatibility
+echo "Create markdown documentation for compatibility"
 lua qsb/exe/tools/ldoc/ldoc.lua --ext md -o "qsb/lua/var/md_doc/qsb_x_acomp.lua.md" "qsb/lua/var/build/source/qsb_x_acomp.lua" #&>/dev/null
 
 # Remove temporary compatibility file
