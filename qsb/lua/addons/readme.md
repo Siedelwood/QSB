@@ -3,9 +3,9 @@
 Jedes Addon erhält einen eigenen Ordner im Addons-Ordner der so benannt ist wie die Addon-Datei dann heißen soll.
 Entsprechend der Konvention der Module empfiehlt sich folgendes Muster:
 
-Addon_X_Template
+QSB_X_Addon_X_Template
 
-X ist hier eine Zahl die um eins höher sein sollte als bei Modulen die für dieses Addon benötigt werden damit alles funktioniert.
+Das zweite X ist hier eine Zahl die um eins höher sein sollte als bei Modulen die für dieses Addon benötigt werden damit alles funktioniert.
 Alle folgenden Punkte können in dem genannten Ordner eingesehen werden wie diese zusammen zu einem Addon aufgebaut werden.
 
 ## Dateien

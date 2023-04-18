@@ -39,8 +39,8 @@ done
 # Add compatibility files to html documentation index
 echo "Add compatibility files to html documentation index"
 DESTINATION="../var/build/doc/temp/docbuilder.lua"
-echo "{\"comp.lua\", \"(X) Kompatibilität\"}," >> $DESTINATION
-DESTINATION="../var/build/source/comp.lua"
+echo "{\"qsb_x_acomp.lua\", \"(X) Kompatibilität\"}," >> $DESTINATION
+DESTINATION="../var/build/source/qsb_x_acomp.lua"
 find . -maxdepth 2 -iname "compatibility.lua" -type f -exec cat {} +> $DESTINATION
 
 cd ../../../
@@ -74,6 +74,7 @@ cd qsb/lua/tools
 #Temporary remove those files that need no documentation
 mv ../var/build/source/qsb_all.lua ../var/qsb_all.lua
 mv ../var/build/source/qsb_comp.lua ../var/qsb_comp.lua
+mv ../var/build/source/qsb.lua ../var/build/source/modules/qsb.lua
 
 # Builds the documentations of the single modules
 echo "Build the documentations of the single modules"
@@ -82,6 +83,7 @@ lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/ &>/dev/null
 # Put back those files that need no documentation
 mv ../var/qsb_all.lua ../var/build/source/qsb_all.lua
 mv ../var/qsb_comp.lua ../var/build/source/qsb_comp.lua
+mv ../var/build/source/modules/qsb.lua ../var/build/source/qsb.lua
 
 # Builds the documentation start page
 echo "Build the documentations of the start page"
@@ -130,10 +132,10 @@ done
 cd ../../../
 
 # Create markdown documentation for compatibility
-lua qsb/lua/tools/ldoc/ldoc.lua --ext md -d "qsb/lua/var/md_doc/comp.lua.md" "qsb/lua/var/build/source/comp.lua" &>/dev/null
+lua qsb/lua/tools/ldoc/ldoc.lua --ext md -d "qsb/lua/var/md_doc/qsb_x_acomp.lua.md" "qsb/lua/var/build/source/qsb_x_acomp.lua" &>/dev/null
 
 # Remove temporary compatibility file
-rm qsb/lua/var/build/source/comp.lua
+rm qsb/lua/var/build/source/qsb_x_acomp.lua
 
 # Remove temporary files
 rm -rf qsb/lua/var/build/doc/temp &>/dev/null
