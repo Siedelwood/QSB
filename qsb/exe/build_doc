@@ -75,36 +75,41 @@ cd ../../../../../../
 cd qsb/lua/var
 mv build/source/qsb_all.lua qsb_all.lua
 mv build/source/qsb_comp.lua qsb_comp.lua
+mv build/source/addons/ build/source/xaddons/
+mv build/source/modules/ build/source/smodules/
 cd ../../../
 
 # Builds the documentations of the single modules
 echo "Build the documentations of the single modules"
 cd qsb/exe/tools
-lua ldoc/ldoc.lua -d ../../lua/var/build/doc -v ../../lua/var/build/source/ #&>/dev/null
+lua ldoc/ldoc.lua -d ../../lua/var/build/doc ../../lua/var/build/source/ #&>/dev/null
 cd ../../../
 
 # Put back those files that need no documentation
 cd qsb/lua/var
 mv qsb_all.lua build/source/qsb_all.lua
 mv qsb_comp.lua build/source/qsb_comp.lua
+mv build/source/xaddons/ build/source/addons/
+mv build/source/smodules/ build/source/modules/
 
 # Builds the documentation start page
 echo "Build the documentations of the start page"
-# lua build/doc/temp/docbuilder.lua
+lua build/doc/temp/docbuilder.lua
 cd ../../../
 
 # Move html files into the build directory
+echo "Move html files into the build directory"
 rm -rf qsb/lua/var/build/doc/js
 cp -r qsb/templates/js qsb/lua/var/build/doc
 rm -rf qsb/lua/var/build/doc/css
 cp -r qsb/templates/css qsb/lua/var/build/doc
 
 # Create markdown documentation for qsb
-echo "markdown-qsbbase"
-lua qsb/exe/tools/ldoc/ldoc.lua -d "qsb/lua/var/md_doc/" -o "qsb.lua.md" -v -f markdown -x "md" "qsb/lua/var/build/source/qsb.lua" #&>/dev/null
+echo "Create markdown documentation for qsb"
+lua qsb/exe/tools/ldoc/ldoc.lua -d qsb/lua/var/md_doc/ -o qsb -v -f markdown -x "md" qsb/lua/var/build/source/qsb.lua #&>/dev/null
 
 # Create markdown documentation for modules
-echo "markdown-modules"
+echo "Create markdown documentation for modules"
 cd qsb/lua/modules
 for folder in *; do
     if ! ([ -f "$folder" ];) then
@@ -122,16 +127,16 @@ done
 cd ../../../
 
 # Create markdown documentation for addons
+echo "Create markdown documentation for addons"
 cd qsb/lua/addons
 for folder in *; do
     if ! ([ -f "$folder" ];) then
         cd $folder
 
         FILENAME="addons/${folder,,}.lua"
-        if [ $folder = "QSB_X_Addon_X_Template" ]; then
-            FILENAME="qsb.lua"
+        if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
+            lua ../../../exe/tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../var/../build/source/${FILENAME}" #&>/dev/null
         fi
-        lua ../../../exe/tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../var/../build/source/${FILENAME}" #&>/dev/null
 
         cd ../
     fi
@@ -139,6 +144,7 @@ done
 cd ../../../
 
 # Create markdown documentation for compatibility
+echo "Create markdown documentation for compatibility"
 lua qsb/exe/tools/ldoc/ldoc.lua --ext md -d "qsb/lua/var/md_doc/qsb_x_acomp.lua.md" "qsb/lua/var/build/source/qsb_x_acomp.lua" #&>/dev/null
 
 # Remove temporary compatibility file
