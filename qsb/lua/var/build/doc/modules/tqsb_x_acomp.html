@@ -52,7 +52,7 @@
   <li><a href="../modules/smodules.qsb_2_buildingcost.html">smodules.qsb_2_buildingcost</a></li>
   <li><a href="../modules/smodules.qsb_2_buildingui.html">smodules.qsb_2_buildingui</a></li>
   <li><a href="../modules/smodules.qsb_2_buildrestriction.html">smodules.qsb_2_buildrestriction</a></li>
-  <li><strong>smodules.qsb_2_camera</strong></li>
+  <li><a href="../modules/smodules.qsb_2_camera.html">smodules.qsb_2_camera</a></li>
   <li><a href="../modules/smodules.qsb_2_newbehavior.html">smodules.qsb_2_newbehavior</a></li>
   <li><a href="../modules/smodules.qsb_2_npc.html">smodules.qsb_2_npc</a></li>
   <li><a href="../modules/smodules.qsb_2_objects.html">smodules.qsb_2_objects</a></li>
@@ -69,7 +69,7 @@
   <li><a href="../modules/smodules.qsb_4_iosites.html">smodules.qsb_4_iosites</a></li>
   <li><a href="../modules/smodules.qsb_4_iotreasure.html">smodules.qsb_4_iotreasure</a></li>
   <li><a href="../modules/smodules.qsb_4_questjournal.html">smodules.qsb_4_questjournal</a></li>
-  <li><a href="../modules/tqsb_x_acomp.html">tqsb_x_acomp</a></li>
+  <li><strong>tqsb_x_acomp</strong></li>
   <li><a href="../modules/xaddons.qsb_x_addon_1_singlebuttons.html">xaddons.qsb_x_addon_1_singlebuttons</a></li>
 </ul>
 
@@ -77,31 +77,30 @@
 
 <div id="content">
 
-<h1>Module <code>smodules.qsb_2_camera</code></h1>
-<p>Stellt Funktionen für die RTS-Camera bereit.</p>
+<h1>Module <code>tqsb_x_acomp</code></h1>
+<p>Die Kompatibilitätsfunktionen dienen dazu, dass die alte Schnittstelle der früheren QSB möglichst abgedeckt wird.</p>
 <p>
-<p> <b>Vorausgesetzte Module:</b>
- <ul>
- <li><a href="qsb.html">(0) Basismodul</a></li>
- <li><a href="modules.QSB_1_GuiControl.QSB_1_GuiControl.html">(1) Anzeigekontrolle</a></li>
- <li><a href="modules.QSB_1_GuiEffects.QSB_1_GuiEffects.html">(1) Anzeigeeffekte</a></li>
- </ul>
+ <b>Hinweis</b>: Diese Funktionen sind derzeit nur in der qsb_comp.lua bzw qsb_comp.luac enthalten.
 </p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Author</strong>: Jelumar</li>
+    </ul>
 
 
 <h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#API.AllowExtendedZoom">API.AllowExtendedZoom (_Flag)</a></td>
-	<td class="summary">Aktiviert oder deaktiviert den erweiterten Zoom.</td>
+	<td class="name" nowrap><a href="#API.AddSaveGameAction">API.AddSaveGameAction (_Function)</a></td>
+	<td class="summary">Registriert eine Funktion, die nach dem laden ausgeführt wird.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#API.FocusCameraOnEntity">API.FocusCameraOnEntity (_Entity, _Rotation, _ZoomFactor)</a></td>
-	<td class="summary">Fokusiert die Kamera auf dem Entity.</td>
+	<td class="name" nowrap><a href="#API.InstanceTable">API.InstanceTable (_Source, _Dest)</a></td>
+	<td class="summary">Kopiert eine komplette Table und gibt die Kopie zurück.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#API.FocusCameraOnKnight">API.FocusCameraOnKnight (_Player, _Rotation, _ZoomFactor)</a></td>
-	<td class="summary">Fokusiert die Kamera auf dem Primärritter des Spielers.</td>
+	<td class="name" nowrap><a href="#API.TraverseTable">API.TraverseTable (_Data, _Table)</a></td>
+	<td class="summary">Sucht in einer eindimensionalen Table nach einem Wert.</td>
 	</tr>
 </table>
 
@@ -113,22 +112,20 @@
 
     <dl class="function">
     <dt>
-    <a name = "API.AllowExtendedZoom"></a>
-    <strong>API.AllowExtendedZoom (_Flag)</strong>
+    <a name = "API.AddSaveGameAction"></a>
+    <strong>API.AddSaveGameAction (_Function)</strong>
     </dt>
     <dd>
-    Aktiviert oder deaktiviert den erweiterten Zoom.
-<p> Der maximale Zoom wird erweitert. Dabei entsteht eine fast völlige
- Draufsicht. Dies kann nütztlich sein, wenn der Spieler ein größeres
- Sichtfeld benötigt.
+    Registriert eine Funktion, die nach dem laden ausgeführt wird.
+<p> <b>Alias</b>: AddOnSaveGameLoadedAction
 
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">_Flag</span>
-            <span class="types"><span class="type">boolean</span></span>
-         Erweiterter Zoom gestattet
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">function</span></span>
+         Funktion, die ausgeführt werden soll
         </li>
     </ul>
 
@@ -137,77 +134,89 @@
 
     <h3>Beispiel:</h3>
     <ul>
-        <pre class="example"><span class="comment">-- Erweitere Kamera einschalten
-</span>API.AllowExtendedZoom(<span class="keyword">true</span>);
-<span class="comment">-- Erweitere Kamera abschalten
-</span>API.AllowExtendedZoom(<span class="keyword">false</span>);</pre>
+        <pre class="example">SaveGame = <span class="keyword">function</span>()
+    API.Note(<span class="string">"foo"</span>)
+<span class="keyword">end</span>
+API.AddSaveGameAction(SaveGame)</pre>
     </ul>
 
 </dd>
     <dt>
-    <a name = "API.FocusCameraOnEntity"></a>
-    <strong>API.FocusCameraOnEntity (_Entity, _Rotation, _ZoomFactor)</strong>
+    <a name = "API.InstanceTable"></a>
+    <strong>API.InstanceTable (_Source, _Dest)</strong>
     </dt>
     <dd>
-    Fokusiert die Kamera auf dem Entity.
+    Kopiert eine komplette Table und gibt die Kopie zurück.  Tables können
+ nicht durch Zuweisungen kopiert werden. Verwende diese Funktion. Wenn ein
+ Ziel angegeben wird, ist die zurückgegebene Table eine Vereinigung der 2
+ angegebenen Tables.
+ Die Funktion arbeitet rekursiv.
+<p> <b>Alias:</b> CopyTableRecursive
+
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">_Entity</span>
-         Entity (Skriptname oder ID)
+        <li><span class="parameter">_Source</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Quelltabelle
         </li>
-        <li><span class="parameter">_Rotation</span>
-            <span class="types"><span class="type">number</span></span>
-         Kamerawinkel
-        </li>
-        <li><span class="parameter">_ZoomFactor</span>
-            <span class="types"><span class="type">number</span></span>
-         Zoomfaktor
+        <li><span class="parameter">_Dest</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+           (optional) Zieltabelle
         </li>
     </ul>
 
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Kopie der Tabelle
+    </ol>
 
 
 
     <h3>Beispiel:</h3>
     <ul>
-        <pre class="example"><span class="comment">-- Zentriert die Kamera über dem Entity mit dem Skriptnamen "HansWurst".
-</span>API.FocusCameraOnKnight(<span class="string">"HansWurst"</span>, -<span class="number">45</span>, <span class="number">0.2</span>);</pre>
+        <pre class="example">Table = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, {a = <span class="keyword">true</span>}}
+Copy = API.InstanceTable(Table)</pre>
     </ul>
 
 </dd>
     <dt>
-    <a name = "API.FocusCameraOnKnight"></a>
-    <strong>API.FocusCameraOnKnight (_Player, _Rotation, _ZoomFactor)</strong>
+    <a name = "API.TraverseTable"></a>
+    <strong>API.TraverseTable (_Data, _Table)</strong>
     </dt>
     <dd>
-    Fokusiert die Kamera auf dem Primärritter des Spielers.
+    Sucht in einer eindimensionalen Table nach einem Wert.  Das erste Auftreten des Suchwerts wird als Erfolg gewertet. Es können praktisch alle Lua-Werte gesucht werden.
+<p> <b>Alias:</b> Inside
+
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">_Player</span>
-            <span class="types"><span class="type">number</span></span>
-         Partei
+        <li><span class="parameter">_Data</span>
+         Gesuchter Eintrag (multible Datentypen)
         </li>
-        <li><span class="parameter">_Rotation</span>
-            <span class="types"><span class="type">number</span></span>
-         Kamerawinkel
-        </li>
-        <li><span class="parameter">_ZoomFactor</span>
-            <span class="types"><span class="type">number</span></span>
-         Zoomfaktor
+        <li><span class="parameter">_Table</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Tabelle, die durchquert wird
         </li>
     </ul>
 
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        Wert gefunden
+    </ol>
 
 
 
     <h3>Beispiel:</h3>
     <ul>
-        <pre class="example"><span class="comment">-- Zentriert die Kamera über den Helden von Spieler 3.
-</span>API.FocusCameraOnKnight(<span class="number">3</span>, <span class="number">90</span>, <span class="number">0.5</span>);</pre>
+        <pre class="example">Table = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, {a = <span class="keyword">true</span>}}
+<span class="keyword">local</span> Found = API.TraverseTable(<span class="number">3</span>, Table)</pre>
     </ul>
 
 </dd>
