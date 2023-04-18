@@ -90,7 +90,7 @@ mv qsb_comp.lua build/source/qsb_comp.lua
 
 # Builds the documentation start page
 echo "Build the documentations of the start page"
-lua build/doc/temp/docbuilder.lua
+# lua build/doc/temp/docbuilder.lua
 cd ../../../
 
 # Move html files into the build directory
@@ -101,7 +101,7 @@ cp -r qsb/templates/css qsb/lua/var/build/doc
 
 # Create markdown documentation for qsb
 echo "markdown-qsbbase"
-lua qsb/exe/tools/ldoc/ldoc.lua -d "qsb/lua/var/md_doc/" -o "qsb.lua.md" -v -f markdown "qsb/lua/var/build/source/qsb.lua" #&>/dev/null
+lua qsb/exe/tools/ldoc/ldoc.lua -d "qsb/lua/var/md_doc/" -o "qsb.lua.md" -v -f markdown -x "md" "qsb/lua/var/build/source/qsb.lua" #&>/dev/null
 
 # Create markdown documentation for modules
 echo "markdown-modules"
