@@ -19,6 +19,7 @@ cd ../../../
 
 cd qsb/lua/modules
 # Add modules to html documentation index
+echo "Add modules to html documentation index"
 for folder in *; do
     if ! ([ -f "$folder" ];) then
         cd $folder
@@ -36,15 +37,17 @@ for folder in *; do
 done
 
 # Add compatibility files to html documentation index
+echo "Add compatibility files to html documentation index"
 DESTINATION="../var/build/doc/temp/docbuilder.lua"
-echo "{\"comp.lua\", \"(X) Kompatibilität\"}," >> $DESTINATION
-DESTINATION="../var/build/source/comp.lua"
+echo "{\"qsb_x_acomp.lua\", \"(X) Kompatibilität\"}," >> $DESTINATION
+DESTINATION="../var/build/source/qsb_x_acomp.lua"
 find . -maxdepth 2 -iname "compatibility.lua" -type f -exec cat {} +> $DESTINATION
 
 cd ../../../
 
 cd qsb/lua/addons
 # Add addons to html documentation index
+echo "Add addons to html documentation index"
 for folder in *; do
     if ! ([ -f "$folder" ];) then
         cd $folder
@@ -62,6 +65,7 @@ done
 cd ../../../
 
 # Finish creating docbuilder
+echo "Finish creating docbuilder"
 cd qsb/lua/var/build/doc/temp
 cat "docbuilderend.txt" >> "docbuilder.lua"
 cd ../../../../../../
@@ -70,17 +74,19 @@ cd qsb/lua/tools
 #Temporary remove those files that need no documentation
 mv ../var/build/source/qsb_all.lua ../var/qsb_all.lua
 mv ../var/build/source/qsb_comp.lua ../var/qsb_comp.lua
+mv ../var/build/source/qsb.lua ../var/build/source/modules/qsb.lua
 
-echo "using Ldoc for all"
 # Builds the documentations of the single modules
-lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/
+echo "Build the documentations of the single modules"
+lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/ #&>/dev/null
 
 # Put back those files that need no documentation
 mv ../var/qsb_all.lua ../var/build/source/qsb_all.lua
 mv ../var/qsb_comp.lua ../var/build/source/qsb_comp.lua
+mv ../var/build/source/modules/qsb.lua ../var/build/source/qsb.lua
 
-echo "using docbuilder"
 # Builds the documentation start page
+echo "Build the documentations of the start page"
 lua ../var/build/doc/temp/docbuilder.lua
 
 # Move html files into the build directory
@@ -91,7 +97,6 @@ cp -r ../../templates/css ../var/build/doc
 
 cd ../../../
 
-echo "Doing Markdown"
 # Create markdown documentation for modules
 cd qsb/lua/modules
 for folder in *; do
@@ -102,7 +107,7 @@ for folder in *; do
         if [ $folder = "QSB_0_Kernel" ]; then
             FILENAME="qsb.lua"
         fi
-        lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/${FILENAME}.md" "../var/build/source/${FILENAME}"
+        lua ../../tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../../var/build/source/${FILENAME}" #&>/dev/null
 
         cd ../
     fi
@@ -119,7 +124,7 @@ for folder in *; do
         if [ $folder = "Addon_X_Template" ]; then
             FILENAME="qsb.lua"
         fi
-        lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/${FILENAME}.md" "../var/build/source/${FILENAME}"
+        lua ../../tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../var/../build/source/${FILENAME}" #&>/dev/null
 
         cd ../
     fi
@@ -127,12 +132,12 @@ done
 cd ../../../
 
 # Create markdown documentation for compatibility
-lua qsb/lua/tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/comp.lua.md" "../var/build/source/comp.lua"
+lua qsb/lua/tools/ldoc/ldoc.lua --ext md -d "qsb/lua/var/md_doc/qsb_x_acomp.lua.md" "qsb/lua/var/build/source/qsb_x_acomp.lua" #&>/dev/null
 
 # Remove temporary compatibility file
-# rm qsb/lua/var/build/source/comp.lua
+#rm qsb/lua/var/build/source/qsb_x_acomp.lua
 
 # Remove temporary files
-# rm -rf qsb/lua/var/build/doc/temp &>/dev/null
+#rm -rf qsb/lua/var/build/doc/temp &>/dev/null
 
 echo 'documentation ready'

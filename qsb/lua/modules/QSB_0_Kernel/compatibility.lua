@@ -58,7 +58,7 @@ CopyTableRecursive = API.InstanceTable
 --
 -- @param             _Data Gesuchter Eintrag (multible Datentypen)
 -- @param[type=table] _Table Tabelle, die durchquert wird
--- @return[type=booelan] Wert gefunden
+-- @return[type=boolean] Wert gefunden
 -- @within Anwenderfunktionen
 --
 -- @usage
