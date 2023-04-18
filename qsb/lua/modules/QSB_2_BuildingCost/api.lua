@@ -12,7 +12,7 @@
 --
 -- @within Beschreibung
 -- @set sort=true
--- @author EisenMonoxid, Jelumar
+-- @author Eisenmonoxid, Jelumar
 --
 
 -- TODO: Check BuildingUpgraded Event
