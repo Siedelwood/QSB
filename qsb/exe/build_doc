@@ -36,6 +36,7 @@ for folder in *; do
 done
 
 # Add compatibility files to html documentation index
+DESTINATION="../var/build/doc/temp/docbuilder.lua"
 echo "{\"comp.lua\", \"(X) Kompatibilität\"}," >> $DESTINATION
 DESTINATION="../var/build/source/comp.lua"
 find . -maxdepth 2 -iname "compatibility.lua" -type f -exec cat {} +> $DESTINATION
@@ -123,10 +124,10 @@ done
 cd ../../../
 
 # Create markdown documentation for compatibility
-lua ../tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/comp.lua.md" "../var/build/source/comp.lua"
+lua qsb/lua/tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/comp.lua.md" "../var/build/source/comp.lua"
 
 # Remove temporary compatibility file
-rm ../var/build/source/comp.lua
+rm qsb/lua/var/build/source/comp.lua
 
 # Remove temporary files
 rm -rf qsb/lua/var/build/doc/temp &>/dev/null
