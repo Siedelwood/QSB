@@ -74,51 +74,34 @@ end
 -- Überschreibt die Baukosten eines Gebäudes
 -- Hier muss beachtet werden, dass der erste Kostenparameter zusätzliche Kosten für den ersten Rohstoff darstellen und nicht den neuen Kostenwert
 --
--- @param[type=number] _Building 			UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
--- @param[type=number] _AdditionalAmount1   Zusätzliche Menge für den ersten Rohstoff (bei nil wird gelöscht)
--- @param[type=number] _Good2    			(Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
--- @param[type=number] _Amount2  			(Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=number]  _Building 	   UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
+-- @param[type=number]  _Amount1   	   Die neue Menge des ersten Rohstoffs (bei nil wird gelöscht)
+-- @param[type=number]  _Good2    	   (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
+-- @param[type=number]  _Amount2  	   (Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=boolean] _AddToBaseCost (Optional) Sollen die angegebenen Kosten für den Originalrohstoff auf die Originalkosten aufgerechnet werden?
 -- @within Suche
 -- @see BCS.SetUpgradeCosts
 --
 -- @usage
--- -- Neue Ausbaukosten definieren
--- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, 50, Goods.G_Gold, 100)
+-- -- Neue Ausbaukosten definieren (erste Rohstoffmenge wird auf Originalkosten draufgerechnet)
+-- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, 50, Goods.G_Gold, 100, true)
 -- -- Auf Originalkosten zurücksetzen
 -- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, nil)
 --
-function BCS.SetConstructionCosts(_Building, _AdditionalAmount1, _Good2, _Amount2)
-	assert(not _AdditionalAmount1 or (type(_AdditionalAmount1) == "number" and _AdditionalAmount1 >= 0), "_AdditionalAmount1 muss positiv sein")
-
+function BCS.SetConstructionCosts(_Building, _Amount1, _Good2, _Amount2, _AddToBaseCost)
 	if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
-
 		local upgradeCategory = Logic.GetUpgradeCategoryByBuildingType(_Building)
-		-- Check for valid UpgradeCategory (Beautification_VictoryColumn == 97, the highest Category)
-		assert(upgradeCategory > 0 and upgradeCategory <= UpgradeCategories.Beautification_VictoryColumn)
-
-		if _AdditionalAmount1 == nil then
-			ModuleBuildingCost.Local.Data.Costs.Construction[upgradeCategory] = nil
-			return
-		end
-
-		--Check for Invalid GoodAmount
-		assert(not _Amount2 or _Amount2 >= 1)
-
-		-- local AmountOfTypes, FirstBuildingType = Logic.GetBuildingTypesInUpgradeCategory(upgradeCategory)
-		local Costs = {ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost(_Building)}
-		local newAmount1 = _AdditionalAmount1 + Costs[2]
-
-		-- Insert/Update table entry
-		ModuleBuildingCost.Local.Data.Costs.Construction[upgradeCategory] = {newAmount1, _Good2, _Amount2}
+		BCS.EditBuildingCosts(upgradeCategory, _Amount1, _Good2, _Amount2, _AddToBaseCost)
 	else
 		Logic.ExecuteInLuaLocalState(string.format(
 			[[
-				BCS.SetConstructionCosts(%d, %d, %d, %d)
+				BCS.SetConstructionCosts(%d, %d, %d, %d, %s)
 			]],
 			_Building,
-			_AdditionalAmount1,
+			_Amount1,
 			_Good2,
-			_Amount2
+			_Amount2,
+			tostring(_AddToBaseCost)
 		))
 	end
 end
@@ -221,10 +204,11 @@ end
 ---
 -- Überschreibt die Baukosten eines Gebäudes
 --
--- @param[type=number] _UpgradeCategory UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
--- @param[type=number] _Amount1  		Die neue Menge des ersten Rohstoffs (bei nil wird gelöscht)
--- @param[type=number] _Good2    		(Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
--- @param[type=number] _Amount2  		(Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=number]  _UpgradeCategory UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
+-- @param[type=number]  _Amount1  		 Die neue Menge des ersten Rohstoffs (bei nil wird gelöscht)
+-- @param[type=number]  _Good2    		 (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
+-- @param[type=number]  _Amount2  		 (Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=boolean] _AddToBaseCost   (Optional) Sollen die angegebenen Kosten für den Originalrohstoff auf die Originalkosten aufgerechnet werden?
 -- @within Suche
 -- @see BCS.SetUpgradeCosts
 --
@@ -234,11 +218,10 @@ end
 -- -- Auf Originalkosten zurücksetzen
 -- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, nil)
 --
-function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2)
+function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2, _AddToBaseCost)
 	if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
-		-- Check for unloaded script
-		assert(type(ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost) == "function")
-
+		_AddToBaseCost = _AddToBaseCost or false
+		assert(not _Amount1 or (type(_Amount1) == "number" and _Amount1 >= 0), "_AdditionalAmount1 muss positiv sein")
 		-- Check for valid UpgradeCategory (Beautification_VictoryColumn == 97, the highest Category)
 		assert(_UpgradeCategory > 0 and _UpgradeCategory <= UpgradeCategories.Beautification_VictoryColumn)
 
@@ -250,6 +233,9 @@ function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2)
 		assert(not _Amount2 or _Amount2 >= 1)
 		local AmountOfTypes, FirstBuildingType = Logic.GetBuildingTypesInUpgradeCategory(_UpgradeCategory)
 		local Costs = {ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost(FirstBuildingType)}
+		if _AddToBaseCost then
+			_Amount1 = _Amount1 + Costs[2]
+		end
 		assert(_Amount1 >= Costs[2])
 
 		-- Insert/Update table entry
@@ -257,12 +243,13 @@ function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2)
 	else
 		Logic.ExecuteInLuaLocalState(string.format(
 			[[
-				BCS.EditBuildingCosts(%d, %d, %d, %d)
+				BCS.EditBuildingCosts(%d, %d, %d, %d, %s)
 			]],
 			_UpgradeCategory,
 			_Amount1,
 			_Good2,
-			_Amount2
+			_Amount2,
+			tostring(_AddToBaseCost)
 		))
 	end
 end
