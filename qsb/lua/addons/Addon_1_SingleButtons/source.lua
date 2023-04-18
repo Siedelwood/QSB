@@ -102,10 +102,52 @@ function Addon_SingleButtons.Local:AddSingleReserveButton()
     end
     self.Data.Button.SingleReserve = API.AddBuildingButton(
         function(_WidgetID, _BuildingID)
+
         end,
         function(WidgetID, _BuildingID)
+            local Title = {
+                de = "",
+                en = "",
+                fr = "",
+            }
+            local Text = {
+                de = "",
+                en = "",
+                fr = "",
+            }
+            if Logic.IsBuildingStopped(_BuildingID) then -- Change to reserviert
+                Title = {
+                    de = "",
+                    en = "",
+                    fr = "",
+                }
+                Text = {
+                    de = "",
+                    en = "",
+                    fr = "",
+                }
+            end
+            API.SetTooltipCosts(Title, Text)
         end,
         function(_WidgetID, _BuildingID)
+            if Logic.IsEntityInCategory(_BuildingID, EntityCategories.OuterRimBuilding) == 0
+            and Logic.IsEntityInCategory(_BuildingID, EntityCategories.CityBuilding) == 0
+            or Logic.IsConstructionComplete(_BuildingID) == 0 then
+                XGUIEng.ShowWidget(_WidgetID, 0)
+            else
+                XGUIEng.ShowWidget(_WidgetID, 1)
+            end
+            if Logic.IsBuildingBeingUpgraded(_BuildingID)
+            or Logic.IsBuildingBeingKnockedDown(_BuildingID)
+            or Logic.IsBurning(_BuildingID) then
+                XGUIEng.DisableButton(_WidgetID, 1)
+            else
+                XGUIEng.DisableButton(_WidgetID, 0)
+            end
+            SetIcon(_WidgetID, {15, 6})
+            if Logic.IsBuildingStopped(_BuildingID) then -- Change to reserviert
+                SetIcon(_WidgetID, {10, 9})
+            end
         end
     )
 end
@@ -140,17 +182,17 @@ function Addon_SingleButtons.Local:AddSingleDowngradeButton()
             GUI.DeselectEntity(_BuildingID)
         end,
         function(_WidgetID, _BuildingID)
-            Text = {
+            local Text = {
                 de = "Rückbau",
                 en = "Downgrade",
                 fr = "Déconstruction",
             }
-            Title = {
+            local Title = {
                 de = "- Baut das Gebäude um eine Stufe zurück!",
                 en = "- Downgrades the building by one level!",
                 fr = "- Réduit le niveau du bâtiment d'un niveau !",
             }
-            Error = {
+            local Error = {
                 de = "Momentan nicht möglich",
                 en = "Currently not possible",
                 fr = "Pas possible pour le moment",
