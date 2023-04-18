@@ -134,8 +134,9 @@ for folder in *; do
         cd $folder
 
         FILENAME="addons/${folder,,}.lua"
+        MDNAME="${folder,,}"
         if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
-            lua ../../../exe/tools/ldoc/ldoc.lua --ext md -d "../../var/md_doc/${FILENAME}.md" "../var/../build/source/${FILENAME}" #&>/dev/null
+            lua ../../../exe/tools/ldoc/ldoc.lua -d ../../var/md_doc/ -o $MDNAME -v -f markdown -x "md" "../../var/build/source/${FILENAME}" #&>/dev/null
         fi
 
         cd ../
@@ -145,7 +146,7 @@ cd ../../../
 
 # Create markdown documentation for compatibility
 echo "Create markdown documentation for compatibility"
-lua qsb/exe/tools/ldoc/ldoc.lua --ext md -d "qsb/lua/var/md_doc/qsb_x_acomp.lua.md" "qsb/lua/var/build/source/qsb_x_acomp.lua" #&>/dev/null
+lua qsb/exe/tools/ldoc/ldoc.lua -d qsb/lua/var/md_doc/ -o compatibility -v -f markdown -x "md" qsb/lua/var/build/source/qsb_x_acomp.lua #&>/dev/null
 
 # Remove temporary compatibility file
 #rm qsb/lua/var/build/source/qsb_x_acomp.lua
