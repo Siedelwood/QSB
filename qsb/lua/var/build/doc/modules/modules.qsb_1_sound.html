@@ -1,0 +1,549 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/addons.qsb_x_addon_1_singlebuttons.html">Addon (1) SingleButtons</a></li>
+  <li><a href="../modules/modules.qsb_1_entity.html">(1) Entitätensteuerung</a></li>
+  <li><a href="../modules/modules.qsb_1_guicontrol.html">(1) Anzeigesteuerung</a></li>
+  <li><a href="../modules/modules.qsb_1_guieffects.html">(1) Anzeigeeffekte</a></li>
+  <li><a href="../modules/modules.qsb_1_movement.html">(1) Bewegung</a></li>
+  <li><a href="../modules/modules.qsb_1_requester.html">(1) Dialogfenster</a></li>
+  <li><strong>(1) Sound</strong></li>
+  <li><a href="../modules/modules.qsb_1_trade.html">(1) Handelserweiterung</a></li>
+  <li><a href="../modules/modules.qsb_2_buildingcost.html">(2) Baukostensystem</a></li>
+  <li><a href="../modules/modules.qsb_2_buildingui.html">(2) Gebäudeschalter</a></li>
+  <li><a href="../modules/modules.qsb_2_buildrestriction.html">(2) Baubeschränkung</a></li>
+  <li><a href="../modules/modules.qsb_2_camera.html">(2) Kamerafunktionen</a></li>
+  <li><a href="../modules/modules.qsb_2_newbehavior.html">(2) Neue Behavior</a></li>
+  <li><a href="../modules/modules.qsb_2_npc.html">(2) Ansprechbare Siedler</a></li>
+  <li><a href="../modules/modules.qsb_2_objects.html">(2) Interaktive Objekte</a></li>
+  <li><a href="../modules/modules.qsb_2_promotion.html">(2) Aufstiegsbedingungen</a></li>
+  <li><a href="../modules/modules.qsb_2_quest.html">(2) Aufträge</a></li>
+  <li><a href="../modules/modules.qsb_2_selection.html">(2) Selektion</a></li>
+  <li><a href="../modules/modules.qsb_3_briefingsystem.html">(3) Briefing System</a></li>
+  <li><a href="../modules/modules.qsb_3_cutscenesystem.html">(3) Cutscene System</a></li>
+  <li><a href="../modules/modules.qsb_3_dialogsystem.html">(3) Dialog System</a></li>
+  <li><a href="../modules/modules.qsb_3_lifestock.html">(3) Viehzucht</a></li>
+  <li><a href="../modules/modules.qsb_3_militarylimit.html">(3) Soldatenlimit</a></li>
+  <li><a href="../modules/modules.qsb_3_traderoutes.html">(3) Handelsrouten</a></li>
+  <li><a href="../modules/modules.qsb_4_iomines.html">(4) Interaktive Minen</a></li>
+  <li><a href="../modules/modules.qsb_4_iosites.html">(4) Interaktive Baustellen</a></li>
+  <li><a href="../modules/modules.qsb_4_iotreasure.html">(4) Interaktive Schätze</a></li>
+  <li><a href="../modules/modules.qsb_4_questjournal.html">(4) Auftragsnotizen</a></li>
+  <li><a href="../modules/qsb_x_acomp.html">(X) Kompatibilität</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>(1) Sound</code></h1>
+<p>Ermöglicht die Steuerung der Laufstärke und Ausgabe von Sounds.</p>
+<p>
+<p> <b>Vorausgesetzte Module:</b>
+ <ul>
+ <li><a href="qsb.html">(0) Basismodul</a></li>
+ </ul>
+</p>
+
+
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.Play2DSound">API.Play2DSound (_Sound, _PlayerID)</a></td>
+	<td class="summary">Spielt einen 2D-Sound aus dem Spiel ab.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.Play3DSound">API.Play3DSound (_Sound, _X, _Y, _Z, _PlayerID)</a></td>
+	<td class="summary">Spielt einen 3D-Sound aus dem Spiel ab.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.PlayVoice">API.PlayVoice (_File)</a></td>
+	<td class="summary">Gibt eine MP3-Datei als Stimme wieder.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SoundRestore">API.SoundRestore ()</a></td>
+	<td class="summary">Stellt den Sound wieder her, sofern ein Backup erstellt wurde.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SoundSetAtmoVolume">API.SoundSetAtmoVolume (_Volume)</a></td>
+	<td class="summary">Setzt die Lautstärke der Umgebung.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SoundSetMusicVolume">API.SoundSetMusicVolume (_Volume)</a></td>
+	<td class="summary">Setzt die Lautstärke der Musik.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SoundSetUIVolume">API.SoundSetUIVolume (_Volume)</a></td>
+	<td class="summary">Setzt die Lautstärke des Interface.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SoundSetVoiceVolume">API.SoundSetVoiceVolume (_Volume)</a></td>
+	<td class="summary">Setzt die Lautstärke der Stimmen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SoundSetVolume">API.SoundSetVolume (_Volume)</a></td>
+	<td class="summary">Setzt die allgemeine Lautstärke.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.StartEventPlaylist">API.StartEventPlaylist (_Playlist, _PlayerID)</a></td>
+	<td class="summary">Startet eine Playlist, welche als XML angegeben ist.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.StopEventPlaylist">API.StopEventPlaylist (_Playlist, _PlayerID)</a></td>
+	<td class="summary">Beendet eine Event Playlist.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.StopVoice">API.StopVoice ()</a></td>
+	<td class="summary">Stoppt alle als Stimme abgespielten aktiven Sounds.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.Play2DSound"></a>
+    <strong>API.Play2DSound (_Sound, _PlayerID)</strong>
+    </dt>
+    <dd>
+    Spielt einen 2D-Sound aus dem Spiel ab.
+<p> Ein 2D-Sound ist nicht positionsgebunden und ist immer zu hören, egal an
+ welcher Stelle auf der Map sich die Kamera befindet.
+<p> Wenn eigene Sounds verwendet werden sollen, müssen sie im WAV-Format
+ vorliegen und in die zwei Verzeichnisse für niedrige und hohe Qualität
+ kopiert werden.
+<p> Verzeichnisstruktur für eigene Sounds:
+ <pre>map_xyz.s6xmap.unpacked
+|-- sounds/high/ui/*
+|-- sounds/low/ui/*
+|-- maps/externalmap/map_xyz/*
+|-- ...</pre>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Sound</span>
+            Pfad des Sound
+        </li>
+        <li><span class="parameter">_PlayerID</span>
+         (Optional) ID des menschlichen Spielers
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.Play2DSound(<span class="string">"ui/menu_left_gold_pay"</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.Play3DSound"></a>
+    <strong>API.Play3DSound (_Sound, _X, _Y, _Z, _PlayerID)</strong>
+    </dt>
+    <dd>
+    Spielt einen 3D-Sound aus dem Spiel ab.
+<p> Ein 3D-Sound wird an einer bestimmten Position abgespielt und ist nur in
+ einem begrenzten Bereich um die Position höhrbar.
+<p> Wenn eigene Sounds verwendet werden sollen, müssen sie im WAV-Format
+ vorliegen und in die zwei Verzeichnisse für niedrige und hohe Qualität
+ kopiert werden.
+<p> Verzeichnisstruktur für eigene Sounds:
+ <pre>map_xyz.s6xmap.unpacked
+|-- sounds/high/ui/*
+|-- sounds/low/ui/*
+|-- maps/externalmap/map_xyz/*
+|-- ...</pre>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Sound</span>
+            Pfad des Sound
+        </li>
+        <li><span class="parameter">_X</span>
+                X-Position des Sound
+        </li>
+        <li><span class="parameter">_Y</span>
+                Y-Position des Sound
+        </li>
+        <li><span class="parameter">_Z</span>
+                Z-Position des Sound
+        </li>
+        <li><span class="parameter">_PlayerID</span>
+         (Optional) ID des menschlichen Spielers
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.Play3DSound(<span class="string">"Animals/cow_disease"</span>, <span class="number">8500</span>, <span class="number">35800</span>, <span class="number">2000</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.PlayVoice"></a>
+    <strong>API.PlayVoice (_File)</strong>
+    </dt>
+    <dd>
+    Gibt eine MP3-Datei als Stimme wieder.  Diese Funktion kann auch benutzt
+ werden um Geräusche abzuspielen.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_File</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Abzuspielende Datei
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.PlayVoice(<span class="string">"music/puhdys_alt_wie_ein_baum.mp3"</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SoundRestore"></a>
+    <strong>API.SoundRestore ()</strong>
+    </dt>
+    <dd>
+    Stellt den Sound wieder her, sofern ein Backup erstellt wurde.
+
+
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SoundRestore();</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SoundSetAtmoVolume"></a>
+    <strong>API.SoundSetAtmoVolume (_Volume)</strong>
+    </dt>
+    <dd>
+    Setzt die Lautstärke der Umgebung.
+<p> <b>Hinweis:</b> Es wird automatisch ein Backup der Einstellungen angelegt
+ wenn noch keins angelegt wurde.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Volume</span>
+         Lautstärke
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SoundSetAtmoVolume(<span class="number">100</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SoundSetMusicVolume"></a>
+    <strong>API.SoundSetMusicVolume (_Volume)</strong>
+    </dt>
+    <dd>
+    Setzt die Lautstärke der Musik.
+<p> <b>Hinweis:</b> Es wird automatisch ein Backup der Einstellungen angelegt
+ wenn noch keins angelegt wurde.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Volume</span>
+         Lautstärke
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SoundSetMusicVolume(<span class="number">100</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SoundSetUIVolume"></a>
+    <strong>API.SoundSetUIVolume (_Volume)</strong>
+    </dt>
+    <dd>
+    Setzt die Lautstärke des Interface.
+<p> <b>Hinweis:</b> Es wird automatisch ein Backup der Einstellungen angelegt
+ wenn noch keins angelegt wurde.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Volume</span>
+         Lautstärke
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SoundSetUIVolume(<span class="number">100</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SoundSetVoiceVolume"></a>
+    <strong>API.SoundSetVoiceVolume (_Volume)</strong>
+    </dt>
+    <dd>
+    Setzt die Lautstärke der Stimmen.
+<p> <b>Hinweis:</b> Es wird automatisch ein Backup der Einstellungen angelegt
+ wenn noch keins angelegt wurde.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Volume</span>
+         Lautstärke
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SoundSetVoiceVolume(<span class="number">100</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SoundSetVolume"></a>
+    <strong>API.SoundSetVolume (_Volume)</strong>
+    </dt>
+    <dd>
+    Setzt die allgemeine Lautstärke.  Die allgemeine Lautstärke beeinflusst alle
+ anderen Laufstärkeregler.
+<p> <b>Hinweis:</b> Es wird automatisch ein Backup der Einstellungen angelegt
+ wenn noch keins angelegt wurde.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Volume</span>
+         Lautstärke
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SoundSetVolume(<span class="number">100</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.StartEventPlaylist"></a>
+    <strong>API.StartEventPlaylist (_Playlist, _PlayerID)</strong>
+    </dt>
+    <dd>
+    Startet eine Playlist, welche als XML angegeben ist.
+<p> Eine als XML definierte Playlist wird nicht als Voice abgespielt sondern
+ als Music. Als Musik werden MP3-Dateien verwendet. Diese können entweder
+ im Spiel vorhanden sein oder im Ordner <i>music/</i> im Root-Verzeichnis
+ des Spiels gespeichert werden. Die Playlist gehört ebenfalls ins Root-
+ Verzeichnis nach <i>config/sound/</i>.
+<p> Verzeichnisstruktur für eigene Musik:
+ <pre>map_xyz.s6xmap.unpacked
+|-- music/*
+|-- config/sound/*
+|-- maps/externalmap/map_xyz/*
+|-- ...</pre>
+<p> In der QSB sind bereits die Variablen <i>gvMission.MusicRootPath</i> und
+ <i>gvMission.PlaylistRootPath</i> mit den entsprechenden Pfaden vordefiniert.
+<p> Wenn du eigene Musik verwendest, achte darauf, einen möglichst eindeutigen
+ Namen zu verwenden. Und natürlich auch auf Urheberrecht!
+<p> Beispiel für eine Playlist:
+ <pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;PlayList&gt;
+ &lt;PlayListEntry&gt;
+   &lt;FileName&gt;Music\some_music_file.mp3&lt;/FileName&gt;
+   &lt;Type&gt;Loop&lt;/Type&gt;
+ &lt;/PlayListEntry&gt;
+ &lt;!-- Hier können weitere Einträge folgen. --&gt;
+&lt;/PlayList&gt;
+</pre>
+ Als Typ können "Loop" oder "Normal" gewählt werden. Normale Musik wird
+ einmalig abgespielt. Ein Loop läuft endlos weiter.
+<p> Außerdem kann zusätzlich zum Typ eine Abspielwahrscheinlichkeit mit
+ angegeben werden:
+ <pre>&lt;Chance&gt;10&lt;/Chance&gt;</pre>
+ Es sind Zahlen von 1 bis 100 möglich.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Playlist</span>
+         Pfad zur Playlist
+        </li>
+        <li><span class="parameter">_PlayerID</span>
+         (Optional) ID des menschlichen Spielers
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.StartEventPlaylist(gvMission.PlaylistRootPath ..<span class="string">"my_playlist.xml"</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.StopEventPlaylist"></a>
+    <strong>API.StopEventPlaylist (_Playlist, _PlayerID)</strong>
+    </dt>
+    <dd>
+    Beendet eine Event Playlist.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Playlist</span>
+         Pfad zur Playlist
+        </li>
+        <li><span class="parameter">_PlayerID</span>
+         (Optional) ID des menschlichen Spielers
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.StopEventPlaylist(<span class="string">"config/sound/my_playlist.xml"</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.StopVoice"></a>
+    <strong>API.StopVoice ()</strong>
+    </dt>
+    <dd>
+    Stoppt alle als Stimme abgespielten aktiven Sounds.
+
+
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.StopVoice();</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-04-18 14:00:28 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>

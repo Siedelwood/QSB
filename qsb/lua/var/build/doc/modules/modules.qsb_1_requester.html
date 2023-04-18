@@ -1,0 +1,404 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/addons.qsb_x_addon_1_singlebuttons.html">Addon (1) SingleButtons</a></li>
+  <li><a href="../modules/modules.qsb_1_entity.html">(1) Entitätensteuerung</a></li>
+  <li><a href="../modules/modules.qsb_1_guicontrol.html">(1) Anzeigesteuerung</a></li>
+  <li><a href="../modules/modules.qsb_1_guieffects.html">(1) Anzeigeeffekte</a></li>
+  <li><a href="../modules/modules.qsb_1_movement.html">(1) Bewegung</a></li>
+  <li><strong>(1) Dialogfenster</strong></li>
+  <li><a href="../modules/modules.qsb_1_sound.html">(1) Sound</a></li>
+  <li><a href="../modules/modules.qsb_1_trade.html">(1) Handelserweiterung</a></li>
+  <li><a href="../modules/modules.qsb_2_buildingcost.html">(2) Baukostensystem</a></li>
+  <li><a href="../modules/modules.qsb_2_buildingui.html">(2) Gebäudeschalter</a></li>
+  <li><a href="../modules/modules.qsb_2_buildrestriction.html">(2) Baubeschränkung</a></li>
+  <li><a href="../modules/modules.qsb_2_camera.html">(2) Kamerafunktionen</a></li>
+  <li><a href="../modules/modules.qsb_2_newbehavior.html">(2) Neue Behavior</a></li>
+  <li><a href="../modules/modules.qsb_2_npc.html">(2) Ansprechbare Siedler</a></li>
+  <li><a href="../modules/modules.qsb_2_objects.html">(2) Interaktive Objekte</a></li>
+  <li><a href="../modules/modules.qsb_2_promotion.html">(2) Aufstiegsbedingungen</a></li>
+  <li><a href="../modules/modules.qsb_2_quest.html">(2) Aufträge</a></li>
+  <li><a href="../modules/modules.qsb_2_selection.html">(2) Selektion</a></li>
+  <li><a href="../modules/modules.qsb_3_briefingsystem.html">(3) Briefing System</a></li>
+  <li><a href="../modules/modules.qsb_3_cutscenesystem.html">(3) Cutscene System</a></li>
+  <li><a href="../modules/modules.qsb_3_dialogsystem.html">(3) Dialog System</a></li>
+  <li><a href="../modules/modules.qsb_3_lifestock.html">(3) Viehzucht</a></li>
+  <li><a href="../modules/modules.qsb_3_militarylimit.html">(3) Soldatenlimit</a></li>
+  <li><a href="../modules/modules.qsb_3_traderoutes.html">(3) Handelsrouten</a></li>
+  <li><a href="../modules/modules.qsb_4_iomines.html">(4) Interaktive Minen</a></li>
+  <li><a href="../modules/modules.qsb_4_iosites.html">(4) Interaktive Baustellen</a></li>
+  <li><a href="../modules/modules.qsb_4_iotreasure.html">(4) Interaktive Schätze</a></li>
+  <li><a href="../modules/modules.qsb_4_questjournal.html">(4) Auftragsnotizen</a></li>
+  <li><a href="../modules/qsb_x_acomp.html">(X) Kompatibilität</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>(1) Dialogfenster</code></h1>
+<p>Stellt verschiedene Dialog- oder Textfenster zur Verfügung.</p>
+<p>
+<p> <b>Vorausgesetzte Module:</b>
+ <ul>
+ <li><a href="qsb.html">(0) Basismodul</a></li>
+ </ul>
+</p>
+
+
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.DefineLanguage">API.DefineLanguage (_Shortcut, _Name, _Fallback)</a></td>
+	<td class="summary">Fügt eine neue Sprache zur Auswahl hinzu.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.DialogInfoBox">API.DialogInfoBox (_PlayerID, _Title, _Text, _Action)</a></td>
+	<td class="summary">Öffnet einen Info-Dialog.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.DialogLanguageSelection">API.DialogLanguageSelection (_PlayerID)</a></td>
+	<td class="summary">Öffnet den Dialog für die Auswahl der Sprache.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.DialogRequestBox">API.DialogRequestBox (_PlayerID, _Title, _Text, _Action, _OkCancel)</a></td>
+	<td class="summary">Öffnet einen Ja-Nein-Dialog.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.DialogSelectBox">API.DialogSelectBox (_PlayerID, _Title, _Text, _Action, _List)</a></td>
+	<td class="summary">Öffnet einen Auswahldialog.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.TextWindow">API.TextWindow (_Caption, _Content, _PlayerID)</a></td>
+	<td class="summary">Öffnet ein einfaches Textfenster mit dem angegebenen Text.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.DefineLanguage"></a>
+    <strong>API.DefineLanguage (_Shortcut, _Name, _Fallback)</strong>
+    </dt>
+    <dd>
+    Fügt eine neue Sprache zur Auswahl hinzu.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Shortcut</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Kürzel der Sprache (vgl. de, en, ...)
+        </li>
+        <li><span class="parameter">_Name</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+             Anzeigename der Sprache
+        </li>
+        <li><span class="parameter">_Fallback</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Kürzel der Ausweichsprache
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.DefineLanguage(<span class="string">"sx"</span>, <span class="string">"Sächsich"</span>, <span class="string">"de"</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.DialogInfoBox"></a>
+    <strong>API.DialogInfoBox (_PlayerID, _Title, _Text, _Action)</strong>
+    </dt>
+    <dd>
+    Öffnet einen Info-Dialog.  Sollte bereits ein Dialog zu sehen sein, wird
+ der Dialog der Dialogwarteschlange hinzugefügt.
+<p> An die Action wird der Spieler übergeben, der den Dialog bestätigt hat.
+<p> <b>Hinweis</b>: Kann nicht aus dem globalen Skript heraus benutzt werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         (Optional) Empfangender Spieler
+        </li>
+        <li><span class="parameter">_Title</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            Titel des Dialog
+        </li>
+        <li><span class="parameter">_Text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+             Text des Dialog
+        </li>
+        <li><span class="parameter">_Action</span>
+           Funktionsreferenz
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.DialogInfoBox(<span class="string">"Wichtige Information"</span>, <span class="string">"Diese Information ist Spielentscheidend!"</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.DialogLanguageSelection"></a>
+    <strong>API.DialogLanguageSelection (_PlayerID)</strong>
+    </dt>
+    <dd>
+    Öffnet den Dialog für die Auswahl der Sprache.  Deutsch, Englisch und
+ Französisch sind vorkonfiguriert.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         (optional) Nur für diesen Spieler anzeigen
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Für alle Spieler
+</span>API.DialogLanguageSelection();
+<span class="comment">-- Nur für Spieler 2 anzeigen
+</span>API.DialogLanguageSelection(<span class="number">2</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.DialogRequestBox"></a>
+    <strong>API.DialogRequestBox (_PlayerID, _Title, _Text, _Action, _OkCancel)</strong>
+    </dt>
+    <dd>
+    Öffnet einen Ja-Nein-Dialog.  Sollte bereits ein Dialog zu sehen sein, wird
+ der Dialog der Dialogwarteschlange hinzugefügt.
+<p> Um die Entscheigung des Spielers abzufragen, wird ein Callback benötigt.
+ Das Callback bekommt eine Boolean übergeben, sobald der Spieler die
+ Entscheidung getroffen hat, plus die ID des Spielers.
+<p> <b>Hinweis</b>: Kann nicht aus dem globalen Skript heraus benutzt werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         (Optional) Empfangender Spieler
+        </li>
+        <li><span class="parameter">_Title</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            Titel des Dialog
+        </li>
+        <li><span class="parameter">_Text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+             Text des Dialog
+        </li>
+        <li><span class="parameter">_Action</span>
+           Funktionsreferenz
+        </li>
+        <li><span class="parameter">_OkCancel</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Okay/Abbrechen statt Ja/Nein
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">function</span> YesNoAction(_Yes, _PlayerID)
+    <span class="keyword">if</span> _Yes <span class="keyword">then</span> GUI.AddNote(<span class="string">"Ja wurde gedrückt"</span>); <span class="keyword">end</span>
+<span class="keyword">end</span>
+API.DialogRequestBox(<span class="string">"Frage"</span>, <span class="string">"Möchtest du das wirklich tun?"</span>, YesNoAction, <span class="keyword">false</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.DialogSelectBox"></a>
+    <strong>API.DialogSelectBox (_PlayerID, _Title, _Text, _Action, _List)</strong>
+    </dt>
+    <dd>
+    Öffnet einen Auswahldialog.  Sollte bereits ein Dialog zu sehen sein, wird
+ der Dialog der Dialogwarteschlange hinzugefügt.
+<p> In diesem Dialog wählt der Spieler eine Option aus einer Liste von Optionen
+ aus. Anschließend erhält das Callback den Index der selektierten Option und
+ die ID des Spielers, der den Dialog bestätigt hat.
+<p> <b>Hinweis</b>: Kann nicht aus dem globalen Skript heraus benutzt werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         (Optional) Empfangender Spieler
+        </li>
+        <li><span class="parameter">_Title</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+          Titel des Dialog
+        </li>
+        <li><span class="parameter">_Text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Text des Dialog
+        </li>
+        <li><span class="parameter">_Action</span>
+         Funktionsreferenz
+        </li>
+        <li><span class="parameter">_List</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+           Liste der Optionen
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">function</span> OptionsAction(_Idx, _PlayerID)
+    GUI.AddNote(_Idx.. <span class="string">" wurde ausgewählt!"</span>);
+<span class="keyword">end</span>
+<span class="keyword">local</span> List = {<span class="string">"Option A"</span>, <span class="string">"Option B"</span>, <span class="string">"Option C"</span>};
+API.DialogSelectBox(<span class="string">"Auswahl"</span>, <span class="string">"Wähle etwas aus!"</span>, OptionsAction, List);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.TextWindow"></a>
+    <strong>API.TextWindow (_Caption, _Content, _PlayerID)</strong>
+    </dt>
+    <dd>
+    Öffnet ein einfaches Textfenster mit dem angegebenen Text.
+<p> Die Länge des Textes ist nicht beschränkt. Überschreitet der Text die
+ Größe des Fensters, wird automatisch eine Bildlaufleiste eingeblendet.
+<p> <h5>Multiplayer</h5>
+ Im Multiplayer muss zwingend der Spieler angegeben werden, für den das
+ Fenster angezeigt werden soll.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Caption</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+          Titel des Fenster
+        </li>
+        <li><span class="parameter">_Content</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+          Inhalt des Fenster
+        </li>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         Spieler, der das Fenster sieht
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> Text = <span class="string">"Lorem ipsum dolor sit amet, consetetur sadipscing elitr,"</span>..
+             <span class="string">" sed diam nonumy eirmod tempor invidunt ut labore et dolore"</span>..
+             <span class="string">" magna aliquyam erat, sed diam voluptua. At vero eos et"</span>..
+             <span class="string">" accusam et justo duo dolores et ea rebum. Stet clita kasd"</span>..
+             <span class="string">" gubergren, no sea takimata sanctus est Lorem ipsum dolor"</span>..
+             <span class="string">" sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing"</span>..
+             <span class="string">" elitr, sed diam nonumy eirmod tempor invidunt ut labore et"</span>..
+             <span class="string">" dolore magna aliquyam erat, sed diam voluptua. At vero eos"</span>..
+             <span class="string">" et accusam et justo duo dolores et ea rebum. Stet clita"</span>..
+             <span class="string">" kasd gubergren, no sea takimata sanctus est Lorem ipsum"</span>..
+             <span class="string">" dolor sit amet."</span>;
+API.TextWindow(<span class="string">"Überschrift"</span>, Text);</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-04-18 14:00:28 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>
