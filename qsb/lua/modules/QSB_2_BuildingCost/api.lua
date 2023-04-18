@@ -91,7 +91,6 @@ function BCS.SetConstructionCosts(_Building, _AdditionalAmount1, _Good2, _Amount
 	assert(not _AdditionalAmount1 or (type(_AdditionalAmount1) == "number" and _AdditionalAmount1 >= 0), "_AdditionalAmount1 muss positiv sein")
 
 	if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
-		assert(type(ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost) == "function")
 
 		local upgradeCategory = Logic.GetUpgradeCategoryByBuildingType(_Building)
 		-- Check for valid UpgradeCategory (Beautification_VictoryColumn == 97, the highest Category)
