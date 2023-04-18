@@ -34,7 +34,7 @@ BCS = BCS or {
 -- @param[type=number] _Amount1  (Optional) Die Menge des ersten Rohstoffs (bei nil wird gelöscht)
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Ausbau bezahlt werden soll
 -- @param[type=number] _Amount2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.EditUpgradeCosts
 --
 -- @usage
@@ -79,7 +79,7 @@ end
 -- @param[type=number]  _Good2    	   (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number]  _Amount2  	   (Optional) Die Menge des zweiten Rohstoffs
 -- @param[type=boolean] _AddToBaseCost (Optional) Sollen die angegebenen Kosten für den Originalrohstoff auf die Originalkosten aufgerechnet werden?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetUpgradeCosts
 --
 -- @usage
@@ -110,7 +110,7 @@ end
 -- Gibt an welchen Rabatt Hakim auf das Ausbauen von Gebäuden erhält
 --
 -- @param[type=number] _Discount Rabatt den Hakim bekommt zwischen 0 (nichts) und 1 (alles)
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetUpgradeDiscountFunction
 --
 -- @usage
@@ -138,7 +138,7 @@ end
 --
 -- @param[type=number]  _Function  Rabattfunktion die einen Wert zwischen 0 und 1 zurückgibt
 -- @param[type=boolean] _CanBeZero Soll der zweite Rohstoff auf Null gerundet werden können?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetHakimUpgradeDiscount
 --
 -- @usage
@@ -161,7 +161,7 @@ end
 --
 -- @param[type=number]  _Function  Rabattfunktion die einen Wert zwischen 0 und 1 zurückgibt
 -- @param[type=boolean] _CanBeZero Soll der zweite Rohstoff auf Null gerundet werden können?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetConstructionAddedGoodDiscountFunction
 --
 -- @usage
@@ -184,7 +184,7 @@ end
 --
 -- @param[type=number]  _Function  Rabattfunktion die einen Wert zwischen 0 und 1 zurückgibt
 -- @param[type=boolean] _CanBeZero Soll der zweite Rohstoff auf Null gerundet werden können?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetConstructionOriginalGoodDiscountFunction
 --
 -- @usage
@@ -209,7 +209,7 @@ end
 -- @param[type=number]  _Good2    		 (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number]  _Amount2  		 (Optional) Die Menge des zweiten Rohstoffs
 -- @param[type=boolean] _AddToBaseCost   (Optional) Sollen die angegebenen Kosten für den Originalrohstoff auf die Originalkosten aufgerechnet werden?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetUpgradeCosts
 --
 -- @usage
@@ -263,7 +263,7 @@ end
 -- @param[type=number] _Amount1  		(Optional) Die Menge des ersten Rohstoffs (bei nil wird gelöscht)
 -- @param[type=number] _Good2    		(Optional) Der neue zweite Rohstoff der für den Ausbau bezahlt werden soll
 -- @param[type=number] _Amount2  		(Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetUpgradeCosts
 --
 -- @usage
@@ -297,7 +297,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Baukosten definieren
@@ -333,7 +333,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Baukosten definieren
@@ -369,7 +369,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Baukosten definieren
@@ -406,7 +406,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Baukosten definieren
@@ -441,7 +441,7 @@ end
 --
 -- @param[type=number] _Factor1  Anteil der Rückerstattung für den ersten Rohstoff
 -- @param[type=number] _Factor2  Anteil der Rückerstattung für den zweiten Rohstoff
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Es wird die Hälfte Zurückerstattet
@@ -471,7 +471,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Kosten definieren
@@ -506,7 +506,7 @@ end
 -- Sollen Stadtgüter zurückerstattet werden?
 --
 -- @param[type=boolean] _Flag Sollen Stadtgüter zurückerstattet werden?
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Stadtgüter werden zurückerstattet
@@ -529,7 +529,7 @@ end
 -- Sollen Güter auf dem Marktplatz betrachtet werden?
 --
 -- @param[type=boolean] _Flag Sollen Güter auf dem Marktplatz betrachtet werden?
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Güter auf dem Marktplatz werden betrachtet
