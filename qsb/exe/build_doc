@@ -101,7 +101,7 @@ cp -r qsb/templates/css qsb/lua/var/build/doc
 
 # Create markdown documentation for qsb
 echo "markdown-qsbbase"
-lua qsb/exe/tools/ldoc/ldoc.lua --ext md -o "qsb/lua/var/md_doc/qsb.lua.md" -v "qsb/lua/var/build/source/qsb.lua" #&>/dev/null
+lua qsb/exe/tools/ldoc/ldoc.lua -f markdown -o "qsb/lua/var/md_doc/qsb.lua.md" -v "qsb/lua/var/build/source/qsb.lua" #&>/dev/null
 
 # Create markdown documentation for modules
 echo "markdown-modules"
