@@ -19,7 +19,7 @@ for folder in *; do
         if [ $folder = "QSB_0_Kernel" ]; then
             # create core qsb
             echo "build qsb"
-            DESTINATION="../../var/build/source/qsb.lua"
+            DESTINATION="../../var/build/source/qsb_base.lua"
             find . -maxdepth 1 -iname "*.lua" -not -name "corebehavior.lua" -not -name "selfload.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
             cat "corebehavior.lua" >> $DESTINATION
             cat "selfload.lua" >> $DESTINATION
