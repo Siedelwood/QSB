@@ -25,7 +25,7 @@ for folder in *; do
         cd $folder
 
         DESTINATION="../../var/build/doc/temp/docbuilder.lua"
-        FILENAME="modules/${folder,,}.lua"
+        FILENAME="smodules/${folder,,}.lua"
         if [ $folder = "QSB_0_Kernel" ]; then
             echo "" >> $DESTINATION
             FILENAME="qsb.lua"
@@ -40,7 +40,7 @@ done
 # Add compatibility files to html documentation index
 echo "Add compatibility files to html documentation index"
 DESTINATION="../var/build/doc/temp/docbuilder.lua"
-echo "{\"qsb_x_acomp.lua\", \"(X) Kompatibilität\"}," >> $DESTINATION
+echo "{\"tqsb_x_acomp.lua\", \"(X) Kompatibilität\"}," >> $DESTINATION
 DESTINATION="../var/build/source/tqsb_x_acomp.lua"
 find . -maxdepth 2 -iname "compatibility.lua" -type f -exec cat {} +> $DESTINATION
 
@@ -54,7 +54,7 @@ for folder in *; do
         cd $folder
 
         DESTINATION="../../var/build/doc/temp/docbuilder.lua"
-        FILENAME="addons/${folder,,}.lua"
+        FILENAME="xaddons/${folder,,}.lua"
         if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
             TITLE=$(head -n 1 title.txt)
             echo "{\"${FILENAME}\", \"${TITLE}\"}," >> $DESTINATION
@@ -155,11 +155,11 @@ cd ../../../
 # Create markdown documentation for compatibility
 echo "Create markdown documentation for compatibility"
 cd qsb/lua/var/md_doc
-lua ../../../exe/tools/ldoc/ldoc.lua -o compatibility -v -f markdown -x "md" ../build/source/qsb_x_acomp.lua #&>/dev/null
+lua ../../../exe/tools/ldoc/ldoc.lua -o compatibility -v -f markdown -x "md" ../build/source/tqsb_x_acomp.lua #&>/dev/null
 cd ../../../../
 
 # Remove temporary compatibility file
-#rm qsb/lua/var/build/source/qsb_x_acomp.lua
+#rm qsb/lua/var/build/source/tqsb_x_acomp.lua
 
 # Remove temporary files
 #rm -rf qsb/lua/var/build/doc/temp &>/dev/null
