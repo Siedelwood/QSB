@@ -499,7 +499,8 @@ end
 --
 -- <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
 --
--- @param[type=String] _ScriptName Skriptname des Entity
+-- @param[type=number]  _PlayerID   SpielerID
+-- @param[type=String]  _ScriptName Skriptname des Entity
 -- @return[type=number] ID der Protektion
 -- @within Abrissbeschränkung
 --

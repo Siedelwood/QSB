@@ -124,10 +124,11 @@ end
 -- Das Ziel gilt als erreicht, sobald sich das Entity nicht mehr bewegt. Dann
 -- wird das Event QSB.ScriptEvents.EntityArrived geworfen.
 --
--- @param                _Entity         Bewegtes Entity (Skriptname oder ID)
--- @param                _Target         Ziel (Skriptname, ID oder Position)
--- @param[type=number]  _Distance        Entfernung zum Ziel
--- @param[type=number]  _Angle           Winkel zum Ziel
+-- @param               _Entity         Bewegtes Entity (Skriptname oder ID)
+-- @param               _Target         Ziel (Skriptname, ID oder Position)
+-- @param[type=number]  _Distance       Entfernung zum Ziel
+-- @param[type=number]  _Angle          Winkel zum Ziel
+-- @param[type=boolean] _IgnoreBlocking Ignoriere Blocking
 -- @within Bewegung
 --
 -- @usage
@@ -331,7 +332,7 @@ end
 -- @param                _StartPosition Beginn des Pfad (Position, Skriptname oder ID)
 -- @param                _EndPosition   Ende des Pfad (Position, Skriptname oder ID)
 -- @param[type=function] _NodeFilter    (Optional) Filterfunktion für Wegpunkte
--- @retun[type=number] ID des Pfad
+-- @return[type=number] ID des Pfad
 -- @within Pfadsuche
 --
 -- @usage
@@ -380,7 +381,7 @@ end
 -- Prüft ob ein Pfad mit der ID existiert.
 --
 -- @param[type=number]  _ID ID des Pfad
--- @retun[type=boolean] Der Pfad existiert
+-- @return[type=boolean] Der Pfad existiert
 -- @within Pfadsuche
 --
 -- @usage
@@ -396,7 +397,7 @@ end
 -- Prüft ob ein Pfad mit der ID noch gesucht wird.
 --
 -- @param[type=number]  _ID ID des Pfad
--- @retun[type=boolean] Der Pfad wird gesucht
+-- @return[type=boolean] Der Pfad wird gesucht
 -- @within Pfadsuche
 --
 -- @usage
@@ -412,7 +413,7 @@ end
 -- Gibt den Pfad mit der ID als Liste von Entity-IDs zurück.
 --
 -- @param[type=number]  _ID ID des Pfad
--- @retun[type=table] Liste mit IDs
+-- @return[type=table] Liste mit IDs
 -- @within Pfadsuche
 --
 -- @usage

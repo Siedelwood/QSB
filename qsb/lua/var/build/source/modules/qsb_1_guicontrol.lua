@@ -320,7 +320,7 @@ function API.SetTooltipNormal(_Title, _Text, _DisabledText)
     if not GUI then
         return;
     end
-    ModuleGuiControl.Local:TooltipNormal(_Title, _Text, _DisabledText);
+    ModuleGuiControl.Local:TooltipNormal(API.Localize(_Title), API.Localize(_Text), API.Localize(_DisabledText));
 end
 
 ---
@@ -342,7 +342,7 @@ function API.SetTooltipCosts(_Title, _Text, _DisabledText, _Costs, _InSettlement
     if not GUI then
         return;
     end
-    ModuleGuiControl.Local:TooltipCosts(_Title,_Text,_DisabledText,_Costs,_InSettlement);
+    ModuleGuiControl.Local:TooltipCosts(API.Localize(_Title), API.Localize(_Text), API.Localize(_DisabledText), _Costs, _InSettlement);
 end
 
 ---
@@ -820,14 +820,14 @@ function ModuleGuiControl.Local:SetIcon(_WidgetID, _Coordinates, _Size, _Name)
 end
 
 function ModuleGuiControl.Local:TooltipNormal(_title, _text, _disabledText)
-    if _title and _title:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
+    if _title and string.find(_title, "^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _title = XGUIEng.GetStringTableText(_title);
     end
-    if _text and _text:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
+    if _text and string.find(_text, "^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _text = XGUIEng.GetStringTableText(_text);
     end
     _disabledText = _disabledText or "";
-    if _disabledText and _disabledText:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
+    if _disabledText and string.find(_disabledText, "^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _disabledText = XGUIEng.GetStringTableText(_disabledText);
     end
 
@@ -866,13 +866,13 @@ function ModuleGuiControl.Local:TooltipCosts(_title,_text,_disabledText,_costs,_
     for i= 1, 4, 1 do
         Costs[i] = _costs[i];
     end
-    if _title and _title:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
+    if _title and string.find(_title, "^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _title = XGUIEng.GetStringTableText(_title);
     end
-    if _text and _text:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
+    if _text and string.find(_text, "^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _text = XGUIEng.GetStringTableText(_text);
     end
-    if _disabledText and _disabledText:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
+    if _disabledText and string.find(_disabledText, "^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _disabledText = XGUIEng.GetStringTableText(_disabledText);
     end
 

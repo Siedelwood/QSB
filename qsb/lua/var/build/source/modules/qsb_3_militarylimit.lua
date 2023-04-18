@@ -57,7 +57,10 @@ function API.SetPlayerSoldierLimit(_PlayerID, _Function)
         return;
     end
     ModuleMilitaryLimit.Global:SetLimitsForPlayer(_PlayerID, _Function);
-endSCP.MilitaryLimit = {};
+end
+-- -------------------------------------------------------------------------- --
+
+SCP.MilitaryLimit = {};
 
 function SCP.MilitaryLimit.ProduceUnits(_PlayerID, _BarrackID, _EntityType, _Costs)
     ModuleMilitaryLimit.Global:ProduceUnit(_PlayerID, _BarrackID, _EntityType, _Costs);

@@ -1,6 +1,151 @@
 -- -------------------------------------------------------------------------- --
 
 ---
+-- Aktiviert/Deaktiviert optionale Communityfeatures wie Rückbau, Viehzucht, etc.
+--
+-- @param[type=string]  _ScriptName Skriptname des Entity
+-- @param[type=boolean] _Controlled Durch KI kontrollieren an/aus
+--
+-- @within Reward
+--
+-- -------------------------------------------------------------------------- --
+
+function Reward_ToggleCommunityFeatures(...)
+    return b_Reward_ToggleCommunityFeatures:new(...);
+end
+
+b_Reward_ToggleCommunityFeatures = {
+    Name = "Reward_ToggleCommunityFeatures",
+    Description = {
+        en = "Reward: Activates/Deactivates optional community features like Downgrade/Breeding.",
+        de = "Lohn: Aktiviert/Deaktiviert optionale Communityfeatures wie Rückbau/Viehzucht.",
+    },
+    Parameter = {
+        { ParameterType.Custom, en = "BuildingDowngrade", de = "Gebäuderückbau" },
+		{ ParameterType.Custom, en = "SingleStop", de = "Einzelstilllegung" },
+        { ParameterType.Custom, en = "LifestockBreeding", de = "Viehzucht" },
+		{ ParameterType.Custom, en = "HE-Autosave", de = "HE-Autospeicherung" },
+		{ ParameterType.Custom, en = "GameClock", de = "Spielzeituhr" }
+    },
+}
+
+function b_Reward_ToggleCommunityFeatures:GetRewardTable()
+    return { Reward.Custom, {self, self.CustomFunction} }
+end
+
+function b_Reward_ToggleCommunityFeatures:GetCustomData(_Index)
+    return {"true", "false"}
+end
+
+function b_Reward_ToggleCommunityFeatures:AddParameter(_Index, _Parameter)
+    if (_Index == 0) then
+        self.UseDowngrade = _Parameter;
+	elseif (_Index == 1) then
+		self.UseSingleStop = _Parameter;
+    elseif (_Index == 2) then
+        self.UseBreeding = _Parameter;
+	elseif (_Index == 3) then
+		self.UseHEQuickSave = _Parameter;
+	elseif (_Index == 4) then
+		self.UseGameClock = _Parameter;
+	else
+		assert(false, "Reward_ToggleCommunityFeatures: Missing _Index")
+    end
+end
+
+function b_Reward_ToggleCommunityFeatures:CustomFunction(_Quest)
+	API.UseDowngrade(API.ToBoolean(self.UseDowngrade))
+	API.UseBreedSheeps(API.ToBoolean(self.UseBreeding))
+	API.UseBreedCattle(API.ToBoolean(self.UseBreeding))
+	API.UseSingleStop(API.ToBoolean(self.UseSingleStop))
+	API.DisableAutomaticQuickSave(not API.ToBoolean(self.UseHEQuickSave))
+	
+	Logic.ExecuteInLuaLocalState([[
+		local ShowClockWidget = 1
+		if AddOnQuestDebug.Local.Data.GameClock ~= nil then
+			AddOnQuestDebug.Local.Data.GameClock = (]]..tostring(self.UseGameClock)..[[ == true)
+		
+			if not AddOnQuestDebug.Local.Data.GameClock then
+				ShowClockWidget = 0
+			end
+			XGUIEng.ShowWidget("/InGame/Root/Normal/AlignTopLeft/GameClock", ShowClockWidget)
+		end
+	]]);
+end
+
+Swift:RegisterBehavior(b_Reward_ToggleCommunityFeatures);
+
+-- -------------------------------------------------------------------------- --
+
+---
+-- Setzt neue Baukosten eines Gebäudes über das BCS.
+--
+-- @param[type=string]  _upgradeCategory Die UpgradeCategory.
+-- @param[type=boolean] _Controlled Durch KI kontrollieren an/aus
+--
+-- @within Reward
+--
+-- -------------------------------------------------------------------------- --
+
+function Reward_EditBuildingConstructionCosts(...)
+    return b_Reward_EditBuildingConstructionCosts:new(...);
+end
+
+b_Reward_EditBuildingConstructionCosts = {
+    Name = "Reward_EditBuildingConstructionCosts",
+    Description = {
+        en = "Reward: Changes the construction cost for a building type.",
+        de = "Lohn: Ändert die Gebäudekosten eines Gebäudetyps.",
+    },
+    Parameter = {
+        { ParameterType.Custom, en = "Building type", de = "Gebäudetyp" },
+		{ ParameterType.Custom, en = "Amount of original good", de = "Menge Originalware" },
+        { ParameterType.Custom, en = "New second good", de = "Neue zweite Ware" },
+		{ ParameterType.Custom, en = "Amount of new good", de = "Menge der neuen Warea" }
+    },
+}
+
+function b_Reward_EditBuildingConstructionCosts:GetRewardTable()
+    return { Reward.Custom, {self, self.CustomFunction} }
+end
+
+function b_Reward_EditBuildingConstructionCosts:GetCustomData(_Index)
+    if _Index == 1 then
+        return UpgradeCategories; -- TODO: This in Global Lua State?
+    elseif _Index == 2 then -- Old Cost Amount
+        return 4; -- TODO: Find a better way to get the costs in global state ? (Logic accessible?)
+    elseif _Index == 3 then -- New Good
+        return Goods;
+    elseif _Index == 4 then -- New Good Amount
+        return 1;
+    end
+end
+
+function b_Reward_EditBuildingConstructionCosts:AddParameter(_Index, _Parameter)
+    if (_Index == 0) then
+        self.UpgradeCategory = _Parameter;
+	elseif (_Index == 1) then
+		self.OriginalCostAmount = _Parameter;
+    elseif (_Index == 2) then
+        self.NewGood = _Parameter;
+	elseif (_Index == 3) then
+		self.NewGoodAmount = _Parameter;
+	else
+		assert(false, "Reward_EditBuildingConstructionCosts: Missing _Index")
+    end
+end
+
+function b_Reward_EditBuildingConstructionCosts:CustomFunction(_Quest)
+    if BCS then
+        BCS.SetConstructionCosts(self.UpgradeCategory, self.OriginalCostAmount, self.NewGood, self.NewGoodAmount)
+    else
+        assert(false, "Reward_EditBuildingConstructionCosts: BCS was not initialized!")
+    end
+end
+
+Swift:RegisterBehavior(b_Reward_EditBuildingConstructionCosts);-- -------------------------------------------------------------------------- --
+
+---
 -- Dieses Modul ermöglicht es die Kosten für den Bau und Ausbau von Gebäuden anzupassen.
 -- Asserdem können auch andere Baukosten angepasst werden (zB Palisaden, Mauern und Wege).
 --
@@ -12,7 +157,7 @@
 --
 -- @within Beschreibung
 -- @set sort=true
--- @author EisenMonoxid, Jelumar
+-- @author Eisenmonoxid, Jelumar
 --
 
 -- TODO: Check BuildingUpgraded Event
@@ -74,52 +219,34 @@ end
 -- Überschreibt die Baukosten eines Gebäudes
 -- Hier muss beachtet werden, dass der erste Kostenparameter zusätzliche Kosten für den ersten Rohstoff darstellen und nicht den neuen Kostenwert
 --
--- @param[type=number] _Building 			UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
--- @param[type=number] _AdditionalAmount1   Zusätzliche Menge für den ersten Rohstoff (bei nil wird gelöscht)
--- @param[type=number] _Good2    			(Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
--- @param[type=number] _Amount2  			(Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=number]  _Building 	   UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
+-- @param[type=number]  _Amount1   	   Die neue Menge des ersten Rohstoffs (bei nil wird gelöscht)
+-- @param[type=number]  _Good2    	   (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
+-- @param[type=number]  _Amount2  	   (Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=boolean] _AddToBaseCost (Optional) Sollen die angegebenen Kosten für den Originalrohstoff auf die Originalkosten aufgerechnet werden?
 -- @within Suche
 -- @see BCS.SetUpgradeCosts
 --
 -- @usage
--- -- Neue Ausbaukosten definieren
--- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, 50, Goods.G_Gold, 100)
+-- -- Neue Ausbaukosten definieren (erste Rohstoffmenge wird auf Originalkosten draufgerechnet)
+-- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, 50, Goods.G_Gold, 100, true)
 -- -- Auf Originalkosten zurücksetzen
 -- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, nil)
 --
-function BCS.SetConstructionCosts(_Building, _AdditionalAmount1, _Good2, _Amount2)
-	assert(not _AdditionalAmount1 or (type(_AdditionalAmount1) == "number" and _AdditionalAmount1 >= 0), "_AdditionalAmount1 muss positiv sein")
-
+function BCS.SetConstructionCosts(_Building, _Amount1, _Good2, _Amount2, _AddToBaseCost)
 	if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
-		assert(type(ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost) == "function")
-
 		local upgradeCategory = Logic.GetUpgradeCategoryByBuildingType(_Building)
-		-- Check for valid UpgradeCategory (Beautification_VictoryColumn == 97, the highest Category)
-		assert(upgradeCategory > 0 and upgradeCategory <= UpgradeCategories.Beautification_VictoryColumn)
-
-		if _AdditionalAmount1 == nil then
-			ModuleBuildingCost.Local.Data.Costs.Construction[upgradeCategory] = nil
-			return
-		end
-
-		--Check for Invalid GoodAmount
-		assert(not _Amount2 or _Amount2 >= 1)
-
-		-- local AmountOfTypes, FirstBuildingType = Logic.GetBuildingTypesInUpgradeCategory(upgradeCategory)
-		local Costs = {ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost(_Building)}
-		local newAmount1 = _AdditionalAmount1 + Costs[2]
-
-		-- Insert/Update table entry
-		ModuleBuildingCost.Local.Data.Costs.Construction[upgradeCategory] = {newAmount1, _Good2, _Amount2}
+		BCS.EditBuildingCosts(upgradeCategory, _Amount1, _Good2, _Amount2, _AddToBaseCost)
 	else
 		Logic.ExecuteInLuaLocalState(string.format(
 			[[
-				BCS.SetConstructionCosts(%d, %d, %d, %d)
+				BCS.SetConstructionCosts(%d, %d, %d, %d, %s)
 			]],
 			_Building,
-			_AdditionalAmount1,
+			_Amount1,
 			_Good2,
-			_Amount2
+			_Amount2,
+			tostring(_AddToBaseCost)
 		))
 	end
 end
@@ -222,10 +349,11 @@ end
 ---
 -- Überschreibt die Baukosten eines Gebäudes
 --
--- @param[type=number] _UpgradeCategory UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
--- @param[type=number] _Amount1  		Die neue Menge des ersten Rohstoffs (bei nil wird gelöscht)
--- @param[type=number] _Good2    		(Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
--- @param[type=number] _Amount2  		(Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=number]  _UpgradeCategory UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
+-- @param[type=number]  _Amount1  		 Die neue Menge des ersten Rohstoffs (bei nil wird gelöscht)
+-- @param[type=number]  _Good2    		 (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
+-- @param[type=number]  _Amount2  		 (Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=boolean] _AddToBaseCost   (Optional) Sollen die angegebenen Kosten für den Originalrohstoff auf die Originalkosten aufgerechnet werden?
 -- @within Suche
 -- @see BCS.SetUpgradeCosts
 --
@@ -235,11 +363,10 @@ end
 -- -- Auf Originalkosten zurücksetzen
 -- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, nil)
 --
-function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2)
+function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2, _AddToBaseCost)
 	if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
-		-- Check for unloaded script
-		assert(type(ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost) == "function")
-
+		_AddToBaseCost = _AddToBaseCost or false
+		assert(not _Amount1 or (type(_Amount1) == "number" and _Amount1 >= 0), "_AdditionalAmount1 muss positiv sein")
 		-- Check for valid UpgradeCategory (Beautification_VictoryColumn == 97, the highest Category)
 		assert(_UpgradeCategory > 0 and _UpgradeCategory <= UpgradeCategories.Beautification_VictoryColumn)
 
@@ -251,6 +378,9 @@ function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2)
 		assert(not _Amount2 or _Amount2 >= 1)
 		local AmountOfTypes, FirstBuildingType = Logic.GetBuildingTypesInUpgradeCategory(_UpgradeCategory)
 		local Costs = {ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost(FirstBuildingType)}
+		if _AddToBaseCost then
+			_Amount1 = _Amount1 + Costs[2]
+		end
 		assert(_Amount1 >= Costs[2])
 
 		-- Insert/Update table entry
@@ -258,12 +388,13 @@ function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2)
 	else
 		Logic.ExecuteInLuaLocalState(string.format(
 			[[
-				BCS.EditBuildingCosts(%d, %d, %d, %d)
+				BCS.EditBuildingCosts(%d, %d, %d, %d, %s)
 			]],
 			_UpgradeCategory,
 			_Amount1,
 			_Good2,
-			_Amount2
+			_Amount2,
+			tostring(_AddToBaseCost)
 		))
 	end
 end

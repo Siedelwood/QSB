@@ -229,7 +229,6 @@ end
 -- @param[type=function] _Filter Funktion zur Filterung
 -- @return[type=table] Liste mit Ergebnissen
 -- @within Suche
--- @see QSB.SearchPredicate
 --
 -- @usage
 -- -- Es werden alle Kühe und Schafe von Spieler 1 gefunden, die nicht auf den

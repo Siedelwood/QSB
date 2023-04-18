@@ -1143,6 +1143,151 @@ Swift:RegisterModule(ModuleObjectInteraction);
 -- -------------------------------------------------------------------------- --
 
 ---
+-- Aktiviert/Deaktiviert optionale Communityfeatures wie Rückbau, Viehzucht, etc.
+--
+-- @param[type=string]  _ScriptName Skriptname des Entity
+-- @param[type=boolean] _Controlled Durch KI kontrollieren an/aus
+--
+-- @within Reward
+--
+-- -------------------------------------------------------------------------- --
+
+function Reward_ToggleCommunityFeatures(...)
+    return b_Reward_ToggleCommunityFeatures:new(...);
+end
+
+b_Reward_ToggleCommunityFeatures = {
+    Name = "Reward_ToggleCommunityFeatures",
+    Description = {
+        en = "Reward: Activates/Deactivates optional community features like Downgrade/Breeding.",
+        de = "Lohn: Aktiviert/Deaktiviert optionale Communityfeatures wie Rückbau/Viehzucht.",
+    },
+    Parameter = {
+        { ParameterType.Custom, en = "BuildingDowngrade", de = "Gebäuderückbau" },
+		{ ParameterType.Custom, en = "SingleStop", de = "Einzelstilllegung" },
+        { ParameterType.Custom, en = "LifestockBreeding", de = "Viehzucht" },
+		{ ParameterType.Custom, en = "HE-Autosave", de = "HE-Autospeicherung" },
+		{ ParameterType.Custom, en = "GameClock", de = "Spielzeituhr" }
+    },
+}
+
+function b_Reward_ToggleCommunityFeatures:GetRewardTable()
+    return { Reward.Custom, {self, self.CustomFunction} }
+end
+
+function b_Reward_ToggleCommunityFeatures:GetCustomData(_Index)
+    return {"true", "false"}
+end
+
+function b_Reward_ToggleCommunityFeatures:AddParameter(_Index, _Parameter)
+    if (_Index == 0) then
+        self.UseDowngrade = _Parameter;
+	elseif (_Index == 1) then
+		self.UseSingleStop = _Parameter;
+    elseif (_Index == 2) then
+        self.UseBreeding = _Parameter;
+	elseif (_Index == 3) then
+		self.UseHEQuickSave = _Parameter;
+	elseif (_Index == 4) then
+		self.UseGameClock = _Parameter;
+	else
+		assert(false, "Reward_ToggleCommunityFeatures: Missing _Index")
+    end
+end
+
+function b_Reward_ToggleCommunityFeatures:CustomFunction(_Quest)
+	API.UseDowngrade(API.ToBoolean(self.UseDowngrade))
+	API.UseBreedSheeps(API.ToBoolean(self.UseBreeding))
+	API.UseBreedCattle(API.ToBoolean(self.UseBreeding))
+	API.UseSingleStop(API.ToBoolean(self.UseSingleStop))
+	API.DisableAutomaticQuickSave(not API.ToBoolean(self.UseHEQuickSave))
+	
+	Logic.ExecuteInLuaLocalState([[
+		local ShowClockWidget = 1
+		if AddOnQuestDebug.Local.Data.GameClock ~= nil then
+			AddOnQuestDebug.Local.Data.GameClock = (]]..tostring(self.UseGameClock)..[[ == true)
+		
+			if not AddOnQuestDebug.Local.Data.GameClock then
+				ShowClockWidget = 0
+			end
+			XGUIEng.ShowWidget("/InGame/Root/Normal/AlignTopLeft/GameClock", ShowClockWidget)
+		end
+	]]);
+end
+
+Swift:RegisterBehavior(b_Reward_ToggleCommunityFeatures);
+
+-- -------------------------------------------------------------------------- --
+
+---
+-- Setzt neue Baukosten eines Gebäudes über das BCS.
+--
+-- @param[type=string]  _upgradeCategory Die UpgradeCategory.
+-- @param[type=boolean] _Controlled Durch KI kontrollieren an/aus
+--
+-- @within Reward
+--
+-- -------------------------------------------------------------------------- --
+
+function Reward_EditBuildingConstructionCosts(...)
+    return b_Reward_EditBuildingConstructionCosts:new(...);
+end
+
+b_Reward_EditBuildingConstructionCosts = {
+    Name = "Reward_EditBuildingConstructionCosts",
+    Description = {
+        en = "Reward: Changes the construction cost for a building type.",
+        de = "Lohn: Ändert die Gebäudekosten eines Gebäudetyps.",
+    },
+    Parameter = {
+        { ParameterType.Custom, en = "Building type", de = "Gebäudetyp" },
+		{ ParameterType.Custom, en = "Amount of original good", de = "Menge Originalware" },
+        { ParameterType.Custom, en = "New second good", de = "Neue zweite Ware" },
+		{ ParameterType.Custom, en = "Amount of new good", de = "Menge der neuen Warea" }
+    },
+}
+
+function b_Reward_EditBuildingConstructionCosts:GetRewardTable()
+    return { Reward.Custom, {self, self.CustomFunction} }
+end
+
+function b_Reward_EditBuildingConstructionCosts:GetCustomData(_Index)
+    if _Index == 1 then
+        return UpgradeCategories; -- TODO: This in Global Lua State?
+    elseif _Index == 2 then -- Old Cost Amount
+        return 4; -- TODO: Find a better way to get the costs in global state ? (Logic accessible?)
+    elseif _Index == 3 then -- New Good
+        return Goods;
+    elseif _Index == 4 then -- New Good Amount
+        return 1;
+    end
+end
+
+function b_Reward_EditBuildingConstructionCosts:AddParameter(_Index, _Parameter)
+    if (_Index == 0) then
+        self.UpgradeCategory = _Parameter;
+	elseif (_Index == 1) then
+		self.OriginalCostAmount = _Parameter;
+    elseif (_Index == 2) then
+        self.NewGood = _Parameter;
+	elseif (_Index == 3) then
+		self.NewGoodAmount = _Parameter;
+	else
+		assert(false, "Reward_EditBuildingConstructionCosts: Missing _Index")
+    end
+end
+
+function b_Reward_EditBuildingConstructionCosts:CustomFunction(_Quest)
+    if BCS then
+        BCS.SetConstructionCosts(self.UpgradeCategory, self.OriginalCostAmount, self.NewGood, self.NewGoodAmount)
+    else
+        assert(false, "Reward_EditBuildingConstructionCosts: BCS was not initialized!")
+    end
+end
+
+Swift:RegisterBehavior(b_Reward_EditBuildingConstructionCosts);-- -------------------------------------------------------------------------- --
+
+---
 -- Dieses Modul ermöglicht es die Kosten für den Bau und Ausbau von Gebäuden anzupassen.
 -- Asserdem können auch andere Baukosten angepasst werden (zB Palisaden, Mauern und Wege).
 --
@@ -1154,7 +1299,7 @@ Swift:RegisterModule(ModuleObjectInteraction);
 --
 -- @within Beschreibung
 -- @set sort=true
--- @author EisenMonoxid, Jelumar
+-- @author Eisenmonoxid, Jelumar
 --
 
 -- TODO: Check BuildingUpgraded Event
@@ -1216,52 +1361,34 @@ end
 -- Überschreibt die Baukosten eines Gebäudes
 -- Hier muss beachtet werden, dass der erste Kostenparameter zusätzliche Kosten für den ersten Rohstoff darstellen und nicht den neuen Kostenwert
 --
--- @param[type=number] _Building 			UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
--- @param[type=number] _AdditionalAmount1   Zusätzliche Menge für den ersten Rohstoff (bei nil wird gelöscht)
--- @param[type=number] _Good2    			(Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
--- @param[type=number] _Amount2  			(Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=number]  _Building 	   UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
+-- @param[type=number]  _Amount1   	   Die neue Menge des ersten Rohstoffs (bei nil wird gelöscht)
+-- @param[type=number]  _Good2    	   (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
+-- @param[type=number]  _Amount2  	   (Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=boolean] _AddToBaseCost (Optional) Sollen die angegebenen Kosten für den Originalrohstoff auf die Originalkosten aufgerechnet werden?
 -- @within Suche
 -- @see BCS.SetUpgradeCosts
 --
 -- @usage
--- -- Neue Ausbaukosten definieren
--- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, 50, Goods.G_Gold, 100)
+-- -- Neue Ausbaukosten definieren (erste Rohstoffmenge wird auf Originalkosten draufgerechnet)
+-- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, 50, Goods.G_Gold, 100, true)
 -- -- Auf Originalkosten zurücksetzen
 -- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, nil)
 --
-function BCS.SetConstructionCosts(_Building, _AdditionalAmount1, _Good2, _Amount2)
-	assert(not _AdditionalAmount1 or (type(_AdditionalAmount1) == "number" and _AdditionalAmount1 >= 0), "_AdditionalAmount1 muss positiv sein")
-
+function BCS.SetConstructionCosts(_Building, _Amount1, _Good2, _Amount2, _AddToBaseCost)
 	if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
-		assert(type(ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost) == "function")
-
 		local upgradeCategory = Logic.GetUpgradeCategoryByBuildingType(_Building)
-		-- Check for valid UpgradeCategory (Beautification_VictoryColumn == 97, the highest Category)
-		assert(upgradeCategory > 0 and upgradeCategory <= UpgradeCategories.Beautification_VictoryColumn)
-
-		if _AdditionalAmount1 == nil then
-			ModuleBuildingCost.Local.Data.Costs.Construction[upgradeCategory] = nil
-			return
-		end
-
-		--Check for Invalid GoodAmount
-		assert(not _Amount2 or _Amount2 >= 1)
-
-		-- local AmountOfTypes, FirstBuildingType = Logic.GetBuildingTypesInUpgradeCategory(upgradeCategory)
-		local Costs = {ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost(_Building)}
-		local newAmount1 = _AdditionalAmount1 + Costs[2]
-
-		-- Insert/Update table entry
-		ModuleBuildingCost.Local.Data.Costs.Construction[upgradeCategory] = {newAmount1, _Good2, _Amount2}
+		BCS.EditBuildingCosts(upgradeCategory, _Amount1, _Good2, _Amount2, _AddToBaseCost)
 	else
 		Logic.ExecuteInLuaLocalState(string.format(
 			[[
-				BCS.SetConstructionCosts(%d, %d, %d, %d)
+				BCS.SetConstructionCosts(%d, %d, %d, %d, %s)
 			]],
 			_Building,
-			_AdditionalAmount1,
+			_Amount1,
 			_Good2,
-			_Amount2
+			_Amount2,
+			tostring(_AddToBaseCost)
 		))
 	end
 end
@@ -1364,10 +1491,11 @@ end
 ---
 -- Überschreibt die Baukosten eines Gebäudes
 --
--- @param[type=number] _UpgradeCategory UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
--- @param[type=number] _Amount1  		Die neue Menge des ersten Rohstoffs (bei nil wird gelöscht)
--- @param[type=number] _Good2    		(Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
--- @param[type=number] _Amount2  		(Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=number]  _UpgradeCategory UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
+-- @param[type=number]  _Amount1  		 Die neue Menge des ersten Rohstoffs (bei nil wird gelöscht)
+-- @param[type=number]  _Good2    		 (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
+-- @param[type=number]  _Amount2  		 (Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=boolean] _AddToBaseCost   (Optional) Sollen die angegebenen Kosten für den Originalrohstoff auf die Originalkosten aufgerechnet werden?
 -- @within Suche
 -- @see BCS.SetUpgradeCosts
 --
@@ -1377,11 +1505,10 @@ end
 -- -- Auf Originalkosten zurücksetzen
 -- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, nil)
 --
-function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2)
+function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2, _AddToBaseCost)
 	if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
-		-- Check for unloaded script
-		assert(type(ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost) == "function")
-
+		_AddToBaseCost = _AddToBaseCost or false
+		assert(not _Amount1 or (type(_Amount1) == "number" and _Amount1 >= 0), "_AdditionalAmount1 muss positiv sein")
 		-- Check for valid UpgradeCategory (Beautification_VictoryColumn == 97, the highest Category)
 		assert(_UpgradeCategory > 0 and _UpgradeCategory <= UpgradeCategories.Beautification_VictoryColumn)
 
@@ -1393,6 +1520,9 @@ function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2)
 		assert(not _Amount2 or _Amount2 >= 1)
 		local AmountOfTypes, FirstBuildingType = Logic.GetBuildingTypesInUpgradeCategory(_UpgradeCategory)
 		local Costs = {ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost(FirstBuildingType)}
+		if _AddToBaseCost then
+			_Amount1 = _Amount1 + Costs[2]
+		end
 		assert(_Amount1 >= Costs[2])
 
 		-- Insert/Update table entry
@@ -1400,12 +1530,13 @@ function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2)
 	else
 		Logic.ExecuteInLuaLocalState(string.format(
 			[[
-				BCS.EditBuildingCosts(%d, %d, %d, %d)
+				BCS.EditBuildingCosts(%d, %d, %d, %d, %s)
 			]],
 			_UpgradeCategory,
 			_Amount1,
 			_Good2,
-			_Amount2
+			_Amount2,
+			tostring(_AddToBaseCost)
 		))
 	end
 end
@@ -5309,6 +5440,77 @@ function API.StartRealTimeDelay(_Waittime, _Function, ...)
     );
 end
 
+
+---
+-- Die Kompatibilitätsfunktionen dienen dazu, dass die alte Schnittstelle der früheren QSB möglichst abgedeckt wird.
+-- <b>Hinweis</b>: Diese Funktionen sind derzeit nur in der qsb_comp.lua bzw qsb_comp.luac enthalten.
+--
+-- @within Modulbeschreibung
+-- @set sort=true
+-- @author Jelumar
+--
+
+
+---
+-- Registriert eine Funktion, die nach dem laden ausgeführt wird.
+--
+-- <b>Alias</b>: AddOnSaveGameLoadedAction
+--
+-- @param[type=function] _Function Funktion, die ausgeführt werden soll
+-- @within Anwenderfunktionen
+--
+-- @usage
+-- SaveGame = function()
+--     API.Note("foo")
+-- end
+-- API.AddSaveGameAction(SaveGame)
+--
+function API.AddSaveGameAction(_Function)
+    API.AddScriptEventListener(QSB.ScriptEvents.SaveGameLoaded, _Function)
+end
+AddOnSaveGameLoadedAction = API.AddSaveGameAction
+
+---
+-- Kopiert eine komplette Table und gibt die Kopie zurück. Tables können
+-- nicht durch Zuweisungen kopiert werden. Verwende diese Funktion. Wenn ein
+-- Ziel angegeben wird, ist die zurückgegebene Table eine Vereinigung der 2
+-- angegebenen Tables.
+-- Die Funktion arbeitet rekursiv.
+--
+-- <b>Alias:</b> CopyTableRecursive
+--
+-- @param[type=table] _Source Quelltabelle
+-- @param[type=table] _Dest   (optional) Zieltabelle
+-- @return[type=table] Kopie der Tabelle
+-- @within Anwenderfunktionen
+--
+-- @usage
+-- Table = {1, 2, 3, {a = true}}
+-- Copy = API.InstanceTable(Table)
+--
+function API.InstanceTable(_Source, _Dest)
+    return table.copy(_Source, _Dest)
+end
+CopyTableRecursive = API.InstanceTable
+
+---
+-- Sucht in einer eindimensionalen Table nach einem Wert. Das erste Auftreten des Suchwerts wird als Erfolg gewertet. Es können praktisch alle Lua-Werte gesucht werden.
+--
+-- <b>Alias:</b> Inside
+--
+-- @param             _Data Gesuchter Eintrag (multible Datentypen)
+-- @param[type=table] _Table Tabelle, die durchquert wird
+-- @return[type=booelan] Wert gefunden
+-- @within Anwenderfunktionen
+--
+-- @usage
+-- Table = {1, 2, 3, {a = true}}
+-- local Found = API.TraverseTable(3, Table)
+--
+function API.TraverseTable(_Data, _Table)
+    return table.contains(_Data, _Table)
+end
+Inside = API.TraverseTable;
 -- -------------------------------------------------------------------------- --
 
 ---
@@ -6460,7 +6662,7 @@ API = {};
 SCP = {Core = {}};
 
 QSB = {};
-QSB.Version = "3.0.0 (BETA 2.0.1)";
+QSB.Version = "3.0.0 (BETA 2.1.0)";
 
 ---
 -- Stellt wichtige Kernfunktionen bereit.
@@ -11193,7 +11395,10 @@ function API.SetPlayerSoldierLimit(_PlayerID, _Function)
         return;
     end
     ModuleMilitaryLimit.Global:SetLimitsForPlayer(_PlayerID, _Function);
-endSCP.MilitaryLimit = {};
+end
+-- -------------------------------------------------------------------------- --
+
+SCP.MilitaryLimit = {};
 
 function SCP.MilitaryLimit.ProduceUnits(_PlayerID, _BarrackID, _EntityType, _Costs)
     ModuleMilitaryLimit.Global:ProduceUnit(_PlayerID, _BarrackID, _EntityType, _Costs);
@@ -11936,7 +12141,7 @@ function API.SetTooltipNormal(_Title, _Text, _DisabledText)
     if not GUI then
         return;
     end
-    ModuleGuiControl.Local:TooltipNormal(_Title, _Text, _DisabledText);
+    ModuleGuiControl.Local:TooltipNormal(API.Localize(_Title), API.Localize(_Text), API.Localize(_DisabledText));
 end
 
 ---
@@ -11958,7 +12163,7 @@ function API.SetTooltipCosts(_Title, _Text, _DisabledText, _Costs, _InSettlement
     if not GUI then
         return;
     end
-    ModuleGuiControl.Local:TooltipCosts(_Title,_Text,_DisabledText,_Costs,_InSettlement);
+    ModuleGuiControl.Local:TooltipCosts(API.Localize(_Title), API.Localize(_Text), API.Localize(_DisabledText), _Costs, _InSettlement);
 end
 
 ---
@@ -12436,14 +12641,14 @@ function ModuleGuiControl.Local:SetIcon(_WidgetID, _Coordinates, _Size, _Name)
 end
 
 function ModuleGuiControl.Local:TooltipNormal(_title, _text, _disabledText)
-    if _title and _title:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
+    if _title and string.find(_title, "^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _title = XGUIEng.GetStringTableText(_title);
     end
-    if _text and _text:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
+    if _text and string.find(_text, "^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _text = XGUIEng.GetStringTableText(_text);
     end
     _disabledText = _disabledText or "";
-    if _disabledText and _disabledText:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
+    if _disabledText and string.find(_disabledText, "^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _disabledText = XGUIEng.GetStringTableText(_disabledText);
     end
 
@@ -12482,13 +12687,13 @@ function ModuleGuiControl.Local:TooltipCosts(_title,_text,_disabledText,_costs,_
     for i= 1, 4, 1 do
         Costs[i] = _costs[i];
     end
-    if _title and _title:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
+    if _title and string.find(_title, "^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _title = XGUIEng.GetStringTableText(_title);
     end
-    if _text and _text:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
+    if _text and string.find(_text, "^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _text = XGUIEng.GetStringTableText(_text);
     end
-    if _disabledText and _disabledText:find("^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
+    if _disabledText and string.find(_disabledText, "^[A-Za-z0-9_]+/[A-Za-z0-9_]+$") then
         _disabledText = XGUIEng.GetStringTableText(_disabledText);
     end
 
@@ -23891,10 +24096,11 @@ end
 -- Das Ziel gilt als erreicht, sobald sich das Entity nicht mehr bewegt. Dann
 -- wird das Event QSB.ScriptEvents.EntityArrived geworfen.
 --
--- @param                _Entity         Bewegtes Entity (Skriptname oder ID)
--- @param                _Target         Ziel (Skriptname, ID oder Position)
--- @param[type=number]  _Distance        Entfernung zum Ziel
--- @param[type=number]  _Angle           Winkel zum Ziel
+-- @param               _Entity         Bewegtes Entity (Skriptname oder ID)
+-- @param               _Target         Ziel (Skriptname, ID oder Position)
+-- @param[type=number]  _Distance       Entfernung zum Ziel
+-- @param[type=number]  _Angle          Winkel zum Ziel
+-- @param[type=boolean] _IgnoreBlocking Ignoriere Blocking
 -- @within Bewegung
 --
 -- @usage
@@ -24098,7 +24304,7 @@ end
 -- @param                _StartPosition Beginn des Pfad (Position, Skriptname oder ID)
 -- @param                _EndPosition   Ende des Pfad (Position, Skriptname oder ID)
 -- @param[type=function] _NodeFilter    (Optional) Filterfunktion für Wegpunkte
--- @retun[type=number] ID des Pfad
+-- @return[type=number] ID des Pfad
 -- @within Pfadsuche
 --
 -- @usage
@@ -24147,7 +24353,7 @@ end
 -- Prüft ob ein Pfad mit der ID existiert.
 --
 -- @param[type=number]  _ID ID des Pfad
--- @retun[type=boolean] Der Pfad existiert
+-- @return[type=boolean] Der Pfad existiert
 -- @within Pfadsuche
 --
 -- @usage
@@ -24163,7 +24369,7 @@ end
 -- Prüft ob ein Pfad mit der ID noch gesucht wird.
 --
 -- @param[type=number]  _ID ID des Pfad
--- @retun[type=boolean] Der Pfad wird gesucht
+-- @return[type=boolean] Der Pfad wird gesucht
 -- @within Pfadsuche
 --
 -- @usage
@@ -24179,7 +24385,7 @@ end
 -- Gibt den Pfad mit der ID als Liste von Entity-IDs zurück.
 --
 -- @param[type=number]  _ID ID des Pfad
--- @retun[type=table] Liste mit IDs
+-- @return[type=table] Liste mit IDs
 -- @within Pfadsuche
 --
 -- @usage
@@ -26291,7 +26497,6 @@ end
 -- @param[type=function] _Filter Funktion zur Filterung
 -- @return[type=table] Liste mit Ergebnissen
 -- @within Suche
--- @see QSB.SearchPredicate
 --
 -- @usage
 -- -- Es werden alle Kühe und Schafe von Spieler 1 gefunden, die nicht auf den
@@ -33176,7 +33381,8 @@ end
 --
 -- <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
 --
--- @param[type=String] _ScriptName Skriptname des Entity
+-- @param[type=number]  _PlayerID   SpielerID
+-- @param[type=String]  _ScriptName Skriptname des Entity
 -- @return[type=number] ID der Protektion
 -- @within Abrissbeschränkung
 --
@@ -34377,7 +34583,7 @@ Swift:RegisterBehavior(B_Goal_DestroyAllPlayerUnits);
 -- <b>Achtung</b>: Helden können nicht direkt zerstört werden. Bei ihnen
 -- genügt es, wenn sie sich "in die Burg zurückziehen".
 --
--- @param _ScriptName Skriptname des Ziels
+-- @param _ScriptName Skriptname des Ziels (Im lua-Script kann eine Tabelle aus Scriptnamen übergeben werden)
 --
 -- @within Goal
 --
@@ -34398,12 +34604,18 @@ B_Goal_DestroyScriptEntity = {
 }
 
 function B_Goal_DestroyScriptEntity:GetGoalTable()
-    return {Objective.DestroyEntities, 1, { self.ScriptName } }
+    return {Objective.DestroyEntities, 1, self.EntityList }
 end
 
 function B_Goal_DestroyScriptEntity:AddParameter(_Index, _Parameter)
     if (_Index == 0) then
-        self.ScriptName = _Parameter
+        if type(_Parameter) == "table" then
+            self.EntityList = _Parameter
+            self.ScriptName = _Parameter[1]
+        else
+            self.EntityList = { _Parameter }
+            self.ScriptName = _Parameter
+        end
     end
 end
 
