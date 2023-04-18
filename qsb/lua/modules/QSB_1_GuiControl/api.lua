@@ -320,7 +320,7 @@ function API.SetTooltipNormal(_Title, _Text, _DisabledText)
     if not GUI then
         return;
     end
-    ModuleGuiControl.Local:TooltipNormal(_Title, _Text, _DisabledText);
+    ModuleGuiControl.Local:TooltipNormal(API.Localize(_Title), API.Localize(_Text), API.Localize(_DisabledText));
 end
 
 ---
@@ -342,7 +342,7 @@ function API.SetTooltipCosts(_Title, _Text, _DisabledText, _Costs, _InSettlement
     if not GUI then
         return;
     end
-    ModuleGuiControl.Local:TooltipCosts(_Title,_Text,_DisabledText,_Costs,_InSettlement);
+    ModuleGuiControl.Local:TooltipCosts(API.Localize(_Title), API.Localize(_Text), API.Localize(_DisabledText), _Costs, _InSettlement);
 end
 
 ---
