@@ -1,0 +1,990 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Fields">Fields</a></li>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/addons.addon_1_singlebuttons.html">(1) SingleButtons</a></li>
+  <li><a href="../modules/comp.html">(X) Kompatibilität</a></li>
+  <li><a href="../modules/modules.qsb_1_entity.html">(1) Entitätensteuerung</a></li>
+  <li><a href="../modules/modules.qsb_1_guicontrol.html">(1) Anzeigesteuerung</a></li>
+  <li><a href="../modules/modules.qsb_1_guieffects.html">(1) Anzeigeeffekte</a></li>
+  <li><a href="../modules/modules.qsb_1_movement.html">(1) Bewegung</a></li>
+  <li><a href="../modules/modules.qsb_1_requester.html">(1) Dialogfenster</a></li>
+  <li><a href="../modules/modules.qsb_1_sound.html">(1) Sound</a></li>
+  <li><strong>(1) Handelserweiterung</strong></li>
+  <li><a href="../modules/modules.qsb_2_buildingcost.html">(2) Baukostensystem</a></li>
+  <li><a href="../modules/modules.qsb_2_buildingui.html">(2) Gebäudeschalter</a></li>
+  <li><a href="../modules/modules.qsb_2_buildrestriction.html">(2) Baubeschränkung</a></li>
+  <li><a href="../modules/modules.qsb_2_camera.html">(2) Kamerafunktionen</a></li>
+  <li><a href="../modules/modules.qsb_2_newbehavior.html">(2) Neue Behavior</a></li>
+  <li><a href="../modules/modules.qsb_2_npc.html">(2) Ansprechbare Siedler</a></li>
+  <li><a href="../modules/modules.qsb_2_objects.html">(2) Interaktive Objekte</a></li>
+  <li><a href="../modules/modules.qsb_2_promotion.html">(2) Aufstiegsbedingungen</a></li>
+  <li><a href="../modules/modules.qsb_2_quest.html">(2) Aufträge</a></li>
+  <li><a href="../modules/modules.qsb_2_selection.html">(2) Selektion</a></li>
+  <li><a href="../modules/modules.qsb_3_briefingsystem.html">(3) Briefing System</a></li>
+  <li><a href="../modules/modules.qsb_3_cutscenesystem.html">(3) Cutscene System</a></li>
+  <li><a href="../modules/modules.qsb_3_dialogsystem.html">(3) Dialog System</a></li>
+  <li><a href="../modules/modules.qsb_3_lifestock.html">(3) Viehzucht</a></li>
+  <li><a href="../modules/modules.qsb_3_militarylimit.html">(3) Soldatenlimit</a></li>
+  <li><a href="../modules/modules.qsb_3_traderoutes.html">(3) Handelsrouten</a></li>
+  <li><a href="../modules/modules.qsb_4_iomines.html">(4) Interaktive Minen</a></li>
+  <li><a href="../modules/modules.qsb_4_iosites.html">(4) Interaktive Baustellen</a></li>
+  <li><a href="../modules/modules.qsb_4_iotreasure.html">(4) Interaktive Schätze</a></li>
+  <li><a href="../modules/modules.qsb_4_questjournal.html">(4) Auftragsnotizen</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>(1) Handelserweiterung</code></h1>
+<p>Es kann in den Ablauf von Kauf und Verkauf eingegriffen werden.</p>
+<p>
+<p> <b>Vorausgesetzte Module:</b>
+ <ul>
+ <li><a href="qsb.html">(0) Basismodul</a></li>
+ </ul>
+</p>
+
+
+<h2><a href="#Fields">Fields</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#QSB.ScriptEvents">QSB.ScriptEvents</a></td>
+	<td class="summary">Events, auf die reagiert werden kann.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#QSB.TraderTypes">QSB.TraderTypes</a></td>
+	<td class="summary">Typen der Händler</td>
+	</tr>
+</table>
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.ModifyTradeOffer">API.ModifyTradeOffer (_PlayerID, _GoodOrEntityType, _NewAmount)</a></td>
+	<td class="summary">Ändert die aktuelle Menge des Angebots im Händelrgebäude.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.PurchaseSetBasePriceForPlayer">API.PurchaseSetBasePriceForPlayer (_PlayerID, _Function)</a></td>
+	<td class="summary">Setzt die Funktion zur Bestimmung des Basispreis.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.PurchaseSetConditionForPlayer">API.PurchaseSetConditionForPlayer (_PlayerID, _Function)</a></td>
+	<td class="summary">Setzt eine Funktion zur Festlegung spezieller Ankaufsbedingungen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.PurchaseSetDefaultBasePrice">API.PurchaseSetDefaultBasePrice (_Function)</a></td>
+	<td class="summary">Setzt die Funktion zur Bestimmung des Basispreis.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.PurchaseSetDefaultCondition">API.PurchaseSetDefaultCondition (_Function)</a></td>
+	<td class="summary">Setzt eine Funktion zur Festlegung spezieller Verkaufsbedingungen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.PurchaseSetDefaultInflation">API.PurchaseSetDefaultInflation (_Function)</a></td>
+	<td class="summary">Setzt die Funktion zur Berechnung der Preisinflation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.PurchaseSetDefaultTraderAbility">API.PurchaseSetDefaultTraderAbility (_Function)</a></td>
+	<td class="summary">Setzt die allgemeine Funktion zur Kalkulation des Einkaufspreisfaktors des
+ Helden.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.PurchaseSetInflationForPlayer">API.PurchaseSetInflationForPlayer (_PlayerID, _Function)</a></td>
+	<td class="summary">Setzt die Funktion zur Berechnung der Preisinflation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.PurchaseSetTraderAbilityForPlayer">API.PurchaseSetTraderAbilityForPlayer (_PlayerID, _Function)</a></td>
+	<td class="summary">Setzt die Funktion zur Kalkulation des Einkaufspreisfaktors des Helden.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.RemoveTradeOffer">API.RemoveTradeOffer (_PlayerID, _GoodOrEntityType)</a></td>
+	<td class="summary">Entfernt das Angebot vom Lagerhaus des Spielers, wenn es vorhanden
+ ist.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SaleSetBasePriceForPlayer">API.SaleSetBasePriceForPlayer (_PlayerID, _Function)</a></td>
+	<td class="summary">Setzt die Funktion zur Bestimmung des Basispreis.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SaleSetConditionForPlayer">API.SaleSetConditionForPlayer (_PlayerID, _Function)</a></td>
+	<td class="summary">Setzt eine Funktion zur Festlegung spezieller Verkaufsbedingungen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SaleSetDefaultBasePrice">API.SaleSetDefaultBasePrice (_Function)</a></td>
+	<td class="summary">Setzt die Funktion zur Bestimmung des Basispreis.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SaleSetDefaultCondition">API.SaleSetDefaultCondition (_Function)</a></td>
+	<td class="summary">Setzt eine Funktion zur Festlegung spezieller Verkaufsbedingungen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SaleSetDefaultDeflation">API.SaleSetDefaultDeflation (_Function)</a></td>
+	<td class="summary">Setzt die Funktion zur Berechnung des minimalen Verkaufserlös.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SaleSetDefaultTraderAbility">API.SaleSetDefaultTraderAbility (_Function)</a></td>
+	<td class="summary">Setzt die allgemeine Funktion zur Kalkulation des Verkreisfaktors des Helden.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SaleSetDeflationForPlayer">API.SaleSetDeflationForPlayer (_PlayerID, _Function)</a></td>
+	<td class="summary">Setzt die Funktion zur Berechnung des minimalen Verkaufserlös.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SaleSetTraderAbilityForPlayer">API.SaleSetTraderAbilityForPlayer (_PlayerID, _Function)</a></td>
+	<td class="summary">Setzt die Funktion zur Kalkulation des Verkreisfaktors des Helden.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "QSB.ScriptEvents"></a>
+    <strong>QSB.ScriptEvents</strong>
+    </dt>
+    <dd>
+    Events, auf die reagiert werden kann.
+
+
+    <ul>
+        <li><span class="parameter">GoodsPurchased</span>
+         Güter werden bei einem Händler gekauft (Parameter: OfferID, TraderType, GoodType, OfferGoodAmount, Price, PlayerID, TraderPlayerID)
+        </li>
+        <li><span class="parameter">GoodsSold</span>
+              Güter werden im eigenen Lagerhaus verkauft (Parameter: TraderType, GoodType, GoodAmount, Price, PlayerID, TargetPlayerID)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "QSB.TraderTypes"></a>
+    <strong>QSB.TraderTypes</strong>
+    </dt>
+    <dd>
+    Typen der Händler
+
+
+    <ul>
+        <li><span class="parameter">GoodTrader</span>
+                Es werden Güter verkauft
+        </li>
+        <li><span class="parameter">MercenaryTrader</span>
+           Es werden Söldner verkauft
+        </li>
+        <li><span class="parameter">EntertainerTrader</span>
+         Es werden Entertainer verkauft
+        </li>
+        <li><span class="parameter">Unknown</span>
+                   Unbekannter Typ (Fehler)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.ModifyTradeOffer"></a>
+    <strong>API.ModifyTradeOffer (_PlayerID, _GoodOrEntityType, _NewAmount)</strong>
+    </dt>
+    <dd>
+    Ändert die aktuelle Menge des Angebots im Händelrgebäude.
+<p> Es kann ein beliebiger positiver Wert gesetzt werden. Es gibt keine
+ Beschränkungen.
+<p> <b>Hinweis</b>: Wird eine höherer Wert gesetzt, als das ursprüngliche
+ Maximum, regenerieren sich die Angebote nicht, bis die zusätzlichen
+ Angebote verkauft wurden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID
+        </li>
+        <li><span class="parameter">_GoodOrEntityType</span>
+            <span class="types"><span class="type">number</span></span>
+         ID des Händlers im Gebäude
+        </li>
+        <li><span class="parameter">_NewAmount</span>
+            <span class="types"><span class="type">number</span></span>
+         Neue Menge an Angeboten
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <li><pre class="example"><span class="comment">-- Beispiel #1: Angebote voll auffüllen
+</span>API.ModifyTradeOffer(<span class="number">7</span>, Goods.G_Cheese, -<span class="number">1</span>);</pre></li>
+        <li><pre class="example"><span class="comment">-- Beispiel #2: Angebote auffüllen
+</span>API.ModifyTradeOffer(<span class="number">7</span>, Goods.G_Dye, <span class="number">2</span>);</pre></li>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.PurchaseSetBasePriceForPlayer"></a>
+    <strong>API.PurchaseSetBasePriceForPlayer (_PlayerID, _Function)</strong>
+    </dt>
+    <dd>
+    Setzt die Funktion zur Bestimmung des Basispreis.  Die Änderung betrifft nur
+ den angegebenen Spieler.
+ Die Funktion muss den Basispreis der Ware zurückgeben.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Käufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Verkäufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+<p> <b>Hinweis</b>: Um den Standard wiederherzustellen, muss nil als Funktion
+ übergeben werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID des Händlers
+        </li>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Kalkulationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.PurchaseSetBasePriceForPlayer(<span class="number">2</span>, MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.PurchaseSetConditionForPlayer"></a>
+    <strong>API.PurchaseSetConditionForPlayer (_PlayerID, _Function)</strong>
+    </dt>
+    <dd>
+    Setzt eine Funktion zur Festlegung spezieller Ankaufsbedingungen.  Diese
+ Bedingungen betreffen nur den angegebenen Spieler.
+ Die Funktion muss true zurückgeben, wenn gekauft werden darf.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_Amount</td><td>number</td><td>Verkaufte Menge</td></tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Käufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Verkäufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+<p> <b>Hinweis</b>: Um den Standard wiederherzustellen, muss nil als Funktion
+ übergeben werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID des Händlers
+        </li>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Evaluationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.PurchaseSetConditionForPlayer(<span class="number">2</span>, MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.PurchaseSetDefaultBasePrice"></a>
+    <strong>API.PurchaseSetDefaultBasePrice (_Function)</strong>
+    </dt>
+    <dd>
+    Setzt die Funktion zur Bestimmung des Basispreis.
+ Die Funktion muss den Basispreis der Ware zurückgeben.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Käufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Verkäufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Kalkulationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.PurchaseSetDefaultBasePrice(MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.PurchaseSetDefaultCondition"></a>
+    <strong>API.PurchaseSetDefaultCondition (_Function)</strong>
+    </dt>
+    <dd>
+    Setzt eine Funktion zur Festlegung spezieller Verkaufsbedingungen.
+ Die Funktion muss true zurückgeben, wenn verkauft werden darf.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_Amount</td><td>number</td><td>Verkaufte Menge</td></tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Käufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Verkäufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Evaluationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.PurchaseSetDefaultCondition(MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.PurchaseSetDefaultInflation"></a>
+    <strong>API.PurchaseSetDefaultInflation (_Function)</strong>
+    </dt>
+    <dd>
+    Setzt die Funktion zur Berechnung der Preisinflation.
+ Die Funktion muss den von der Inflation beeinflussten Preis zurückgeben.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_Amount</td><td>number</td><td>Anzahl bereits gekaufter Angebote</td></tr>
+ <tr><td>_Price</td><td>number</td><td></td>Einkaufspreis</tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Käufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Verkäufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Kalkulationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.PurchaseSetDefaultInflation(MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.PurchaseSetDefaultTraderAbility"></a>
+    <strong>API.PurchaseSetDefaultTraderAbility (_Function)</strong>
+    </dt>
+    <dd>
+    Setzt die allgemeine Funktion zur Kalkulation des Einkaufspreisfaktors des
+ Helden.  Die Funktion muss den angepassten Preis zurückgeben.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_BasePrice</td><td>number</td><td></td>Basispreis</tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Käufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Verkäufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Kalkulationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.PurchaseSetDefaultTraderAbility(MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.PurchaseSetInflationForPlayer"></a>
+    <strong>API.PurchaseSetInflationForPlayer (_PlayerID, _Function)</strong>
+    </dt>
+    <dd>
+    Setzt die Funktion zur Berechnung der Preisinflation.  Die Änderung betrifft
+ nur den angegebenen Spieler.
+ Die Funktion muss den von der Inflation beeinflussten Preis zurückgeben.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_Amount</td><td>number</td><td>Anzahl bereits gekaufter Angebote</td></tr>
+ <tr><td>_Price</td><td>number</td><td></td>Einkaufspreis</tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Käufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Verkäufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+<p> <b>Hinweis</b>: Um den Standard wiederherzustellen, muss nil als Funktion
+ übergeben werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID des Händlers
+        </li>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Kalkulationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.PurchaseSetInflationForPlayer(<span class="number">2</span>, MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.PurchaseSetTraderAbilityForPlayer"></a>
+    <strong>API.PurchaseSetTraderAbilityForPlayer (_PlayerID, _Function)</strong>
+    </dt>
+    <dd>
+    Setzt die Funktion zur Kalkulation des Einkaufspreisfaktors des Helden.  Die
+ Änderung betrifft nur den angegebenen Spieler.
+ Die Funktion muss den angepassten Preis zurückgeben.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_BasePrice</td><td>number</td><td></td>Basispreis</tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Käufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Verkäufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+<p> <b>Hinweis</b>: Um den Standard wiederherzustellen, muss nil als Funktion
+ übergeben werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID des Händlers
+        </li>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Kalkulationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.PurchaseSetTraderAbilityForPlayer(<span class="number">2</span>, MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.RemoveTradeOffer"></a>
+    <strong>API.RemoveTradeOffer (_PlayerID, _GoodOrEntityType)</strong>
+    </dt>
+    <dd>
+    Entfernt das Angebot vom Lagerhaus des Spielers, wenn es vorhanden
+ ist.  Es wird immer nur das erste Angebot des Typs entfernt.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID
+        </li>
+        <li><span class="parameter">_GoodOrEntityType</span>
+            <span class="types"><span class="type">number</span></span>
+         Warentyp oder Entitytyp
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Keinen Käse mehr verkaufen
+</span>API.RemoveTradeOffer(<span class="number">7</span>, Goods.G_Cheese);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SaleSetBasePriceForPlayer"></a>
+    <strong>API.SaleSetBasePriceForPlayer (_PlayerID, _Function)</strong>
+    </dt>
+    <dd>
+    Setzt die Funktion zur Bestimmung des Basispreis.  Die Änderung betrifft nur
+ den angegebenen Spieler.
+ Die Funktion muss den Basispreis der Ware zurückgeben.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Verkäufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Käufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+<p> <b>Hinweis</b>: Um den Standard wiederherzustellen, muss nil als Funktion
+ übergeben werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID des Händlers
+        </li>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Kalkulationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SaleSetBasePriceForPlayer(<span class="number">2</span>, MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SaleSetConditionForPlayer"></a>
+    <strong>API.SaleSetConditionForPlayer (_PlayerID, _Function)</strong>
+    </dt>
+    <dd>
+    Setzt eine Funktion zur Festlegung spezieller Verkaufsbedingungen.  Diese
+ Bedingungen betreffen nur den angegebenen Spieler.
+ Die Funktion muss true zurückgeben, wenn verkauft werden darf.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_Amount</td><td>number</td><td>Verkaufte Menge</td></tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Verkäufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Käufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+<p> <b>Hinweis</b>: Um den Standard wiederherzustellen, muss nil als Funktion
+ übergeben werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID des Händlers
+        </li>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Evaluationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SaleSetConditionForPlayer(<span class="number">2</span>, MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SaleSetDefaultBasePrice"></a>
+    <strong>API.SaleSetDefaultBasePrice (_Function)</strong>
+    </dt>
+    <dd>
+    Setzt die Funktion zur Bestimmung des Basispreis.
+ Die Funktion muss den Basispreis der Ware zurückgeben.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Verkäufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Käufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Kalkulationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SaleSetDefaultBasePrice(MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SaleSetDefaultCondition"></a>
+    <strong>API.SaleSetDefaultCondition (_Function)</strong>
+    </dt>
+    <dd>
+    Setzt eine Funktion zur Festlegung spezieller Verkaufsbedingungen.
+ Die Funktion muss true zurückgeben, wenn verkauft werden darf.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_Amount</td><td>number</td><td>Verkaufte Menge</td></tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Verkäufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Käufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Evaluationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SaleSetDefaultCondition(MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SaleSetDefaultDeflation"></a>
+    <strong>API.SaleSetDefaultDeflation (_Function)</strong>
+    </dt>
+    <dd>
+    Setzt die Funktion zur Berechnung des minimalen Verkaufserlös.
+ Die Funktion muss den von der Deflation beeinflussten Erlös zurückgeben.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_SaleCount</td><td>number</td><td>Amount of sold waggons</td></tr>
+ <tr><td>_Price</td><td>number</td><td>Verkaufspreis</td></tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Verkäufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Käufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Kalkulationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SaleSetDefaultDeflation(MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SaleSetDefaultTraderAbility"></a>
+    <strong>API.SaleSetDefaultTraderAbility (_Function)</strong>
+    </dt>
+    <dd>
+    Setzt die allgemeine Funktion zur Kalkulation des Verkreisfaktors des Helden.
+ Die Funktion muss den angepassten Preis zurückgeben.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td></td>Typ des Händlers</tr>
+ <tr><td>_Good</td><td>number</td><td></td>Typ des Angebot</tr>
+ <tr><td>_BasePrice</td><td>number</td><td></td>Basispreis</tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Käufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Verkäufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Kalkulationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SaleSetDefaultTraderAbility(MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SaleSetDeflationForPlayer"></a>
+    <strong>API.SaleSetDeflationForPlayer (_PlayerID, _Function)</strong>
+    </dt>
+    <dd>
+    Setzt die Funktion zur Berechnung des minimalen Verkaufserlös.  Die Änderung
+ betrifft nur den angegebenen Spieler.
+ Die Funktion muss den von der Deflation beeinflussten Erlös zurückgeben.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td>Typ des Händler</td></tr>
+ <tr><td>_Good</td><td>number</td><td>Typ des Angebot</td></tr>
+ <tr><td>_SaleCount</td><td>number</td><td>Amount of sold waggons</td></tr>
+ <tr><td>_Price</td><td>number</td><td>Verkaufspreis</td></tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Verkäufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Käufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+<p> <b>Hinweis</b>: Um den Standard wiederherzustellen, muss nil als Funktion
+ übergeben werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID des Händlers
+        </li>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Kalkulationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SaleSetDeflationForPlayer(<span class="number">2</span>, MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SaleSetTraderAbilityForPlayer"></a>
+    <strong>API.SaleSetTraderAbilityForPlayer (_PlayerID, _Function)</strong>
+    </dt>
+    <dd>
+    Setzt die Funktion zur Kalkulation des Verkreisfaktors des Helden.  Die
+ Änderung betrifft nur den angegebenen Spieler.
+ Die Funktion muss den angepassten Preis zurückgeben.
+<p> Parameter der Funktion:
+ <table border="1">
+ <tr><th><b>Parameter</b></th><th><b>Typ</b></th><th><b>Beschreibung</b></th></tr>
+ <tr><td>_Type</td><td>number</td><td></td>Typ des Händlers</tr>
+ <tr><td>_Good</td><td>number</td><td></td>Typ des Angebot</tr>
+ <tr><td>_BasePrice</td><td>number</td><td></td>Basispreis</tr>
+ <tr><td>_PlayerID1</td><td>number</td><td>ID des Käufers</td></tr>
+ <tr><td>_PlayerID2</td><td>number</td><td>ID des Verkäufers</td></tr>
+ </table>
+<p> <b>Hinweis:</b> Die Funktion kann nur im lokalen Skript verwendet werden!
+<p> <b>Hinweis</b>: Um den Standard wiederherzustellen, muss nil als Funktion
+ übergeben werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID des Händlers
+        </li>
+        <li><span class="parameter">_Function</span>
+            <span class="types"><span class="type">number</span></span>
+         Kalkulationsfunktion
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.SaleSetTraderAbilityForPlayer(<span class="number">2</span>, MyCalculationFunction);</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-04-18 12:24:00 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>
