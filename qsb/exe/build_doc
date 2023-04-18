@@ -130,9 +130,9 @@ cd ../../../
 lua qsb/lua/tools/ldoc/ldoc.lua --ext md -d "../var/md_doc/comp.lua.md" "../var/build/source/comp.lua"
 
 # Remove temporary compatibility file
-rm qsb/lua/var/build/source/comp.lua
+# rm qsb/lua/var/build/source/comp.lua
 
 # Remove temporary files
-rm -rf qsb/lua/var/build/doc/temp &>/dev/null
+# rm -rf qsb/lua/var/build/doc/temp &>/dev/null
 
 echo 'documentation ready'
