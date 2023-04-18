@@ -51,7 +51,7 @@ cat "QSB_0_Kernel/selfload.lua" >> $DESTINATION
 cd ../addons
 for folder in *; do
     if ! ([ -f "$folder" ];) then
-        if ! ([ $folder = "Addon_X_Template" ];) then
+        if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
             cd $folder
             echo "build addon ${folder}"
             cat *.lua > "../../var/build/source/addons/${folder,,}.lua"
