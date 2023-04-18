@@ -1150,8 +1150,6 @@ Swift:RegisterModule(ModuleObjectInteraction);
 --
 -- @within Reward
 --
--- -------------------------------------------------------------------------- --
-
 function Reward_ToggleCommunityFeatures(...)
     return b_Reward_ToggleCommunityFeatures:new(...);
 end
@@ -1227,8 +1225,6 @@ Swift:RegisterBehavior(b_Reward_ToggleCommunityFeatures);
 --
 -- @within Reward
 --
--- -------------------------------------------------------------------------- --
-
 function Reward_EditBuildingConstructionCosts(...)
     return b_Reward_EditBuildingConstructionCosts:new(...);
 end
@@ -1302,8 +1298,15 @@ Swift:RegisterBehavior(b_Reward_EditBuildingConstructionCosts);-- --------------
 -- @author Eisenmonoxid, Jelumar
 --
 
--- TODO: Check BuildingUpgraded Event
-
+---
+-- Upgradelevel für die Gebäudekosten
+--
+-- @field UpgradeToOne Upgrade auf Gebäudelevel 1
+-- @field UpgradeToTwo Upgrade auf Gebäudelevel 2 (kein Aussenposten)
+-- @field UpgradeThree Upgrade auf Gebäudelevel 3 (Nur Hauptgebäude)
+--
+-- @within Baukostensystem
+--
 BCS = BCS or {
     UpgradeToOne = 1,
     UpgradeToTwo = 2,
@@ -1321,7 +1324,7 @@ BCS = BCS or {
 -- @param[type=number] _Amount1  (Optional) Die Menge des ersten Rohstoffs (bei nil wird gelöscht)
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Ausbau bezahlt werden soll
 -- @param[type=number] _Amount2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.EditUpgradeCosts
 --
 -- @usage
@@ -1366,7 +1369,7 @@ end
 -- @param[type=number]  _Good2    	   (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number]  _Amount2  	   (Optional) Die Menge des zweiten Rohstoffs
 -- @param[type=boolean] _AddToBaseCost (Optional) Sollen die angegebenen Kosten für den Originalrohstoff auf die Originalkosten aufgerechnet werden?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetUpgradeCosts
 --
 -- @usage
@@ -1397,7 +1400,7 @@ end
 -- Gibt an welchen Rabatt Hakim auf das Ausbauen von Gebäuden erhält
 --
 -- @param[type=number] _Discount Rabatt den Hakim bekommt zwischen 0 (nichts) und 1 (alles)
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetUpgradeDiscountFunction
 --
 -- @usage
@@ -1425,7 +1428,7 @@ end
 --
 -- @param[type=number]  _Function  Rabattfunktion die einen Wert zwischen 0 und 1 zurückgibt
 -- @param[type=boolean] _CanBeZero Soll der zweite Rohstoff auf Null gerundet werden können?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetHakimUpgradeDiscount
 --
 -- @usage
@@ -1448,7 +1451,7 @@ end
 --
 -- @param[type=number]  _Function  Rabattfunktion die einen Wert zwischen 0 und 1 zurückgibt
 -- @param[type=boolean] _CanBeZero Soll der zweite Rohstoff auf Null gerundet werden können?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetConstructionAddedGoodDiscountFunction
 --
 -- @usage
@@ -1471,7 +1474,7 @@ end
 --
 -- @param[type=number]  _Function  Rabattfunktion die einen Wert zwischen 0 und 1 zurückgibt
 -- @param[type=boolean] _CanBeZero Soll der zweite Rohstoff auf Null gerundet werden können?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetConstructionOriginalGoodDiscountFunction
 --
 -- @usage
@@ -1496,7 +1499,7 @@ end
 -- @param[type=number]  _Good2    		 (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number]  _Amount2  		 (Optional) Die Menge des zweiten Rohstoffs
 -- @param[type=boolean] _AddToBaseCost   (Optional) Sollen die angegebenen Kosten für den Originalrohstoff auf die Originalkosten aufgerechnet werden?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetUpgradeCosts
 --
 -- @usage
@@ -1550,7 +1553,7 @@ end
 -- @param[type=number] _Amount1  		(Optional) Die Menge des ersten Rohstoffs (bei nil wird gelöscht)
 -- @param[type=number] _Good2    		(Optional) Der neue zweite Rohstoff der für den Ausbau bezahlt werden soll
 -- @param[type=number] _Amount2  		(Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetUpgradeCosts
 --
 -- @usage
@@ -1584,7 +1587,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Baukosten definieren
@@ -1620,7 +1623,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Baukosten definieren
@@ -1656,7 +1659,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Baukosten definieren
@@ -1693,7 +1696,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Baukosten definieren
@@ -1728,7 +1731,7 @@ end
 --
 -- @param[type=number] _Factor1  Anteil der Rückerstattung für den ersten Rohstoff
 -- @param[type=number] _Factor2  Anteil der Rückerstattung für den zweiten Rohstoff
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Es wird die Hälfte Zurückerstattet
@@ -1758,7 +1761,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Kosten definieren
@@ -1793,7 +1796,7 @@ end
 -- Sollen Stadtgüter zurückerstattet werden?
 --
 -- @param[type=boolean] _Flag Sollen Stadtgüter zurückerstattet werden?
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Stadtgüter werden zurückerstattet
@@ -1816,7 +1819,7 @@ end
 -- Sollen Güter auf dem Marktplatz betrachtet werden?
 --
 -- @param[type=boolean] _Flag Sollen Güter auf dem Marktplatz betrachtet werden?
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Güter auf dem Marktplatz werden betrachtet
@@ -11297,7 +11300,9 @@ QSB.ScriptEvents = QSB.ScriptEvents or {}
 -- @param[type=number] _PlayerID ID des Spielers
 -- @return[type=number] Aktuelles Soldatenlimit
 -- @within Anwenderfunktionen
--- @usage local Limit = API.GetPlayerSoldierLimit(1);
+--
+-- @usage
+-- local Limit = API.GetPlayerSoldierLimit(1);
 --
 function API.GetPlayerSoldierLimit(_PlayerID)
     return ModuleMilitaryLimit.Shared:GetLimitForPlayer(_PlayerID);
@@ -11312,10 +11317,12 @@ end
 -- @param[type=number]   _PlayerID ID des Spielers
 -- @param[type=function] _Function (Optional) Funktion zur Ermittlung
 -- @within Anwenderfunktionen
+--
+-- @usage
 -- -- Verwende den Standard (25, 43, 61, 91)
--- @usage API.SetPlayerSoldierLimit(1);
+-- API.SetPlayerSoldierLimit(1);
 -- -- Verwende eigene Funktion (Limit ist für den Spieler immer 2000)
--- @usage API.SetPlayerSoldierLimit(1, function(_PlayerID)
+-- API.SetPlayerSoldierLimit(1, function(_PlayerID)
 --     return 2000;
 -- end);
 --
