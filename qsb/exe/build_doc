@@ -28,7 +28,7 @@ for folder in *; do
         FILENAME="modules/${folder,,}.lua"
         if [ $folder = "QSB_0_Kernel" ]; then
             echo "" >> $DESTINATION
-            FILENAME="qsb_base.lua"
+            FILENAME="qsb.lua"
         fi
         TITLE=$(head -n 1 title.txt)
         echo "{\"${FILENAME}\", \"${TITLE}\"}," >> $DESTINATION
@@ -78,7 +78,7 @@ mv ../var/build/source/qsb_comp.lua ../var/qsb_comp.lua
 
 # Builds the documentations of the single modules
 echo "Build the documentations of the single modules"
-lua ldoc/ldoc.lua -d ../var/build/doc -a -v --dump ../var/build/source/ #&>/dev/null
+lua ldoc/ldoc.lua -d ../var/build/doc -a -v ../var/build/source/ #&>/dev/null
 
 # Put back those files that need no documentation
 mv ../var/qsb_all.lua ../var/build/source/qsb_all.lua
