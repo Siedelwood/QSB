@@ -80,7 +80,7 @@ cd ../../../
 # Builds the documentations of the single modules
 echo "Build the documentations of the single modules"
 cd qsb/exe/tools
-lua ldoc/ldoc.lua -d ../../lua/var/build/doc ../../lua/var/build/source/ #&>/dev/null
+lua ldoc/ldoc.lua -d ../../lua/var/build/doc -v ../../lua/var/build/source/ #&>/dev/null
 cd ../../../
 
 # Put back those files that need no documentation
@@ -100,9 +100,11 @@ rm -rf qsb/lua/var/build/doc/css
 cp -r qsb/templates/css qsb/lua/var/build/doc
 
 # Create markdown documentation for qsb
-lua qsb/exe/tools/ldoc/ldoc.lua --ext md -d "qsb/lua/var/md_doc/qsb.lua.md" "qsb/lua/var/build/source/qsb.lua" #&>/dev/null
+echo "markdown-qsbbase"
+lua qsb/exe/tools/ldoc/ldoc.lua --ext md -o "qsb/lua/var/md_doc/qsb.lua.md" -v "qsb/lua/var/build/source/qsb.lua" #&>/dev/null
 
 # Create markdown documentation for modules
+echo "markdown-modules"
 cd qsb/lua/modules
 for folder in *; do
     if ! ([ -f "$folder" ];) then
