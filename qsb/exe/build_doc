@@ -97,7 +97,41 @@ echo "Build the documentations of the start page"
 lua build/doc/temp/docbuilder.lua
 cd ../../../
 
-# Move html files into the build directory
+# Add an addon section to html files
+cd qsb/lua/var/build/doc/modules
+for file in *.html; do
+    if [ -f "$file" ]; then
+        echo $file
+        VARIABLE="tqsb_x_acomp"
+        OCCURENCES=$(grep -c $VARIABLE "${file}")
+        echo "there are $OCCURENCES occurences"
+        if [ "$OCCURENCES" -eq "0" ]; then
+            if [ "$file" -eq "tqsb_x_acomp.html" ]; then
+                echo "detected compatibility docu"
+                VARIABLE="<li><strong>"
+                OCCURENCES=$(grep -c $VARIABLE "${file}")
+                echo "there are $OCCURENCES occurences"
+            fi
+        fi
+        if ! ([ "$OCCURENCES" -eq "0" ];) then
+            LINE=$(cat "${file}" | grep -n $VARIABLE | head -1 | cut -d":" -f1)
+            echo "the line is $LINE"
+            NEXTLINE=$((LINE+1))
+            head -n $LINE "${file}" > temp.txt
+            echo "" >> temp.txt
+            echo "</ul>" >> temp.txt
+            echo "<h2>Addons</h2>" >> temp.txt
+            echo "<ul class="nowrap">" >> temp.txt
+            echo "" >> temp.txt
+            NEXTLINE=$((LINE+1))
+            tail -n +$NEXTLINE "${file}" >> temp.txt
+            mv temp.txt "${file}"
+        fi
+    fi
+done
+cd ../../../../../../
+
+# Move html relevant files into the build directory
 echo "Move html files into the build directory"
 rm -rf qsb/lua/var/build/doc/js
 cp -r qsb/templates/js qsb/lua/var/build/doc

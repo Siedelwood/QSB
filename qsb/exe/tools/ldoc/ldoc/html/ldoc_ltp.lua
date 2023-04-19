@@ -4,7 +4,7 @@ return [==[
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=$(ldoc.doc_charset)"/>
 <head>
-    <title>$(ldoc.title)</title>
+    <title>$(module.name)</title>
     <link rel="stylesheet" href="$(ldoc.css)" type="text/css" />
 # if ldoc.custom_css then -- add custom CSS file if configured.
     <link rel="stylesheet" href="$(ldoc.custom_css)" type="text/css" />
@@ -18,8 +18,8 @@ return [==[
 
 <div id="product">
 	<div id="product_logo"></div>
-	<div id="product_name"><big><b></b></big></div>
-	<div id="product_description"></div>
+	<div id="product_name">Siedelwood | QSB<big><b></b></big></div>
+	<div id="product_description">Dokumentation der S6-QSB der Siedelwood Community</div>
 </div> <!-- id="product" -->
 
 
