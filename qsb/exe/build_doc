@@ -177,7 +177,7 @@ for folder in *; do
         if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
             cd ../../var/md_doc
             lua ../../../exe/tools/ldoc/ldoc.lua -o $MDNAME -v -f markdown -x "md" "../build/source/${FILENAME}" #&>/dev/null
-            cd ../../modules
+            cd ../../addons
             cd $folder
         fi
 
