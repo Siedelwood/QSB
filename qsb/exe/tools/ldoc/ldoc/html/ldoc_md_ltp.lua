@@ -1,8 +1,8 @@
 return [[
 > if module then
 # $(ldoc.module_typename(module)) <code>$(module.name)</code>
-$(M(module.summary,module))
-$(M(module.description,module))
+$(module.summary)
+$(module.description)
 
 > end
 > local lev = ldoc.level or 2
@@ -22,7 +22,7 @@ $(ldoc.prettify(kitem.usage[1]))
 $(lev2) $(ldoc.display_name(item))
 $(ldoc.source_ref(item))
 
-$(M(ldoc.descript(item),item))
+$(ldoc.descript(item))
 
 >  if show_parms and item.params and #item.params > 0 then
 >      local subnames = module.kinds:type_of(item).subnames
@@ -35,7 +35,7 @@ $(M(ldoc.descript(item),item))
 >          local param,sublist = item:subparam(parm)
 >          if sublist then
 
-$(sublist) $(M(item.params.map[sublist],item))
+$(sublist) $(item.params.map[sublist])
 
 >          end
 >          for p in iter(param) do
@@ -49,7 +49,7 @@ $(tp)
 
 >              end
 
-$(M(item.params.map[p],item))
+$(item.params.map[p])
 
 >              if def == true then
 
@@ -87,7 +87,7 @@ $(li)
 
 >               end
 
-$(M(r.text,item))$(il)
+$(r.text)$(il)
 
 >               if ctypes then
 
@@ -97,7 +97,7 @@ $(M(r.text,item))$(il)
 
 <li><span>$(c.name)</span>
 <span>$(ldoc.typename(c.type))</span>
-$(M(c.comment,item))</li>
+$(c.comment)</li>
 
 >                   end
 
