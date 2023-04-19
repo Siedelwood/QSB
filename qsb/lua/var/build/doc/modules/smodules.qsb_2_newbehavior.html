@@ -1,0 +1,1064 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name">Siedelwood | QSB<big><b></b></big></div>
+	<div id="product_description">Dokumentation der S6-QSB der Siedelwood Community</div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Reward">Reward</a></li>
+<li><a href="#Goal">Goal</a></li>
+<li><a href="#Reprisal">Reprisal</a></li>
+<li><a href="#Trigger">Trigger</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/qsb.html">(0) Basismodul</a></li>
+  <li><a href="../modules/smodules.qsb_1_entity.html">(1) Entitätensteuerung</a></li>
+  <li><a href="../modules/smodules.qsb_1_guicontrol.html">(1) Anzeigesteuerung</a></li>
+  <li><a href="../modules/smodules.qsb_1_guieffects.html">(1) Anzeigeeffekte</a></li>
+  <li><a href="../modules/smodules.qsb_1_movement.html">(1) Bewegung</a></li>
+  <li><a href="../modules/smodules.qsb_1_requester.html">(1) Dialogfenster</a></li>
+  <li><a href="../modules/smodules.qsb_1_sound.html">(1) Sound</a></li>
+  <li><a href="../modules/smodules.qsb_1_trade.html">(1) Handelserweiterung</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingcost.html">(2) Baukostensystem</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingui.html">(2) Gebäudeschalter</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildrestriction.html">(2) Baubeschränkung</a></li>
+  <li><a href="../modules/smodules.qsb_2_camera.html">(2) Kamerafunktionen</a></li>
+  <li><strong>(2) Neue Behavior</strong></li>
+  <li><a href="../modules/smodules.qsb_2_npc.html">(2) Ansprechbare Siedler</a></li>
+  <li><a href="../modules/smodules.qsb_2_objects.html">(2) Interaktive Objekte</a></li>
+  <li><a href="../modules/smodules.qsb_2_promotion.html">(2) Aufstiegsbedingungen</a></li>
+  <li><a href="../modules/smodules.qsb_2_quest.html">(2) Aufträge</a></li>
+  <li><a href="../modules/smodules.qsb_2_selection.html">(2) Selektion</a></li>
+  <li><a href="../modules/smodules.qsb_3_briefingsystem.html">(3) Briefing System</a></li>
+  <li><a href="../modules/smodules.qsb_3_cutscenesystem.html">(3) Cutscene System</a></li>
+  <li><a href="../modules/smodules.qsb_3_dialogsystem.html">(3) Dialog System</a></li>
+  <li><a href="../modules/smodules.qsb_3_lifestock.html">(3) Viehzucht</a></li>
+  <li><a href="../modules/smodules.qsb_3_militarylimit.html">(3) Soldatenlimit</a></li>
+  <li><a href="../modules/smodules.qsb_3_traderoutes.html">(3) Handelsrouten</a></li>
+  <li><a href="../modules/smodules.qsb_4_iomines.html">(4) Interaktive Minen</a></li>
+  <li><a href="../modules/smodules.qsb_4_iosites.html">(4) Interaktive Baustellen</a></li>
+  <li><a href="../modules/smodules.qsb_4_iotreasure.html">(4) Interaktive Schätze</a></li>
+  <li><a href="../modules/smodules.qsb_4_questjournal.html">(4) Auftragsnotizen</a></li>
+  <li><a href="../modules/tqsb_x_acomp.html">(X) Kompatibilität</a></li>
+
+</ul>
+<h2>Addons</h2>
+<ul class=nowrap>
+
+  <li><a href="../modules/xaddons.qsb_x_addon_1_singlebuttons.html">Addon (1) SingleButtons</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>(2) Neue Behavior</code></h1>
+<p>Die neuen Behavior für den Editor.</p>
+<p></p>
+
+
+<h2><a href="#Reward">Reward</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Reward_AI_SetEntityControlled">Reward_AI_SetEntityControlled (_ScriptName, _Controlled)</a></td>
+	<td class="summary">Gibt oder entzieht einem KI-Spieler die Kontrolle über ein Entity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reward_ChangePlayer">Reward_ChangePlayer (_ScriptName, _NewOwner)</a></td>
+	<td class="summary">Ändert den Eigentümer des Entity oder des Battalions.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reward_MoveToPosition">Reward_MoveToPosition (_ScriptName, _Destination, _Distance, _Angle)</a></td>
+	<td class="summary">Bewegt einen Siedler relativ zu einem Zielpunkt.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reward_SetModel">Reward_SetModel (_ScriptName, _Model)</a></td>
+	<td class="summary">Ändert das Model eines Entity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reward_SetPosition">Reward_SetPosition (_ScriptName, _Target, _LookAt, _Distance)</a></td>
+	<td class="summary">Ändert die Position eines Siedlers oder eines Gebäudes.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reward_SetVulnerability">Reward_SetVulnerability (_ScriptName, _Vulnerable)</a></td>
+	<td class="summary">Macht das Entity verwundbar oder unverwundbar.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reward_VictoryWithParty">Reward_VictoryWithParty ()</a></td>
+	<td class="summary">Der Spieler gewinnt das Spiel mit einem animierten Siegesfest.</td>
+	</tr>
+</table>
+<h2><a href="#Goal">Goal</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Goal_AmmunitionAmount">Goal_AmmunitionAmount (_ScriptName, _Relation, _Amount)</a></td>
+	<td class="summary">Es muss eine Menge an Munition in der Kriegsmaschine erreicht werden.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Goal_CityReputation">Goal_CityReputation (_Reputation)</a></td>
+	<td class="summary">Der Spieler muss mindestens den angegebenen Ruf erreichen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Goal_DestroySoldiers">Goal_DestroySoldiers (_PlayerA, _PlayerB, _Amount)</a></td>
+	<td class="summary">Ein beliebiger Spieler muss Soldaten eines anderen Spielers zerstören.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Goal_DestroySpawnedEntities">Goal_DestroySpawnedEntities (_SpawnPoint, _Amount, _Prefixed)</a></td>
+	<td class="summary">Eine Menge an Entities des angegebenen Spawnpoint muss zerstört werden.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Goal_FetchItems">Goal_FetchItems (_Positions, _Model, _Distance)</a></td>
+	<td class="summary">Der Spieler muss eine Anzahl an Gegenständen finden, die bei den angegebenen
+ Positionen platziert werden.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Goal_MoveToPosition">Goal_MoveToPosition (_ScriptName, _Target, _Distance, _UseMarker)</a></td>
+	<td class="summary">Ein Entity muss sich zu einem Ziel bewegen und eine Distanz unterschreiten.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Goal_SpyOnBuilding">Goal_SpyOnBuilding (_ScriptName, _CheatEarnings, _DeleteThief)</a></td>
+	<td class="summary">Der Spieler muss ein Gebäude mit einem Dieb ausspoinieren.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Goal_StealFromBuilding">Goal_StealFromBuilding (_ScriptName, _CheatEarnings)</a></td>
+	<td class="summary">Der Spieler muss ein bestimmtes Stadtgebäude bestehlen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Goal_StealGold">Goal_StealGold (_Amount, _TargetPlayerID, _CheatEarnings, _ShowProgress)</a></td>
+	<td class="summary">Der Spieler muss eine bestimmte Menge Gold mit Dieben stehlen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Goal_WinQuest">Goal_WinQuest (_QuestName)</a></td>
+	<td class="summary">Der Spieler muss einen bestimmten Quest abschließen.</td>
+	</tr>
+</table>
+<h2><a href="#Reprisal">Reprisal</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Reprisal_ChangePlayer">Reprisal_ChangePlayer (_ScriptName, _NewOwner)</a></td>
+	<td class="summary">Ändert den Eigentümer des Entity oder des Battalions.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reprisal_SetModel">Reprisal_SetModel (_ScriptName, _Model)</a></td>
+	<td class="summary">Ändert das Model eines Entity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reprisal_SetPosition">Reprisal_SetPosition (_ScriptName, _Target, _LookAt, _Distance)</a></td>
+	<td class="summary">Ändert die Position eines Siedlers oder eines Gebäudes.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reprisal_SetVisible">Reprisal_SetVisible (_ScriptName, _Visible)</a></td>
+	<td class="summary">Ändert die Sichtbarkeit eines Entity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reprisal_SetVulnerability">Reprisal_SetVulnerability (_ScriptName, _Vulnerable)</a></td>
+	<td class="summary">Macht das Entity verwundbar oder unverwundbar.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reward_SetVisible">Reward_SetVisible (_ScriptName, _Visible)</a></td>
+	<td class="summary">Ändert die Sichtbarkeit eines Entity.</td>
+	</tr>
+</table>
+<h2><a href="#Trigger">Trigger</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Trigger_AmmunitionDepleted">Trigger_AmmunitionDepleted (_ScriptName)</a></td>
+	<td class="summary">Startet den Quest, sobald die Munition in der Kriegsmaschine erschöpft ist.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Trigger_OnAtLeastXOfYQuestsFailed">Trigger_OnAtLeastXOfYQuestsFailed (_MinAmount, _QuestAmount, _Quest1, _Quest2, _Quest3, _Quest4, _Quest5)</a></td>
+	<td class="summary">Startet den Quest, sobald mindestens X von Y Quests fehlgeschlagen sind.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Trigger_OnExactOneQuestIsLost">Trigger_OnExactOneQuestIsLost (_QuestName1, _QuestName2)</a></td>
+	<td class="summary">Startet den Quest, wenn exakt einer von beiden Quests fehlgeschlagen ist.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Trigger_OnExactOneQuestIsWon">Trigger_OnExactOneQuestIsWon (_QuestName1, _QuestName2)</a></td>
+	<td class="summary">Startet den Quest, wenn exakt einer von beiden Quests erfolgreich ist.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Reward"></a>Reward</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Reward_AI_SetEntityControlled"></a>
+    <strong>Reward_AI_SetEntityControlled (_ScriptName, _Controlled)</strong>
+    </dt>
+    <dd>
+    Gibt oder entzieht einem KI-Spieler die Kontrolle über ein Entity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_Controlled</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Durch KI kontrollieren an/aus
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reward_ChangePlayer"></a>
+    <strong>Reward_ChangePlayer (_ScriptName, _NewOwner)</strong>
+    </dt>
+    <dd>
+    Ändert den Eigentümer des Entity oder des Battalions.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_NewOwner</span>
+            <span class="types"><span class="type">number</span></span>
+           PlayerID des Eigentümers
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reward_MoveToPosition"></a>
+    <strong>Reward_MoveToPosition (_ScriptName, _Destination, _Distance, _Angle)</strong>
+    </dt>
+    <dd>
+    Bewegt einen Siedler relativ zu einem Zielpunkt.
+<p> Der Siedler wird sich zum Ziel ausrichten und in der angegeben Distanz
+ und dem angegebenen Winkel Position beziehen.
+<p> <p><b>Hinweis:</b> Funktioniert ähnlich wie MoveEntityToPositionToAnotherOne.
+ </p>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+          Skriptname des Entity
+        </li>
+        <li><span class="parameter">_Destination</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Ziels
+        </li>
+        <li><span class="parameter">_Distance</span>
+            <span class="types"><span class="type">number</span></span>
+            Entfernung
+        </li>
+        <li><span class="parameter">_Angle</span>
+            <span class="types"><span class="type">number</span></span>
+               Winkel
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reward_SetModel"></a>
+    <strong>Reward_SetModel (_ScriptName, _Model)</strong>
+    </dt>
+    <dd>
+    Ändert das Model eines Entity.
+<p> In Verbindung mit Reward_SetVisible oder Reprisal_SetVisible können
+ Script Entites ein neues Model erhalten und sichtbar gemacht werden.
+ Das hat den Vorteil, das Script Entities nicht überbaut werden können.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_Model</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+              Neues Model
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reward_SetPosition"></a>
+    <strong>Reward_SetPosition (_ScriptName, _Target, _LookAt, _Distance)</strong>
+    </dt>
+    <dd>
+    Ändert die Position eines Siedlers oder eines Gebäudes.
+<p> Optional kann das Entity in einem bestimmten Abstand zum Ziel platziert
+ werden und das Ziel anschauen. Die Entfernung darf nicht kleiner sein
+ als 50!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_Target</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+             Skriptname des Ziels
+        </li>
+        <li><span class="parameter">_LookAt</span>
+            <span class="types"><span class="type">number</span></span>
+             Gegenüberstellen
+        </li>
+        <li><span class="parameter">_Distance</span>
+            <span class="types"><span class="type">number</span></span>
+           Relative Entfernung (nur mit _LookAt)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reward_SetVulnerability"></a>
+    <strong>Reward_SetVulnerability (_ScriptName, _Vulnerable)</strong>
+    </dt>
+    <dd>
+    Macht das Entity verwundbar oder unverwundbar.
+<p> Bei einem Battalion wirkt sich das Behavior auf alle Soldaten und den
+ (unsichtbaren) Leader aus. Wird das Behavior auf ein Spawner Entity
+ angewendet, werden die gespawnten Entities genommen.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_Vulnerable</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Verwundbarkeit an/aus
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reward_VictoryWithParty"></a>
+    <strong>Reward_VictoryWithParty ()</strong>
+    </dt>
+    <dd>
+    Der Spieler gewinnt das Spiel mit einem animierten Siegesfest.
+<p> Wenn nach dem Sieg weiter gespielt wird, wird das Fest gelöscht.
+<p> <h5>Multiplayer</h5>
+ Nicht für Multiplayer geeignet.
+
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Goal"></a>Goal</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Goal_AmmunitionAmount"></a>
+    <strong>Goal_AmmunitionAmount (_ScriptName, _Relation, _Amount)</strong>
+    </dt>
+    <dd>
+    Es muss eine Menge an Munition in der Kriegsmaschine erreicht werden.
+<p> <u>Relationen</u>
+ <ul>
+ <li>>= - Anzahl als Mindestmenge</li>
+ <li>< - Weniger als Anzahl</li>
+ </ul>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+          Name des Kriegsgerät
+        </li>
+        <li><span class="parameter">_Relation</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            Mengenrelation
+        </li>
+        <li><span class="parameter">_Amount</span>
+            <span class="types"><span class="type">number</span></span>
+              Menge an Munition
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Goal_CityReputation"></a>
+    <strong>Goal_CityReputation (_Reputation)</strong>
+    </dt>
+    <dd>
+    Der Spieler muss mindestens den angegebenen Ruf erreichen.  Der Ruf muss
+ in Prozent angegeben werden (ohne %-Zeichen).
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Reputation</span>
+            <span class="types"><span class="type">number</span></span>
+         Benötigter Ruf
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Goal_DestroySoldiers"></a>
+    <strong>Goal_DestroySoldiers (_PlayerA, _PlayerB, _Amount)</strong>
+    </dt>
+    <dd>
+    Ein beliebiger Spieler muss Soldaten eines anderen Spielers zerstören.
+<p> Dieses Behavior kann auch in versteckten Quests bentutzt werden, wenn die
+ Menge an zerstörten Soldaten durch einen Feind des Spielers gefragt ist oder
+ wenn ein Verbündeter oder Feind nach X Verlusten aufgeben soll.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerA</span>
+         Angreifende Partei
+        </li>
+        <li><span class="parameter">_PlayerB</span>
+         Zielpartei
+        </li>
+        <li><span class="parameter">_Amount</span>
+         Menga an Soldaten
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Goal_DestroySpawnedEntities"></a>
+    <strong>Goal_DestroySpawnedEntities (_SpawnPoint, _Amount, _Prefixed)</strong>
+    </dt>
+    <dd>
+    Eine Menge an Entities des angegebenen Spawnpoint muss zerstört werden.
+<p> <b>Hinweis</b>: Eignet sich vor allem für Raubtiere!
+<p> Wenn die angegebene Anzahl zu Beginn des Quest nicht mit der Anzahl an
+ bereits gespawnten Entities übereinstimmt, wird dies automatisch korrigiert.
+ (Neue Entities gespawnt bzw. überschüssige gelöscht)
+<p> Wenn _Prefixed gesetzt ist, wird anstatt des Namen Entities mit einer
+ fortlaufenden Nummer gesucht, welche mit dem Namen beginnen. Bei der
+ ersten Nummer, zu der kein Entity existiert, wird abgebrochen.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_SpawnPoint</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Spawnpoint
+        </li>
+        <li><span class="parameter">_Amount</span>
+            <span class="types"><span class="type">number</span></span>
+             Menge zu zerstörender Entities
+        </li>
+        <li><span class="parameter">_Prefixed</span>
+            <span class="types"><span class="type">number</span></span>
+           Skriptname ist Präfix
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Goal_FetchItems"></a>
+    <strong>Goal_FetchItems (_Positions, _Model, _Distance)</strong>
+    </dt>
+    <dd>
+    Der Spieler muss eine Anzahl an Gegenständen finden, die bei den angegebenen
+ Positionen platziert werden.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Positions</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Präfix aller durchnummerierten Enttities
+        </li>
+        <li><span class="parameter">_Model</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+             Model für alle Gegenstände
+        </li>
+        <li><span class="parameter">_Distance</span>
+            <span class="types"><span class="type">number</span></span>
+          Aktivierungsdistanz (0 = Default = 300)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Goal_MoveToPosition"></a>
+    <strong>Goal_MoveToPosition (_ScriptName, _Target, _Distance, _UseMarker)</strong>
+    </dt>
+    <dd>
+    Ein Entity muss sich zu einem Ziel bewegen und eine Distanz unterschreiten.
+<p> Optional kann das Ziel mit einem Marker markiert werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_Target</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+             Skriptname des Ziels
+        </li>
+        <li><span class="parameter">_Distance</span>
+            <span class="types"><span class="type">number</span></span>
+           Entfernung
+        </li>
+        <li><span class="parameter">_UseMarker</span>
+            <span class="types"><span class="type">boolean</span></span>
+          Ziel markieren
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Goal_SpyOnBuilding"></a>
+    <strong>Goal_SpyOnBuilding (_ScriptName, _CheatEarnings, _DeleteThief)</strong>
+    </dt>
+    <dd>
+    Der Spieler muss ein Gebäude mit einem Dieb ausspoinieren.
+<p> Der Quest ist erfolgreich, sobald der Dieb in das Gebäude eindringt. Es
+ muss sich um ein Gebäude handeln, das bestohlen werden kann (Burg, Lager,
+ Kirche, Stadtgebäude mit Einnahmen)!
+<p> Optional kann der Dieb nach Abschluss gelöscht werden. Diese Option macht
+ es einfacher ihn durch z.B. einen Abfahrenden U_ThiefCart zu "ersetzen".
+<p> <b>Hinweis</b>: Ein Dieb kann nur in Spezialgebäude oder Stadtgebäude
+ eindringen!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+          Skriptname des Gebäudes
+        </li>
+        <li><span class="parameter">_CheatEarnings</span>
+            <span class="types"><span class="type">boolean</span></span>
+          Einnahmen generieren
+        </li>
+        <li><span class="parameter">_DeleteThief</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Dieb nach Abschluss löschen
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Goal_StealFromBuilding"></a>
+    <strong>Goal_StealFromBuilding (_ScriptName, _CheatEarnings)</strong>
+    </dt>
+    <dd>
+    Der Spieler muss ein bestimmtes Stadtgebäude bestehlen.
+<p> Eine Kirche wird immer Sabotiert. Ein Lagerhaus verhält sich ähnlich zu
+ einer Burg.
+<p> <b>Hinweis</b>: Ein Dieb kann nur von einem Spezialgebäude oder einem
+ Stadtgebäude stehlen!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Gebäudes
+        </li>
+        <li><span class="parameter">_CheatEarnings</span>
+            <span class="types"><span class="type">boolean</span></span>
+          Einnahmen generieren
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Goal_StealGold"></a>
+    <strong>Goal_StealGold (_Amount, _TargetPlayerID, _CheatEarnings, _ShowProgress)</strong>
+    </dt>
+    <dd>
+    Der Spieler muss eine bestimmte Menge Gold mit Dieben stehlen.
+<p> Dabei ist es egal von welchem Spieler. Diebe können Gold nur aus
+ Stadtgebäude stehlen und nur von feindlichen Spielern.
+<p> <b>Hinweis</b>: Es können nur Stadtgebäude mit einem Dieb um Gold
+ erleichtert werden!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Amount</span>
+            <span class="types"><span class="type">number</span></span>
+                 Menge an Gold
+        </li>
+        <li><span class="parameter">_TargetPlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         Zielspieler (-1 für alle)
+        </li>
+        <li><span class="parameter">_CheatEarnings</span>
+            <span class="types"><span class="type">boolean</span></span>
+          Einnahmen generieren
+        </li>
+        <li><span class="parameter">_ShowProgress</span>
+            <span class="types"><span class="type">boolean</span></span>
+           Fortschritt ausgeben
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Goal_WinQuest"></a>
+    <strong>Goal_WinQuest (_QuestName)</strong>
+    </dt>
+    <dd>
+    Der Spieler muss einen bestimmten Quest abschließen.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_QuestName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Quest
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Reprisal"></a>Reprisal</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Reprisal_ChangePlayer"></a>
+    <strong>Reprisal_ChangePlayer (_ScriptName, _NewOwner)</strong>
+    </dt>
+    <dd>
+    Ändert den Eigentümer des Entity oder des Battalions.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_NewOwner</span>
+            <span class="types"><span class="type">number</span></span>
+           PlayerID des Eigentümers
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reprisal_SetModel"></a>
+    <strong>Reprisal_SetModel (_ScriptName, _Model)</strong>
+    </dt>
+    <dd>
+    Ändert das Model eines Entity.
+<p> In Verbindung mit Reward_SetVisible oder Reprisal_SetVisible können
+ Script Entites ein neues Model erhalten und sichtbar gemacht werden.
+ Das hat den Vorteil, das Script Entities nicht überbaut werden können.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_Model</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+              Neues Model
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reprisal_SetPosition"></a>
+    <strong>Reprisal_SetPosition (_ScriptName, _Target, _LookAt, _Distance)</strong>
+    </dt>
+    <dd>
+    Ändert die Position eines Siedlers oder eines Gebäudes.
+<p> Optional kann das Entity in einem bestimmten Abstand zum Ziel platziert
+ werden und das Ziel anschauen. Die Entfernung darf nicht kleiner sein als 50!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_Target</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+             Skriptname des Ziels
+        </li>
+        <li><span class="parameter">_LookAt</span>
+            <span class="types"><span class="type">boolean</span></span>
+             Gegenüberstellen
+        </li>
+        <li><span class="parameter">_Distance</span>
+            <span class="types"><span class="type">number</span></span>
+           Relative Entfernung (nur mit _LookAt)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reprisal_SetVisible"></a>
+    <strong>Reprisal_SetVisible (_ScriptName, _Visible)</strong>
+    </dt>
+    <dd>
+    Ändert die Sichtbarkeit eines Entity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_Visible</span>
+            <span class="types"><span class="type">boolean</span></span>
+            Sichtbarkeit an/aus
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reprisal_SetVulnerability"></a>
+    <strong>Reprisal_SetVulnerability (_ScriptName, _Vulnerable)</strong>
+    </dt>
+    <dd>
+    Macht das Entity verwundbar oder unverwundbar.
+<p> Bei einem Battalion wirkt sich das Behavior auf alle Soldaten und den
+ (unsichtbaren) Leader aus. Wird das Behavior auf ein Spawner Entity
+ angewendet, werden die gespawnten Entities genommen.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_Vulnerable</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Verwundbarkeit an/aus
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reward_SetVisible"></a>
+    <strong>Reward_SetVisible (_ScriptName, _Visible)</strong>
+    </dt>
+    <dd>
+    Ändert die Sichtbarkeit eines Entity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_Visible</span>
+            <span class="types"><span class="type">boolean</span></span>
+            Sichtbarkeit an/aus
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Trigger"></a>Trigger</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Trigger_AmmunitionDepleted"></a>
+    <strong>Trigger_AmmunitionDepleted (_ScriptName)</strong>
+    </dt>
+    <dd>
+    Startet den Quest, sobald die Munition in der Kriegsmaschine erschöpft ist.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Trigger_OnAtLeastXOfYQuestsFailed"></a>
+    <strong>Trigger_OnAtLeastXOfYQuestsFailed (_MinAmount, _QuestAmount, _Quest1, _Quest2, _Quest3, _Quest4, _Quest5)</strong>
+    </dt>
+    <dd>
+    Startet den Quest, sobald mindestens X von Y Quests fehlgeschlagen sind.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_MinAmount</span>
+            <span class="types"><span class="type">number</span></span>
+         Mindestens zu verlieren (max. 5)
+        </li>
+        <li><span class="parameter">_QuestAmount</span>
+            <span class="types"><span class="type">number</span></span>
+         Anzahl geprüfter Quests (max. 5 und >= _MinAmount)
+        </li>
+        <li><span class="parameter">_Quest1</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+              Name des 1. Quest
+        </li>
+        <li><span class="parameter">_Quest2</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+              Name des 2. Quest
+        </li>
+        <li><span class="parameter">_Quest3</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+              Name des 3. Quest
+        </li>
+        <li><span class="parameter">_Quest4</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+              Name des 4. Quest
+        </li>
+        <li><span class="parameter">_Quest5</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+              Name des 5. Quest
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Trigger_OnExactOneQuestIsLost"></a>
+    <strong>Trigger_OnExactOneQuestIsLost (_QuestName1, _QuestName2)</strong>
+    </dt>
+    <dd>
+    Startet den Quest, wenn exakt einer von beiden Quests fehlgeschlagen ist.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_QuestName1</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des ersten Quest
+        </li>
+        <li><span class="parameter">_QuestName2</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des zweiten Quest
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Trigger_OnExactOneQuestIsWon"></a>
+    <strong>Trigger_OnExactOneQuestIsWon (_QuestName1, _QuestName2)</strong>
+    </dt>
+    <dd>
+    Startet den Quest, wenn exakt einer von beiden Quests erfolgreich ist.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_QuestName1</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des ersten Quest
+        </li>
+        <li><span class="parameter">_QuestName2</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des zweiten Quest
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-04-19 12:23:37 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>
