@@ -1913,7 +1913,8 @@ b_Reward_ToggleCommunityFeatures = {
 		{ ParameterType.Custom, en = "SingleStop", de = "Einzelstilllegung" },
         { ParameterType.Custom, en = "LifestockBreeding", de = "Viehzucht" },
 		{ ParameterType.Custom, en = "HE-Autosave", de = "HE-Autospeicherung" },
-		{ ParameterType.Custom, en = "GameClock", de = "Spielzeituhr" }
+		{ ParameterType.Custom, en = "GameClock", de = "Spielzeituhr" },
+        { ParameterType.Custom, en = "SingleReserve", de = "Einzelsperrung" }
     },
 }
 
@@ -1936,6 +1937,8 @@ function b_Reward_ToggleCommunityFeatures:AddParameter(_Index, _Parameter)
 		self.UseHEQuickSave = _Parameter;
 	elseif (_Index == 4) then
 		self.UseGameClock = _Parameter;
+    elseif (_Index == 5) then
+		self.UseSingleReserve = _Parameter;
 	else
 		assert(false, "Reward_ToggleCommunityFeatures: Missing _Index")
     end
@@ -1946,7 +1949,9 @@ function b_Reward_ToggleCommunityFeatures:CustomFunction(_Quest)
 	API.ActivateSheepBreeding(API.ToBoolean(self.UseBreeding))
 	API.ActivateCattleBreeding(API.ToBoolean(self.UseBreeding))
 	API.UseSingleStop(API.ToBoolean(self.UseSingleStop))
+    API.UseSingleReserve(API.ToBoolean(self.UseSingleReserve))
     API.DisableAutoSave(not API.ToBoolean(self.UseHEQuickSave))
+    -- TODO: Maybe add more features?
 	
 	Logic.ExecuteInLuaLocalState([[
 		local ShowClockWidget = 1
