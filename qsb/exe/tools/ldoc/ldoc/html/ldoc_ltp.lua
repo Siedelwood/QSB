@@ -4,7 +4,7 @@ return [==[
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=$(ldoc.doc_charset)"/>
 <head>
-    <title>$(ldoc.display_name or ldoc.title)</title>
+    <title>$(ldoc.module.name)</title>
     <link rel="stylesheet" href="$(ldoc.css)" type="text/css" />
 # if ldoc.custom_css then -- add custom CSS file if configured.
     <link rel="stylesheet" href="$(ldoc.custom_css)" type="text/css" />
