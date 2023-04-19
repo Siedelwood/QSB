@@ -14,15 +14,15 @@ cd qsb/lua/var/build/source
 
 # minify qsb
 echo 'minify QSB files'
-lua ../../lua/tools/luaminifier/CommandLineMinify.lua qsb.lua ../../minified/qsb.lua
-lua ../../lua/tools/luaminifier/CommandLineMinify.lua qsb_all.lua ../../minified/qsb_all.lua
-lua ../../lua/tools/luaminifier/CommandLineMinify.lua qsb_comp.lua ../../minified/qsb_comp.lua
+lua ../../exe/tools/luaminifier/CommandLineMinify.lua qsb.lua ../../minified/qsb.lua
+lua ../../exe/tools/luaminifier/CommandLineMinify.lua qsb_all.lua ../../minified/qsb_all.lua
+lua ../../exe/tools/luaminifier/CommandLineMinify.lua qsb_comp.lua ../../minified/qsb_comp.lua
 
 # minify qsb modules
 echo 'minify module files'
 cd modules
 for file in *.lua; do
-    lua ../../lua/tools/luaminifier/CommandLineMinify.lua "$file" "../../../minified/modules/${file}"
+    lua ../../../exe/tools/luaminifier/CommandLineMinify.lua "$file" "../../../minified/modules/${file}"
 done
 cd ../
 
@@ -30,7 +30,7 @@ cd ../
 echo 'minify addon files'
 cd addons
 for file in *.lua; do
-    lua ../../lua/tools/luaminifier/CommandLineMinify.lua "$file" "../../../minified/addons/${file}"
+    lua ../../../exe/tools/luaminifier/CommandLineMinify.lua "$file" "../../../minified/addons/${file}"
 done
 cd ../
 
