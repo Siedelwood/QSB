@@ -193,9 +193,9 @@ lua ../../../exe/tools/ldoc/ldoc.lua -o compatibility -v -f markdown -x "md" ../
 cd ../../../../
 
 # Remove temporary compatibility file
-#rm qsb/lua/var/build/source/tqsb_x_acomp.lua
+rm qsb/lua/var/build/source/tqsb_x_acomp.lua
 
 # Remove temporary files
-#rm -rf qsb/lua/var/build/doc/temp &>/dev/null
+rm -rf qsb/lua/var/build/doc/temp &>/dev/null
 
 echo 'documentation ready'
