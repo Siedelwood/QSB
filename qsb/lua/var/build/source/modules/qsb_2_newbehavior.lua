@@ -1889,6 +1889,88 @@ end
 Swift:RegisterBehavior(B_Reward_AI_SetEntityControlled);
 
 -- -------------------------------------------------------------------------- --
+
+---
+-- Aktiviert/Deaktiviert optionale Communityfeatures wie Rückbau, Viehzucht, etc.
+--
+--
+-- @within Reward
+--
+-- -------------------------------------------------------------------------- --
+
+function Reward_ToggleCommunityFeatures(...)
+    return b_Reward_ToggleCommunityFeatures:new(...);
+end
+
+b_Reward_ToggleCommunityFeatures = {
+    Name = "Reward_ToggleCommunityFeatures",
+    Description = {
+        en = "Reward: Activates/Deactivates optional community features like Downgrade/Breeding.",
+        de = "Lohn: Aktiviert/Deaktiviert optionale Communityfeatures wie Rückbau/Viehzucht.",
+    },
+    Parameter = {
+        { ParameterType.Custom, en = "BuildingDowngrade", de = "Gebäuderückbau" },
+		{ ParameterType.Custom, en = "SingleStop", de = "Einzelstilllegung" },
+        { ParameterType.Custom, en = "LifestockBreeding", de = "Viehzucht" },
+		{ ParameterType.Custom, en = "HE-Autosave", de = "HE-Autospeicherung" },
+		{ ParameterType.Custom, en = "GameClock", de = "Spielzeituhr" },
+        { ParameterType.Custom, en = "SingleReserve", de = "Einzelsperrung" }
+    },
+}
+
+function b_Reward_ToggleCommunityFeatures:GetRewardTable()
+    return { Reward.Custom, {self, self.CustomFunction} }
+end
+
+function b_Reward_ToggleCommunityFeatures:GetCustomData(_Index)
+    return {"true", "false"}
+end
+
+function b_Reward_ToggleCommunityFeatures:AddParameter(_Index, _Parameter)
+    if (_Index == 0) then
+        self.UseDowngrade = _Parameter;
+	elseif (_Index == 1) then
+		self.UseSingleStop = _Parameter;
+    elseif (_Index == 2) then
+        self.UseBreeding = _Parameter;
+	elseif (_Index == 3) then
+		self.UseHEQuickSave = _Parameter;
+	elseif (_Index == 4) then
+		self.UseGameClock = _Parameter;
+    elseif (_Index == 5) then
+		self.UseSingleReserve = _Parameter;
+	else
+		assert(false, "Reward_ToggleCommunityFeatures: Missing _Index")
+    end
+end
+
+function b_Reward_ToggleCommunityFeatures:CustomFunction(_Quest)
+	API.UseDowngrade(API.ToBoolean(self.UseDowngrade))
+	API.ActivateSheepBreeding(API.ToBoolean(self.UseBreeding))
+	API.ActivateCattleBreeding(API.ToBoolean(self.UseBreeding))
+	API.UseSingleStop(API.ToBoolean(self.UseSingleStop))
+    API.UseSingleReserve(API.ToBoolean(self.UseSingleReserve))
+    API.DisableAutoSave(not API.ToBoolean(self.UseHEQuickSave))
+    -- TODO: Maybe add more features?
+	
+	Logic.ExecuteInLuaLocalState([[
+		local ShowClockWidget = 1
+		if Swift.Debug.CheckAtRun.GameClock ~= nil then
+			Swift.Debug.CheckAtRun.GameClock = (]]..tostring(self.UseGameClock)..[[ == true)
+		
+			if not Swift.Debug.CheckAtRun.GameClock then
+				ShowClockWidget = 0
+			end
+			XGUIEng.ShowWidget("/InGame/Root/Normal/AlignTopLeft/GameClock", ShowClockWidget)
+		end
+	]]);
+end
+
+Swift:RegisterBehavior(b_Reward_ToggleCommunityFeatures);
+
+-- -------------------------------------------------------------------------- --
+
+-- -------------------------------------------------------------------------- --
 -- Trigger                                                                    --
 -- -------------------------------------------------------------------------- --
 
