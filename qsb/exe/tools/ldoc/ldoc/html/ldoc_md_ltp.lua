@@ -1,13 +1,14 @@
 return [[
-> function use_li(ls)
->     if #ls > 1 then return
->         '<li>','</li>' else return '',''
->     end
-> end
+> local no_spaces = ldoc.no_spaces
+> local use_li = ldoc.use_li
+> local display_name = ldoc.display_name
+> local iter = ldoc.modules.iter
+> local function M(txt,item) return ldoc.markup(txt,item,ldoc.plain) end
+> local nowrap = ldoc.wrap and '' or 'nowrap'
 > if module then
 # $(ldoc.module_typename(module)) <code>$(module.name)</code>
-$(module.summary)
-$(module.description)
+$(M(module.summary,module))
+$(M(module.description,module))
 
 > end
 > local lev = ldoc.level or 2
@@ -40,7 +41,7 @@ $(ldoc.descript(item))
 >          local param,sublist = item:subparam(parm)
 >          if sublist then
 
-$(sublist) $(item.params.map[sublist])
+$(sublist) $(M(item.params.map[sublist],item))
 
 >          end
 >          for p in iter(param) do
@@ -54,7 +55,7 @@ $(tp)
 
 >              end
 
-$(item.params.map[p])
+$(M(item.params.map[p],item))
 
 >              if def == true then
 
@@ -92,7 +93,7 @@ $(li)
 
 >               end
 
-$(r.text)$(il)
+$(M(r.text,item))$(il)
 
 >               if ctypes then
 
@@ -102,7 +103,7 @@ $(r.text)$(il)
 
 <li><span>$(c.name)</span>
 <span>$(ldoc.typename(c.type))</span>
-$(c.comment)</li>
+$(M(c.comment,item))</li>
 
 >                   end
 
