@@ -1,0 +1,395 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name">Siedelwood | QSB<big><b></b></big></div>
+	<div id="product_description">Dokumentation der S6-QSB der Siedelwood Community</div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Fields">Fields</a></li>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/qsb.html">(0) Basismodul</a></li>
+  <li><a href="../modules/smodules.qsb_1_entity.html">(1) Entitätensteuerung</a></li>
+  <li><a href="../modules/smodules.qsb_1_guicontrol.html">(1) Anzeigesteuerung</a></li>
+  <li><a href="../modules/smodules.qsb_1_guieffects.html">(1) Anzeigeeffekte</a></li>
+  <li><a href="../modules/smodules.qsb_1_movement.html">(1) Bewegung</a></li>
+  <li><a href="../modules/smodules.qsb_1_requester.html">(1) Dialogfenster</a></li>
+  <li><a href="../modules/smodules.qsb_1_sound.html">(1) Sound</a></li>
+  <li><a href="../modules/smodules.qsb_1_trade.html">(1) Handelserweiterung</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingcost.html">(2) Baukostensystem</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingui.html">(2) Gebäudeschalter</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildrestriction.html">(2) Baubeschränkung</a></li>
+  <li><a href="../modules/smodules.qsb_2_camera.html">(2) Kamerafunktionen</a></li>
+  <li><a href="../modules/smodules.qsb_2_newbehavior.html">(2) Neue Behavior</a></li>
+  <li><a href="../modules/smodules.qsb_2_npc.html">(2) Ansprechbare Siedler</a></li>
+  <li><a href="../modules/smodules.qsb_2_objects.html">(2) Interaktive Objekte</a></li>
+  <li><a href="../modules/smodules.qsb_2_promotion.html">(2) Aufstiegsbedingungen</a></li>
+  <li><strong>(2) Aufträge</strong></li>
+  <li><a href="../modules/smodules.qsb_2_selection.html">(2) Selektion</a></li>
+  <li><a href="../modules/smodules.qsb_3_briefingsystem.html">(3) Briefing System</a></li>
+  <li><a href="../modules/smodules.qsb_3_cutscenesystem.html">(3) Cutscene System</a></li>
+  <li><a href="../modules/smodules.qsb_3_dialogsystem.html">(3) Dialog System</a></li>
+  <li><a href="../modules/smodules.qsb_3_lifestock.html">(3) Viehzucht</a></li>
+  <li><a href="../modules/smodules.qsb_3_militarylimit.html">(3) Soldatenlimit</a></li>
+  <li><a href="../modules/smodules.qsb_3_traderoutes.html">(3) Handelsrouten</a></li>
+  <li><a href="../modules/smodules.qsb_4_iomines.html">(4) Interaktive Minen</a></li>
+  <li><a href="../modules/smodules.qsb_4_iosites.html">(4) Interaktive Baustellen</a></li>
+  <li><a href="../modules/smodules.qsb_4_iotreasure.html">(4) Interaktive Schätze</a></li>
+  <li><a href="../modules/smodules.qsb_4_questjournal.html">(4) Auftragsnotizen</a></li>
+  <li><a href="../modules/tqsb_x_acomp.html">(X) Kompatibilität</a></li>
+
+</ul>
+<h2>Addons</h2>
+<ul class=nowrap>
+
+  <li><a href="../modules/xaddons.qsb_x_addon_1_singlebuttons.html">Addon (1) SingleButtons</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>(2) Aufträge</code></h1>
+<p>Aufträge können über das Skript erstellt werden.</p>
+<p>
+<p> Normaler Weise werden Aufträge im Questassistenten erzeugt. Dies ist aber
+ statisch und das Kopieren von Aufträgen ist nicht möglich. Wenn Aufträge
+ im Skript erzeugt werden, verschwinden alle diese Nachteile. Aufträge
+ können im Skript kopiert und angepasst werden. Es ist ebenfalls machbar,
+ die Aufträge in Sequenzen zu erzeugen.
+<p> Außerdem können Aufträge ineinander verschachtelt werden. Diese sogenannten
+ Nested Quests vereinfachen die Schreibweise und die Verlinkung der Aufträge.
+<p> <b>Befehle:</b><br>
+ <i>Diese Befehle können über die Konsole (SHIFT + ^) eingegeben werden, wenn
+ der Debug Mode aktiviert ist.</i><br>
+ <table border="1">
+ <tr>
+ <td><b>Befehl</b></td>
+ <td><b>Parameter</b></td>
+ <td><b>Beschreibung</b></td>
+ </tr>
+ <tr>
+ <td>stop</td>
+ <td>QuestName</td>
+ <td>Unterbricht den angegebenen Quest.</td>
+ </tr>
+ <tr>
+ <td>start</td>
+ <td>QuestName</td>
+ <td>Startet den angegebenen Quest.</td>
+ </tr>
+ <tr>
+ <td>win</td>
+ <td>QuestName</td>
+ <td>Schließt den angegebenen Quest erfolgreich ab.</td>
+ </tr>
+ <tr>
+ <td>fail</td>
+ <td>QuestName</td>
+ <td>Lässt den angegebenen Quest fehlschlagen</td>
+ </tr>
+ <tr>
+ <td>restart</td>
+ <td>QuestName</td>
+ <td>Startet den angegebenen Quest neu.</td>
+ </tr>
+ </table>
+<p> <h4>Bekannte Probleme</h4>
+ Jede Voice Message - <b>Quests sind ebenfalls Voice Messages</b> - hat die
+ Chance, dass die Message Queue des Spiels hängen bleibt und dann ein leeres
+ Fenster mit dem Titel "Rhian over the Sea Chapell" angezeigt wird, welches
+ das Portrait Window dauerhaft blockiert und verhindert, dass weitere Voice
+ Messages - <b>auch Quests</b> - angezeigt werden können.
+<p> Es wird dringend geraten, Quests <b>ausschließlich</b> zur Darstellung von
+ Aufgaben für den Spieler und für <b>nichts anderes</b> zu benutzen.
+<p> <b>Vorausgesetzte Module:</b>
+ <ul>
+ <li><a href="qsb.html">(0) Basismodul</a></li>
+ <li><a href="modules.QSB_1_GuiControl.QSB_1_GuiControl.html">(1) Anzeigekontrolle</a></li>
+ <li><a href="modules.QSB_1_Requester.QSB_1_Requester.html">(1) Requester</a></li>
+ </ul>
+</p>
+
+
+<h2><a href="#Fields">Fields</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#QSB.SegmentResult">QSB.SegmentResult</a></td>
+	<td class="summary">Die Abschlussarten eines Quest Segment.</td>
+	</tr>
+</table>
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.CreateNestedQuest">API.CreateNestedQuest (_Data)</a></td>
+	<td class="summary">Erstellt einen verschachtelten Auftrag.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.CreateQuest">API.CreateQuest (_Data)</a></td>
+	<td class="summary">Erstellt einen Quest.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "QSB.SegmentResult"></a>
+    <strong>QSB.SegmentResult</strong>
+    </dt>
+    <dd>
+    Die Abschlussarten eines Quest Segment.
+
+
+    <ul>
+        <li><span class="parameter">Success</span>
+         Phase muss erfolgreich abgeschlossen werden.
+        </li>
+        <li><span class="parameter">Failure</span>
+         Phase muss fehlschlagen.
+        </li>
+        <li><span class="parameter">Ignore</span>
+          Erfolg und Misserfolg werden geleichermaßen akzeptiert.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.CreateNestedQuest"></a>
+    <strong>API.CreateNestedQuest (_Data)</strong>
+    </dt>
+    <dd>
+    Erstellt einen verschachtelten Auftrag.
+<p> Verschachtelte Aufträge (Nested Quests) vereinfachen aufschreiben und
+ zuordnen der zugeordneten Aufträge. Ein Nested Quest ist selbst unsichtbar
+ und hat mindestens ein ihm untergeordnetes Segment. Die Segmente eines
+ Nested Quest sind wiederum Quests.
+<p> Du kannst für Segmente die gleichen Einträge setzen, wie bei gewöhnlichen
+ Quests. Zudem kannst du auch ihnen einen Namen geben. Wenn du das nicht tust,
+ werden sie automatisch benannt. Der Name setzt sich dann zusammen aus dem
+ Namen des Nested Quest und ihrem Index (z.B. "ExampleName@Segment1").
+<p> Segmente haben ein erwartetes Ergebnis. Für gewöhnlich ist dies auf Erfolg
+ festgelegt. Du kanns es aber auch auf Fehlschlag ändern oder ganz ignorieren.
+ Ein Nested Quest ist abgeschlossen, wenn alle Segmente mit ihrem erwarteten
+ Ergebnis abgeschlossen wurden (Erfolg) oder mindestens einer ein anderes
+ Ergebnis als erwartet hatte (Fehlschlag).
+<p> Werden Status oder Resultat eines Quest über Funktionen verändert (zb.
+ API.StopQuest oder "stop" Konsolenbefehl), dann werden die Segmente
+ ebenfalls beeinflusst.
+<p> Es ist nicht zwingend notwendig, einen Trigger für die Segmente zu setzen.
+ Alle Segmente starten automatisch sobald der Nested Quest startet. Du kannst
+ weitere Trigger zu Segmenten hinzufügen, um dieses Verhalten nach deinen
+ Bedürfnissen abzuändern (z.B. auf ein vorangegangenes Segment triggern).
+<p> Nested Quests können auch ineinander verschachtelt werden. Man kann also
+ innerhalb eines verschachtelten Auftrags eine weitere Ebene Verschachtelung
+ aufmachen.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Data</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Daten des Quest
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        Name des Nested Quest oder nil bei Fehler
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <li><a href="../modules/smodules.qsb_2_quest.html#QSB.SegmentResult">QSB.SegmentResult</a></li>
+         <li><a href="../modules/smodules.qsb_2_quest.html#API.CreateQuest">API.CreateQuest</a></li>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.CreateNestedQuest {
+    Name        = <span class="string">"MainQuest"</span>,
+    Segments    = {
+        {
+            Suggestion  = <span class="string">"Wir benötigen einen höheren Titel!"</span>,
+
+            Goal_KnightTitle(<span class="string">"Mayor"</span>),
+        },
+        {
+            <span class="comment">-- Mit dem Typ Ignore wird ein Fehlschlag ignoriert.
+</span>            Result      = QSB.SegmentResult.Ignore,
+
+            Suggestion  = <span class="string">"Wir benötigen außerdem mehr Asche! Und das sofort..."</span>,
+            Success     = <span class="string">"Geschafft!"</span>,
+            Failure     = <span class="string">"Versagt!"</span>,
+            Time        = <span class="number">3</span> * <span class="number">60</span>,
+
+            Goal_Produce(<span class="string">"G_Gold"</span>, <span class="number">5000</span>),
+
+            Trigger_OnQuestSuccess(<span class="string">"MainQuest@Segment1"</span>, <span class="number">1</span>),
+            <span class="comment">-- Segmented Quest wird gewonnen.
+</span>            Reward_QuestSuccess(<span class="string">"MainQuest"</span>),
+        },
+        {
+            Suggestion  = <span class="string">"Dann versuchen wir es mit Eisen..."</span>,
+            Success     = <span class="string">"Geschafft!"</span>,
+            Failure     = <span class="string">"Versagt!"</span>,
+            Time        = <span class="number">3</span> * <span class="number">60</span>,
+
+            Trigger_OnQuestFailure(<span class="string">"MainQuest@Segment2"</span>),
+            Goal_Produce(<span class="string">"G_Iron"</span>, <span class="number">50</span>),
+        }
+    },
+
+    <span class="comment">-- Wenn ein Quest nicht das erwartete Ergebnis hat, Fehlschlag.
+</span>    Reprisal_Defeat(),
+    <span class="comment">-- Wenn alles erfüllt wird, ist das Spiel gewonnen.
+</span>    Reward_VictoryWithParty(),
+};</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.CreateQuest"></a>
+    <strong>API.CreateQuest (_Data)</strong>
+    </dt>
+    <dd>
+    Erstellt einen Quest.
+<p> Ein Auftrag braucht immer wenigstens ein Goal und einen Trigger um ihn
+ erstellen zu können. Hat ein Quest keinen Namen, erhält er automatisch
+ einen mit fortlaufender Nummerierung.
+<p> Ein Quest besteht aus verschiedenen Eigenschaften und Behavior, die nicht
+ alle zwingend gesetzt werden müssen. Behavior werden einfach nach den
+ Eigenschaften nacheinander angegeben.
+ <p><u>Eigenschaften:</u></p>
+ <ul>
+ <li>Name: Der eindeutige Name des Quests</li>
+ <li>Sender: PlayerID des Auftraggeber (Default 1)</li>
+ <li>Receiver: PlayerID des Auftragnehmer (Default 1)</li>
+ <li>Suggestion: Vorschlagnachricht des Quests</li>
+ <li>Success: Erfolgsnachricht des Quest</li>
+ <li>Failure: Fehlschlagnachricht des Quest</li>
+ <li>Description: Aufgabenbeschreibung (Nur bei Custom)</li>
+ <li>Time: Zeit bis zu, Fehlschlag/Abschluss</li>
+ <li>Loop: Funktion, die während der Laufzeit des Quests aufgerufen wird</li>
+ <li>Callback: Funktion, die nach Abschluss aufgerufen wird</li>
+ </ul>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Data</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Questdefinition
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        Name des Quests</li>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        Gesamtzahl Quests</li>
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/smodules.qsb_2_quest.html#API.CreateNestedQuest">API.CreateNestedQuest</a>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.CreateQuest {
+    Name        = <span class="string">"UnimaginativeQuestname"</span>,
+    Suggestion  = <span class="string">"Wir müssen das Kloster finden."</span>,
+    Success     = <span class="string">"Dies sind die berümten Heilermönche."</span>,
+
+    Goal_DiscoverPlayer(<span class="number">4</span>),
+    Reward_Diplomacy(<span class="number">1</span>, <span class="number">4</span>, <span class="string">"EstablishedContact"</span>),
+    Trigger_Time(<span class="number">0</span>),
+}</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-04-19 13:45:21 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>
