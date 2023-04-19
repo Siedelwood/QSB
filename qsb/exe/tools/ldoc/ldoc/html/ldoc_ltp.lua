@@ -9,7 +9,6 @@ return [==[
 # if ldoc.custom_css then -- add custom CSS file if configured.
     <link rel="stylesheet" href="$(ldoc.custom_css)" type="text/css" />
 # end
-# print("XXXXXXXXXXXXXXXXXXXXXXXXXXX  : "..type(M))
 </head>
 <body>
 
