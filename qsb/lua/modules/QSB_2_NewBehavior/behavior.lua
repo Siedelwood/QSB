@@ -1893,8 +1893,6 @@ Swift:RegisterBehavior(B_Reward_AI_SetEntityControlled);
 ---
 -- Aktiviert/Deaktiviert optionale Communityfeatures wie Rückbau, Viehzucht, etc.
 --
--- @param[type=string]  _ScriptName Skriptname des Entity
--- @param[type=boolean] _Controlled Durch KI kontrollieren an/aus
 --
 -- @within Reward
 --
@@ -1945,17 +1943,17 @@ end
 
 function b_Reward_ToggleCommunityFeatures:CustomFunction(_Quest)
 	API.UseDowngrade(API.ToBoolean(self.UseDowngrade))
-	API.UseBreedSheeps(API.ToBoolean(self.UseBreeding))
-	API.UseBreedCattle(API.ToBoolean(self.UseBreeding))
+	API.ActivateSheepBreeding(API.ToBoolean(self.UseBreeding))
+	API.ActivateCattleBreeding(API.ToBoolean(self.UseBreeding))
 	API.UseSingleStop(API.ToBoolean(self.UseSingleStop))
-	API.DisableAutomaticQuickSave(not API.ToBoolean(self.UseHEQuickSave))
+    API.DisableAutoSave(not API.ToBoolean(self.UseHEQuickSave))
 	
 	Logic.ExecuteInLuaLocalState([[
 		local ShowClockWidget = 1
-		if AddOnQuestDebug.Local.Data.GameClock ~= nil then
-			AddOnQuestDebug.Local.Data.GameClock = (]]..tostring(self.UseGameClock)..[[ == true)
+		if Swift.Debug.CheckAtRun.GameClock ~= nil then
+			Swift.Debug.CheckAtRun.GameClock = (]]..tostring(self.UseGameClock)..[[ == true)
 		
-			if not AddOnQuestDebug.Local.Data.GameClock then
+			if not Swift.Debug.CheckAtRun.GameClock then
 				ShowClockWidget = 0
 			end
 			XGUIEng.ShowWidget("/InGame/Root/Normal/AlignTopLeft/GameClock", ShowClockWidget)
