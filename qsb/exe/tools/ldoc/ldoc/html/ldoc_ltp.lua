@@ -160,7 +160,7 @@ return [==[
 #       if kitem.usage then
             <h3>Beispiel:</h3>
             <pre class="example">$(ldoc.prettify(kitem.usage[1]))</pre>
-#        end
+#       end
 #   end
     <dl class="function">
 #  for item in items() do
