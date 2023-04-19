@@ -1,4 +1,9 @@
 return [[
+> function use_li(ls)
+>     if #ls > 1 then return
+>         '<li>','</li>' else return '',''
+>     end
+> end
 > if module then
 # $(ldoc.module_typename(module)) <code>$(module.name)</code>
 $(module.summary)
