@@ -1,4 +1,10 @@
 return [[
+> if module then
+# $(ldoc.module_typename(module)) <code>$(module.name)</code>
+# $(M(module.summary,module))
+# $(M(module.description,module))
+
+> end
 > local lev = ldoc.level or 2
 > local lev1,lev2 = ('#'):rep(lev),('#'):rep(lev+1)
 > for kind, items in module.kinds() do
