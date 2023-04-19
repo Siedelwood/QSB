@@ -1,0 +1,754 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name">Siedelwood | QSB<big><b></b></big></div>
+	<div id="product_description">Dokumentation der S6-QSB der Siedelwood Community</div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Event">Event</a></li>
+<li><a href="#Reward">Reward</a></li>
+<li><a href="#Reprisal">Reprisal</a></li>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/qsb.html">(0) Basismodul</a></li>
+  <li><a href="../modules/smodules.qsb_1_entity.html">(1) Entitätensteuerung</a></li>
+  <li><a href="../modules/smodules.qsb_1_guicontrol.html">(1) Anzeigesteuerung</a></li>
+  <li><a href="../modules/smodules.qsb_1_guieffects.html">(1) Anzeigeeffekte</a></li>
+  <li><a href="../modules/smodules.qsb_1_movement.html">(1) Bewegung</a></li>
+  <li><a href="../modules/smodules.qsb_1_requester.html">(1) Dialogfenster</a></li>
+  <li><a href="../modules/smodules.qsb_1_sound.html">(1) Sound</a></li>
+  <li><a href="../modules/smodules.qsb_1_trade.html">(1) Handelserweiterung</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingcost.html">(2) Baukostensystem</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingui.html">(2) Gebäudeschalter</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildrestriction.html">(2) Baubeschränkung</a></li>
+  <li><a href="../modules/smodules.qsb_2_camera.html">(2) Kamerafunktionen</a></li>
+  <li><a href="../modules/smodules.qsb_2_newbehavior.html">(2) Neue Behavior</a></li>
+  <li><a href="../modules/smodules.qsb_2_npc.html">(2) Ansprechbare Siedler</a></li>
+  <li><a href="../modules/smodules.qsb_2_objects.html">(2) Interaktive Objekte</a></li>
+  <li><a href="../modules/smodules.qsb_2_promotion.html">(2) Aufstiegsbedingungen</a></li>
+  <li><a href="../modules/smodules.qsb_2_quest.html">(2) Aufträge</a></li>
+  <li><a href="../modules/smodules.qsb_2_selection.html">(2) Selektion</a></li>
+  <li><a href="../modules/smodules.qsb_3_briefingsystem.html">(3) Briefing System</a></li>
+  <li><a href="../modules/smodules.qsb_3_cutscenesystem.html">(3) Cutscene System</a></li>
+  <li><a href="../modules/smodules.qsb_3_dialogsystem.html">(3) Dialog System</a></li>
+  <li><a href="../modules/smodules.qsb_3_lifestock.html">(3) Viehzucht</a></li>
+  <li><a href="../modules/smodules.qsb_3_militarylimit.html">(3) Soldatenlimit</a></li>
+  <li><a href="../modules/smodules.qsb_3_traderoutes.html">(3) Handelsrouten</a></li>
+  <li><a href="../modules/smodules.qsb_4_iomines.html">(4) Interaktive Minen</a></li>
+  <li><a href="../modules/smodules.qsb_4_iosites.html">(4) Interaktive Baustellen</a></li>
+  <li><a href="../modules/smodules.qsb_4_iotreasure.html">(4) Interaktive Schätze</a></li>
+  <li><strong>(4) Auftragsnotizen</strong></li>
+  <li><a href="../modules/tqsb_x_acomp.html">(X) Kompatibilität</a></li>
+
+</ul>
+<h2>Addons</h2>
+<ul class=nowrap>
+
+  <li><a href="../modules/xaddons.qsb_x_addon_1_singlebuttons.html">Addon (1) SingleButtons</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>(4) Auftragsnotizen</code></h1>
+<p>Stellt Behavior bereit um die Tagebuchfunktion über den Assistenten nutzbar
+ zu machen.</p>
+<p></p>
+
+
+<h2><a href="#Event">Event</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#QSB.ScriptEvents">QSB.ScriptEvents</a></td>
+	<td class="summary">Events, auf die reagiert werden kann.</td>
+	</tr>
+</table>
+<h2><a href="#Reward">Reward</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Reward_JournaHighlight">Reward_JournaHighlight (_QuestName, _EntryName, _Highlighted)</a></td>
+	<td class="summary">Hebt einen Eintrag im Tagebuch hervor oder setzt ihn auf normal zurück.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reward_JournalEnable">Reward_JournalEnable (_QuestName, _Active)</a></td>
+	<td class="summary">Zeigt das Tagebuch für einen Quest an oder versteckt es.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reward_JournalRemove">Reward_JournalRemove (_QuestName, _EntryName)</a></td>
+	<td class="summary">Entfernt einen Tagebucheintrag von einem Quest.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reward_JournalWrite">Reward_JournalWrite (_QuestName, _EntryName, _EntryText)</a></td>
+	<td class="summary">Schreibt einen Tagebucheintrag zu dem angegebenen Quest.</td>
+	</tr>
+</table>
+<h2><a href="#Reprisal">Reprisal</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Reprisal_JournaHighlight">Reprisal_JournaHighlight (_QuestName, _EntryName, _Highlighted)</a></td>
+	<td class="summary">Hebt einen Eintrag im Tagebuch hervor oder setzt ihn auf normal zurück.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reprisal_JournalEnable">Reprisal_JournalEnable (_QuestName, _Active)</a></td>
+	<td class="summary">Zeigt das Tagebuch für einen Quest an oder versteckt es.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reprisal_JournalRemove">Reprisal_JournalRemove (_QuestName, _EntryName)</a></td>
+	<td class="summary">Entfernt einen Tagebucheintrag von einem Quest.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Reprisal_JournalWrite">Reprisal_JournalWrite (_QuestName, _EntryName, _EntryText)</a></td>
+	<td class="summary">Schreibt einen Tagebucheintrag zu dem angegebenen Quest.</td>
+	</tr>
+</table>
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.AddJournalEntryToQuest">API.AddJournalEntryToQuest (_ID, _Quest)</a></td>
+	<td class="summary">Fügt einen Tagebucheintrag zu einem Quest hinzu.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.AllowNotesForQuest">API.AllowNotesForQuest (_Quest, _Flag)</a></td>
+	<td class="summary">Aktiviert die Möglichkeit, selbst Notizen zu schreiben.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.AlterJournalEntry">API.AlterJournalEntry (_ID, _Text)</a></td>
+	<td class="summary">Ändert den Text einer Zusatzinformation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.CreateJournalEntry">API.CreateJournalEntry (_Text)</a></td>
+	<td class="summary">Fugt eine Zusatzinformation für diesen Quests hinzu.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.DeleteJournalEntry">API.DeleteJournalEntry (_ID)</a></td>
+	<td class="summary">Entfernt einen Eintrag aus den Zusatzinformationen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.HighlightJournalEntry">API.HighlightJournalEntry (_ID, _Important)</a></td>
+	<td class="summary">Hebt einen Eintrag aus den Zusatzinformationen als wichtig hervor oder
+ setzt ihn zurück.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.RemoveJournalEntryFromQuest">API.RemoveJournalEntryFromQuest (_ID, _Quest)</a></td>
+	<td class="summary">Entfernt einen Tagebucheintrag von einem Quest.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.RestoreJournalEntry">API.RestoreJournalEntry (_ID)</a></td>
+	<td class="summary">Stellt einen gelöschten Eintrag in den Zusatzinformationen wieder her.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.ShowJournalForQuest">API.ShowJournalForQuest (_Quest, _Flag)</a></td>
+	<td class="summary">Aktiviert oder Deaktiviert die Verfügbarkeit der Zusatzinformationen für den
+ übergebenen Quest.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Event"></a>Event</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "QSB.ScriptEvents"></a>
+    <strong>QSB.ScriptEvents</strong>
+    </dt>
+    <dd>
+    Events, auf die reagiert werden kann.
+
+
+    <ul>
+        <li><span class="parameter">QuestJournalDisplayed</span>
+           (Parameter: PlayerID, QuestName, Text, NotizenErlaubt)
+        </li>
+        <li><span class="parameter">QuestJournalPlayerNote</span>
+          (Parameter: PlayerID, QuestName, NotizenErlaubt)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Reward"></a>Reward</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Reward_JournaHighlight"></a>
+    <strong>Reward_JournaHighlight (_QuestName, _EntryName, _Highlighted)</strong>
+    </dt>
+    <dd>
+    Hebt einen Eintrag im Tagebuch hervor oder setzt ihn auf normal zurück.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_QuestName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Quest
+        </li>
+        <li><span class="parameter">_EntryName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Name des Eintrag
+        </li>
+        <li><span class="parameter">_Highlighted</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Eintrag ist hervorgehoben
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reward_JournalEnable"></a>
+    <strong>Reward_JournalEnable (_QuestName, _Active)</strong>
+    </dt>
+    <dd>
+    Zeigt das Tagebuch für einen Quest an oder versteckt es.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_QuestName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Quest
+        </li>
+        <li><span class="parameter">_Active</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            Tagebuch ist aktiv
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reward_JournalRemove"></a>
+    <strong>Reward_JournalRemove (_QuestName, _EntryName)</strong>
+    </dt>
+    <dd>
+    Entfernt einen Tagebucheintrag von einem Quest.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_QuestName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Quest
+        </li>
+        <li><span class="parameter">_EntryName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Entry
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reward_JournalWrite"></a>
+    <strong>Reward_JournalWrite (_QuestName, _EntryName, _EntryText)</strong>
+    </dt>
+    <dd>
+    Schreibt einen Tagebucheintrag zu dem angegebenen Quest.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_QuestName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Quest
+        </li>
+        <li><span class="parameter">_EntryName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Eintrag
+        </li>
+        <li><span class="parameter">_EntryText</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Text des Eintrag
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Reprisal"></a>Reprisal</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Reprisal_JournaHighlight"></a>
+    <strong>Reprisal_JournaHighlight (_QuestName, _EntryName, _Highlighted)</strong>
+    </dt>
+    <dd>
+    Hebt einen Eintrag im Tagebuch hervor oder setzt ihn auf normal zurück.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_QuestName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Quest
+        </li>
+        <li><span class="parameter">_EntryName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Name des Eintrag
+        </li>
+        <li><span class="parameter">_Highlighted</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Eintrag ist hervorgehoben
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reprisal_JournalEnable"></a>
+    <strong>Reprisal_JournalEnable (_QuestName, _Active)</strong>
+    </dt>
+    <dd>
+    Zeigt das Tagebuch für einen Quest an oder versteckt es.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_QuestName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Quest
+        </li>
+        <li><span class="parameter">_Active</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+            Tagebuch ist aktiv
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reprisal_JournalRemove"></a>
+    <strong>Reprisal_JournalRemove (_QuestName, _EntryName)</strong>
+    </dt>
+    <dd>
+    Entfernt einen Tagebucheintrag von einem Quest.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_QuestName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Quest
+        </li>
+        <li><span class="parameter">_EntryName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Entry
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Reprisal_JournalWrite"></a>
+    <strong>Reprisal_JournalWrite (_QuestName, _EntryName, _EntryText)</strong>
+    </dt>
+    <dd>
+    Schreibt einen Tagebucheintrag zu dem angegebenen Quest.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_QuestName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Quest
+        </li>
+        <li><span class="parameter">_EntryName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Eintrag
+        </li>
+        <li><span class="parameter">_EntryText</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Text des Eintrag
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.AddJournalEntryToQuest"></a>
+    <strong>API.AddJournalEntryToQuest (_ID, _Quest)</strong>
+    </dt>
+    <dd>
+    Fügt einen Tagebucheintrag zu einem Quest hinzu.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ID</span>
+            <span class="types"><span class="type">number</span></span>
+            ID des Eintrag
+        </li>
+        <li><span class="parameter">_Quest</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Name des Quest
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.AddJournalEntryToQuest(_ID, _Quest);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.AllowNotesForQuest"></a>
+    <strong>API.AllowNotesForQuest (_Quest, _Flag)</strong>
+    </dt>
+    <dd>
+    Aktiviert die Möglichkeit, selbst Notizen zu schreiben.
+<p> <b>Hinweis</b>: Die Zusatzinformationen müssen für den Quest aktiv sein.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Quest</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Quest
+        </li>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+          Notizen aktivieren
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Deaktivieren
+</span>API.AllowNotesForQuest(<span class="string">"MyQuest"</span>, <span class="keyword">false</span>);
+<span class="comment">-- Aktivieren
+</span>API.AllowNotesForQuest(<span class="string">"MyQuest"</span>, <span class="keyword">true</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.AlterJournalEntry"></a>
+    <strong>API.AlterJournalEntry (_ID, _Text)</strong>
+    </dt>
+    <dd>
+    Ändert den Text einer Zusatzinformation.
+<p> <b>Hinweis</b>: Der neue Text bezieht sich auf den Eintrag mit der ID. Ist
+ der Eintrag für alle Quests sichtbar, wird er in allen Quests geändert.
+ Kopien eines Eintrags werden nicht berücksichtigt.
+<p> <b>Hinweis</b>: Formatierungsbefehle sind deaktiviert.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ID</span>
+            <span class="types"><span class="type">number</span></span>
+           ID des Eintrag
+        </li>
+        <li><span class="parameter">_Text</span>
+         Neuer Text
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.AlterJournalEntry(SomeEntryID, <span class="string">"Das ist der neue Text."</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.CreateJournalEntry"></a>
+    <strong>API.CreateJournalEntry (_Text)</strong>
+    </dt>
+    <dd>
+    Fugt eine Zusatzinformation für diesen Quests hinzu.
+<p> <b>Hinweis</b>: Die erzeugte ID ist immer eindeutig für alle Einträge,
+ ungeachtet ob sie einem Quest zugeordnet sind oder nicht.
+<p> <b>Hinweis</b>: Der Questname kann durch nil ersetzt werden. In diesem Fall
+ erscheint der Eintrag bei <i>allen</i> Quests (für die das Feature aktiviert
+ ist). Und das so lange, bis er wieder gelöscht wird.
+<p> <b>Hinweis</b>: Formatierungsbefehle sind deaktiviert.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+          Text der Zusatzinfo
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        ID des neuen Eintrags
+    </ol>
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> NewEntryID = API.CreateJournalEntry(<span class="string">"Wichtige Information zum Anzeigen"</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.DeleteJournalEntry"></a>
+    <strong>API.DeleteJournalEntry (_ID)</strong>
+    </dt>
+    <dd>
+    Entfernt einen Eintrag aus den Zusatzinformationen.
+<p> <b>Hinweis</b>: Ein Eintrag wird niemals wirklich gelöscht, sondern nur
+ unsichtbar geschaltet.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ID</span>
+            <span class="types"><span class="type">number</span></span>
+         ID des Eintrag
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.DeleteJournalEntry(SomeEntryID);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.HighlightJournalEntry"></a>
+    <strong>API.HighlightJournalEntry (_ID, _Important)</strong>
+    </dt>
+    <dd>
+    Hebt einen Eintrag aus den Zusatzinformationen als wichtig hervor oder
+ setzt ihn zurück.
+<p> <b>Hinweis</b>: Wichtige Einträge erscheinen immer als erstes und sind durch
+ rote Färbung hervorgehoben. Eigene Farben in einer Nachricht beeinträchtigen
+ die rote hervorhebung.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ID</span>
+            <span class="types"><span class="type">number</span></span>
+                ID des Eintrag
+        </li>
+        <li><span class="parameter">_Important</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Wichtig Markierung
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.HighlightJournalEntry(SomeEntryID, <span class="keyword">true</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.RemoveJournalEntryFromQuest"></a>
+    <strong>API.RemoveJournalEntryFromQuest (_ID, _Quest)</strong>
+    </dt>
+    <dd>
+    Entfernt einen Tagebucheintrag von einem Quest.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ID</span>
+            <span class="types"><span class="type">number</span></span>
+            ID des Eintrag
+        </li>
+        <li><span class="parameter">_Quest</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Name des Quest
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.RemoveJournalEntryFromQuest(_ID, _Quest);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.RestoreJournalEntry"></a>
+    <strong>API.RestoreJournalEntry (_ID)</strong>
+    </dt>
+    <dd>
+    Stellt einen gelöschten Eintrag in den Zusatzinformationen wieder her.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ID</span>
+            <span class="types"><span class="type">number</span></span>
+         ID des Eintrag
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.RestoreJournalEntry(SomeEntryID);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.ShowJournalForQuest"></a>
+    <strong>API.ShowJournalForQuest (_Quest, _Flag)</strong>
+    </dt>
+    <dd>
+    Aktiviert oder Deaktiviert die Verfügbarkeit der Zusatzinformationen für den
+ übergebenen Quest.
+<p> <b>Hinweis</b>: Die Sichtbarkeit der Zusatzinformationen für einzelne Quests
+ ist generell deaktiviert und muss explizit aktiviert werden.
+<p> <b>Hinweis</b>: Der Button wird auch dann angezeigt, wenn es noch keine
+ Zusatzinformationen für den Quest gibt.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Quest</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Quest
+        </li>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+          Zusatzinfos aktivieren
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Deaktivieren
+</span>API.ShowJournalForQuest(<span class="string">"MyQuest"</span>, <span class="keyword">false</span>);
+<span class="comment">-- Aktivieren
+</span>API.ShowJournalForQuest(<span class="string">"MyQuest"</span>, <span class="keyword">true</span>);</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-04-19 13:29:45 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>
