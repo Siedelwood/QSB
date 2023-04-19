@@ -82,7 +82,7 @@ cd ../../../
 # Builds the documentations of the single modules
 echo "Build the documentations of the single modules"
 cd qsb/exe/tools
-lua ldoc/ldoc.lua -d ../../lua/var/build/doc ../../lua/var/build/source/ #&>/dev/null
+lua ldoc/ldoc.lua -d ../../lua/var/build/doc -v ../../lua/var/build/source/ #&>/dev/null
 cd ../../../
 
 # Put back those files that need no documentation
@@ -106,7 +106,7 @@ for file in *.html; do
         OCCURENCES=$(grep -c $VARIABLE "${file}")
         echo "there are $OCCURENCES occurences"
         if [ "$OCCURENCES" -eq "0" ]; then
-            if [ "$file" -eq "tqsb_x_acomp.html" ]; then
+            if [ "$file" == "tqsb_x_acomp.html" ]; then
                 echo "detected compatibility docu"
                 VARIABLE="<li><strong>"
                 OCCURENCES=$(grep -c $VARIABLE "${file}")
