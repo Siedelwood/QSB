@@ -214,3 +214,27 @@ function API.ValidatePosition(_Pos)
     return API.IsValidPosition(_Pos)
 end
 IsValidPosition = API.ValidatePosition
+
+---
+-- Erzeugt einen neuen Event-Job.
+--
+-- <b>Hinweis</b>: Nur wenn ein Event Job mit dieser Funktion gestartet wird,
+-- können ResumeJob und YieldJob auf den Job angewendet werden.
+--
+-- <b>Hinweis</b>: Events.LOGIC_EVENT_ENTITY_CREATED funktioniert nicht!
+--
+-- <b>Hinweis</b>: Wird ein Table als Argument an den Job übergeben, wird eine
+-- Kopie angeleigt um Speicherprobleme zu verhindern. Es handelt sich also um
+-- eine neue Table und keine Referenz!
+--
+-- <b>QSB:</b> API.StartJobByEventType (_EventType, _Function, ...)
+--
+-- @param[type=number]   _EventType Event-Typ
+-- @param                _Function  Funktion (Funktionsreferenz oder String)
+-- @param ...            Optionale Argumente des Job
+-- @return[type=number] ID des Jobs
+-- @within QSB-Kern
+--
+function API.StartEventJob(_EventType, _Function, ...)
+    return API.StartJobByEventType (_EventType, _Function, ...)
+end
