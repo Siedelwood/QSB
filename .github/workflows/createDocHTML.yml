@@ -49,18 +49,17 @@ jobs:
           
           git clone "https://$GITHUB_ACTOR:$GH_TOKEN@github.com/Siedelwood/Revision.wiki.git"
           
-          for file in $(find ../md_doc -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
+          cd Revision.wiki
+          
+          for file in $(find ../../md_doc -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
               echo "Copying $file"
-              cp "../md_doc/$file" "$file"
+              cp "../../md_doc/$file" "$file"
           done
           
           git config --local user.name 'Automatic Action'
           git config --local user.email 'automaticAction@users.noreply.github.com'
           
-          echo "files la -a"
-          ls -a
-          echo ""
-          #git add .
-          #git commit -m "Automatically publish wiki"
-          #echo "Pushing"
-          #git push --set-upstream "https://$GITHUB_ACTOR:$GH_TOKEN@github.com/Siedelwood/Revision.wiki.git"
+          git add .
+          git commit -m "Automatically publish wiki"
+          echo "Pushing"
+          git push --set-upstream "https://$GITHUB_ACTOR:$GH_TOKEN@github.com/Siedelwood/Revision.wiki.git"
