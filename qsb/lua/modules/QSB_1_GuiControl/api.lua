@@ -215,7 +215,6 @@ end
 -- @param[type=string] _Description Beschreibung des Hotkey
 -- @return[type=number] Index oder Fehlercode
 -- @within Anwenderfunktionen
--- @local
 --
 function API.AddShortcutEntry(_Key, _Description)
     if not GUI then
@@ -237,7 +236,6 @@ end
 --
 -- @param[type=number] _ID Index in Table
 -- @within Anwenderfunktionen
--- @local
 --
 function API.RemoveShortcutEntry(_ID)
     if not GUI then

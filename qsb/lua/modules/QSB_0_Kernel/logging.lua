@@ -120,6 +120,8 @@ end
 -- </tr>
 -- </table>
 --
+-- <b>Alias:</b> API.SetLoggingLevel
+--
 -- @param[type=number] _ScreenLogLevel Level für Bildschirmausgabe
 -- @param[type=number] _FileLogLevel   Level für Dateiausgaabe
 -- @within Entwicklung
@@ -130,4 +132,5 @@ end
 function API.SetLogLevel(_ScreenLogLevel, _FileLogLevel)
     Swift.Logging:SetLogLevel(_ScreenLogLevel, _FileLogLevel);
 end
+API.SetLoggingLevel = API.SetLogLevel
 
