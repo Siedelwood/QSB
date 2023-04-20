@@ -257,11 +257,6 @@ function API.CommenceEntitySearch(_Filter)
 end
 
 -- Compatibility option
-function API.GetEntitiesOfCategoryInTerritory(_PlayerID, _Category, _Territory)
-    return API.SearchEntitiesOfCategoryInTerritory(_Territory, _Category, _PlayerID);
-end
-
--- Compatibility option
 -- FIXME: Realy needed? Don't they throw the old version in the script anyway?
 function API.GetEntitiesOfCategoriesInTerritories(_PlayerID, _Category, _Territory)
     local p = (type(_PlayerID) == "table" and _PlayerID) or {_PlayerID};

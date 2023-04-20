@@ -6554,6 +6554,8 @@ end
 -- </tr>
 -- </table>
 --
+-- <b>Alias:</b> API.SetLoggingLevel
+--
 -- @param[type=number] _ScreenLogLevel Level für Bildschirmausgabe
 -- @param[type=number] _FileLogLevel   Level für Dateiausgaabe
 -- @within Entwicklung
@@ -6564,6 +6566,7 @@ end
 function API.SetLogLevel(_ScreenLogLevel, _FileLogLevel)
     Swift.Logging:SetLogLevel(_ScreenLogLevel, _FileLogLevel);
 end
+API.SetLoggingLevel = API.SetLogLevel
 
 --[[
 The QSB is created and maintained by the Siedelwood Community.
@@ -20802,7 +20805,6 @@ end
 -- @param[type=string] _Description Beschreibung des Hotkey
 -- @return[type=number] Index oder Fehlercode
 -- @within Anwenderfunktionen
--- @local
 --
 function API.AddShortcutEntry(_Key, _Description)
     if not GUI then
@@ -20824,7 +20826,6 @@ end
 --
 -- @param[type=number] _ID Index in Table
 -- @within Anwenderfunktionen
--- @local
 --
 function API.RemoveShortcutEntry(_ID)
     if not GUI then
@@ -22871,6 +22872,17 @@ CanKnightBePromoted = function(_PlayerID, _KnightTitle)
         end
     end
     return false;
+end
+
+---
+-- Prüft, ob der Spieler befördert werden kann.
+--
+-- @param[type=number] _PlayerID ID des Spielers
+-- @param[type=number] _KnightTitle Nächster Titel
+-- @within Anwenderfunktionen
+--
+function API.CanKnightBePromoted(_PlayerID, _KnightTitle)
+    CanKnightBePromoted(_PlayerID, _KnightTitle)
 end
 
 ---
@@ -31790,7 +31802,6 @@ end
 -- @param[type=number] _OfferAmount Menge an Angeboten
 -- @param[type=number] _RefreshRate (Optional) Regenerationsrate des Angebot
 -- @within Anwenderfunktionen
--- @local
 --
 -- @usage
 -- -- Spieler 2 bietet Brot an
@@ -31855,7 +31866,6 @@ end
 -- @param[type=number] _OfferAmount Menge an Söldnern
 -- @param[type=number] _RefreshRate (Optional) Regenerationsrate des Angebot
 -- @within Anwenderfunktionen
--- @local
 --
 -- @usage
 -- -- Spieler 2 bietet Sölder an
@@ -31916,7 +31926,6 @@ end
 -- @param[type=number] _VendorID    Spieler-ID des Verkäufers
 -- @param[type=number] _OfferType   Typ des Entertainer
 -- @within Anwenderfunktionen
--- @local
 --
 -- @usage
 -- -- Spieler 2 bietet einen Feuerschlucker an
@@ -31964,7 +31973,6 @@ end
 -- @param[type=number] _PlayerID Player ID
 -- @return[type=table] Angebotsinformationen
 -- @within Anwenderfunktionen
--- @local
 --
 -- @usage
 -- local Info = API.GetOfferInformation(2);
@@ -31995,7 +32003,6 @@ end
 -- @param[type=number] _PlayerID Player ID
 -- @return[type=number] Anzahl angebote
 -- @within Anwenderfunktionen
--- @local
 --
 -- @usage
 -- -- Angebote von Spieler 5 zählen
@@ -32016,7 +32023,6 @@ end
 -- @param[type=number] _GoodOrEntityType Warentyp oder Entitytyp
 -- @return[type=boolean] Ware wird angeboten
 -- @within Anwenderfunktionen
--- @local
 --
 -- @usage
 -- -- Wird die Ware angeboten?
@@ -32039,11 +32045,10 @@ end
 -- @param[type=number] _GoodOrEntityType Warentyp oder Entitytyp
 -- @return[type=number] Menge an Angeboten
 -- @within Anwenderfunktionen
--- @local
 --
 -- @usage
 -- -- Wie viel wird aktuell angeboten?
--- local CurrentAmount = API.IsGoodOrUnitOffered(4, Goods.G_Bread);
+-- local CurrentAmount = API.GetTradeOfferWaggonAmount(4, Goods.G_Bread);
 --
 function API.GetTradeOfferWaggonAmount(_PlayerID, _GoodOrEntityType)
     local Amount = -1;
@@ -35370,11 +35375,6 @@ function API.CommenceEntitySearch(_Filter)
         return true;
     end
     return ModuleEntity.Shared:IterateOverEntities(_Filter);
-end
-
--- Compatibility option
-function API.GetEntitiesOfCategoryInTerritory(_PlayerID, _Category, _Territory)
-    return API.SearchEntitiesOfCategoryInTerritory(_Territory, _Category, _PlayerID);
 end
 
 -- Compatibility option
@@ -40833,7 +40833,6 @@ end
 -- Erstellt ein Backup der Soundeinstellungen, wenn noch keins erstellt wurde.
 --
 -- @within Anwenderfunktionen
--- @local
 --
 -- @usage
 -- API.SoundSave();
