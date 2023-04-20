@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-This project is about a function and quest library for a game and therefore we don't expect any vulerabilities. If some are reported we will try to fix them in the currently supported version.
+This project is about a function and quest library for a game and therefore we don't expect any vulnerabilities. If some are reported we will try to fix them in the currently supported version.
 
 | Version | Supported          |
 | ------- | ------------------ |
