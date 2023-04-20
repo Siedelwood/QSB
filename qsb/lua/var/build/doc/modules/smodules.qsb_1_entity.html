@@ -1,0 +1,652 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name">Siedelwood | QSB<big><b></b></big></div>
+	<div id="product_description">Dokumentation der S6-QSB der Siedelwood Community</div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Event">Event</a></li>
+<li><a href="#Suche">Suche</a></li>
+<li><a href="#Dieb">Dieb</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/qsb.html">(0) Basismodul</a></li>
+  <li><strong>(1) Entitätensteuerung</strong></li>
+  <li><a href="../modules/smodules.qsb_1_guicontrol.html">(1) Anzeigesteuerung</a></li>
+  <li><a href="../modules/smodules.qsb_1_guieffects.html">(1) Anzeigeeffekte</a></li>
+  <li><a href="../modules/smodules.qsb_1_movement.html">(1) Bewegung</a></li>
+  <li><a href="../modules/smodules.qsb_1_requester.html">(1) Dialogfenster</a></li>
+  <li><a href="../modules/smodules.qsb_1_sound.html">(1) Sound</a></li>
+  <li><a href="../modules/smodules.qsb_1_trade.html">(1) Handelserweiterung</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingcost.html">(2) Baukostensystem</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingui.html">(2) Gebäudeschalter</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildrestriction.html">(2) Baubeschränkung</a></li>
+  <li><a href="../modules/smodules.qsb_2_camera.html">(2) Kamerafunktionen</a></li>
+  <li><a href="../modules/smodules.qsb_2_newbehavior.html">(2) Neue Behavior</a></li>
+  <li><a href="../modules/smodules.qsb_2_npc.html">(2) Ansprechbare Siedler</a></li>
+  <li><a href="../modules/smodules.qsb_2_objects.html">(2) Interaktive Objekte</a></li>
+  <li><a href="../modules/smodules.qsb_2_promotion.html">(2) Aufstiegsbedingungen</a></li>
+  <li><a href="../modules/smodules.qsb_2_quest.html">(2) Aufträge</a></li>
+  <li><a href="../modules/smodules.qsb_2_selection.html">(2) Selektion</a></li>
+  <li><a href="../modules/smodules.qsb_3_briefingsystem.html">(3) Briefing System</a></li>
+  <li><a href="../modules/smodules.qsb_3_cutscenesystem.html">(3) Cutscene System</a></li>
+  <li><a href="../modules/smodules.qsb_3_dialogsystem.html">(3) Dialog System</a></li>
+  <li><a href="../modules/smodules.qsb_3_lifestock.html">(3) Viehzucht</a></li>
+  <li><a href="../modules/smodules.qsb_3_militarylimit.html">(3) Soldatenlimit</a></li>
+  <li><a href="../modules/smodules.qsb_3_traderoutes.html">(3) Handelsrouten</a></li>
+  <li><a href="../modules/smodules.qsb_4_iomines.html">(4) Interaktive Minen</a></li>
+  <li><a href="../modules/smodules.qsb_4_iosites.html">(4) Interaktive Baustellen</a></li>
+  <li><a href="../modules/smodules.qsb_4_iotreasure.html">(4) Interaktive Schätze</a></li>
+  <li><a href="../modules/smodules.qsb_4_questjournal.html">(4) Auftragsnotizen</a></li>
+  <li><a href="../modules/tqsb_x_acomp.html">(X) Kompatibilität</a></li>
+
+</ul>
+<h2>Addons</h2>
+<ul class=nowrap>
+
+  <li><a href="../modules/xaddons.qsb_x_addon_1_singlebuttons.html">Addon (1) SingleButtons</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>(1) Entitätensteuerung</code></h1>
+<p>Ermöglicht, Entities suchen und auf bestimmte Ereignisse reagieren.</p>
+<p>
+<p> <h5>Entity Suche</h5>
+ Es kann entweder mit vordefinierten Funktionen oder mit eigenen Filtern
+ nach allen Entities gesucht werden.
+<p> <h5>Diebstahleffekte</h5>
+ Die Effekte von Diebstählen können deaktiviert und mittels Event neu
+ geschrieben werden.
+<p> <b>Vorausgesetzte Module:</b>
+ <ul>
+ <li><a href="qsb.html">(0) Basismodul</a></li>
+ </ul>
+</p>
+
+
+<h2><a href="#Event">Event</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#QSB.ScriptEvents">QSB.ScriptEvents</a></td>
+	<td class="summary">Events, auf die reagiert werden kann.</td>
+	</tr>
+</table>
+<h2><a href="#Suche">Suche</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.CommenceEntitySearch">API.CommenceEntitySearch (_Filter)</a></td>
+	<td class="summary">Führt eine benutzerdefinierte Suche nach Entities aus.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SearchEntities">API.SearchEntities (_PlayerID, _WithoutDefeatResistant)</a></td>
+	<td class="summary">Findet <u>alle</u> Entities.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SearchEntitiesByScriptname">API.SearchEntitiesByScriptname (_Pattern)</a></td>
+	<td class="summary">Findet alle Entities deren Skriptname das Suchwort enthält.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SearchEntitiesOfCategoryInArea">API.SearchEntitiesOfCategoryInArea (_Area, _Position, _Category, _PlayerID)</a></td>
+	<td class="summary">Findet alle Entities der Kategorie in einem Gebiet.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SearchEntitiesOfCategoryInTerritory">API.SearchEntitiesOfCategoryInTerritory (_Territory, _Category, _PlayerID)</a></td>
+	<td class="summary">Findet alle Entities der Kategorie in einem Territorium.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SearchEntitiesOfTypeInArea">API.SearchEntitiesOfTypeInArea (_Area, _Position, _Type, _PlayerID)</a></td>
+	<td class="summary">Findet alle Entities des Typs in einem Gebiet.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SearchEntitiesOfTypeInTerritory">API.SearchEntitiesOfTypeInTerritory (_Territory, _Type, _PlayerID)</a></td>
+	<td class="summary">Findet alle Entities des Typs in einem Territorium.</td>
+	</tr>
+</table>
+<h2><a href="#Dieb">Dieb</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.ThiefDisableCathedralEffect">API.ThiefDisableCathedralEffect (_Flag)</a></td>
+	<td class="summary">Deaktiviert die Standardaktion wenn ein Dieb in eine Kirche eindringt.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.ThiefDisableCisternEffect">API.ThiefDisableCisternEffect (_Flag)</a></td>
+	<td class="summary">Deaktiviert die Standardaktion wenn ein Dieb einen Brunnen sabotiert.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.ThiefDisableStorehouseEffect">API.ThiefDisableStorehouseEffect (_Flag)</a></td>
+	<td class="summary">Deaktiviert die Standardaktion wenn ein Dieb in ein Lagerhaus eindringt.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Event"></a>Event</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "QSB.ScriptEvents"></a>
+    <strong>QSB.ScriptEvents</strong>
+    </dt>
+    <dd>
+    Events, auf die reagiert werden kann.
+
+
+    <ul>
+        <li><span class="parameter">EntitySpawned</span>
+         Ein Entity wurde aus einem Spawner erzeugt. (Parameter: EntityID, PlayerID, SpawnerID)
+        </li>
+        <li><span class="parameter">SettlerAttracted</span>
+         Ein Siedler kommt in die Siedlung. (Parameter: EntityID, PlayerID)
+        </li>
+        <li><span class="parameter">EntityDestroyed</span>
+         Ein Entity wurde zerstört. Wird auch durch Spieler ändern ausgelöst! (Parameter: EntityID, PlayerID)
+        </li>
+        <li><span class="parameter">EntityHurt</span>
+         Ein Entity wurde angegriffen. (Parameter: AttackedEntityID, AttackedPlayerID, AttackingEntityID, AttackingPlayerID)
+        </li>
+        <li><span class="parameter">EntityKilled</span>
+         Ein Entity wurde getötet. (Parameter: KilledEntityID, KilledPlayerID, KillerEntityID, KillerPlayerID)
+        </li>
+        <li><span class="parameter">EntityOwnerChanged</span>
+         Ein Entity wechselt den Besitzer. (Parameter: OldIDList, OldPlayer, NewIDList, OldPlayer)
+        </li>
+        <li><span class="parameter">EntityResourceChanged</span>
+         Resourcen im Entity verändern sich. (Parameter: EntityID, GoodType, OldAmount, NewAmount)
+        </li>
+        <li><span class="parameter">BuildingConstructed</span>
+         Ein Gebäude wurde fertiggestellt. (Parameter: BuildingID, PlayerID)
+        </li>
+        <li><span class="parameter">BuildingUpgraded</span>
+         Ein Gebäude wurde aufgewertet. (Parameter: BuildingID, PlayerID, NewUpgradeLevel)
+        </li>
+        <li><span class="parameter">BuildingUpgradeCollapsed</span>
+         Eine Ausbaustufe eines Gebäudes wurde zerstört. (Parameter: BuildingID, PlayerID, NewUpgradeLevel)
+        </li>
+        <li><span class="parameter">ThiefInfiltratedBuilding</span>
+         Ein Dieb hat ein Gebäude infiltriert. (Parameter: ThiefID, PlayerID, BuildingID, BuildingPlayerID)
+        </li>
+        <li><span class="parameter">ThiefDeliverEarnings</span>
+         Ein Dieb liefert seine Beute ab. (Parameter: ThiefID, PlayerID, BuildingID, BuildingPlayerID, GoldAmount)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Suche"></a>Suche</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.CommenceEntitySearch"></a>
+    <strong>API.CommenceEntitySearch (_Filter)</strong>
+    </dt>
+    <dd>
+    Führt eine benutzerdefinierte Suche nach Entities aus.
+<p> <b>Achtung</b>: Die Reihenfolge der Abfragen im Filter hat direkten
+ Einfluss auf die Dauer der Suche. Während Abfragen auf den Besitzer oder
+ den Typ schnell gehen, dauern Gebietssuchen lange! Es ist daher klug, zuerst
+ Kriterien auszuschließen, die schnell bestimmt werden können!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Filter</span>
+            <span class="types"><span class="type">function</span></span>
+         Funktion zur Filterung
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Liste mit Ergebnissen
+    </ol>
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Es werden alle Kühe und Schafe von Spieler 1 gefunden, die nicht auf den
+</span><span class="comment">-- Territorien 7 und 15 sind.
+</span><span class="keyword">local</span> Result = API.CommenceEntitySearch(
+    <span class="keyword">function</span>(_ID)
+        <span class="comment">-- Nur Entities von Spieler 1 akzeptieren
+</span>        <span class="keyword">if</span> Logic.EntityGetPlayer(_ID) == <span class="number">1</span> <span class="keyword">then</span>
+            <span class="comment">-- Nur Entities akzeptieren, die Kühe oder Schafe sind.
+</span>            <span class="keyword">if</span> Logic.IsEntityInCategory(_ID, EntityCategories.CattlePasture) == <span class="number">1</span>
+            <span class="keyword">or</span> Logic.IsEntityInCategory(_ID, EntityCategories.SheepPasture) == <span class="number">1</span> <span class="keyword">then</span>
+                <span class="comment">-- Nur Entities akzeptieren, die nicht auf den Territorien 7 und 15 sind.
+</span>                <span class="keyword">local</span> Territory = GetTerritoryUnderEntity(_ID);
+                <span class="keyword">return</span> Territory ~= <span class="number">7</span> <span class="keyword">and</span> Territory ~= <span class="number">15</span>;
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        <span class="keyword">return</span> <span class="keyword">false</span>;
+    <span class="keyword">end</span>
+);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SearchEntities"></a>
+    <strong>API.SearchEntities (_PlayerID, _WithoutDefeatResistant)</strong>
+    </dt>
+    <dd>
+    Findet <u>alle</u> Entities.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+                       (Optional) ID des Besitzers
+        </li>
+        <li><span class="parameter">_WithoutDefeatResistant</span>
+            <span class="types"><span class="type">boolean</span></span>
+         (Optional) Niederlageresistente Entities filtern
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Liste mit Ergebnissen
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/smodules.qsb_1_entity.html#API.CommenceEntitySearch">API.CommenceEntitySearch</a>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- ALLE Entities
+</span><span class="keyword">local</span> Result = API.SearchEntities();
+<span class="comment">-- Alle Entities von Spieler 5.
+</span><span class="keyword">local</span> Result = API.SearchEntities(<span class="number">5</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SearchEntitiesByScriptname"></a>
+    <strong>API.SearchEntitiesByScriptname (_Pattern)</strong>
+    </dt>
+    <dd>
+    Findet alle Entities deren Skriptname das Suchwort enthält.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Pattern</span>
+            <span class="types"><span class="type">number</span></span>
+         Suchwort
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Liste mit Ergebnissen
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/smodules.qsb_1_entity.html#API.CommenceEntitySearch">API.CommenceEntitySearch</a>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Findet alle Entities, deren Name mit "TreasureChest" beginnt.
+</span><span class="keyword">local</span> Result = API.SearchEntitiesByScriptname(<span class="string">"^TreasureChest"</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SearchEntitiesOfCategoryInArea"></a>
+    <strong>API.SearchEntitiesOfCategoryInArea (_Area, _Position, _Category, _PlayerID)</strong>
+    </dt>
+    <dd>
+    Findet alle Entities der Kategorie in einem Gebiet.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Area</span>
+            <span class="types"><span class="type">number</span></span>
+             Größe des Suchgebiet
+        </li>
+        <li><span class="parameter">_Position</span>
+         Mittelpunkt (EntityID, Skriptname oder Table)
+        </li>
+        <li><span class="parameter">_Category</span>
+            <span class="types"><span class="type">number</span></span>
+         Category des Entity
+        </li>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         (Optional) ID des Besitzers
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Liste mit Ergebnissen
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/smodules.qsb_1_entity.html#API.CommenceEntitySearch">API.CommenceEntitySearch</a>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> Result = API.SearchEntitiesInArea(<span class="number">5000</span>, <span class="string">"City"</span>, EntityCategories.CityBuilding, <span class="number">2</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SearchEntitiesOfCategoryInTerritory"></a>
+    <strong>API.SearchEntitiesOfCategoryInTerritory (_Territory, _Category, _PlayerID)</strong>
+    </dt>
+    <dd>
+    Findet alle Entities der Kategorie in einem Territorium.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Territory</span>
+            <span class="types"><span class="type">number</span></span>
+         Territorium für die Suche
+        </li>
+        <li><span class="parameter">_Category</span>
+            <span class="types"><span class="type">number</span></span>
+          Category des Entity
+        </li>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+          (Optional) ID des Besitzers
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Liste mit Ergebnissen
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/smodules.qsb_1_entity.html#API.CommenceEntitySearch">API.CommenceEntitySearch</a>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> Result = API.SearchEntitiesInTerritory(<span class="number">7</span>, EntityCategories.CityBuilding, <span class="number">6</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SearchEntitiesOfTypeInArea"></a>
+    <strong>API.SearchEntitiesOfTypeInArea (_Area, _Position, _Type, _PlayerID)</strong>
+    </dt>
+    <dd>
+    Findet alle Entities des Typs in einem Gebiet.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Area</span>
+            <span class="types"><span class="type">number</span></span>
+             Größe des Suchgebiet
+        </li>
+        <li><span class="parameter">_Position</span>
+         Mittelpunkt (EntityID, Skriptname oder Table)
+        </li>
+        <li><span class="parameter">_Type</span>
+            <span class="types"><span class="type">number</span></span>
+             Typ des Entity
+        </li>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         (Optional) ID des Besitzers
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Liste mit Ergebnissen
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/smodules.qsb_1_entity.html#API.CommenceEntitySearch">API.CommenceEntitySearch</a>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> Result = API.SearchEntitiesInArea(<span class="number">5000</span>, <span class="string">"Busches"</span>, Entities.R_HerbBush);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SearchEntitiesOfTypeInTerritory"></a>
+    <strong>API.SearchEntitiesOfTypeInTerritory (_Territory, _Type, _PlayerID)</strong>
+    </dt>
+    <dd>
+    Findet alle Entities des Typs in einem Territorium.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Territory</span>
+            <span class="types"><span class="type">number</span></span>
+         Territorium für die Suche
+        </li>
+        <li><span class="parameter">_Type</span>
+            <span class="types"><span class="type">number</span></span>
+              Typ des Entity
+        </li>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+          (Optional) ID des Besitzers
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Liste mit Ergebnissen
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/smodules.qsb_1_entity.html#API.CommenceEntitySearch">API.CommenceEntitySearch</a>
+    </ul>
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> Result = API.SearchEntitiesInTerritory(<span class="number">7</span>, Entities.R_HerbBush);</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Dieb"></a>Dieb</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.ThiefDisableCathedralEffect"></a>
+    <strong>API.ThiefDisableCathedralEffect (_Flag)</strong>
+    </dt>
+    <dd>
+    Deaktiviert die Standardaktion wenn ein Dieb in eine Kirche eindringt.
+<p> <b>Hinweis</b>: Wird die Standardaktion deaktiviert, stielt der Dieb
+ stattdessen Informationen.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Standardeffekt deaktiviert
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Deaktivieren
+</span>API.ThiefDisableCathedralEffect(<span class="keyword">true</span>);
+<span class="comment">-- Aktivieren
+</span>API.ThiefDisableCathedralEffect(<span class="keyword">false</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.ThiefDisableCisternEffect"></a>
+    <strong>API.ThiefDisableCisternEffect (_Flag)</strong>
+    </dt>
+    <dd>
+    Deaktiviert die Standardaktion wenn ein Dieb einen Brunnen sabotiert.
+<p> <b>Hinweis</b>: Brunnen können nur im Addon gebaut und sabotiert werden.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Standardeffekt deaktiviert
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Deaktivieren
+</span>API.ThiefDisableCisternEffect(<span class="keyword">true</span>);
+<span class="comment">-- Aktivieren
+</span>API.ThiefDisableCisternEffect(<span class="keyword">false</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.ThiefDisableStorehouseEffect"></a>
+    <strong>API.ThiefDisableStorehouseEffect (_Flag)</strong>
+    </dt>
+    <dd>
+    Deaktiviert die Standardaktion wenn ein Dieb in ein Lagerhaus eindringt.
+<p> <b>Hinweis</b>: Wird die Standardaktion deaktiviert, stielt der Dieb
+ stattdessen Informationen.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Standardeffekt deaktiviert
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Deaktivieren
+</span>API.ThiefDisableStorehouseEffect(<span class="keyword">true</span>);
+<span class="comment">-- Aktivieren
+</span>API.ThiefDisableStorehouseEffect(<span class="keyword">false</span>);</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-04-20 13:36:04 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>
