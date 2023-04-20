@@ -40,3 +40,20 @@ jobs:
           git add -A
           git commit -m "Automated Generation"
           git push
+
+      - name: Upload Wiki Files
+        run: |
+          cd qsb/lua/var
+          mkdir wiki_dir
+          cd wiki_dir
+          git init
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git pull https://github.com/Siedelwood/Revision.wiki.git
+          for file in $(find ../md_doc -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
+              debug "Copying $file"
+              cp "../md_doc/$file" "$file"
+          done
+          git add -A
+          git commit -m 'Automatically publish wiki'
+          git push --set-upstream https://github.com/Siedelwood/Revision.wiki.git master
