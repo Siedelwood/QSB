@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name">Siedelwood | QSB<big><b></b></big></div>
+	<div id="product_description">Dokumentation der S6-QSB der Siedelwood Community</div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Event">Event</a></li>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/qsb.html">(0) Basismodul</a></li>
+  <li><a href="../modules/smodules.qsb_1_entity.html">(1) Entitätensteuerung</a></li>
+  <li><a href="../modules/smodules.qsb_1_guicontrol.html">(1) Anzeigesteuerung</a></li>
+  <li><a href="../modules/smodules.qsb_1_guieffects.html">(1) Anzeigeeffekte</a></li>
+  <li><a href="../modules/smodules.qsb_1_movement.html">(1) Bewegung</a></li>
+  <li><a href="../modules/smodules.qsb_1_requester.html">(1) Dialogfenster</a></li>
+  <li><a href="../modules/smodules.qsb_1_sound.html">(1) Sound</a></li>
+  <li><a href="../modules/smodules.qsb_1_trade.html">(1) Handelserweiterung</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingcost.html">(2) Baukostensystem</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingui.html">(2) Gebäudeschalter</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildrestriction.html">(2) Baubeschränkung</a></li>
+  <li><a href="../modules/smodules.qsb_2_camera.html">(2) Kamerafunktionen</a></li>
+  <li><a href="../modules/smodules.qsb_2_newbehavior.html">(2) Neue Behavior</a></li>
+  <li><a href="../modules/smodules.qsb_2_npc.html">(2) Ansprechbare Siedler</a></li>
+  <li><a href="../modules/smodules.qsb_2_objects.html">(2) Interaktive Objekte</a></li>
+  <li><a href="../modules/smodules.qsb_2_promotion.html">(2) Aufstiegsbedingungen</a></li>
+  <li><a href="../modules/smodules.qsb_2_quest.html">(2) Aufträge</a></li>
+  <li><a href="../modules/smodules.qsb_2_selection.html">(2) Selektion</a></li>
+  <li><a href="../modules/smodules.qsb_3_briefingsystem.html">(3) Briefing System</a></li>
+  <li><a href="../modules/smodules.qsb_3_cutscenesystem.html">(3) Cutscene System</a></li>
+  <li><a href="../modules/smodules.qsb_3_dialogsystem.html">(3) Dialog System</a></li>
+  <li><a href="../modules/smodules.qsb_3_lifestock.html">(3) Viehzucht</a></li>
+  <li><a href="../modules/smodules.qsb_3_militarylimit.html">(3) Soldatenlimit</a></li>
+  <li><a href="../modules/smodules.qsb_3_traderoutes.html">(3) Handelsrouten</a></li>
+  <li><a href="../modules/smodules.qsb_4_iomines.html">(4) Interaktive Minen</a></li>
+  <li><strong>(4) Interaktive Baustellen</strong></li>
+  <li><a href="../modules/smodules.qsb_4_iotreasure.html">(4) Interaktive Schätze</a></li>
+  <li><a href="../modules/smodules.qsb_4_questjournal.html">(4) Auftragsnotizen</a></li>
+  <li><a href="../modules/tqsb_x_acomp.html">(X) Kompatibilität</a></li>
+
+</ul>
+<h2>Addons</h2>
+<ul class=nowrap>
+
+  <li><a href="../modules/xaddons.qsb_x_addon_1_singlebuttons.html">Addon (1) SingleButtons</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>(4) Interaktive Baustellen</code></h1>
+<p>Ermöglicht mit interaktiven Objekten Baustellen zu setzen.</p>
+<p>
+<p> Die Baustelle muss durch den Helden aktiviert werden. Ein Siedler wird aus
+ dem Lagerhaus kommen und das Gebäude bauen.
+<p> <b>Vorausgesetzte Module:</b>
+ <ul>
+ <li><a href="qsb.html">(0) Basismodul</a></li>
+ <li><a href="modules.QSB_1_GuiControl.QSB_1_GuiControl.html">(1) Anzeigekontrolle</a></li>
+ <li><a href="modules.QSB_2_Objects.QSB_2_Objects.html">(2) Interaktive Objekte</a></li>
+ </ul>
+</p>
+
+
+<h2><a href="#Event">Event</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#QSB.ScriptEvents">QSB.ScriptEvents</a></td>
+	<td class="summary">Events, auf die reagiert werden kann.</td>
+	</tr>
+</table>
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.CreateIOBuildingSite">API.CreateIOBuildingSite (_Data)</a></td>
+	<td class="summary">Erzeugt eine Baustelle eines beliebigen Gebäudetyps an der Position.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Event"></a>Event</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "QSB.ScriptEvents"></a>
+    <strong>QSB.ScriptEvents</strong>
+    </dt>
+    <dd>
+    Events, auf die reagiert werden kann.
+
+
+    <ul>
+        <li><span class="parameter">InteractiveSiteBuilt</span>
+         (Parameter: ScriptName, PlayerID, BuildingID)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.CreateIOBuildingSite"></a>
+    <strong>API.CreateIOBuildingSite (_Data)</strong>
+    </dt>
+    <dd>
+    Erzeugt eine Baustelle eines beliebigen Gebäudetyps an der Position.
+<p> Diese Baustelle kann durch einen Helden aktiviert werden. Dann wird ein
+ Siedler zur Baustelle eilen und das Gebäude aufbauen. Es ist egal, ob es
+ sich um ein Territorium des Spielers oder einer KI handelt.
+<p> Es ist dabei zu beachten, dass der Spieler, dem die Baustelle zugeordnet
+ wird, das Territorium besitzt, auf dem er bauen soll. Des weiteren muss
+ er über ein Lagerhaus/Hauptzelt verfügen.
+<p> <p><b>Hinweis:</b> Es kann vorkommen, dass das Model der Baustelle nicht
+ geladen wird. Dann ist der Boden der Baustelle schwarz. Sobald wenigstens
+ ein reguläres Gebäude gebaut wurde, sollte die Textur jedoch vorhanden sein.
+ </p>
+<p> Mögliche Angaben für die Konfiguration:
+ <table border="1">
+ <tr><td><b>Feldname</b></td><td><b>Typ</b></td><td><b>Beschreibung</b></td></tr>
+ <tr><td>Name</td><td>string</td><td>Position für die Baustelle</td></tr>
+ <tr><td>PlayerID</td><td>number</td><td>Besitzer des Gebäudes</td></tr>
+ <tr><td>Type</td><td>number</td><td>Typ des Gebäudes</td></tr>
+ <tr><td>Costs</td><td>table</td><td>(optional) Eigene Gebäudekosten</td></tr>
+ <tr><td>Distance</td><td>number</td><td>(optional) Aktivierungsentfernung</td></tr>
+ <tr><td>Icon</td><td>table</td><td>(optional) Icon des Schalters</td></tr>
+ <tr><td>Title</td><td>string</td><td>(optional) Titel der Beschreibung</td></tr>
+ <tr><td>Text</td><td>string</td><td>(optional) Text der Beschreibung</td></tr>
+ <tr><td>Condition</td><td>function</td><td>(optional) Optionale Aktivierungsbedingung</td></tr>
+ <tr><td>Action</td><td>function</td><td>(optional) Optionale Funktion bei Aktivierung</td></tr>
+ </table>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Data</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Konfiguration des Objektes
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <li><pre class="example"><span class="comment">-- Beispiel #1: Eine einfache Baustelle erzeugen
+</span>API.CreateIOBuildingSite {
+    Name     = <span class="string">"haus"</span>,
+    PlayerID = <span class="number">1</span>,
+    Type     = Entities.B_Bakery
+};</pre></li>
+        <li><pre class="example"><span class="comment">-- Beispiel #2: Baustelle mit Kosten erzeugen
+</span>API.CreateIOBuildingSite {
+    Name     = <span class="string">"haus"</span>,
+    PlayerID = <span class="number">1</span>,
+    Type     = Entities.B_Bakery,
+    Costs    = {Goods.G_Wood, <span class="number">4</span>},
+    Distance = <span class="number">1000</span>
+};</pre></li>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-04-20 12:57:44 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>
