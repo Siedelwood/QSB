@@ -47,7 +47,7 @@ jobs:
           mkdir wiki_dir
           cd wiki_dir
           
-          git clone "https://$GITHUB_ACTOR:$GH_TOKEN@github.com/Siedelwood/Revision.wiki.git"
+          git clone "https://$GITHUB_ACTOR:${{secrets.GITHUB_TOKEN}}@github.com/Siedelwood/Revision.wiki.git"
           
           cd Revision.wiki
           
@@ -62,4 +62,4 @@ jobs:
           git add .
           git commit -m "Automatically publish wiki"
           echo "Pushing"
-          git push
+          git push "https://$GITHUB_ACTOR:${{secrets.GITHUB_TOKEN}}@github.com/Siedelwood/Revision.wiki.git"
