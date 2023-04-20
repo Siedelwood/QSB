@@ -62,4 +62,4 @@ jobs:
           git add .
           git commit -m "Automatically publish wiki"
           echo "Pushing"
-          git push --set-upstream "https://$GITHUB_ACTOR:$GH_TOKEN@github.com/Siedelwood/Revision.wiki.git"
+          git push
