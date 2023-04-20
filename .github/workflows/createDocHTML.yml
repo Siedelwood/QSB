@@ -46,13 +46,18 @@ jobs:
           cd qsb/lua/var
           mkdir wiki_dir
           cd wiki_dir
-          git clone https://github.com/Siedelwood/Revision.wiki.git
+          
+          git init
+          git config user.name 'Automatic Action'
+          git config user.email 'automaticAction@users.noreply.github.com'
+          git pull "https://${{ github.token }}@${GITHUB_SERVER_URL#https://}/$GITHUB_REPOSITORY.wiki.git"
+          
           for file in $(find ../md_doc -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
               echo "Copying $file"
               cp "../md_doc/$file" "$file"
           done
-          git config user.name 'Automatic Action'
-          git config user.email 'automaticAction@users.noreply.github.com'
+          
           git add -A
           git commit -m "Automatically publish wiki"
-          git push --set-upstream https://github.com/Siedelwood/Revision.wiki.git master
+          echo "Pushing"
+          git push --set-upstream "https://${{ github.token }}@${GITHUB_SERVER_URL#https://}/$GITHUB_REPOSITORY.wiki.git" master
