@@ -610,6 +610,17 @@ CanKnightBePromoted = function(_PlayerID, _KnightTitle)
 end
 
 ---
+-- Prüft, ob der Spieler befördert werden kann.
+--
+-- @param[type=number] _PlayerID ID des Spielers
+-- @param[type=number] _KnightTitle Nächster Titel
+-- @within Anwenderfunktionen
+--
+function API.CanKnightBePromoted(_PlayerID, _KnightTitle)
+    CanKnightBePromoted(_PlayerID, _KnightTitle)
+end
+
+---
 -- Der Spieler gewinnt das Spiel
 -- @within Originalfunktionen
 -- @local
