@@ -1,0 +1,904 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name">Siedelwood | QSB<big><b></b></big></div>
+	<div id="product_description">Dokumentation der S6-QSB der Siedelwood Community</div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Fields">Fields</a></li>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/qsb.html">(0) Basismodul</a></li>
+  <li><a href="../modules/smodules.qsb_1_entity.html">(1) Entitätensteuerung</a></li>
+  <li><strong>(1) Anzeigesteuerung</strong></li>
+  <li><a href="../modules/smodules.qsb_1_guieffects.html">(1) Anzeigeeffekte</a></li>
+  <li><a href="../modules/smodules.qsb_1_movement.html">(1) Bewegung</a></li>
+  <li><a href="../modules/smodules.qsb_1_requester.html">(1) Dialogfenster</a></li>
+  <li><a href="../modules/smodules.qsb_1_sound.html">(1) Sound</a></li>
+  <li><a href="../modules/smodules.qsb_1_trade.html">(1) Handelserweiterung</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingcost.html">(2) Baukostensystem</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingui.html">(2) Gebäudeschalter</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildrestriction.html">(2) Baubeschränkung</a></li>
+  <li><a href="../modules/smodules.qsb_2_camera.html">(2) Kamerafunktionen</a></li>
+  <li><a href="../modules/smodules.qsb_2_newbehavior.html">(2) Neue Behavior</a></li>
+  <li><a href="../modules/smodules.qsb_2_npc.html">(2) Ansprechbare Siedler</a></li>
+  <li><a href="../modules/smodules.qsb_2_objects.html">(2) Interaktive Objekte</a></li>
+  <li><a href="../modules/smodules.qsb_2_promotion.html">(2) Aufstiegsbedingungen</a></li>
+  <li><a href="../modules/smodules.qsb_2_quest.html">(2) Aufträge</a></li>
+  <li><a href="../modules/smodules.qsb_2_selection.html">(2) Selektion</a></li>
+  <li><a href="../modules/smodules.qsb_3_briefingsystem.html">(3) Briefing System</a></li>
+  <li><a href="../modules/smodules.qsb_3_cutscenesystem.html">(3) Cutscene System</a></li>
+  <li><a href="../modules/smodules.qsb_3_dialogsystem.html">(3) Dialog System</a></li>
+  <li><a href="../modules/smodules.qsb_3_lifestock.html">(3) Viehzucht</a></li>
+  <li><a href="../modules/smodules.qsb_3_militarylimit.html">(3) Soldatenlimit</a></li>
+  <li><a href="../modules/smodules.qsb_3_traderoutes.html">(3) Handelsrouten</a></li>
+  <li><a href="../modules/smodules.qsb_4_iomines.html">(4) Interaktive Minen</a></li>
+  <li><a href="../modules/smodules.qsb_4_iosites.html">(4) Interaktive Baustellen</a></li>
+  <li><a href="../modules/smodules.qsb_4_iotreasure.html">(4) Interaktive Schätze</a></li>
+  <li><a href="../modules/smodules.qsb_4_questjournal.html">(4) Auftragsnotizen</a></li>
+  <li><a href="../modules/tqsb_x_acomp.html">(X) Kompatibilität</a></li>
+
+</ul>
+<h2>Addons</h2>
+<ul class=nowrap>
+
+  <li><a href="../modules/xaddons.qsb_x_addon_1_singlebuttons.html">Addon (1) SingleButtons</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>(1) Anzeigesteuerung</code></h1>
+<p>Ermöglicht, die Anzeige von Menüoptionen zu steuern.</p>
+<p>
+<p> Es können verschiedene Anzeigen ausgetauscht werden.
+ <ul>
+ <li>Spielerfrabe</li>
+ <li>Spielername</li>
+ <li>Spielerportrait</li>
+ <li>Territorienname</li>
+ </ul>
+<p> Es können verschiedene Zugriffsoptionen für den Spieler gesetzt werden.
+ <ul>
+ <li>Minimap anzeigen/deaktivieren</li>
+ <li>Minimap umschalten anzeigen/deaktivieren</li>
+ <li>Diplomatiemenü anzeigen/deaktivieren</li>
+ <li>Produktionsmenü anzeigen/deaktivieren</li>
+ <li>Wettermenü anzeigen/deaktivieren</li>
+ <li>Baumenü anzeigen/deaktivieren</li>
+ <li>Territorium einnehmen anzeigen/deaktivieren</li>
+ <li>Ritterfähigkeit anzeigen/deaktivieren</li>
+ <li>Ritter selektieren anzeigen/deaktivieren</li>
+ <li>Militär selektieren anzeigen/deaktivieren</li>
+ </ul>
+<p> <b>Vorausgesetzte Module:</b>
+ <ul>
+ <li><a href="qsb.html">(0) Basismodul</a></li>
+ </ul>
+</p>
+
+
+<h2><a href="#Fields">Fields</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#QSB.ScriptEvents">QSB.ScriptEvents</a></td>
+	<td class="summary">Events, auf die reagiert werden kann.</td>
+	</tr>
+</table>
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.AddShortcutEntry">API.AddShortcutEntry (_Key, _Description)</a></td>
+	<td class="summary">Fügt eine Beschreibung zu einem benutzerdefinierten Hotkey hinzu.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.GetPlayerName">API.GetPlayerName (_PlayerID)</a></td>
+	<td class="summary">Gibt den Namen des Spielers zurück.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.GetTerritoryName">API.GetTerritoryName (_TerritoryID)</a></td>
+	<td class="summary">Gibt den Namen des Territoriums zurück.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.HideBuildMenu">API.HideBuildMenu (_Flag)</a></td>
+	<td class="summary">Versteckt das Baumenü oder blendet es ein.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.HideBuyTerritory">API.HideBuyTerritory (_Flag)</a></td>
+	<td class="summary">Versteckt den Button zum Territorienkauf oder blendet ihn ein.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.HideDiplomacyMenu">API.HideDiplomacyMenu (_Flag)</a></td>
+	<td class="summary">Versteckt den Button des Diplomatiemenü oder blendet ihn ein.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.HideKnightAbility">API.HideKnightAbility (_Flag)</a></td>
+	<td class="summary">Versteckt den Button der Heldenfähigkeit oder blendet ihn ein.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.HideKnightButton">API.HideKnightButton (_Flag)</a></td>
+	<td class="summary">Versteckt den Button zur Heldenselektion oder blendet ihn ein.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.HideMinimap">API.HideMinimap (_Flag)</a></td>
+	<td class="summary">Graut die Minimap aus oder macht sie wieder verwendbar.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.HideProductionMenu">API.HideProductionMenu (_Flag)</a></td>
+	<td class="summary">Versteckt den Button des Produktionsmenü oder blendet ihn ein.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.HideSelectionButton">API.HideSelectionButton (_Flag)</a></td>
+	<td class="summary">Versteckt den Button zur Selektion des Militärs oder blendet ihn ein.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.HideToggleMinimap">API.HideToggleMinimap (_Flag)</a></td>
+	<td class="summary">Versteckt den Umschaltknopf der Minimap oder blendet ihn ein.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.HideWeatherMenu">API.HideWeatherMenu (_Flag)</a></td>
+	<td class="summary">Versteckt den Button des Wettermenüs oder blendet ihn ein.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.RemoveShortcutEntry">API.RemoveShortcutEntry (_ID)</a></td>
+	<td class="summary">Entfernt eine Beschreibung eines benutzerdefinierten Hotkeys.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SetIcon">API.SetIcon (_WidgetID, _Coordinates, _Size, _Name)</a></td>
+	<td class="summary">Setzt einen Icon aus einer Icon Matrix.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SetPlayerColor">API.SetPlayerColor (_PlayerID, _Color, _Logo, _Pattern)</a></td>
+	<td class="summary">Setzt eine andere Spielerfarbe.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SetPlayerName">API.SetPlayerName (_PlayerID, _Name)</a></td>
+	<td class="summary">Gibt dem Spieler einen neuen Namen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SetPlayerPortrait">API.SetPlayerPortrait (_PlayerID, _Portrait)</a></td>
+	<td class="summary">Setzt das Portrait eines Spielers.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SetTooltipCosts">API.SetTooltipCosts (_Title, _Text, _DisabledText, _Costs, _InSettlement)</a></td>
+	<td class="summary">Ändert den Beschreibungstext und die Kosten eines Button.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SetTooltipNormal">API.SetTooltipNormal (_Title, _Text, _DisabledText)</a></td>
+	<td class="summary">Ändert den Beschreibungstext eines Button oder eines Icon.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.SpeedLimitActivate">API.SpeedLimitActivate (_Flag)</a></td>
+	<td class="summary">Setzt die Spielgeschwindigkeit auf Stufe 1 fest oder gibt sie wieder frei.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "QSB.ScriptEvents"></a>
+    <strong>QSB.ScriptEvents</strong>
+    </dt>
+    <dd>
+    Events, auf die reagiert werden kann.
+
+
+    <ul>
+        <li><span class="parameter">BuildingPlaced</span>
+              Ein Gebäude wurde in Auftrag gegeben. (Parameter: EntityID, PlayerID)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.AddShortcutEntry"></a>
+    <strong>API.AddShortcutEntry (_Key, _Description)</strong>
+    </dt>
+    <dd>
+    Fügt eine Beschreibung zu einem benutzerdefinierten Hotkey hinzu.
+<p> Ist der Hotkey bereits vorhanden, wird -1 zurückgegeben.
+<p> <b>Hinweis</b>: Diese Funktionalität selbst muss mit Input.KeyBindDown oder
+ Input.KeyBindUp separat implementiert werden!
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Key</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+                 Tastenkombination
+        </li>
+        <li><span class="parameter">_Description</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Beschreibung des Hotkey
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Index oder Fehlercode
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.GetPlayerName"></a>
+    <strong>API.GetPlayerName (_PlayerID)</strong>
+    </dt>
+    <dd>
+    Gibt den Namen des Spielers zurück.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         ID des Spielers
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        Name des Spielers
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.GetTerritoryName"></a>
+    <strong>API.GetTerritoryName (_TerritoryID)</strong>
+    </dt>
+    <dd>
+    Gibt den Namen des Territoriums zurück.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_TerritoryID</span>
+            <span class="types"><span class="type">number</span></span>
+         ID des Territoriums
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        Name des Territorium
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.HideBuildMenu"></a>
+    <strong>API.HideBuildMenu (_Flag)</strong>
+    </dt>
+    <dd>
+    Versteckt das Baumenü oder blendet es ein.
+<p> <p><b>Hinweis:</b> Diese Änderung bleibt auch nach dem Laden eines Spielstandes
+ aktiv und muss explizit zurückgenommen werden!</p>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Widget versteckt
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.HideBuyTerritory"></a>
+    <strong>API.HideBuyTerritory (_Flag)</strong>
+    </dt>
+    <dd>
+    Versteckt den Button zum Territorienkauf oder blendet ihn ein.
+<p> <p><b>Hinweis:</b> Diese Änderung bleibt auch nach dem Laden eines Spielstandes
+ aktiv und muss explizit zurückgenommen werden!</p>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Widget versteckt
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.HideDiplomacyMenu"></a>
+    <strong>API.HideDiplomacyMenu (_Flag)</strong>
+    </dt>
+    <dd>
+    Versteckt den Button des Diplomatiemenü oder blendet ihn ein.
+<p> <p><b>Hinweis:</b> Diese Änderung bleibt auch nach dem Laden eines Spielstandes
+ aktiv und muss explizit zurückgenommen werden!</p>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Widget versteckt
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.HideKnightAbility"></a>
+    <strong>API.HideKnightAbility (_Flag)</strong>
+    </dt>
+    <dd>
+    Versteckt den Button der Heldenfähigkeit oder blendet ihn ein.
+<p> <p><b>Hinweis:</b> Diese Änderung bleibt auch nach dem Laden eines Spielstandes
+ aktiv und muss explizit zurückgenommen werden!</p>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Widget versteckt
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.HideKnightButton"></a>
+    <strong>API.HideKnightButton (_Flag)</strong>
+    </dt>
+    <dd>
+    Versteckt den Button zur Heldenselektion oder blendet ihn ein.
+<p> <p><b>Hinweis:</b> Diese Änderung bleibt auch nach dem Laden eines Spielstandes
+ aktiv und muss explizit zurückgenommen werden!</p>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Widget versteckt
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.HideMinimap"></a>
+    <strong>API.HideMinimap (_Flag)</strong>
+    </dt>
+    <dd>
+    Graut die Minimap aus oder macht sie wieder verwendbar.
+<p> <p><b>Hinweis:</b> Diese Änderung bleibt auch nach dem Laden eines Spielstandes
+ aktiv und muss explizit zurückgenommen werden!</p>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Widget versteckt
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.HideProductionMenu"></a>
+    <strong>API.HideProductionMenu (_Flag)</strong>
+    </dt>
+    <dd>
+    Versteckt den Button des Produktionsmenü oder blendet ihn ein.
+<p> <p><b>Hinweis:</b> Diese Änderung bleibt auch nach dem Laden eines Spielstandes
+ aktiv und muss explizit zurückgenommen werden!</p>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Widget versteckt
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.HideSelectionButton"></a>
+    <strong>API.HideSelectionButton (_Flag)</strong>
+    </dt>
+    <dd>
+    Versteckt den Button zur Selektion des Militärs oder blendet ihn ein.
+<p> <p><b>Hinweis:</b> Diese Änderung bleibt auch nach dem Laden eines Spielstandes
+ aktiv und muss explizit zurückgenommen werden!</p>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Widget versteckt
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.HideToggleMinimap"></a>
+    <strong>API.HideToggleMinimap (_Flag)</strong>
+    </dt>
+    <dd>
+    Versteckt den Umschaltknopf der Minimap oder blendet ihn ein.
+<p> <p><b>Hinweis:</b> Diese Änderung bleibt auch nach dem Laden eines Spielstandes
+ aktiv und muss explizit zurückgenommen werden!</p>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Widget versteckt
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.HideWeatherMenu"></a>
+    <strong>API.HideWeatherMenu (_Flag)</strong>
+    </dt>
+    <dd>
+    Versteckt den Button des Wettermenüs oder blendet ihn ein.
+<p> <p><b>Hinweis:</b> Diese Änderung bleibt auch nach dem Laden eines Spielstandes
+ aktiv und muss explizit zurückgenommen werden!</p>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Widget versteckt
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.RemoveShortcutEntry"></a>
+    <strong>API.RemoveShortcutEntry (_ID)</strong>
+    </dt>
+    <dd>
+    Entfernt eine Beschreibung eines benutzerdefinierten Hotkeys.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ID</span>
+            <span class="types"><span class="type">number</span></span>
+         Index in Table
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.SetIcon"></a>
+    <strong>API.SetIcon (_WidgetID, _Coordinates, _Size, _Name)</strong>
+    </dt>
+    <dd>
+    Setzt einen Icon aus einer Icon Matrix.
+<p> Es ist möglich, eine benutzerdefinierte Icon Matrix zu verwenden.
+ Dafür müssen die Quellen nach gui_768, gui_920 und gui_1080 in der
+ entsprechenden Größe gepackt werden, da das Spiel für unterschiedliche
+ Auflösungen in verschiedene Verzeichnisse schaut.
+
+ Die Dateien müssen in <i>graphics/textures</i> liegen, was auf gleicher
+ Ebene ist, wie <i>maps/externalmap</i>.
+ Jede Map muss einen eigenen eindeutigen Namen für jede Grafik verwenden, da
+ diese Grafiken solange geladen werden, wie die Map im Verzeichnis liegt.
+<p> Es können 3 verschiedene Icon-Größen angegeben werden. Je nach dem welche
+ Größe gefordert wird, wird nach einer anderen Datei gesucht. Es entscheidet
+ der als Name angegebene Präfix.
+ <ul>
+ <li>keine: siehe 64</li>
+ <li>44: [Dateiname].png</li>
+ <li>64: [Dateiname]big.png</li>
+ <li>1200: [Dateiname]verybig.png</li>
+ </ul>
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_WidgetID</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Widgetpfad oder ID
+        </li>
+        <li><span class="parameter">_Coordinates</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Koordinaten [Format: {x, y, addon}]
+        </li>
+        <li><span class="parameter">_Size</span>
+            <span class="types"><span class="type">number</span></span>
+         (Optional) Größe des Icon
+        </li>
+        <li><span class="parameter">_Name</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         (Optional) Base Name der Icon Matrix
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Setzt eine Originalgrafik
+</span>API.SetIcon(AnyWidgetID, {<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>});
+
+<span class="comment">-- Setzt eine benutzerdefinierte Grafik
+</span>API.SetIcon(AnyWidgetID, {<span class="number">8</span>, <span class="number">5</span>}, <span class="keyword">nil</span>, <span class="string">"meinetollenicons"</span>);
+<span class="comment">-- (Es wird als Datei gesucht: meinetolleniconsbig.png)
+</span>
+<span class="comment">-- Setzt eine benutzerdefinierte Grafik
+</span>API.SetIcon(AnyWidgetID, {<span class="number">8</span>, <span class="number">5</span>}, <span class="number">128</span>, <span class="string">"meinetollenicons"</span>);
+<span class="comment">-- (Es wird als Datei gesucht: meinetolleniconsverybig.png)</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SetPlayerColor"></a>
+    <strong>API.SetPlayerColor (_PlayerID, _Color, _Logo, _Pattern)</strong>
+    </dt>
+    <dd>
+    Setzt eine andere Spielerfarbe.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         ID des Spielers
+        </li>
+        <li><span class="parameter">_Color</span>
+            <span class="types"><span class="type">number</span></span>
+         Spielerfarbe
+        </li>
+        <li><span class="parameter">_Logo</span>
+            <span class="types"><span class="type">number</span></span>
+         Logo (optional)
+        </li>
+        <li><span class="parameter">_Pattern</span>
+            <span class="types"><span class="type">number</span></span>
+         Pattern (optional)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.SetPlayerName"></a>
+    <strong>API.SetPlayerName (_PlayerID, _Name)</strong>
+    </dt>
+    <dd>
+    Gibt dem Spieler einen neuen Namen.
+<p> <b>hinweis</b>: Die Änderung des Spielernamens betrifft sowohl die Anzeige
+ bei den Quests als auch im Diplomatiemenü.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         ID des Spielers
+        </li>
+        <li><span class="parameter">_Name</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Spielers
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.SetPlayerPortrait"></a>
+    <strong>API.SetPlayerPortrait (_PlayerID, _Portrait)</strong>
+    </dt>
+    <dd>
+    Setzt das Portrait eines Spielers.
+<p> Dabei gibt es 3 verschiedene Varianten:
+ <ul>
+ <li>Wenn _Portrait nicht gesetzt wird, wird das Portrait des Primary
+ Knight genommen.</li>
+ <li>Wenn _Portrait ein existierendes Entity ist, wird anhand des Typs
+ das Portrait bestimmt.</li>
+ <li>Wenn _Portrait der Modellname eines Portrait ist, wird der Wert
+ als Portrait gesetzt.</li>
+ </ul>
+<p> Wenn kein Portrait bestimmt werden kann, wird H_NPC_Generic_Trader verwendet.
+<p> <b>Trivia</b>: Diese Funktionalität wird Umgangssprachlich als "Kopf
+ tauschen" oder "Kopf wechseln" bezeichnet.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_PlayerID</span>
+            <span class="types"><span class="type">number</span></span>
+         ID des Spielers
+        </li>
+        <li><span class="parameter">_Portrait</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Name des Models
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Kopf des Primary Knight
+</span>API.SetPlayerPortrait(<span class="number">2</span>);
+<span class="comment">-- Kopf durch Entity bestimmen
+</span>API.SetPlayerPortrait(<span class="number">2</span>, <span class="string">"amma"</span>);
+<span class="comment">-- Kopf durch Modelname setzen
+</span>API.SetPlayerPortrait(<span class="number">2</span>, <span class="string">"H_NPC_Monk_AS"</span>);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.SetTooltipCosts"></a>
+    <strong>API.SetTooltipCosts (_Title, _Text, _DisabledText, _Costs, _InSettlement)</strong>
+    </dt>
+    <dd>
+    Ändert den Beschreibungstext und die Kosten eines Button.
+<p> Wichtig ist zu beachten, dass diese Funktion in der Tooltip-Funktion des
+ Button oder Icon ausgeführt werden muss.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Title</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+                Titel des Tooltip
+        </li>
+        <li><span class="parameter">_Text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+                 Text des Tooltip
+        </li>
+        <li><span class="parameter">_DisabledText</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Textzusatz wenn inaktiv
+        </li>
+        <li><span class="parameter">_Costs</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+                Kostentabelle
+        </li>
+        <li><span class="parameter">_InSettlement</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Kosten in Siedlung suchen
+        </li>
+    </ul>
+
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/smodules.qsb_1_guicontrol.html#API.SetTooltipNormal">API.SetTooltipNormal</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "API.SetTooltipNormal"></a>
+    <strong>API.SetTooltipNormal (_Title, _Text, _DisabledText)</strong>
+    </dt>
+    <dd>
+    Ändert den Beschreibungstext eines Button oder eines Icon.
+<p> Wichtig ist zu beachten, dass diese Funktion in der Tooltip-Funktion des
+ Button oder Icon ausgeführt werden muss.
+<p> Die Funktion kann auch mit deutsch/english lokalisierten Tabellen als
+ Text gefüttert werden. In diesem Fall wird der deutsche Text genommen,
+ wenn es sich um eine deutsche Spielversion handelt. Andernfalls wird
+ immer der englische Text verwendet.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Title</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+                Titel des Tooltip
+        </li>
+        <li><span class="parameter">_Text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+                 Text des Tooltip
+        </li>
+        <li><span class="parameter">_DisabledText</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Textzusatz wenn inaktiv
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "API.SpeedLimitActivate"></a>
+    <strong>API.SpeedLimitActivate (_Flag)</strong>
+    </dt>
+    <dd>
+    Setzt die Spielgeschwindigkeit auf Stufe 1 fest oder gibt sie wieder frei.
+<p> <b>Hinweis</b>: Die Geschwindigkeitsbeschränkung wirkt sich ebenfalls auf
+ Cheats aus. Es ist generell nicht mehr möglich, das Spiel zu beschleunigen,
+ wenn die "Speedbremse" aktiv ist.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Flag</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Speedbremse ist aktiv
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Geschwindigkeit auf Stufe 1 festsetzen
+</span>API.SpeedLimitActivate(<span class="keyword">true</span>);
+<span class="comment">-- Geschwindigkeit freigeben
+</span>API.SpeedLimitActivate(<span class="keyword">false</span>);</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-04-20 11:56:25 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>
