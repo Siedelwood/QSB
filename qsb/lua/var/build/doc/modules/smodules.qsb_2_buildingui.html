@@ -1,0 +1,648 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<button onclick="topFunction()" id="back2top" title="Nach oben scrollen">&#11014</button>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name">Siedelwood | QSB<big><b></b></big></div>
+	<div id="product_description">Dokumentation der S6-QSB der Siedelwood Community</div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Fields">Fields</a></li>
+<li><a href="#Anwenderfunktionen">Anwenderfunktionen</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/qsb.html">(0) Basismodul</a></li>
+  <li><a href="../modules/smodules.qsb_1_entity.html">(1) Entitätensteuerung</a></li>
+  <li><a href="../modules/smodules.qsb_1_guicontrol.html">(1) Anzeigesteuerung</a></li>
+  <li><a href="../modules/smodules.qsb_1_guieffects.html">(1) Anzeigeeffekte</a></li>
+  <li><a href="../modules/smodules.qsb_1_movement.html">(1) Bewegung</a></li>
+  <li><a href="../modules/smodules.qsb_1_requester.html">(1) Dialogfenster</a></li>
+  <li><a href="../modules/smodules.qsb_1_sound.html">(1) Sound</a></li>
+  <li><a href="../modules/smodules.qsb_1_trade.html">(1) Handelserweiterung</a></li>
+  <li><a href="../modules/smodules.qsb_2_buildingcost.html">(2) Baukostensystem</a></li>
+  <li><strong>(2) Gebäudeschalter</strong></li>
+  <li><a href="../modules/smodules.qsb_2_buildrestriction.html">(2) Baubeschränkung</a></li>
+  <li><a href="../modules/smodules.qsb_2_camera.html">(2) Kamerafunktionen</a></li>
+  <li><a href="../modules/smodules.qsb_2_newbehavior.html">(2) Neue Behavior</a></li>
+  <li><a href="../modules/smodules.qsb_2_npc.html">(2) Ansprechbare Siedler</a></li>
+  <li><a href="../modules/smodules.qsb_2_objects.html">(2) Interaktive Objekte</a></li>
+  <li><a href="../modules/smodules.qsb_2_promotion.html">(2) Aufstiegsbedingungen</a></li>
+  <li><a href="../modules/smodules.qsb_2_quest.html">(2) Aufträge</a></li>
+  <li><a href="../modules/smodules.qsb_2_selection.html">(2) Selektion</a></li>
+  <li><a href="../modules/smodules.qsb_3_briefingsystem.html">(3) Briefing System</a></li>
+  <li><a href="../modules/smodules.qsb_3_cutscenesystem.html">(3) Cutscene System</a></li>
+  <li><a href="../modules/smodules.qsb_3_dialogsystem.html">(3) Dialog System</a></li>
+  <li><a href="../modules/smodules.qsb_3_lifestock.html">(3) Viehzucht</a></li>
+  <li><a href="../modules/smodules.qsb_3_militarylimit.html">(3) Soldatenlimit</a></li>
+  <li><a href="../modules/smodules.qsb_3_traderoutes.html">(3) Handelsrouten</a></li>
+  <li><a href="../modules/smodules.qsb_4_iomines.html">(4) Interaktive Minen</a></li>
+  <li><a href="../modules/smodules.qsb_4_iosites.html">(4) Interaktive Baustellen</a></li>
+  <li><a href="../modules/smodules.qsb_4_iotreasure.html">(4) Interaktive Schätze</a></li>
+  <li><a href="../modules/smodules.qsb_4_questjournal.html">(4) Auftragsnotizen</a></li>
+  <li><a href="../modules/tqsb_x_acomp.html">(X) Kompatibilität</a></li>
+
+</ul>
+<h2>Addons</h2>
+<ul class=nowrap>
+
+  <li><a href="../modules/xaddons.qsb_x_addon_1_singlebuttons.html">Addon (1) SingleButtons</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>(2) Gebäudeschalter</code></h1>
+<p>Ermöglicht es zusätzliche Buttons im Gebäudemenü platzieren.</p>
+<p>
+<p> <b>Vorausgesetzte Module:</b>
+ <ul>
+ <li><a href="qsb.html">(0) Basismodul</a></li>
+ <li><a href="modules.QSB_1_GuiControl.QSB_1_GuiControl.html">(0) Anzeigesteuerung</a></li>
+ </ul>
+</p>
+
+
+<h2><a href="#Fields">Fields</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#QSB.ScriptEvents">QSB.ScriptEvents</a></td>
+	<td class="summary">Events, auf die reagiert werden kann.</td>
+	</tr>
+</table>
+<h2><a href="#Anwenderfunktionen">Anwenderfunktionen</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#API.AddBuildingButton">API.AddBuildingButton (_Action, _Tooltip, _Update)</a></td>
+	<td class="summary">Fügt einen allgemeinen Gebäudeschalter hinzu.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.AddBuildingButtonAtPosition">API.AddBuildingButtonAtPosition (_X, _Y, _Action, _Tooltip, _Update)</a></td>
+	<td class="summary">Fügt einen allgemeinen Gebäudeschalter an der Position hinzu.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.AddBuildingButtonByEntity">API.AddBuildingButtonByEntity (_ScriptName, _Action, _Tooltip, _Update)</a></td>
+	<td class="summary">Fügt einen Gebäudeschalter für das Entity hinzu.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.AddBuildingButtonByEntityAtPosition">API.AddBuildingButtonByEntityAtPosition (_ScriptName, _X, _Y, _Action, _Tooltip, _Update)</a></td>
+	<td class="summary">Fügt einen Gebäudeschalter für das Entity hinzu.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.AddBuildingButtonByType">API.AddBuildingButtonByType (_Type, _Action, _Tooltip, _Update)</a></td>
+	<td class="summary">Fügt einen Gebäudeschalter für den Entity-Typ hinzu.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.AddBuildingButtonByTypeAtPosition">API.AddBuildingButtonByTypeAtPosition (_Type, _X, _Y, _Action, _Tooltip, _Update)</a></td>
+	<td class="summary">Fügt einen Gebäudeschalter für den Entity-Typ hinzu.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.DropBuildingButton">API.DropBuildingButton (_ID)</a></td>
+	<td class="summary">Entfernt einen allgemeinen Gebäudeschalter.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.DropBuildingButtonFromEntity">API.DropBuildingButtonFromEntity (_ScriptName, _ID)</a></td>
+	<td class="summary">Entfernt einen Gebäudeschalter vom benannten Gebäude.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#API.DropBuildingButtonFromType">API.DropBuildingButtonFromType (_Type, _ID)</a></td>
+	<td class="summary">Entfernt einen Gebäudeschalter vom Gebäudetypen.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "QSB.ScriptEvents"></a>
+    <strong>QSB.ScriptEvents</strong>
+    </dt>
+    <dd>
+    Events, auf die reagiert werden kann.
+
+
+    <ul>
+        <li><span class="parameter">UpgradeStarted</span>
+             Ein Ausbau wurde gestartet. (Parameter: EntityID, PlayerID)
+        </li>
+        <li><span class="parameter">UpgradeCanceled</span>
+            Ein Ausbau wurde abgebrochen. (Parameter: EntityID, PlayerID)
+        </li>
+        <li><span class="parameter">FestivalStarted</span>
+            Ein Fest wurde gestartet. (Parameter: PlayerID)
+        </li>
+        <li><span class="parameter">SermonStarted</span>
+              Eine Predigt wurde gestartet. (Parameter: PlayerID)
+        </li>
+        <li><span class="parameter">TheatrePlayStarted</span>
+         Ein Schauspiel wurde abgebrochen. (Parameter: EntityID, PlayerID)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Anwenderfunktionen"></a>Anwenderfunktionen</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "API.AddBuildingButton"></a>
+    <strong>API.AddBuildingButton (_Action, _Tooltip, _Update)</strong>
+    </dt>
+    <dd>
+    Fügt einen allgemeinen Gebäudeschalter hinzu.
+<p> Einem Gebäude können maximal 6 Buttons zugewiesen werden! Auf diese Weise
+ hinzugefügte Buttons sind prinzipiell immer sichtbar, abhängig von ihrer
+ Update-Funktion.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Action</span>
+            <span class="types"><span class="type">function</span></span>
+          Funktion für die Aktion beim Klicken
+        </li>
+        <li><span class="parameter">_Tooltip</span>
+            <span class="types"><span class="type">function</span></span>
+         Funktion für die angezeigte Beschreibung
+        </li>
+        <li><span class="parameter">_Update</span>
+            <span class="types"><span class="type">function</span></span>
+          Funktion für Anzeige und Verfügbarkeit
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        ID des Bindung
+    </ol>
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">SpecialButtonID = API.AddBuildingButton(
+    <span class="comment">-- Aktion
+</span>    <span class="keyword">function</span>(_WidgetID, _BuildingID)
+        GUI.AddNote(<span class="string">"Hier passiert etwas!"</span>);
+    <span class="keyword">end</span>,
+    <span class="comment">-- Tooltip
+</span>    <span class="keyword">function</span>(_WidgetID, _BuildingID)
+        <span class="comment">-- Es MUSS ein Kostentooltip verwendet werden.
+</span>        API.SetTooltipCosts(<span class="string">"Beschreibung"</span>, <span class="string">"Das ist die Beschreibung!"</span>);
+    <span class="keyword">end</span>,
+    <span class="comment">-- Update
+</span>    <span class="keyword">function</span>(_WidgetID, _BuildingID)
+        <span class="comment">-- Ausblenden, wenn noch in Bau
+</span>        <span class="keyword">if</span> Logic.IsConstructionComplete(_BuildingID) == <span class="number">0</span> <span class="keyword">then</span>
+            XGUIEng.ShowWidget(_WidgetID, <span class="number">0</span>);
+            <span class="keyword">return</span>;
+        <span class="keyword">end</span>
+        <span class="comment">-- Deaktivieren, wenn ausgebaut wird.
+</span>        <span class="keyword">if</span> Logic.IsBuildingBeingUpgraded(_BuildingID) <span class="keyword">then</span>
+            XGUIEng.DisableButton(_WidgetID, <span class="number">1</span>);
+        <span class="keyword">end</span>
+        SetIcon(_WidgetID, {<span class="number">1</span>, <span class="number">1</span>});
+    <span class="keyword">end</span>
+);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.AddBuildingButtonAtPosition"></a>
+    <strong>API.AddBuildingButtonAtPosition (_X, _Y, _Action, _Tooltip, _Update)</strong>
+    </dt>
+    <dd>
+    Fügt einen allgemeinen Gebäudeschalter an der Position hinzu.
+<p> Einem Gebäude können maximal 6 Buttons zugewiesen werden! Auf diese Weise
+ hinzugefügte Buttons sind prinzipiell immer sichtbar, abhängig von ihrer
+ Update-Funktion.
+<p> Die Position wird lokal zur linken oberen Ecke des Fensters angegeben.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_X</span>
+            <span class="types"><span class="type">number</span></span>
+               X-Position des Button
+        </li>
+        <li><span class="parameter">_Y</span>
+            <span class="types"><span class="type">number</span></span>
+               Y-Position des Button
+        </li>
+        <li><span class="parameter">_Action</span>
+            <span class="types"><span class="type">function</span></span>
+          Funktion für die Aktion beim Klicken
+        </li>
+        <li><span class="parameter">_Tooltip</span>
+            <span class="types"><span class="type">function</span></span>
+         Funktion für die angezeigte Beschreibung
+        </li>
+        <li><span class="parameter">_Update</span>
+            <span class="types"><span class="type">function</span></span>
+          Funktion für Anzeige und Verfügbarkeit
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        ID des Bindung
+    </ol>
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">SpecialButtonID = API.AddBuildingButton(
+    <span class="comment">-- Position (X, Y)
+</span>    <span class="number">230</span>, <span class="number">180</span>,
+    <span class="comment">-- Aktion
+</span>    <span class="keyword">function</span>(_WidgetID, _BuildingID)
+        GUI.AddNote(<span class="string">"Hier passiert etwas!"</span>);
+    <span class="keyword">end</span>,
+    <span class="comment">-- Tooltip
+</span>    <span class="keyword">function</span>(_WidgetID, _BuildingID)
+        <span class="comment">-- Es MUSS ein Kostentooltip verwendet werden.
+</span>        API.SetTooltipCosts(<span class="string">"Beschreibung"</span>, <span class="string">"Das ist die Beschreibung!"</span>);
+    <span class="keyword">end</span>,
+    <span class="comment">-- Update
+</span>    <span class="keyword">function</span>(_WidgetID, _BuildingID)
+        <span class="comment">-- Ausblenden, wenn noch in Bau
+</span>        <span class="keyword">if</span> Logic.IsConstructionComplete(_BuildingID) == <span class="number">0</span> <span class="keyword">then</span>
+            XGUIEng.ShowWidget(_WidgetID, <span class="number">0</span>);
+            <span class="keyword">return</span>;
+        <span class="keyword">end</span>
+        <span class="comment">-- Deaktivieren, wenn ausgebaut wird.
+</span>        <span class="keyword">if</span> Logic.IsBuildingBeingUpgraded(_BuildingID) <span class="keyword">then</span>
+            XGUIEng.DisableButton(_WidgetID, <span class="number">1</span>);
+        <span class="keyword">end</span>
+        SetIcon(_WidgetID, {<span class="number">1</span>, <span class="number">1</span>});
+    <span class="keyword">end</span>
+);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.AddBuildingButtonByEntity"></a>
+    <strong>API.AddBuildingButtonByEntity (_ScriptName, _Action, _Tooltip, _Update)</strong>
+    </dt>
+    <dd>
+    Fügt einen Gebäudeschalter für das Entity hinzu.
+<p> Einem Gebäude können maximal 6 Buttons zugewiesen werden! Auf diese Weise
+ hinzugefügte Buttons sind prinzipiell immer sichtbar, abhängig von ihrer
+ Update-Funktion. Wenn ein Entity einen Button zugewiesen bekommt, werden
+ alle allgemeinen Buttons und alle Buttons für Typen für das Entity ignoriert.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><span class="type">function</span></span>
+         Scriptname des Entity
+        </li>
+        <li><span class="parameter">_Action</span>
+            <span class="types"><span class="type">function</span></span>
+             Funktion für die Aktion beim Klicken
+        </li>
+        <li><span class="parameter">_Tooltip</span>
+            <span class="types"><span class="type">function</span></span>
+            Funktion für die angezeigte Beschreibung
+        </li>
+        <li><span class="parameter">_Update</span>
+            <span class="types"><span class="type">function</span></span>
+             Funktion für Anzeige und Verfügbarkeit
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        ID des Bindung
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/smodules.qsb_2_buildingui.html#API.AddBuildingButton">API.AddBuildingButton</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "API.AddBuildingButtonByEntityAtPosition"></a>
+    <strong>API.AddBuildingButtonByEntityAtPosition (_ScriptName, _X, _Y, _Action, _Tooltip, _Update)</strong>
+    </dt>
+    <dd>
+    Fügt einen Gebäudeschalter für das Entity hinzu.
+<p> Einem Gebäude können maximal 6 Buttons zugewiesen werden! Auf diese Weise
+ hinzugefügte Buttons sind prinzipiell immer sichtbar, abhängig von ihrer
+ Update-Funktion. Wenn ein Entity einen Button zugewiesen bekommt, werden
+ alle allgemeinen Buttons und alle Buttons für Typen für das Entity ignoriert.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><span class="type">function</span></span>
+         Scriptname des Entity
+        </li>
+        <li><span class="parameter">_X</span>
+            <span class="types"><span class="type">number</span></span>
+                  X-Position des Button
+        </li>
+        <li><span class="parameter">_Y</span>
+            <span class="types"><span class="type">number</span></span>
+                  Y-Position des Button
+        </li>
+        <li><span class="parameter">_Action</span>
+            <span class="types"><span class="type">function</span></span>
+             Funktion für die Aktion beim Klicken
+        </li>
+        <li><span class="parameter">_Tooltip</span>
+            <span class="types"><span class="type">function</span></span>
+            Funktion für die angezeigte Beschreibung
+        </li>
+        <li><span class="parameter">_Update</span>
+            <span class="types"><span class="type">function</span></span>
+             Funktion für Anzeige und Verfügbarkeit
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        ID des Bindung
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/smodules.qsb_2_buildingui.html#API.AddBuildingButton">API.AddBuildingButton</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "API.AddBuildingButtonByType"></a>
+    <strong>API.AddBuildingButtonByType (_Type, _Action, _Tooltip, _Update)</strong>
+    </dt>
+    <dd>
+    Fügt einen Gebäudeschalter für den Entity-Typ hinzu.
+<p> Einem Gebäude können maximal 6 Buttons zugewiesen werden! Auf diese Weise
+ hinzugefügte Buttons sind prinzipiell immer sichtbar, abhängig von ihrer
+ Update-Funktion. Wenn ein Typ einen Button zugewiesen bekommt, werden alle
+ allgemeinen Buttons für den Typ ignoriert.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Type</span>
+            <span class="types"><span class="type">number</span></span>
+            Typ des Gebäudes
+        </li>
+        <li><span class="parameter">_Action</span>
+            <span class="types"><span class="type">function</span></span>
+          Funktion für die Aktion beim Klicken
+        </li>
+        <li><span class="parameter">_Tooltip</span>
+            <span class="types"><span class="type">function</span></span>
+         Funktion für die angezeigte Beschreibung
+        </li>
+        <li><span class="parameter">_Update</span>
+            <span class="types"><span class="type">function</span></span>
+          Funktion für Anzeige und Verfügbarkeit
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        ID des Bindung
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/smodules.qsb_2_buildingui.html#API.AddBuildingButton">API.AddBuildingButton</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "API.AddBuildingButtonByTypeAtPosition"></a>
+    <strong>API.AddBuildingButtonByTypeAtPosition (_Type, _X, _Y, _Action, _Tooltip, _Update)</strong>
+    </dt>
+    <dd>
+    Fügt einen Gebäudeschalter für den Entity-Typ hinzu.
+<p> Einem Gebäude können maximal 6 Buttons zugewiesen werden! Auf diese Weise
+ hinzugefügte Buttons sind prinzipiell immer sichtbar, abhängig von ihrer
+ Update-Funktion. Wenn ein Typ einen Button zugewiesen bekommt, werden alle
+ allgemeinen Buttons für den Typ ignoriert.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Type</span>
+            <span class="types"><span class="type">number</span></span>
+            Typ des Gebäudes
+        </li>
+        <li><span class="parameter">_X</span>
+            <span class="types"><span class="type">number</span></span>
+               X-Position des Button
+        </li>
+        <li><span class="parameter">_Y</span>
+            <span class="types"><span class="type">number</span></span>
+               Y-Position des Button
+        </li>
+        <li><span class="parameter">_Action</span>
+            <span class="types"><span class="type">function</span></span>
+          Funktion für die Aktion beim Klicken
+        </li>
+        <li><span class="parameter">_Tooltip</span>
+            <span class="types"><span class="type">function</span></span>
+         Funktion für die angezeigte Beschreibung
+        </li>
+        <li><span class="parameter">_Update</span>
+            <span class="types"><span class="type">function</span></span>
+          Funktion für Anzeige und Verfügbarkeit
+        </li>
+    </ul>
+
+    <h3>Rückgabe:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        ID des Bindung
+    </ol>
+
+
+    <h3>Verwandte Themen:</h3>
+    <ul>
+         <a href="../modules/smodules.qsb_2_buildingui.html#API.AddBuildingButton">API.AddBuildingButton</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "API.DropBuildingButton"></a>
+    <strong>API.DropBuildingButton (_ID)</strong>
+    </dt>
+    <dd>
+    Entfernt einen allgemeinen Gebäudeschalter.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ID</span>
+            <span class="types"><span class="type">number</span></span>
+         ID des Bindung
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.DropBuildingButton(SpecialButtonID);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.DropBuildingButtonFromEntity"></a>
+    <strong>API.DropBuildingButtonFromEntity (_ScriptName, _ID)</strong>
+    </dt>
+    <dd>
+    Entfernt einen Gebäudeschalter vom benannten Gebäude.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_ScriptName</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Skriptname des Entity
+        </li>
+        <li><span class="parameter">_ID</span>
+            <span class="types"><span class="type">number</span></span>
+                 ID des Bindung
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.DropBuildingButtonFromEntity(<span class="string">"Bakery"</span>, SpecialButtonID);</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "API.DropBuildingButtonFromType"></a>
+    <strong>API.DropBuildingButtonFromType (_Type, _ID)</strong>
+    </dt>
+    <dd>
+    Entfernt einen Gebäudeschalter vom Gebäudetypen.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">_Type</span>
+            <span class="types"><span class="type">number</span></span>
+         Typ des Gebäudes
+        </li>
+        <li><span class="parameter">_ID</span>
+            <span class="types"><span class="type">number</span></span>
+           ID des Bindung
+        </li>
+    </ul>
+
+
+
+
+    <h3>Beispiel:</h3>
+    <ul>
+        <pre class="example">API.DropBuildingButtonFromType(Entities.B_Bakery, SpecialButtonID);</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-04-20 12:25:59 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+
+<script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("back2top").style.display = "block";
+        } else {
+            document.getElementById("back2top").style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>
