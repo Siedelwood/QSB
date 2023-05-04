@@ -238,3 +238,39 @@ IsValidPosition = API.ValidatePosition
 function API.StartEventJob(_EventType, _Function, ...)
     return API.StartJobByEventType (_EventType, _Function, ...)
 end
+
+---
+-- Aktiviert ein interaktives Objekt, sodass es benutzt werden kann.
+--
+-- Der State bestimmt, ob es immer aktiviert werden kann, oder ob der Spieler
+-- einen Helden benutzen muss. Wird der Parameter weggelassen, muss immer ein
+-- Held das Objekt aktivieren.
+--
+-- <b>QSB:</b> API.ActivateIO(_ScriptName, _State)
+--
+-- @param[type=string] _ScriptName  Skriptname des IO
+-- @param[type=number] _State       Aktivierungszustand
+-- @within QSB-Kern
+-- @usage
+-- API.ActivateIO("Haus1", 0)
+-- API.ActivateIO("Hut1")
+--
+function API.ActivateIO(_ScriptName, _State)
+    API.InteractiveObjectActivate(_ScriptName, _State)
+end
+
+---
+-- Deaktiviert ein Interaktives Objekt, sodass es nicht mehr vom Spieler
+-- aktiviert werden kann.
+--
+-- <b>QSB:</b> API.DeactivateIO(_ScriptName)
+--
+-- @param[type=string] _ScriptName Skriptname des IO
+-- @within QSB-Kern
+--
+-- @usage
+-- API.DeactivateIO("Hut1")
+--
+function API.DeactivateIO(_ScriptName)
+    API.InteractiveObjectDeactivate(_ScriptName)
+end
