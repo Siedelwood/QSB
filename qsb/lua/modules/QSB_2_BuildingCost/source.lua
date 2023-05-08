@@ -102,11 +102,12 @@ function ModuleBuildingCost.Global:OnGameStart()
 
 			local IsReachable = CanEntityReachTarget(_PlayerID, Logic.GetStoreHouse(_PlayerID), _EntityID, nil, PlayerSectorTypes.Civil)
 			-- Return nothing in case the building is not reachable
-			if IsReachable == false then
+			-- TODO: Does this even return something other than true when the entity is already deleted?
+			if not IsReachable then
 				return;
 			end
 
-			Logic.ExecuteInLuaLocalState(" ModuleBuildingCost.Local:RefundKnockDown(".._EntityID..")")
+			Logic.ExecuteInLuaLocalState("ModuleBuildingCost.Local:RefundKnockDown(".._EntityID..")")
 		end
 	end
 
@@ -120,6 +121,20 @@ function ModuleBuildingCost.Global:OnGameStart()
 			return self.Data.Original.GameCallback_CanPlayerPlaceBuilding(_PlayerID, _Type, _X, _Y)
 		end
 	end
+
+	if self.Data.Original.GameCallback_SettlerSpawned == nil then
+		self.Data.Original.GameCallback_SettlerSpawned = GameCallback_SettlerSpawned;
+	end
+	GameCallback_SettlerSpawned = function(_PlayerID, _EntityID)
+		self.Data.Original.GameCallback_SettlerSpawned(_PlayerID, _EntityID)		
+		if (_PlayerID == 1) then
+			if (Logic.IsEntityInCategory(_EntityID, EntityCategories.Worker) == 1) 
+			or (Logic.GetEntityType(_EntityID) == Entities.U_OutpostConstructionWorker) 
+			or (Logic.GetEntityType(_EntityID) == Entities.U_WallConstructionWorker) then
+				Logic.ExecuteInLuaLocalState("ModuleBuildingCost.Local:GetLastPlacedBuildingIDForKnockDown(".._EntityID..")")	
+			end
+		end
+	end	
 end
 
 -- Local Script ----------------------------------------------------------------
@@ -137,7 +152,6 @@ function ModuleBuildingCost.Local:OnGameStart()
 
 	-- BuildingCosts
 	self:InitializeBuildingCostSystem()
-	self:AddBuildingCostScriptEvents()
 end
 
 function ModuleBuildingCost.Local:OnEvent(_ID, ...)
@@ -455,28 +469,11 @@ function ModuleBuildingCost.Local:AddReturningSettler(_EntityID)
 end
 
 -- -------------------------------------------------------------------------- --
--- BuildingCostSystem refactored by EisenMonoxid (QSB-Refactoring by Jelumar) --
+-- BuildingCostSystem refactored by Eisenmonoxid (QSB-Refactoring by Jelumar) --
 -- -------------------------------------------------------------------------- --
-
-function ModuleBuildingCost.Local:AddBuildingCostScriptEvents()
-	API.AddScriptEventListener(QSB.ScriptEvents.SettlerAttracted, function(_EntityID, _PlayerID)
-		if (_PlayerID == GUI.GetPlayerID()) then
-			if (Logic.IsEntityInCategory(_EntityID, EntityCategories.Worker) == 1) 
-			or (Logic.GetEntityType(_EntityID) == Entities.U_OutpostConstructionWorker) 
-			or (Logic.GetEntityType(_EntityID) == Entities.U_WallConstructionWorker) then
-				API.StartHiResJob(function()
-					return ModuleBuildingCost.Local:GetLastPlacedBuildingIDForKnockDown(_EntityID)
-				end)
-			end
-		end
-    end)
-end
-
--- Table Managment
-
 function ModuleBuildingCost.Local:GetCostByCostTable(_upgradeCategory)
 	if _upgradeCategory == nil or _upgradeCategory == 0 then
-		return
+		return;
 	end
 	local CurrentCostTable = self.Data.Costs.Construction[_upgradeCategory]
 	if #self.Data.DiscountFunctions.Construction.AddedGood > 0 then
@@ -516,7 +513,7 @@ end
 
 function ModuleBuildingCost.Local:GetCostByBuildingIDTable(_EntityID)
 	if _EntityID == nil or _EntityID == 0 then
-		return
+		return;
 	end
 
 	for Type, CurrentCostTable in pairs(self.Data.BuildingIDTable) do
@@ -732,7 +729,6 @@ end
 function ModuleBuildingCost.Local:RefundKnockDown(_entityID)
 	-- WARNING: _entityID is not valid here anymore! DO NOT USE ON GAME FUNCTIONS!
 	-- -> Just used to get the corresponding table index
-	local PlayerID = GUI.GetPlayerID()
 	local CostTable, Type = self:GetCostByBuildingIDTable(_entityID)
 
 	if CostTable == nil then -- Building has no costs
@@ -805,6 +801,10 @@ function ModuleBuildingCost.Local:RefundKnockDownForCityGoods(_goodType, _goodAm
 end
 
 function ModuleBuildingCost.Local:GetEntityIDToAddToOutStock(_goodType)
+	if _goodType == nil then 
+		return nil 
+	end
+	
 	local PlayerID = GUI.GetPlayerID()
 
 	if _goodType == Goods.G_Gold then 
@@ -857,25 +857,6 @@ function ModuleBuildingCost.Local:GetLastPlacedBuildingIDForKnockDown(_EntityID)
 			return true;
 		end
 	end
-end
-
--- Hacking the game functions
-
-function ModuleBuildingCost.Local:HasCurrentBuildingOwnBuildingCosts(_upgradeCategory)
-	local CostTable = self:GetCostByCostTable(_upgradeCategory)
-	if (CostTable == nil or CostTable == 0) then
-		self:SetAwaitingVariable(false)
-		info("BCS: Building NOT Custom with Category: "..tostring(_upgradeCategory))
-	else
-		self:SetAwaitingVariable(true)
-		info("BCS: Building Custom with Category: "..tostring(_upgradeCategory))
-	end
-end
-function ModuleBuildingCost.Local:SetAwaitingVariable(_isAwaiting)
-	self.Data.IsCurrentBuildingInCostTable = _isAwaiting
-end
-function ModuleBuildingCost.Local:GetAwaitingVariable()
-	return self.Data.IsCurrentBuildingInCostTable
 end
 
 function ModuleBuildingCost.Local:OverwriteAfterPlacement()
