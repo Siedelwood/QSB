@@ -36,10 +36,13 @@ end
 function Swift.Event:OverrideSoldierPayment()
     GameCallback_SetSoldierPaymentLevel_Orig_Swift = GameCallback_SetSoldierPaymentLevel;
     GameCallback_SetSoldierPaymentLevel = function(_PlayerID, _Level)
-        if _Level <= 2 then
-            return GameCallback_SetSoldierPaymentLevel_Orig_Swift(_PlayerID, _Level);
+        GameCallback_SetSoldierPaymentLevel_Orig_Swift(_PlayerID, _Level);
+
+        local ScriptCommand = Framework.GetCampaignName()
+        if string.sub(ScriptCommand, 1, 1) == '^' then -- There is a command in the queue
+            Swift.Event:ProcessScriptCommand(_PlayerID, string:sub(ScriptCommand, 2));
+            Framework.SetCampaignName("°")
         end
-        Swift.Event:ProcessScriptCommand(_PlayerID, _Level);
     end
 end
 
@@ -74,14 +77,11 @@ function Swift.Event:DispatchScriptCommand(_ID, ...)
     end
     assert(_ID ~= nil);
     if self.ScriptCommandRegister[_ID] then
-        local PlayerID = GUI.GetPlayerID();
-        local NamePlayerID = PlayerID +4;
-        local PlayerName = Logic.GetPlayerName(NamePlayerID);
         local Parameters = self:EncodeScriptCommandParameters(unpack(arg));
 
         if Framework.IsNetworkGame() and Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
-            GUI.SetPlayerName(NamePlayerID, Parameters);
-            GUI.SetSoldierPaymentLevel(_ID);
+            Framework.SetCampaignName('^' + Parameters)
+            GUI.SetSoldierPaymentLevel(PlayerSoldierPaymentLevel[GUI.GetPlayerID()]);
         else
             GUI.SendScriptCommand(string.format(
                 [[Swift.Event:ProcessScriptCommand(%d, %d, "%s")]],
@@ -94,11 +94,6 @@ function Swift.Event:DispatchScriptCommand(_ID, ...)
             "Dispatching script command %s to global.",
             self.ScriptCommandRegister[_ID]
         ), true);
-
-        if Framework.IsNetworkGame() and Swift.GameVersion == QSB.GameVersion.HISTORY_EDITION then
-            GUI.SetPlayerName(NamePlayerID, PlayerName);
-            GUI.SetSoldierPaymentLevel(PlayerSoldierPaymentLevel[PlayerID]);
-        end
     end
 end
 
