@@ -804,7 +804,7 @@ function ModuleBuildingCost.Local:GetEntityIDToAddToOutStock(_goodType)
 	if _goodType == nil then 
 		return nil 
 	end
-	
+
 	local PlayerID = GUI.GetPlayerID()
 
 	if _goodType == Goods.G_Gold then 
@@ -864,12 +864,12 @@ function ModuleBuildingCost.Local:OverwriteAfterPlacement()
 		self.Data.Original.GameCallback_GUI_AfterBuildingPlacement = GameCallback_GUI_AfterBuildingPlacement;
 	end
     GameCallback_GUI_AfterBuildingPlacement = function()
-		if (self:GetAwaitingVariable() == true) then
+		local CostTable = self:GetCostByCostTable(g_LastPlacedParam)
+		if (CostTable ~= nil and CostTable ~= 0) then
 			local AmountOfTypes, FirstBuildingType = Logic.GetBuildingTypesInUpgradeCategory(g_LastPlacedParam)
 			self.Data.CurrentExpectedBuildingType = FirstBuildingType
 
 			self:RemoveCostsFromOutStock(g_LastPlacedParam)
-			self:SetAwaitingVariable(false)
 		end
         self.Data.Original.GameCallback_GUI_AfterBuildingPlacement();
     end
@@ -878,12 +878,12 @@ function ModuleBuildingCost.Local:OverwriteAfterPlacement()
 		self.Data.Original.GameCallback_GUI_AfterWallGatePlacement = GameCallback_GUI_AfterWallGatePlacement;
 	end
     GameCallback_GUI_AfterWallGatePlacement = function()
-		if (self:GetAwaitingVariable() == true) then
+		local CostTable = self:GetCostByCostTable(g_LastPlacedParam)
+		if (CostTable ~= nil and CostTable ~= 0) then
 			local AmountOfTypes, FirstBuildingType = Logic.GetBuildingTypesInUpgradeCategory(g_LastPlacedParam)
 			self.Data.CurrentExpectedBuildingType = FirstBuildingType
 
-			self:RemoveCostsFromOutStock(g_LastPlacedParam);
-			self:SetAwaitingVariable(false)
+			self:RemoveCostsFromOutStock(g_LastPlacedParam)
 		end
         self.Data.Original.GameCallback_GUI_AfterWallGatePlacement();
     end
@@ -932,18 +932,72 @@ function ModuleBuildingCost.Local:OverwriteAfterPlacement()
     end
 end
 
+ModuleBuildingCost.Local.CustomBuildClicked = function(_upgradeCategory, _isWallOrPalisadeGate)
+	PlacementState = 0
+    XGUIEng.UnHighLightGroup("/InGame", "Construction")
+
+    if not GUI_Construction.TestSettlerLimit(_upgradeCategory) and _isWallOrPalisadeGate == false then
+        return;
+    end
+
+    local CanPlace = self:AreResourcesAvailable(_upgradeCategory)
+	
+    if CanPlace == false then
+        Message(XGUIEng.GetStringTableText("Feedback_TextLines/TextLine_NotEnough_Resources"))
+    else
+        Sound.FXPlay2DSound( "ui\\menu_select")
+		
+		-- save last placement
+		self.Data.IsInWallOrPalisadeContinueState = false
+        g_LastPlacedParam = _upgradeCategory
+		
+		if _isWallOrPalisadeGate == true then
+			GUI.ActivatePlaceWallGateState(_upgradeCategory)
+		else
+			GUI.ActivatePlaceBuildingState(_upgradeCategory)			
+		end
+
+        XGUIEng.ShowWidget("/Ingame/Root/Normal/PlacementStatus",1)
+        GUI_Construction.CloseContextSensitiveMenu()
+    end
+end
+ModuleBuildingCost.Local.CustomBuildWallOrStreetClicked = function(_upgradeCategory, _isTrail)
+    Sound.FXPlay2DSound( "ui\\menu_select")
+    PlacementState = 0
+
+    GUI.ClearSelection()
+	
+	-- save last placement
+	self.Data.IsInWallOrPalisadeContinueState = false
+    g_LastPlacedParam = _upgradeCategory
+	
+	if _isTrail ~= nil then
+		g_LastPlacedParam = _isTrail
+		GUI.ActivatePlaceRoadState(_isTrail)
+	else
+		GUI.ActivatePlaceWallState(_upgradeCategory)
+	end
+	
+    XGUIEng.ShowWidget("/Ingame/Root/Normal/PlacementStatus", 1)
+    GUI_Construction.CloseContextSensitiveMenu()
+end
+
 function ModuleBuildingCost.Local:OverwriteBuildClicked()
 	if self.Data.Original.BuildClicked == nil then
 		self.Data.Original.BuildClicked = GUI_Construction.BuildClicked;
 	end
 	GUI_Construction.BuildClicked = function(_BuildingType)
-		if self:IsCurrentStateABuildingState(GUI.GetCurrentStateID()) == true then
+		local CostTable = self:GetCostByCostTable(_BuildingType)
+		if (CostTable ~= nil and CostTable ~= 0) then
+			-- Custom Building
 			GUI.CancelState()
+			ModuleBuildingCost.Local.CustomBuildClicked(_BuildingType, false)
+		else
+			-- Original Building
+			self.Data.Original.BuildClicked(_BuildingType)
 		end
-		self:HasCurrentBuildingOwnBuildingCosts(_BuildingType)
-		g_LastPlacedParam = _BuildingType
-		self.Data.IsInWallOrPalisadeContinueState = false
-		self.Data.Original.BuildClicked(_BuildingType)
+		
+		g_LastPlacedFunction = GUI_Construction.BuildClicked
 	end
 
 	if self.Data.Original.BuildWallClicked == nil then
@@ -962,6 +1016,25 @@ function ModuleBuildingCost.Local:OverwriteBuildClicked()
 		g_LastPlacedParam = _BuildingType
 		self.Data.IsInWallOrPalisadeContinueState = false
 		self.Data.Original.BuildWallClicked(_BuildingType)
+
+		self:ResetWallTurretPositions()
+		
+	    if _BuildingType == nil then
+			_BuildingType = GetUpgradeCategoryForClimatezone("WallSegment")
+			self.Data.CurrentWallTypeForClimate = _BuildingType
+		end
+		
+		if _BuildingType == UpgradeCategories.PalisadeSegment and self.Data.Original.PalisadeCosts ~= nil then
+			GUI.CancelState()
+			BCS.CustomBuildWallOrStreetClicked(_upgradeCategory, nil)
+		elseif BCS.WallCosts ~= nil then
+			GUI.CancelState()
+			BCS.CustomBuildWallOrStreetClicked(_upgradeCategory, nil)
+		else
+			BCS.BuildWallClicked(_upgradeCategory)
+		end
+		
+		g_LastPlacedFunction = GUI_Construction.BuildWallClicked
 	end
 
 	if self.Data.Original.BuildWallGateClicked == nil then
