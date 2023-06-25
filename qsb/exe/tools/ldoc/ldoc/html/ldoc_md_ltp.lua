@@ -19,18 +19,17 @@ $(M(module.description,module))
 $(lev1) $(ldoc.descript(kitem))
 
 >      if kitem.usage then
-### Beispiel:
+**Beispiel:**
 $(ldoc.prettify(kitem.usage[1]))
 >      end
 
 >  end
 >   for item in items() do
 $(lev2) $(ldoc.display_name(item))
-$(ldoc.source_ref(item))
 
 $(ldoc.descript(item))
 
->  if show_parms and item.params and #item.params > 0 then
+>  if item.params and #item.params > 0 then
 >      local subnames = module.kinds:type_of(item).subnames
 >      if subnames then
 
@@ -141,7 +140,7 @@ $(li)<a href="$(ldoc.href(see))">$(see.label)</a>$(il)
 >   if item.usage then
 >       local li,il = use_li(item.usage)
 
-### Beispiel:
+**Beispiel:**
 <ul>
 
 >       for usage in iter(item.usage) do
