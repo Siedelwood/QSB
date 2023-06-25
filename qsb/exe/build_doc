@@ -192,6 +192,9 @@ cd qsb/lua/var/md_doc
 lua ../../../exe/tools/ldoc/ldoc.lua -o compatibility -v -f markdown -x "md" ../build/source/tqsb_x_acomp.lua #&>/dev/null
 cd ../../../../
 
+# Create main markdown file
+cp -r qsb/templates/home.md qsb/lua/var/md_doc/
+
 # Remove temporary compatibility file
 rm qsb/lua/var/build/source/tqsb_x_acomp.lua
 
