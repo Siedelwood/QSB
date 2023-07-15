@@ -103,7 +103,7 @@ jobs:
          #ReleaseTag: $(cat version.txt)
         run: |
           gh release create ${{ env.ReleaseTag }} --latest --title "QSB Release ${{ env.ReleaseTag }}" --notes "QSB Beschreibung bald erhältlich $(cat changelog.txt)"
-          gh release upload ${{ env.ReleaseTag }} qsb/lua/var/build/QSB_Release.zip
+          gh release upload ${{ env.ReleaseTag }} 'qsb/lua/var/build/QSB_Release_${{ env.ReleaseTag }}.zip'
           
           
 #      - name: Push Result
