@@ -22,8 +22,8 @@ for folder in *; do
 
         if ! ([ $folder = "QSB_0_Kernel" ];) then
             echo 'Create binary for modules ${folder}'
-            ORIGIN="../../../var/build/source/modules/${folder,,}"
-            DESTINATION="../../../var/build/binary/modules/${folder,,}"
+            ORIGIN="../../var/build/source/modules/${folder,,}"
+            DESTINATION="../../var/build/binary/modules/${folder,,}"
             lua ../../../exe/build_binary.lua $ORIGIN $DESTINATION
         fi
 
@@ -40,8 +40,8 @@ for folder in *; do
 
         if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
             echo 'Create binary for addons ${folder}'
-            ORIGIN="../../../var/build/source/addons/${folder,,}"
-            DESTINATION="../../../var/build/binary/addons/${folder,,}"
+            ORIGIN="../../var/build/source/addons/${folder,,}"
+            DESTINATION="../../var/build/binary/addons/${folder,,}"
             lua ../../../exe/build_binary.lua $ORIGIN $DESTINATION
         fi
 
