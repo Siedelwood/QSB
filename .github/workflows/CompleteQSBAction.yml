@@ -57,7 +57,7 @@ jobs:
           
           cd QSB.wiki
           
-          find . -maxdepth 1 -iname "*.md" -type f -exec rm -v {}
+          find . -maxdepth 1 -iname "*.md" -type f -exec rm -v {} \;
           
           for file in $(find ../../md_doc -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
               echo "Copying $file"
