@@ -94,7 +94,7 @@ jobs:
       - name: Git Release
         env:
          GH_TOKEN: ${{ github.token }}
-         ReleaseTag: ${{ $(cat version.txt) }}
+         ReleaseTag: ${{ (cat version.txt) }}
         run: |
           gh release create $ReleaseTag --latest --title "QSB Release ${ReleaseTag}" --notes "QSB Beschreibung bald erhältlich /n $(cat changelog.txt)"
           gh release upload $ReleaseTag QSB_Release.zip
