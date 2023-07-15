@@ -9,7 +9,6 @@ return [[
 # $(ldoc.module_typename(module)) <code>$(module.name)</code>
 $(M(module.summary,module))
 $(M(module.description,module))
-
 > end
 > local lev = ldoc.level or 2
 > local lev1,lev2 = ('#'):rep(lev),('#'):rep(lev+1)
@@ -17,23 +16,20 @@ $(M(module.description,module))
 >  local kitem = module.kinds:get_item(kind)
 >  if kitem then
 $(lev1) $(ldoc.descript(kitem))
-
 >      if kitem.usage then
 **Beispiel:**
 $(ldoc.prettify(kitem.usage[1]))
 >      end
-
 >  end
 >   for item in items() do
 $(lev2) $(ldoc.display_name(item))
-
 $(ldoc.descript(item))
 
 >  if item.params and #item.params > 0 then
 >      local subnames = module.kinds:type_of(item).subnames
 >      if subnames then
 
-**$(subnames):**
+**Parameter:**
 
 >      end
 | Name | Typ | Beschreibung |
