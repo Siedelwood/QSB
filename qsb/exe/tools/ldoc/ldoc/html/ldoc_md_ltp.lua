@@ -36,6 +36,8 @@ $(ldoc.descript(item))
 #### $(subnames):
 
 >      end
+| Name | Typ | Beschreibung |
+|---|---|---|
 >      for parm in iter(item.params) do
 >          local param,sublist = item:subparam(parm)
 >          if sublist then
@@ -43,11 +45,7 @@ $(sublist) $(M(item.params.map[sublist],item))
 >          end
 >          for p in iter(param) do
 >              local name,tp,def = item:display_name_of(p), ldoc.typename(item:type_of_param(p)), item:default_of_param(p)
-$(name)
->              if tp ~= '' then
-$(tp)
->              end
-$(M(item.params.map[p],item))
+| $(name) | $(tp) | $(M(item.params.map[p],item)) |
 >              if def == true then
 *optional*
 >              elseif def then
@@ -57,7 +55,6 @@ $(M(item.params.map[p],item))
 *readonly*
 >              end
 >          end
-
 >      end -- for
 >   end -- if params
 
