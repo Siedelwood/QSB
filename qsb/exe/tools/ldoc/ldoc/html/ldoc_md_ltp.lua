@@ -33,7 +33,7 @@ $(ldoc.descript(item))
 >      local subnames = module.kinds:type_of(item).subnames
 >      if subnames then
 
-#### $(subnames):
+**$(subnames):**
 
 >      end
 | Name | Typ | Beschreibung |
@@ -60,27 +60,14 @@ $(sublist) $(M(item.params.map[sublist],item))
 
 >   if item.retgroups then local groups = item.retgroups
 
-#### Rückgabe:
+**Rückgabe:**
 
+| Typ | Beschreibung |
+|---|---|
 >       for i,group in ldoc.ipairs(groups) do local li,il = use_li(group)
-    <ol>
 >           for r in group:iter() do local type, ctypes = item:return_type(r); local rt = ldoc.typename(type)
-$(li)
->               if rt ~= '' then
-<span>$(rt)</span>
->               end
-$(M(r.text,item))$(il)
->               if ctypes then
-<ul>
->                   for c in ctypes:iter() do
-<li><span>$(c.name)</span>
-<span>$(ldoc.typename(c.type))</span>
-$(M(c.comment,item))</li>
->                   end
-</ul>
->               end -- if ctypes
+| $(rt) | $(M(r.text,item))$(il) |
 >           end -- for r
-</ol>
 >       if i < #groups then
 
 <h3>Or</h3>
