@@ -17,3 +17,4 @@ Vorsicht: Die hier aufgeführten Funktionen sind nur dann in der QSB enthalten, 
 ## Dokumentation der Addons
 
 Im folgenden wird noch die Dokumentation der Addons aufgelistet. Diese werden von den jeweiligen Erstellern gepflegt und werden nicht von dem QSB-Team geprüft. Bei problemen mit diesen Addons bitte an den Ersteller wenden.
+

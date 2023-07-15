@@ -224,6 +224,8 @@ while IFS= read -r line; do
     if [[ $line == *XXXX* ]]; then
         for string in "${strings[@]}"; do
             echo "$string" >> "$temp_file"
+            echo " " >> "$temp_file"
+            echo " " >> "$temp_file"
         done
         continue
     fi
@@ -231,6 +233,8 @@ while IFS= read -r line; do
 done < "home.md"
 for string in "${stringsa[@]}"; do
     echo "$string" >> "$temp_file"
+    echo " " >> "$temp_file"
+    echo " " >> "$temp_file"
 done
 mv "$temp_file" "home.md"
 rm "$temp_file"
