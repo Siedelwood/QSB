@@ -10,9 +10,9 @@ mkdir -p qsb/lua/var/build/binary/addons
 
 # Create the main binaries
 echo 'Create main binaries'
-lua qsb/exe/build_binary.lua ../var/build/source/qsb ../var/build/binary/qsb
-lua qsb/exe/build_binary.lua ../var/build/source/qsb_all ../var/build/binary/qsb_all
-lua qsb/exe/build_binary.lua ../var/build/source/qsb_comp ../var/build/binary/qsb_comp
+lua qsb/exe/build_binary.lua qsb/lua/var/build/source/qsb qsb/lua/var/build/binary/qsb
+lua qsb/exe/build_binary.lua qsb/lua/var/build/source/qsb_all qsb/lua/var/build/binary/qsb_all
+lua qsb/exe/build_binary.lua qsb/lua/var/build/source/qsb_comp qsb/lua/var/build/binary/qsb_comp
 
 # Create the module binaries
 cd qsb/lua/modules
