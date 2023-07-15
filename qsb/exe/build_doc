@@ -194,6 +194,47 @@ cd ../../../../
 
 # Create main markdown file
 cp -r qsb/templates/home.md qsb/lua/var/md_doc/
+strings=()
+cd qsb/lua/modules
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+        if ! ( [ $folder = "QSB_0_Kernel" ]; ) then
+            TITLE=$(head -n 1 title.txt)
+            strings+=("[${TITLE}](https://github.com/Siedelwood/QSB/wiki/${folder,,})")
+        fi
+        cd ../
+    fi
+done
+stringsa=()
+cd ../addons/
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+        if ! ( [ $folder = "QSB_X_Addon_X_Template" ]; ) then
+            TITLE=$(head -n 1 title.txt)
+            stringsa+=("[${TITLE}](https://github.com/Siedelwood/QSB/wiki/${folder,,})")
+        fi
+        cd ../
+    fi
+done
+cd ../var/md_doc/
+temp_file=$(mktemp)
+while IFS= read -r line; do
+    if [[ $line == *XXXX* ]]; then
+        for string in "${strings[@]}"; do
+            echo "$string" >> "$temp_file"
+        done
+        continue
+    fi
+    echo "$line" >> "$temp_file"
+done < "home.md"
+for string in "${stringsa[@]}"; do
+    echo "$string" >> "$temp_file"
+done
+mv "$temp_file" "home.md"
+rm "$temp_file"
+cd ../../../../
 
 # Remove temporary compatibility file
 rm qsb/lua/var/build/source/tqsb_x_acomp.lua
