@@ -215,7 +215,6 @@ end
 -- @param[type=string] _Description Beschreibung des Hotkey
 -- @return[type=number] Index oder Fehlercode
 -- @within Anwenderfunktionen
--- @local
 --
 function API.AddShortcutEntry(_Key, _Description)
     if not GUI then
@@ -237,7 +236,6 @@ end
 --
 -- @param[type=number] _ID Index in Table
 -- @within Anwenderfunktionen
--- @local
 --
 function API.RemoveShortcutEntry(_ID)
     if not GUI then
@@ -320,7 +318,7 @@ function API.SetTooltipNormal(_Title, _Text, _DisabledText)
     if not GUI then
         return;
     end
-    ModuleGuiControl.Local:TooltipNormal(_Title, _Text, _DisabledText);
+    ModuleGuiControl.Local:TooltipNormal(API.Localize(_Title), API.Localize(_Text), API.Localize(_DisabledText));
 end
 
 ---
@@ -342,7 +340,7 @@ function API.SetTooltipCosts(_Title, _Text, _DisabledText, _Costs, _InSettlement
     if not GUI then
         return;
     end
-    ModuleGuiControl.Local:TooltipCosts(_Title,_Text,_DisabledText,_Costs,_InSettlement);
+    ModuleGuiControl.Local:TooltipCosts(API.Localize(_Title), API.Localize(_Text), API.Localize(_DisabledText), _Costs, _InSettlement);
 end
 
 ---

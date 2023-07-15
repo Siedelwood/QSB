@@ -1,29 +1,33 @@
 #!/bin/bash
 
-# This shell script combines the source files into the qsb, the modules and the addons.
-# The output is copied to qsb/lua/var/build
+# This shell script creates the documentation for qsb, modules and addons.
 
 echo 'build QSB documentation'
 
 # create folder
 echo 'create destination directories'
+rm -rf qsb/lua/var/build/doc &>/dev/null
+rm -rf qsb/lua/var/md_doc &>/dev/null
 mkdir -p qsb/lua/var/build/doc/temp/
+mkdir -p qsb/lua/var/md_doc/
 
 # create html documentation
-cd qsb/lua/tools
-cp docbuilderstart.txt ../var/build/doc/temp/docbuilder.lua
-cp docbuilderstart.txt ../var/build/doc/temp/docbuilderstart.txt
-cp docbuilderend.txt ../var/build/doc/temp/docbuilderend.txt
+cd qsb/exe/tools
+cp docbuilderstart.txt ../../lua/var/build/doc/temp/docbuilder.lua
+cp docbuilderend.txt ../../lua/var/build/doc/temp/docbuilderend.txt
 cd ../../../
 
 cd qsb/lua/modules
+# Add modules to html documentation index
+echo "Add modules to html documentation index"
 for folder in *; do
     if ! ([ -f "$folder" ];) then
         cd $folder
 
         DESTINATION="../../var/build/doc/temp/docbuilder.lua"
-        FILENAME="modules/${folder,,}.lua"
+        FILENAME="smodules/${folder,,}.lua"
         if [ $folder = "QSB_0_Kernel" ]; then
+            echo "" >> $DESTINATION
             FILENAME="qsb.lua"
         fi
         TITLE=$(head -n 1 title.txt)
@@ -32,16 +36,26 @@ for folder in *; do
         cd ../
     fi
 done
+
+# Add compatibility files to html documentation index
+echo "Add compatibility files to html documentation index"
+DESTINATION="../var/build/doc/temp/docbuilder.lua"
+echo "{\"tqsb_x_acomp.lua\", \"(X) Kompatibilität\"}," >> $DESTINATION
+DESTINATION="../var/build/source/tqsb_x_acomp.lua"
+find . -maxdepth 2 -iname "compatibility.lua" -type f -exec cat {} +> $DESTINATION
+
 cd ../../../
 
 cd qsb/lua/addons
+# Add addons to html documentation index
+echo "Add addons to html documentation index"
 for folder in *; do
     if ! ([ -f "$folder" ];) then
         cd $folder
 
         DESTINATION="../../var/build/doc/temp/docbuilder.lua"
-        FILENAME="addons/${folder,,}.lua"
-        if ! ([ $folder = "Addon_X_Template" ];) then
+        FILENAME="xaddons/${folder,,}.lua"
+        if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
             TITLE=$(head -n 1 title.txt)
             echo "{\"${FILENAME}\", \"${TITLE}\"}," >> $DESTINATION
         fi
@@ -51,40 +65,185 @@ for folder in *; do
 done
 cd ../../../
 
+# Finish creating docbuilder
+echo "Finish creating docbuilder"
 cd qsb/lua/var/build/doc/temp
 cat "docbuilderend.txt" >> "docbuilder.lua"
 cd ../../../../../../
 
-cd qsb/lua/tools
-mv ../var/build/source/qsb_all.lua ../var/qsb_all.lua
-mv ../var/build/source/qsb_comp.lua ../var/qsb_comp.lua
-
-# builds the documentations of the single modules
-lua ldoc/ldoc.lua -d ../var/build/doc ../var/build/source/ &>/dev/null
-
-mv ../var/qsb_all.lua ../var/build/source/qsb_all.lua
-mv ../var/qsb_comp.lua ../var/build/source/qsb_comp.lua
-
-# builds the documentation stat page
-lua ../var/build/doc/temp/docbuilder.lua
-
-rm -rf ../var/build/doc/js
-cp -r ../../templates/js ../var/build/doc
-rm -rf ../var/build/doc/css
-cp -r ../../templates/css ../var/build/doc
-cp ../default/* ../var/build
-
+#Temporary remove those files that need no documentation
+cd qsb/lua/var
+mv build/source/qsb_all.lua qsb_all.lua
+mv build/source/qsb_comp.lua qsb_comp.lua
+mv build/source/addons/ build/source/xaddons/
+mv build/source/modules/ build/source/smodules/
 cd ../../../
 
-# create markdown documentation
-# for file in *; do
-#     if ! ([ -f "$file" ];) then
-#         echo "create documentation for ${folder}"
-#         # do something
-#     fi 
-# done
+# Builds the documentations of the single modules
+echo "Build the documentations of the single modules"
+cd qsb/exe/tools
+lua ldoc/ldoc.lua -d ../../lua/var/build/doc -v ../../lua/var/build/source/ #&>/dev/null
+cd ../../../
 
+# Put back those files that need no documentation
+cd qsb/lua/var
+mv qsb_all.lua build/source/qsb_all.lua
+mv qsb_comp.lua build/source/qsb_comp.lua
+mv build/source/xaddons/ build/source/addons/
+mv build/source/smodules/ build/source/modules/
 
-# rm -rf qsb/lua/var/build/doc/temp &>/dev/null
+# Builds the documentation start page
+echo "Build the documentations of the start page"
+lua build/doc/temp/docbuilder.lua
+cd ../../../
+
+# Add an addon section to html files
+cd qsb/lua/var/build/doc/modules
+for file in *.html; do
+    if [ -f "$file" ]; then
+        echo $file
+        VARIABLE="tqsb_x_acomp"
+        OCCURENCES=$(grep -c $VARIABLE "${file}")
+        echo "there are $OCCURENCES occurences"
+        if [ "$OCCURENCES" -eq "0" ]; then
+            if [ "$file" == "tqsb_x_acomp.html" ]; then
+                echo "detected compatibility docu"
+                VARIABLE="<li><strong>"
+                OCCURENCES=$(grep -c $VARIABLE "${file}")
+                echo "there are $OCCURENCES occurences"
+            fi
+        fi
+        if ! ([ "$OCCURENCES" -eq "0" ];) then
+            LINE=$(cat "${file}" | grep -n $VARIABLE | head -1 | cut -d":" -f1)
+            echo "the line is $LINE"
+            NEXTLINE=$((LINE+1))
+            head -n $LINE "${file}" > temp.txt
+            echo "" >> temp.txt
+            echo "</ul>" >> temp.txt
+            echo "<h2>Addons</h2>" >> temp.txt
+            echo "<ul class="nowrap">" >> temp.txt
+            echo "" >> temp.txt
+            NEXTLINE=$((LINE+1))
+            tail -n +$NEXTLINE "${file}" >> temp.txt
+            mv temp.txt "${file}"
+        fi
+    fi
+done
+cd ../../../../../../
+
+# Move html relevant files into the build directory
+echo "Move html files into the build directory"
+rm -rf qsb/lua/var/build/doc/js
+cp -r qsb/templates/js qsb/lua/var/build/doc
+rm -rf qsb/lua/var/build/doc/css
+cp -r qsb/templates/css qsb/lua/var/build/doc
+
+# Create markdown documentation for qsb
+echo "Create markdown documentation for qsb"
+cd qsb/lua/var/md_doc
+lua ../../../exe/tools/ldoc/ldoc.lua -o qsb -v -f markdown -x "md" ../build/source/qsb.lua #&>/dev/null
+cd ../../../../
+
+# Create markdown documentation for modules
+echo "Create markdown documentation for modules"
+cd qsb/lua/modules
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+
+        FILENAME="modules/${folder,,}.lua"
+        MDNAME="${folder,,}"
+        if ! ( [ $folder = "QSB_0_Kernel" ]; ) then
+            cd ../../var/md_doc
+            lua ../../../exe/tools/ldoc/ldoc.lua -o $MDNAME -v -f markdown -x "md" "../build/source/${FILENAME}" #&>/dev/null
+            cd ../../modules
+            cd $folder
+        fi
+
+        cd ../
+    fi
+done
+cd ../../../
+
+# Create markdown documentation for addons
+echo "Create markdown documentation for addons"
+cd qsb/lua/addons
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+
+        FILENAME="addons/${folder,,}.lua"
+        MDNAME="${folder,,}"
+        if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
+            cd ../../var/md_doc
+            lua ../../../exe/tools/ldoc/ldoc.lua -o $MDNAME -v -f markdown -x "md" "../build/source/${FILENAME}" #&>/dev/null
+            cd ../../addons
+            cd $folder
+        fi
+
+        cd ../
+    fi
+done
+cd ../../../
+
+# Create markdown documentation for compatibility
+echo "Create markdown documentation for compatibility"
+cd qsb/lua/var/md_doc
+lua ../../../exe/tools/ldoc/ldoc.lua -o compatibility -v -f markdown -x "md" ../build/source/tqsb_x_acomp.lua #&>/dev/null
+cd ../../../../
+
+# Create main markdown file
+cp -r qsb/templates/home.md qsb/lua/var/md_doc/
+strings=()
+cd qsb/lua/modules
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+        if ! ( [ $folder = "QSB_0_Kernel" ]; ) then
+            TITLE=$(head -n 1 title.txt)
+            strings+=("[${TITLE}](https://github.com/Siedelwood/QSB/wiki/${folder,,})")
+        fi
+        cd ../
+    fi
+done
+stringsa=()
+cd ../addons/
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+        if ! ( [ $folder = "QSB_X_Addon_X_Template" ]; ) then
+            TITLE=$(head -n 1 title.txt)
+            stringsa+=("[${TITLE}](https://github.com/Siedelwood/QSB/wiki/${folder,,})")
+        fi
+        cd ../
+    fi
+done
+cd ../var/md_doc/
+temp_file=$(mktemp)
+while IFS= read -r line; do
+    if [[ $line == *XXXX* ]]; then
+        for string in "${strings[@]}"; do
+            echo "$string" >> "$temp_file"
+            echo " " >> "$temp_file"
+            echo " " >> "$temp_file"
+        done
+        continue
+    fi
+    echo "$line" >> "$temp_file"
+done < "home.md"
+for string in "${stringsa[@]}"; do
+    echo "$string" >> "$temp_file"
+    echo " " >> "$temp_file"
+    echo " " >> "$temp_file"
+done
+mv "$temp_file" "home.md"
+rm "$temp_file"
+cd ../../../../
+
+# Remove temporary compatibility file
+rm qsb/lua/var/build/source/tqsb_x_acomp.lua
+
+# Remove temporary files
+rm -rf qsb/lua/var/build/doc/temp &>/dev/null
 
 echo 'documentation ready'

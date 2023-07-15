@@ -18,8 +18,8 @@ return [==[
 
 <div id="product">
 	<div id="product_logo"></div>
-	<div id="product_name"><big><b></b></big></div>
-	<div id="product_description"></div>
+	<div id="product_name">Siedelwood | QSB<big><b></b></big></div>
+	<div id="product_description">Dokumentation der S6-QSB der Siedelwood Community</div>
 </div> <!-- id="product" -->
 
 
@@ -160,7 +160,7 @@ return [==[
 #       if kitem.usage then
             <h3>Beispiel:</h3>
             <pre class="example">$(ldoc.prettify(kitem.usage[1]))</pre>
-#        end
+#       end
 #   end
     <dl class="function">
 #  for item in items() do

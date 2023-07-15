@@ -229,7 +229,6 @@ end
 -- @param[type=function] _Filter Funktion zur Filterung
 -- @return[type=table] Liste mit Ergebnissen
 -- @within Suche
--- @see QSB.SearchPredicate
 --
 -- @usage
 -- -- Es werden alle Kühe und Schafe von Spieler 1 gefunden, die nicht auf den
@@ -255,11 +254,6 @@ function API.CommenceEntitySearch(_Filter)
         return true;
     end
     return ModuleEntity.Shared:IterateOverEntities(_Filter);
-end
-
--- Compatibility option
-function API.GetEntitiesOfCategoryInTerritory(_PlayerID, _Category, _Territory)
-    return API.SearchEntitiesOfCategoryInTerritory(_Territory, _Category, _PlayerID);
 end
 
 -- Compatibility option

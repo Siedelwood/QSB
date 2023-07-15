@@ -12,11 +12,18 @@
 --
 -- @within Beschreibung
 -- @set sort=true
--- @author EisenMonoxid, Jelumar
+-- @author Eisenmonoxid, Jelumar
 --
 
--- TODO: Check BuildingUpgraded Event
-
+---
+-- Upgradelevel für die Gebäudekosten
+--
+-- @field UpgradeToOne Upgrade auf Gebäudelevel 1
+-- @field UpgradeToTwo Upgrade auf Gebäudelevel 2 (kein Aussenposten)
+-- @field UpgradeThree Upgrade auf Gebäudelevel 3 (Nur Hauptgebäude)
+--
+-- @within Baukostensystem
+--
 BCS = BCS or {
     UpgradeToOne = 1,
     UpgradeToTwo = 2,
@@ -34,7 +41,7 @@ BCS = BCS or {
 -- @param[type=number] _Amount1  (Optional) Die Menge des ersten Rohstoffs (bei nil wird gelöscht)
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Ausbau bezahlt werden soll
 -- @param[type=number] _Amount2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.EditUpgradeCosts
 --
 -- @usage
@@ -74,52 +81,34 @@ end
 -- Überschreibt die Baukosten eines Gebäudes
 -- Hier muss beachtet werden, dass der erste Kostenparameter zusätzliche Kosten für den ersten Rohstoff darstellen und nicht den neuen Kostenwert
 --
--- @param[type=number] _Building 			UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
--- @param[type=number] _AdditionalAmount1   Zusätzliche Menge für den ersten Rohstoff (bei nil wird gelöscht)
--- @param[type=number] _Good2    			(Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
--- @param[type=number] _Amount2  			(Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @param[type=number]  _Building 	   UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
+-- @param[type=number]  _Amount1   	   Die neue Menge des ersten Rohstoffs (bei nil wird gelöscht)
+-- @param[type=number]  _Good2    	   (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
+-- @param[type=number]  _Amount2  	   (Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=boolean] _AddToBaseCost (Optional) Sollen die angegebenen Kosten für den Originalrohstoff auf die Originalkosten aufgerechnet werden?
+-- @within Anwenderfunktionen
 -- @see BCS.SetUpgradeCosts
 --
 -- @usage
--- -- Neue Ausbaukosten definieren
--- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, 50, Goods.G_Gold, 100)
+-- -- Neue Ausbaukosten definieren (erste Rohstoffmenge wird auf Originalkosten draufgerechnet)
+-- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, 50, Goods.G_Gold, 100, true)
 -- -- Auf Originalkosten zurücksetzen
 -- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, nil)
 --
-function BCS.SetConstructionCosts(_Building, _AdditionalAmount1, _Good2, _Amount2)
-	assert(not _AdditionalAmount1 or (type(_AdditionalAmount1) == "number" and _AdditionalAmount1 >= 0), "_AdditionalAmount1 muss positiv sein")
-
+function BCS.SetConstructionCosts(_Building, _Amount1, _Good2, _Amount2, _AddToBaseCost)
 	if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
-		assert(type(ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost) == "function")
-
 		local upgradeCategory = Logic.GetUpgradeCategoryByBuildingType(_Building)
-		-- Check for valid UpgradeCategory (Beautification_VictoryColumn == 97, the highest Category)
-		assert(upgradeCategory > 0 and upgradeCategory <= UpgradeCategories.Beautification_VictoryColumn)
-
-		if _AdditionalAmount1 == nil then
-			ModuleBuildingCost.Local.Data.Costs.Construction[upgradeCategory] = nil
-			return
-		end
-
-		--Check for Invalid GoodAmount
-		assert(not _Amount2 or _Amount2 >= 1)
-
-		-- local AmountOfTypes, FirstBuildingType = Logic.GetBuildingTypesInUpgradeCategory(upgradeCategory)
-		local Costs = {ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost(_Building)}
-		local newAmount1 = _AdditionalAmount1 + Costs[2]
-
-		-- Insert/Update table entry
-		ModuleBuildingCost.Local.Data.Costs.Construction[upgradeCategory] = {newAmount1, _Good2, _Amount2}
+		BCS.EditBuildingCosts(upgradeCategory, _Amount1, _Good2, _Amount2, _AddToBaseCost)
 	else
 		Logic.ExecuteInLuaLocalState(string.format(
 			[[
-				BCS.SetConstructionCosts(%d, %d, %d, %d)
+				BCS.SetConstructionCosts(%d, %d, %d, %d, %s)
 			]],
 			_Building,
-			_AdditionalAmount1,
+			_Amount1,
 			_Good2,
-			_Amount2
+			_Amount2,
+			tostring(_AddToBaseCost)
 		))
 	end
 end
@@ -128,7 +117,7 @@ end
 -- Gibt an welchen Rabatt Hakim auf das Ausbauen von Gebäuden erhält
 --
 -- @param[type=number] _Discount Rabatt den Hakim bekommt zwischen 0 (nichts) und 1 (alles)
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetUpgradeDiscountFunction
 --
 -- @usage
@@ -156,7 +145,7 @@ end
 --
 -- @param[type=number]  _Function  Rabattfunktion die einen Wert zwischen 0 und 1 zurückgibt
 -- @param[type=boolean] _CanBeZero Soll der zweite Rohstoff auf Null gerundet werden können?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetHakimUpgradeDiscount
 --
 -- @usage
@@ -179,7 +168,7 @@ end
 --
 -- @param[type=number]  _Function  Rabattfunktion die einen Wert zwischen 0 und 1 zurückgibt
 -- @param[type=boolean] _CanBeZero Soll der zweite Rohstoff auf Null gerundet werden können?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetConstructionAddedGoodDiscountFunction
 --
 -- @usage
@@ -202,7 +191,7 @@ end
 --
 -- @param[type=number]  _Function  Rabattfunktion die einen Wert zwischen 0 und 1 zurückgibt
 -- @param[type=boolean] _CanBeZero Soll der zweite Rohstoff auf Null gerundet werden können?
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetConstructionOriginalGoodDiscountFunction
 --
 -- @usage
@@ -222,11 +211,12 @@ end
 ---
 -- Überschreibt die Baukosten eines Gebäudes
 --
--- @param[type=number] _UpgradeCategory UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
--- @param[type=number] _Amount1  		Die neue Menge des ersten Rohstoffs (bei nil wird gelöscht)
--- @param[type=number] _Good2    		(Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
--- @param[type=number] _Amount2  		(Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @param[type=number]  _UpgradeCategory UpgradeKategorie des Gebäudes, zB UpgradeCategories.BroomMaker
+-- @param[type=number]  _Amount1  		 Die neue Menge des ersten Rohstoffs (bei nil wird gelöscht)
+-- @param[type=number]  _Good2    		 (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
+-- @param[type=number]  _Amount2  		 (Optional) Die Menge des zweiten Rohstoffs
+-- @param[type=boolean] _AddToBaseCost   (Optional) Sollen die angegebenen Kosten für den Originalrohstoff auf die Originalkosten aufgerechnet werden?
+-- @within Anwenderfunktionen
 -- @see BCS.SetUpgradeCosts
 --
 -- @usage
@@ -235,11 +225,10 @@ end
 -- -- Auf Originalkosten zurücksetzen
 -- BCS.SetUpgradeCosts(UpgradeCategories.BroomMaker, nil)
 --
-function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2)
+function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2, _AddToBaseCost)
 	if API.GetScriptEnvironment() == QSB.Environment.LOCAL then
-		-- Check for unloaded script
-		assert(type(ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost) == "function")
-
+		_AddToBaseCost = _AddToBaseCost or false
+		assert(not _Amount1 or (type(_Amount1) == "number" and _Amount1 >= 0), "_AdditionalAmount1 muss positiv sein")
 		-- Check for valid UpgradeCategory (Beautification_VictoryColumn == 97, the highest Category)
 		assert(_UpgradeCategory > 0 and _UpgradeCategory <= UpgradeCategories.Beautification_VictoryColumn)
 
@@ -251,6 +240,9 @@ function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2)
 		assert(not _Amount2 or _Amount2 >= 1)
 		local AmountOfTypes, FirstBuildingType = Logic.GetBuildingTypesInUpgradeCategory(_UpgradeCategory)
 		local Costs = {ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost(FirstBuildingType)}
+		if _AddToBaseCost then
+			_Amount1 = _Amount1 + Costs[2]
+		end
 		assert(_Amount1 >= Costs[2])
 
 		-- Insert/Update table entry
@@ -258,12 +250,13 @@ function BCS.EditBuildingCosts(_UpgradeCategory, _Amount1, _Good2, _Amount2)
 	else
 		Logic.ExecuteInLuaLocalState(string.format(
 			[[
-				BCS.EditBuildingCosts(%d, %d, %d, %d)
+				BCS.EditBuildingCosts(%d, %d, %d, %d, %s)
 			]],
 			_UpgradeCategory,
 			_Amount1,
 			_Good2,
-			_Amount2
+			_Amount2,
+			tostring(_AddToBaseCost)
 		))
 	end
 end
@@ -277,7 +270,7 @@ end
 -- @param[type=number] _Amount1  		(Optional) Die Menge des ersten Rohstoffs (bei nil wird gelöscht)
 -- @param[type=number] _Good2    		(Optional) Der neue zweite Rohstoff der für den Ausbau bezahlt werden soll
 -- @param[type=number] _Amount2  		(Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 -- @see BCS.SetUpgradeCosts
 --
 -- @usage
@@ -311,7 +304,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Baukosten definieren
@@ -347,7 +340,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Baukosten definieren
@@ -383,7 +376,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Baukosten definieren
@@ -420,7 +413,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Baukosten definieren
@@ -455,7 +448,7 @@ end
 --
 -- @param[type=number] _Factor1  Anteil der Rückerstattung für den ersten Rohstoff
 -- @param[type=number] _Factor2  Anteil der Rückerstattung für den zweiten Rohstoff
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Es wird die Hälfte Zurückerstattet
@@ -485,7 +478,7 @@ end
 -- @param[type=number] _Factor1  Der neue Faktor für den ersten Rohstoff
 -- @param[type=number] _Good2    (Optional) Der neue zweite Rohstoff der für den Bau bezahlt werden soll
 -- @param[type=number] _Factor2  (Optional) Die Menge des zweiten Rohstoffs
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Neue Kosten definieren
@@ -520,7 +513,7 @@ end
 -- Sollen Stadtgüter zurückerstattet werden?
 --
 -- @param[type=boolean] _Flag Sollen Stadtgüter zurückerstattet werden?
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Stadtgüter werden zurückerstattet
@@ -543,7 +536,7 @@ end
 -- Sollen Güter auf dem Marktplatz betrachtet werden?
 --
 -- @param[type=boolean] _Flag Sollen Güter auf dem Marktplatz betrachtet werden?
--- @within Suche
+-- @within Anwenderfunktionen
 --
 -- @usage
 -- -- Güter auf dem Marktplatz werden betrachtet

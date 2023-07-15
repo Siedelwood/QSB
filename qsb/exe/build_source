@@ -20,9 +20,8 @@ for folder in *; do
             # create core qsb
             echo "build qsb"
             DESTINATION="../../var/build/source/qsb.lua"
-            find . -maxdepth 1 -iname "*.lua" -not -name "corebehavior.lua" -not -name "selfload.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
-            cat "corebehavior.lua" >> $DESTINATION
-            cat "selfload.lua" >> $DESTINATION
+            find . -maxdepth 1 -iname "*.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
+            cat "../../selfload.lua" >> $DESTINATION
         else
             # create module
             echo "build module ${folder}"
@@ -36,22 +35,20 @@ done
 # create qsb with all modules
 echo "build qsb_all"
 DESTINATION="../var/build/source/qsb_all.lua"
-find . -maxdepth 2 -iname "*.lua" -not -name "corebehavior.lua" -not -name "selfload.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
-cat "QSB_0_Kernel/corebehavior.lua" >> $DESTINATION
-cat "QSB_0_Kernel/selfload.lua" >> $DESTINATION
+find . -maxdepth 2 -iname "*.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
+cat "../selfload.lua" >> $DESTINATION
 
 # create qsb with all modules and compatibility features
 echo "build qsb_comp"
 DESTINATION="../var/build/source/qsb_comp.lua"
-find . -maxdepth 2 -iname "*.lua" -not -name "corebehavior.lua" -not -name "selfload.lua" -type f -exec cat {} +> $DESTINATION
-cat "QSB_0_Kernel/corebehavior.lua" >> $DESTINATION
-cat "QSB_0_Kernel/selfload.lua" >> $DESTINATION
+find . -maxdepth 2 -iname "*.lua" -type f -exec cat {} +> $DESTINATION
+cat "../selfload.lua" >> $DESTINATION
 
 # Create addons
 cd ../addons
 for folder in *; do
     if ! ([ -f "$folder" ];) then
-        if ! ([ $folder = "Addon_X_Template" ];) then
+        if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
             cd $folder
             echo "build addon ${folder}"
             cat *.lua > "../../var/build/source/addons/${folder,,}.lua"
@@ -59,6 +56,10 @@ for folder in *; do
         fi
     fi 
 done
-
 cd ../../../
+
+# Copy default files
+echo "copy default files"
+cp qsb/lua/default/* qsb/lua/var/build
+
 echo "QSB ready"

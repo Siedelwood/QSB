@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Erweitert die Lua-Basisfunktionen um weitere Funktionen.
 -- @set sort=true
 -- @local
@@ -301,8 +301,7 @@ end
 --
 -- @param _Value Wahrheitswert
 -- @return[type=boolean] Wahrheitswert
--- @within Base
--- @local
+-- @within Intern
 --
 -- @usage local Bool = API.ToBoolean("+")  --> Bool = true
 -- local Bool = API.ToBoolean("1")  --> Bool = true
@@ -319,8 +318,7 @@ end
 --
 -- @param[type=table]  _Table Tabelle, die gedumpt wird
 -- @param[type=string] _Name Optionaler Name im Log
--- @within Base
--- @local
+-- @within Intern
 -- @usage
 -- Table = {1, 2, 3, {a = true}}
 -- API.DumpTable(Table)

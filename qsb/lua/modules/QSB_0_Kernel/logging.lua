@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Interne Funktionalität zum Schreiben von Ausgaben ins Log.
 --
 -- @set sort=true
@@ -120,10 +120,11 @@ end
 -- </tr>
 -- </table>
 --
+-- <b>Alias:</b> API.SetLoggingLevel
+--
 -- @param[type=number] _ScreenLogLevel Level für Bildschirmausgabe
 -- @param[type=number] _FileLogLevel   Level für Dateiausgaabe
--- @within Base
--- @local
+-- @within Entwicklung
 --
 -- @usage
 -- API.SetLogLevel(QSB.LogLevel.ERROR, QSB.LogLevel.WARNING);
@@ -131,4 +132,5 @@ end
 function API.SetLogLevel(_ScreenLogLevel, _FileLogLevel)
     Swift.Logging:SetLogLevel(_ScreenLogLevel, _FileLogLevel);
 end
+API.SetLoggingLevel = API.SetLogLevel
 

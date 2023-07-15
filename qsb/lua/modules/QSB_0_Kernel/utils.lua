@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Eine Sammlung von nützlichen Hilfsfunktionen.
 -- @set sort=true
 -- @local
@@ -112,11 +112,10 @@ end
 --
 -- @param[type=boolean] _Name  Name der Custom Variable
 -- @param               _Value Neuer Wert
--- @within System
--- @local
+-- @within Intern
 --
 -- @usage
--- local Value = API.ObtainCustomVariable("MyVariable", 0);
+-- API.SaveCustomVariable("MyVariable", 0);
 --
 function API.SaveCustomVariable(_Name, _Value)
     Swift.Utils:SetCustomVariable(_Name, _Value);
@@ -127,8 +126,7 @@ end
 -- @param[type=boolean] _Name    Name der Custom Variable
 -- @param               _Default (Optional) Defaultwert falls leer
 -- @return Wert
--- @within System
--- @local
+-- @within Intern
 --
 -- @usage
 -- local Value = API.ObtainCustomVariable("MyVariable", 0);
@@ -187,7 +185,6 @@ ReplaceEntity = API.ReplaceEntity;
 -- @param               _Entity Entity (Scriptname oder ID)
 -- @param[type=boolean] _Flag Verwundbar
 -- @within Entity
--- @local
 --
 function API.SetEntityVulnerableFlag(_Entity, _Flag)
     if GUI then
@@ -453,7 +450,6 @@ QSB.PossibleSettlerTypes = {
 --
 -- @return[type=number] Zufälliger Typ
 -- @within Entity
--- @local
 --
 function API.GetRandomSettlerType()
     local Gender = (math.random(1, 2) == 1 and "Male") or "Female";
@@ -467,7 +463,6 @@ end
 --
 -- @return[type=number] Zufälliger Typ
 -- @within Entity
--- @local
 --
 function API.GetRandomMaleSettlerType()
     local Type = math.random(1, #QSB.PossibleSettlerTypes.Male);
@@ -480,7 +475,6 @@ end
 --
 -- @return[type=number] Zufälliger Typ
 -- @within Entity
--- @local
 --
 function API.GetRandomFemaleSettlerType()
     local Type = math.random(1, #QSB.PossibleSettlerTypes.Female);

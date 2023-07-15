@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# This shell script creates the binaries for qsb, modules and addons.
+
+echo 'build QSB binaries'
+
+# create folder
+mkdir -p qsb/lua/var/build/binary/modules
+mkdir -p qsb/lua/var/build/binary/addons
+
+# Create the main binaries
+echo 'Create main binaries'
+lua qsb/exe/build_binary.lua qsb/lua/var/build/source/qsb qsb/lua/var/build/binary/qsb
+lua qsb/exe/build_binary.lua qsb/lua/var/build/source/qsb_all qsb/lua/var/build/binary/qsb_all
+lua qsb/exe/build_binary.lua qsb/lua/var/build/source/qsb_comp qsb/lua/var/build/binary/qsb_comp
+
+# Create the module binaries
+cd qsb/lua/modules
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+
+        if ! ([ $folder = "QSB_0_Kernel" ];) then
+            echo 'Create binary for modules ${folder}'
+            ORIGIN="../../var/build/source/modules/${folder,,}"
+            DESTINATION="../../var/build/binary/modules/${folder,,}"
+            lua ../../../exe/build_binary.lua $ORIGIN $DESTINATION
+        fi
+
+        cd ../
+    fi
+done
+cd ../../../
+
+# Create the addon binaries
+cd qsb/lua/addons
+for folder in *; do
+    if ! ([ -f "$folder" ];) then
+        cd $folder
+
+        if ! ([ $folder = "QSB_X_Addon_X_Template" ];) then
+            echo 'Create binary for addons ${folder}'
+            ORIGIN="../../var/build/source/addons/${folder,,}"
+            DESTINATION="../../var/build/binary/addons/${folder,,}"
+            lua ../../../exe/build_binary.lua $ORIGIN $DESTINATION
+        fi
+
+        cd ../
+    fi
+done
+cd ../../../

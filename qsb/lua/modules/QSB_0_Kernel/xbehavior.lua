@@ -1,6 +1,6 @@
 -- -------------------------------------------------------------------------- --
 
----
+--
 -- Eine Sammlung von vielen Behavior.
 -- @set sort=true
 -- @local
@@ -747,7 +747,7 @@ Swift:RegisterBehavior(B_Goal_DestroyAllPlayerUnits);
 -- <b>Achtung</b>: Helden können nicht direkt zerstört werden. Bei ihnen
 -- genügt es, wenn sie sich "in die Burg zurückziehen".
 --
--- @param _ScriptName Skriptname des Ziels
+-- @param _ScriptName Skriptname des Ziels (Im lua-Script kann eine Tabelle aus Scriptnamen übergeben werden)
 --
 -- @within Goal
 --
@@ -768,12 +768,18 @@ B_Goal_DestroyScriptEntity = {
 }
 
 function B_Goal_DestroyScriptEntity:GetGoalTable()
-    return {Objective.DestroyEntities, 1, { self.ScriptName } }
+    return {Objective.DestroyEntities, 1, self.EntityList }
 end
 
 function B_Goal_DestroyScriptEntity:AddParameter(_Index, _Parameter)
     if (_Index == 0) then
-        self.ScriptName = _Parameter
+        if type(_Parameter) == "table" then
+            self.EntityList = _Parameter
+            self.ScriptName = _Parameter[1]
+        else
+            self.EntityList = { _Parameter }
+            self.ScriptName = _Parameter
+        end
     end
 end
 

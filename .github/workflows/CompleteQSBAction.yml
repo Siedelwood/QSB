@@ -34,7 +34,7 @@ jobs:
           echo QSB done
           echo ------------------------------------------------------------------
       
-      - name: Create Compiled LuaFiles
+      - name: Create QSB Wiki
         run: |
           echo ------------------------------------------------------------------
           echo Building QSB-Documentation
@@ -57,7 +57,7 @@ jobs:
           
           cd QSB.wiki
           
-          find . -maxdepth 1 -iname "*.md" -type f -exec rm -v {}
+          find . -maxdepth 1 -iname "*.md" -type f -exec rm -v {} \;
           
           for file in $(find ../../md_doc -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
               echo "Copying $file"
@@ -68,7 +68,7 @@ jobs:
           git config --local user.email 'automaticAction@users.noreply.github.com'
           
           git add .
-          git commit -m "Automatically publish wiki"
+          git commit --allow-empty -m "Automatically publish wiki"
           echo "Pushing"
           git push "https://$GITHUB_ACTOR:${{secrets.GITHUB_TOKEN}}@github.com/Siedelwood/QSB.wiki.git"
           
@@ -87,17 +87,23 @@ jobs:
           echo " "
           echo Binaries Done
           echo ------------------------------------------------------------------
+      
+      - name: Setting ReleastTag
+        run: echo "ReleaseTag=$(cat version.txt)" >> $GITHUB_ENV
           
       - name: Make QSB-Zip for Release
-        run: zip -rj QSB_Release.zip qsb/lua/var/build
+        run: |
+          cd qsb/lua/var/build
+          zip 'QSB_Release_${{ env.ReleaseTag }}.zip' -r .
+          cd ../../../../
         
       - name: Git Release
         env:
          GH_TOKEN: ${{ github.token }}
-         ReleaseTag: $(cat version.txt)
+         #ReleaseTag: $(cat version.txt)
         run: |
-          gh release create $ReleaseTag --latest --title "QSB Release ${ReleaseTag}" --notes "QSB Beschreibung bald erhältlich /n $(cat changelog.txt)"
-          gh release upload $ReleaseTag QSB_Release.zip
+          gh release create ${{ env.ReleaseTag }} --latest --title "QSB Release ${{ env.ReleaseTag }}" --notes "QSB Beschreibung bald erhältlich $(cat changelog.txt)"
+          gh release upload ${{ env.ReleaseTag }} 'qsb/lua/var/build/QSB_Release_${{ env.ReleaseTag }}.zip'
           
           
 #      - name: Push Result
