@@ -87,22 +87,22 @@ jobs:
           echo " "
           echo Binaries Done
           echo ------------------------------------------------------------------
+      
+      - name: Setting ReleastTag
+        run: echo "ReleaseTag=$(cat version.txt)" >> $GITHUB_ENV
           
       - name: Make QSB-Zip for Release
         run: |
           cd qsb/lua/var/build
-          zip QSB_Release.zip -r .
+          zip 'QSB_Release_${{ env.ReleaseTag }}.zip' -r .
           cd ../../../../
-        
-      - name: Setting ReleastTag
-        run: echo "ReleaseTag=$(cat version.txt)" >> $GITHUB_ENV
         
       - name: Git Release
         env:
          GH_TOKEN: ${{ github.token }}
          #ReleaseTag: $(cat version.txt)
         run: |
-          gh release create ${{ env.ReleaseTag }} --latest --title "QSB Release ${{ env.ReleaseTag }}" --notes "QSB Beschreibung bald erhältlich \n\n $(cat changelog.txt)"
+          gh release create ${{ env.ReleaseTag }} --latest --title "QSB Release ${{ env.ReleaseTag }}" --notes "QSB Beschreibung bald erhältlich $(cat changelog.txt)"
           gh release upload ${{ env.ReleaseTag }} qsb/lua/var/build/QSB_Release.zip
           
           
