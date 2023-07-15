@@ -89,7 +89,7 @@ jobs:
           echo ------------------------------------------------------------------
           
       - name: Make QSB-Zip for Release
-        run: zip -rj QSB_Release.zip qsb/lua/var/build
+        run: zip -r QSB_Release.zip qsb/lua/var/build
         
       - name: Setting ReleastTag
         run: echo "ReleaseTag=$(cat version.txt)" >> $GITHUB_ENV
