@@ -34,7 +34,7 @@ jobs:
           echo QSB done
           echo ------------------------------------------------------------------
       
-      - name: Create Compiled LuaFiles
+      - name: Create QSB Wiki
         run: |
           echo ------------------------------------------------------------------
           echo Building QSB-Documentation
