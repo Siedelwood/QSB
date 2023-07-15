@@ -89,7 +89,10 @@ jobs:
           echo ------------------------------------------------------------------
           
       - name: Make QSB-Zip for Release
-        run: zip -r QSB_Release.zip qsb/lua/var/build
+        run: |
+          cd qsb/lua/var/build
+          zip -r QSB_Release.zip
+          cd ../../../../
         
       - name: Setting ReleastTag
         run: echo "ReleaseTag=$(cat version.txt)" >> $GITHUB_ENV
@@ -100,7 +103,7 @@ jobs:
          #ReleaseTag: $(cat version.txt)
         run: |
           gh release create ${{ env.ReleaseTag }} --latest --title "QSB Release ${{ env.ReleaseTag }}" --notes "QSB Beschreibung bald erhältlich \n\n $(cat changelog.txt)"
-          gh release upload ${{ env.ReleaseTag }} QSB_Release.zip
+          gh release upload ${{ env.ReleaseTag }} qsb/lua/var/build/QSB_Release.zip
           
           
 #      - name: Push Result
