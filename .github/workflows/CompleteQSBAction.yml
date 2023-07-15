@@ -96,9 +96,9 @@ jobs:
          GH_TOKEN: ${{ github.token }}
          #ReleaseTag: $(cat version.txt)
         run: |
-          cat version.txt >> $ReleaseTagAusDatei
-          gh release create ${ReleaseTagAusDatei} --latest --title "QSB Release ${ReleaseTagAusDatei}" --notes "QSB Beschreibung bald erhältlich /n $(cat changelog.txt)"
-          gh release upload ${ReleaseTagAusDatei} QSB_Release.zip
+          echo "$(cat version.txt)" >> $ReleaseTag
+          gh release create ${ReleaseTag} --latest --title "QSB Release ${ReleaseTag}" --notes "QSB Beschreibung bald erhältlich /n $(cat changelog.txt)"
+          gh release upload ${ReleaseTag} QSB_Release.zip
           
           
 #      - name: Push Result
