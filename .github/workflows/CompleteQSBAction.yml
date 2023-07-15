@@ -99,8 +99,8 @@ jobs:
          GH_TOKEN: ${{ github.token }}
          #ReleaseTag: $(cat version.txt)
         run: |
-          gh release create ${{ env.TAG }} --latest --title "QSB Release ${{ env.TAG }}" --notes "QSB Beschreibung bald erhältlich /n $(cat changelog.txt)"
-          gh release upload ${{ env.TAG }} QSB_Release.zip
+          gh release create ${{ env.ReleaseTag }} --latest --title "QSB Release ${{ env.ReleaseTag }}" --notes "QSB Beschreibung bald erhältlich /n $(cat changelog.txt)"
+          gh release upload ${{ env.ReleaseTag }} QSB_Release.zip
           
           
 #      - name: Push Result
