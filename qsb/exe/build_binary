@@ -30,6 +30,7 @@ for folder in *; do
         cd ../
     fi
 done
+cd ../../../
 
 # Create the addon binaries
 cd qsb/lua/addons
@@ -47,3 +48,4 @@ for folder in *; do
         cd ../
     fi
 done
+cd ../../../
