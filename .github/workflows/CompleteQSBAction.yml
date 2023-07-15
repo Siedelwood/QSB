@@ -1,0 +1,115 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  buildJob:
+    name: Creating QSB Release
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: checkout repo
+        uses: actions/checkout@v2.7.0
+      
+      - name: Install Lua
+        uses: leafo/gh-actions-lua@v10
+        with:
+         luaVersion: "5.1.1"
+         
+      - name: Install luaRocks
+        uses: leafo/gh-actions-luarocks@v4.3.0
+      
+      - name: Install lua-Penlight
+        run: luarocks install penlight
+        
+      - name: Install lua-htmlparser
+        run: luarocks install htmlparser
+        
+      - name: Create QSB-Scripts
+        run: |
+          echo ------------------------------------------------------------------
+          echo Building QSB
+          echo " "
+          bash qsb/exe/build_source
+          echo " "
+          echo QSB done
+          echo ------------------------------------------------------------------
+      
+      - name: Create QSB Wiki
+        run: |
+          echo ------------------------------------------------------------------
+          echo Building QSB-Documentation
+          echo " "
+          bash qsb/exe/build_doc
+          echo " "
+          echo QSB-Documentation done
+          echo ------------------------------------------------------------------
+          
+      - name: Upload Wiki Files
+        run: |
+          echo ------------------------------------------------------------------
+          echo Uploading Wiki to Git-Wiki
+          echo " "
+          cd qsb/lua/var
+          mkdir wiki_dir
+          cd wiki_dir
+          
+          git clone "https://$GITHUB_ACTOR:${{secrets.GITHUB_TOKEN}}@github.com/Siedelwood/QSB.wiki.git"
+          
+          cd QSB.wiki
+          
+          find . -maxdepth 1 -iname "*.md" -type f -exec rm -v {} \;
+          
+          for file in $(find ../../md_doc -maxdepth 1 -type f -name '*.md' -execdir basename '{}' ';'); do
+              echo "Copying $file"
+              cp "../../md_doc/$file" "$file"
+          done
+          
+          git config --local user.name 'Automatic Action'
+          git config --local user.email 'automaticAction@users.noreply.github.com'
+          
+          git add .
+          git commit --allow-empty -m "Automatically publish wiki"
+          echo "Pushing"
+          git push "https://$GITHUB_ACTOR:${{secrets.GITHUB_TOKEN}}@github.com/Siedelwood/QSB.wiki.git"
+          
+          cd ../../../../../
+          
+          echo " "
+          echo Uploading Wiki Done
+          echo ------------------------------------------------------------------
+        
+      - name: Create QSB Binaries
+        run: |
+          echo ------------------------------------------------------------------
+          echo Building Binaries
+          echo " "
+          bash qsb/exe/build_binary
+          echo " "
+          echo Binaries Done
+          echo ------------------------------------------------------------------
+          
+      - name: Make QSB-Zip for Release
+        run: |
+          cd qsb/lua/var/build
+          zip -r QSB_Release.zip
+          cd ../../../../
+        
+      - name: Setting ReleastTag
+        run: echo "ReleaseTag=$(cat version.txt)" >> $GITHUB_ENV
+        
+      - name: Git Release
+        env:
+         GH_TOKEN: ${{ github.token }}
+         #ReleaseTag: $(cat version.txt)
+        run: |
+          gh release create ${{ env.ReleaseTag }} --latest --title "QSB Release ${{ env.ReleaseTag }}" --notes "QSB Beschreibung bald erhältlich \n\n $(cat changelog.txt)"
+          gh release upload ${{ env.ReleaseTag }} qsb/lua/var/build/QSB_Release.zip
+          
+          
+#      - name: Push Result
+#        run: |
+#          git config --global user.name 'Automatic Action'
+#          git config --global user.email 'automaticAction@users.noreply.github.com'
+#          git add -A
+#          git commit -m "Automated Generation"
+#          git push
