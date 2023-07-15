@@ -45,7 +45,8 @@ $(sublist) $(M(item.params.map[sublist],item))
 >          end
 >          for p in iter(param) do
 >              local name,tp,def = item:display_name_of(p), ldoc.typename(item:type_of_param(p)), item:default_of_param(p)
-| $(name) | $(tp) | $(M(item.params.map[p],item)) |
+| $(name) | $(tp) | $(item.params.map[p]) |
+> -- $(M(item.params.map[p],item))
 >              if def == true then
 *optional*
 >              elseif def then
@@ -66,7 +67,11 @@ $(sublist) $(M(item.params.map[sublist],item))
 |---|---|
 >       for i,group in ldoc.ipairs(groups) do local li,il = use_li(group)
 >           for r in group:iter() do local type, ctypes = item:return_type(r); local rt = ldoc.typename(type)
+>               if rt ~= '' then
 | $(rt) | $(M(r.text,item))$(il) |
+>               else
+| - | $(M(r.text,item))$(il) |
+>               end
 >           end -- for r
 >       if i < #groups then
 
