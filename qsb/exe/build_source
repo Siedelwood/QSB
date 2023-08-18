@@ -20,13 +20,15 @@ for folder in *; do
             # create core qsb
             echo "build qsb"
             DESTINATION="../../var/build/source/qsb.lua"
-            find . -maxdepth 1 -iname "*.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
+            # find . -maxdepth 1 -iname "*.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
+            find . -maxdepth 1 -iname "*.lua" -not -name "compatibility.lua" -type f | sort | xargs cat  >> $DESTINATION
             cat "../../selfload.lua" >> $DESTINATION
         else
             # create module
             echo "build module ${folder}"
             DESTINATION="../../var/build/source/modules/${folder,,}.lua"
-            find . -maxdepth 1 -iname "*.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
+            # find . -maxdepth 1 -iname "*.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
+            find . -maxdepth 1 -iname "*.lua" -not -name "compatibility.lua" -type f | sort | xargs cat >> $DESTINATION
         fi
         cd ../
     fi 
@@ -35,13 +37,15 @@ done
 # create qsb with all modules
 echo "build qsb_all"
 DESTINATION="../var/build/source/qsb_all.lua"
-find . -maxdepth 2 -iname "*.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
+# find . -maxdepth 2 -iname "*.lua" -not -name "compatibility.lua" -type f -exec cat {} +> $DESTINATION
+find . -maxdepth 2 -iname "*.lua" -not -name "compatibility.lua" -type f | sort | xargs cat >> $DESTINATION
 cat "../selfload.lua" >> $DESTINATION
 
 # create qsb with all modules and compatibility features
 echo "build qsb_comp"
 DESTINATION="../var/build/source/qsb_comp.lua"
-find . -maxdepth 2 -iname "*.lua" -type f -exec cat {} +> $DESTINATION
+# find . -maxdepth 2 -iname "*.lua" -type f -exec cat {} +> $DESTINATION
+find . -maxdepth 2 -iname "*.lua" -type f | sort | xargs cat >> $DESTINATION
 cat "../selfload.lua" >> $DESTINATION
 
 # Create addons

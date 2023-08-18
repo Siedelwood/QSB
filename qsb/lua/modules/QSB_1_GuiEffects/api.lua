@@ -352,6 +352,8 @@ end
 --                " et accusam et justo duo dolores et ea rebum. Stet clita"..
 --                " kasd gubergren, no sea takimata sanctus est Lorem ipsum"..
 --                " dolor sit amet.",
+--     Color = { R = 0, G = 0, B = 66 }, -- A = 255 statt Opacity möglich
+--     Opacity = 255,
 --     Callback = function(_Data)
 --         -- Hier kann was passieren
 --     end
