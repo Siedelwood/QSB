@@ -5,7 +5,7 @@
 --
 -- Es können verschiedene Anzeigen ausgetauscht werden.
 -- <ul>
--- <li>Spielerfrabe</li>
+-- <li>Spielerfarbe</li>
 -- <li>Spielername</li>
 -- <li>Spielerportrait</li>
 -- <li>Territorienname</li>

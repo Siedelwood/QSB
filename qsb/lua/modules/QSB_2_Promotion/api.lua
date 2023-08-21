@@ -510,6 +510,7 @@ end
 --
 -- @param[type=number] _PlayerID ID des Spielers
 -- @param[type=number] _KnightTitle Nächster Titel
+-- @return[type=boolean] Ruf der Stadt hoch genug
 -- @within Originalfunktionen
 -- @local
 --
@@ -533,6 +534,7 @@ end
 --
 -- @param[type=number] _PlayerID ID des Spielers
 -- @param[type=number] _KnightTitle Nächster Titel
+-- @return[type=boolean] Gebäude vollständig dekoriert
 -- @within Originalfunktionen
 -- @local
 --
@@ -577,6 +579,7 @@ end
 --
 -- @param[type=number] _PlayerID ID des Spielers
 -- @param[type=number] _KnightTitle Nächster Titel
+-- @return[type=boolean] Ritter kann befördert werden
 -- @within Originalfunktionen
 -- @local
 --
@@ -614,10 +617,11 @@ end
 --
 -- @param[type=number] _PlayerID ID des Spielers
 -- @param[type=number] _KnightTitle Nächster Titel
+-- @return[type=boolean] Ritter kann befördert werden
 -- @within Anwenderfunktionen
 --
 function API.CanKnightBePromoted(_PlayerID, _KnightTitle)
-    CanKnightBePromoted(_PlayerID, _KnightTitle)
+    return CanKnightBePromoted(_PlayerID, _KnightTitle)
 end
 
 ---
