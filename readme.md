@@ -17,3 +17,7 @@ Um zu erfahren, wie du an der Entwicklung der QSB teilnehmen kannst schau dir ge
 # Die QSB selbst bauen
 
 Die QSB wird bei jeder veröffentlichten Version von uns gebaut und als release zur Verfügung gestellt. Wenn du gerne Dinge anpassen möchtest und deine Version bauen möchtest kannst du dir die [Bauanleitung](./qsb/exe/readme.md) ansehen.
+
+# Changelog
+
+Eine Detailierte Änderungshistorie seit der ersten aktuellen Beta der QSB3 gibt es [hier](./changelog.md).

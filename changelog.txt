@@ -2,4 +2,9 @@
 
 Changelog:
 
-- Erste Betaversion der neuen QSB3
+- fix Rechtschreibfehler
+- fix fehlenden Rückgabeparameter in API.CanKnightBePromoted
+- fix API.GetPosition gab y für z zurück
+- fix Fehler in Baukosten, die einen DSE beim hovern von Baubuttons ohne veränderte Kosten verursacht hat
+
+- added Addon für Questketten hinzugefügt
