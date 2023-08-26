@@ -557,3 +557,25 @@ function API.SpeedLimitActivate(_Flag)
     return Logic.ExecuteInLuaLocalState("ModuleGuiControl.Local:ActivateSpeedLimit(" ..tostring(_Flag).. ")");
 end
 
+---
+-- Diese Funktion setzt die maximale Spielgeschwindigkeit bis zu der das Spiel
+-- beschleunigt werden kann.
+--
+-- @param[type=number] _Limit Obergrenze für Spielgeschwindigkeit
+-- @within Anwenderfunktionen
+-- @see API.SpeedLimitActivate
+--
+-- @usage -- Legt die Speedbremse auf Stufe 1 fest.
+-- API.SetSpeedLimit(1)
+-- -- Legt die Speedbremse auf Stufe 2 fest.
+-- API.SetSpeedLimit(2)
+--
+function API.SetSpeedLimit(_Limit)
+    if not GUI then
+        Logic.ExecuteInLuaLocalState("API.SetSpeedLimit(" ..tostring(_Limit).. ")");
+        return;
+    end
+    return ModuleGuiControl.Local:SetSpeedLimit(_Limit);
+end
+SetSpeedLimit = API.SetSpeedLimit
+

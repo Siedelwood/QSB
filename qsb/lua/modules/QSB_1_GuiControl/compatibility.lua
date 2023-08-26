@@ -175,3 +175,16 @@ end
 function API.InterfaceHideSelectionButton(_Flag)
     API.HideSelectionButton(_Flag)
 end
+
+---
+-- Diese Funktion setzt die maximale Spielgeschwindigkeit bis zu der das Spiel
+-- beschleunigt werden kann.
+--
+-- <b>QSB:</b> API.SetSpeedLimit(_Limit)
+--
+-- @param[type=number] _Limit Obergrenze für Spielgeschwindigkeit
+-- @within QSB_1_GuiControl
+--
+function API.SpeedLimitSet(_Limit)
+    API.SetSpeedLimit(_Limit)
+end
