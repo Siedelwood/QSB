@@ -1896,13 +1896,11 @@ Swift:RegisterBehavior(B_Reward_AI_SetEntityControlled);
 --
 -- @within Reward
 --
--- -------------------------------------------------------------------------- --
-
 function Reward_ToggleCommunityFeatures(...)
-    return b_Reward_ToggleCommunityFeatures:new(...);
+    return B_Reward_ToggleCommunityFeatures:new(...);
 end
 
-b_Reward_ToggleCommunityFeatures = {
+B_Reward_ToggleCommunityFeatures = {
     Name = "Reward_ToggleCommunityFeatures",
     Description = {
         en = "Reward: Activates/Deactivates optional community features like Downgrade/Breeding.",
@@ -1918,15 +1916,15 @@ b_Reward_ToggleCommunityFeatures = {
     },
 }
 
-function b_Reward_ToggleCommunityFeatures:GetRewardTable()
+function B_Reward_ToggleCommunityFeatures:GetRewardTable()
     return { Reward.Custom, {self, self.CustomFunction} }
 end
 
-function b_Reward_ToggleCommunityFeatures:GetCustomData(_Index)
+function B_Reward_ToggleCommunityFeatures:GetCustomData(_Index)
     return {"true", "false"}
 end
 
-function b_Reward_ToggleCommunityFeatures:AddParameter(_Index, _Parameter)
+function B_Reward_ToggleCommunityFeatures:AddParameter(_Index, _Parameter)
     if (_Index == 0) then
         self.UseDowngrade = _Parameter;
 	elseif (_Index == 1) then
@@ -1944,7 +1942,7 @@ function b_Reward_ToggleCommunityFeatures:AddParameter(_Index, _Parameter)
     end
 end
 
-function b_Reward_ToggleCommunityFeatures:CustomFunction(_Quest)
+function B_Reward_ToggleCommunityFeatures:CustomFunction(_Quest)
 	API.UseDowngrade(API.ToBoolean(self.UseDowngrade))
 	API.ActivateSheepBreeding(API.ToBoolean(self.UseBreeding))
 	API.ActivateCattleBreeding(API.ToBoolean(self.UseBreeding))
@@ -1966,7 +1964,7 @@ function b_Reward_ToggleCommunityFeatures:CustomFunction(_Quest)
 	]]);
 end
 
-Swift:RegisterBehavior(b_Reward_ToggleCommunityFeatures);
+Swift:RegisterBehavior(B_Reward_ToggleCommunityFeatures);
 
 -- -------------------------------------------------------------------------- --
 

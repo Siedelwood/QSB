@@ -1,3 +1,4 @@
+
 ---
 -- Setzt neue Baukosten eines Gebäudes über das BCS.
 --
@@ -7,10 +8,10 @@
 -- @within Reward
 --
 function Reward_EditBuildingConstructionCosts(...)
-    return b_Reward_EditBuildingConstructionCosts:new(...);
+    return B_Reward_EditBuildingConstructionCosts:new(...);
 end
 
-b_Reward_EditBuildingConstructionCosts = {
+B_Reward_EditBuildingConstructionCosts = {
     Name = "Reward_EditBuildingConstructionCosts",
     Description = {
         en = "Reward: Changes the construction cost for a building type.",
@@ -24,11 +25,11 @@ b_Reward_EditBuildingConstructionCosts = {
     },
 }
 
-function b_Reward_EditBuildingConstructionCosts:GetRewardTable()
+function B_Reward_EditBuildingConstructionCosts:GetRewardTable()
     return { Reward.Custom, {self, self.CustomFunction} }
 end
 
-function b_Reward_EditBuildingConstructionCosts:GetCustomData(_Index)
+function B_Reward_EditBuildingConstructionCosts:GetCustomData(_Index)
     if _Index == 1 then
         return UpgradeCategories; -- TODO: This in Global Lua State?
     elseif _Index == 2 then -- Old Cost Amount
@@ -40,7 +41,7 @@ function b_Reward_EditBuildingConstructionCosts:GetCustomData(_Index)
     end
 end
 
-function b_Reward_EditBuildingConstructionCosts:AddParameter(_Index, _Parameter)
+function B_Reward_EditBuildingConstructionCosts:AddParameter(_Index, _Parameter)
     if (_Index == 0) then
         self.UpgradeCategory = _Parameter;
 	elseif (_Index == 1) then
@@ -54,7 +55,7 @@ function b_Reward_EditBuildingConstructionCosts:AddParameter(_Index, _Parameter)
     end
 end
 
-function b_Reward_EditBuildingConstructionCosts:CustomFunction(_Quest)
+function B_Reward_EditBuildingConstructionCosts:CustomFunction(_Quest)
     if BCS then
         BCS.SetConstructionCosts(self.UpgradeCategory, self.OriginalCostAmount, self.NewGood, self.NewGoodAmount)
     else
@@ -62,7 +63,7 @@ function b_Reward_EditBuildingConstructionCosts:CustomFunction(_Quest)
     end
 end
 
-Swift:RegisterBehavior(b_Reward_EditBuildingConstructionCosts);
+Swift:RegisterBehavior(B_Reward_EditBuildingConstructionCosts);
 
 ---
 -- Setzt neue Ausbaukosten eines Gebäudes über das BCS.
@@ -75,10 +76,10 @@ Swift:RegisterBehavior(b_Reward_EditBuildingConstructionCosts);
 -- -------------------------------------------------------------------------- --
 
 function Reward_EditBuildingUpgradeCosts(...)
-    return b_Reward_EditBuildingUpgradeCosts:new(...);
+    return B_Reward_EditBuildingUpgradeCosts:new(...);
 end
 
-b_Reward_EditBuildingUpgradeCosts = {
+B_Reward_EditBuildingUpgradeCosts = {
     Name = "Reward_EditBuildingUpgradeCosts",
     Description = {
         en = "Reward: Changes the construction cost for a building type.",
@@ -92,11 +93,11 @@ b_Reward_EditBuildingUpgradeCosts = {
     },
 }
 
-function b_Reward_EditBuildingUpgradeCosts:GetRewardTable()
+function B_Reward_EditBuildingUpgradeCosts:GetRewardTable()
     return { Reward.Custom, {self, self.CustomFunction} }
 end
 
-function b_Reward_EditBuildingUpgradeCosts:GetCustomData(_Index)
+function B_Reward_EditBuildingUpgradeCosts:GetCustomData(_Index)
     if _Index == 1 then
         return UpgradeCategories; -- TODO: This in Global Lua State?
     elseif _Index == 2 then -- Old Cost Amount
@@ -108,7 +109,7 @@ function b_Reward_EditBuildingUpgradeCosts:GetCustomData(_Index)
     end
 end
 
-function b_Reward_EditBuildingUpgradeCosts:AddParameter(_Index, _Parameter)
+function B_Reward_EditBuildingUpgradeCosts:AddParameter(_Index, _Parameter)
     if (_Index == 0) then
         self.UpgradeCategory = _Parameter;
 	elseif (_Index == 1) then
@@ -122,7 +123,7 @@ function b_Reward_EditBuildingUpgradeCosts:AddParameter(_Index, _Parameter)
     end
 end
 
-function b_Reward_EditBuildingUpgradeCosts:CustomFunction(_Quest)
+function B_Reward_EditBuildingUpgradeCosts:CustomFunction(_Quest)
     if BCS then
         BCS.SetConstructionCosts(self.UpgradeCategory, self.OriginalCostAmount, self.NewGood, self.NewGoodAmount)
     else
@@ -130,4 +131,4 @@ function b_Reward_EditBuildingUpgradeCosts:CustomFunction(_Quest)
     end
 end
 
-Swift:RegisterBehavior(b_Reward_EditBuildingUpgradeCosts);
+Swift:RegisterBehavior(B_Reward_EditBuildingUpgradeCosts);

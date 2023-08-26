@@ -7,6 +7,10 @@
 - *fix* fehlenden Rückgabeparameter in API.CanKnightBePromoted
 - *fix* API.GetPosition gab y für z zurück
 - *fix* Fehler in Baukosten, die einen DSE beim hovern von Baubuttons ohne veränderte Kosten verursacht hat
+- *fix* Darstellungsfehler in der Markdown-Doku angepasst
+- *fix* Reward_ToggleCommunityFeatures wurde nicht gefunden
+- *fix* Reward_EditBuildingUpgradeCosts wurde nicht gefunden
+- *fix* Reward_EditBuildingConstructionCosts wurde nicht gefunden
 
 - *added* Addon für Questketten hinzugefügt
 

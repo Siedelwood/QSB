@@ -15,14 +15,18 @@ $(M(module.description,module))
 > for kind, items in module.kinds() do
 >  local kitem = module.kinds:get_item(kind)
 >  if kitem then
+
 $(lev1) $(ldoc.descript(kitem))
+
 >      if kitem.usage then
 **Beispiel:**
 $(ldoc.prettify(kitem.usage[1]))
 >      end
 >  end
 >   for item in items() do
+
 $(lev2) $(ldoc.display_name(item))
+
 $(ldoc.descript(item))
 
 >  if item.params and #item.params > 0 then
