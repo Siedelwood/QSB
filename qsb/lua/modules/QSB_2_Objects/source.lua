@@ -7,9 +7,12 @@ ModuleObjectInteraction = {
     },
 
     Global = {
+        Data = {},
         SlaveSequence = 0,
     };
-    Local  = {};
+    Local  = {
+        Data = {},
+    };
 
     Shared = {
         Text = {}

@@ -7,9 +7,12 @@ ModuleShipSalesment = {
     },
 
     Global = {
+        Data = {},
         Harbors = {},
     },
-    Local = {},
+    Local = {
+        Data = {},
+    },
     Shared = {},
 };
 

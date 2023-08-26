@@ -7,6 +7,7 @@ ModuleGuiEffects = {
     },
 
     Global = {
+        Data = {},
         CinematicEventID = 0,
         CinematicEventStatus = {},
         CinematicEventQueue = {},
@@ -14,6 +15,7 @@ ModuleGuiEffects = {
         TypewriterEventCounter = 0,
     },
     Local = {
+        Data = {},
         CinematicEventStatus = {},
         ChatOptionsWasShown = false,
         MessageLogWasShown = false,

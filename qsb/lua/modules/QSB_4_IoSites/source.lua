@@ -7,9 +7,12 @@ ModuleInteractiveSites = {
     },
 
     Global = {
+        Data = {},
         CreatedSites = {},
     };
-    Local  = {};
+    Local  = {
+        Data = {},
+    };
 
     Shared = {
         Text = {

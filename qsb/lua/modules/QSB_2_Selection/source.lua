@@ -7,10 +7,12 @@ ModuleSelection = {
     },
 
     Global = {
+        Data = {},
         TrebuchetIDToCart = {},
         SelectedEntities = {},
     },
     Local = {
+        Data = {},
         SelectedEntities = {},
         TrebuchetDisassemble = false,
         TrebuchetErect = false,

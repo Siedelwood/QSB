@@ -7,9 +7,12 @@ ModuleTreasure = {
     },
 
     Global = {
+        Data = {},
         Chests = {},
     };
-    Local  = {};
+    Local  = {
+        Data = {},
+    };
 
     Shared = {
         Text = {

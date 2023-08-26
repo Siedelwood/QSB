@@ -7,6 +7,7 @@ ModuleLifestockBreeding = {
     },
 
     Global = {
+        Data = {},
         AnimalChildren = {},
         PastureRegister = {},
 
@@ -38,6 +39,7 @@ ModuleLifestockBreeding = {
         },
     },
     Local = {
+        Data = {},
         Cattle = {
             Breeding = true,
             MoneyCost = 300,

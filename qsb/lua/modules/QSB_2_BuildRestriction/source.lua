@@ -6,8 +6,11 @@ ModuleBuildRestriction = {
         Version = "3.0.0 (BETA 2.0.0)",
     },
 
-    Global = {},
+    Global = {
+        Data = {},
+    },
     Local = {
+        Data = {},
         LastSelectedBuildingType = 0,
         LastSelectedRoadType = 0,
         RestrictionSequence = 0,

@@ -7,9 +7,12 @@ ModuleEntityMovement = {
     },
 
     Global = {
+        Data = {},
         PathMovingEntities = {},
     };
-    Local = {},
+    Local = {
+        Data = {},
+    },
 
     Shared = {},
 };

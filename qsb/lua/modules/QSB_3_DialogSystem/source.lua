@@ -7,11 +7,13 @@ ModuleDialogSystem = {
     },
 
     Global = {
+        Data = {},
         Dialog = {},
         DialogQueue = {},
         DialogCounter = 0,
     },
     Local = {
+        Data = {},
         Dialog = {},
     },
     -- This is a shared structure but the values are asynchronous!

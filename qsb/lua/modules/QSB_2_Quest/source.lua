@@ -7,12 +7,15 @@ ModuleQuest = {
     },
 
     Global = {
+        Data = {},
         ExternalTriggerConditions = {},
         ExternalTimerConditions = {},
         ExternalDecisionConditions = {},
         SegmentsOfQuest = {},
     },
-    Local  = {},
+    Local  = {
+        Data = {},
+    },
 
     Shared = {},
 }

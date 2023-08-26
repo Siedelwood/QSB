@@ -16,10 +16,12 @@ ModuleMilitaryLimit = {
     },
 
     Global = {
+        Data = {},
         SoldierLimitCalculators = {},
         SoldierKillsCounter = {},
     };
     Local = {
+        Data = {},
         SelectionBackup = {},
         RecruitLocked = {},
         RefillLocked = {},

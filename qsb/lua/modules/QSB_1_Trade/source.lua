@@ -7,6 +7,7 @@ ModuleTrade = {
     },
 
     Global = {
+        Data = {},
         Analysis = {
             PlayerOffersAmount = {
                 [1] = {}, [2] = {}, [3] = {}, [4] = {},
@@ -17,6 +18,7 @@ ModuleTrade = {
         Event = {},
     },
     Local = {
+        Data = {},
         Lambda = {
             PurchaseTraderAbility = {},
             PurchaseBasePrice     = {},

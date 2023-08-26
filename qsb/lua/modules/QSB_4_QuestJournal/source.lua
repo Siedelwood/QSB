@@ -7,12 +7,14 @@ ModuleQuestJournal = {
     },
 
     Global = {
+        Data = {},
         Journal = {ID = 0},
         CustomInputAllowed = {},
         InputShown = {},
         TextColor  = "{tooltip}",
     };
     Local = {
+        Data = {},
         NextButton = "/InGame/Root/Normal/AlignBottomLeft/Message/MessagePortrait/TutorialNextButton",
         NextButtonIcon = {16, 10},
     };

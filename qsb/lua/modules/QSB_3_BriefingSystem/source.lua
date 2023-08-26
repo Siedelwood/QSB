@@ -7,11 +7,13 @@ ModuleBriefingSystem = {
     },
 
     Global = {
+        Data = {},
         Briefing = {},
         BriefingQueue = {},
         BriefingCounter = 0,
     },
     Local = {
+        Data = {},
         ParallaxWidgets = {
             -- Can not set UV coordinates for this... :(
             -- {"/EndScreen/EndScreen/BG", "/EndScreen/EndScreen"},

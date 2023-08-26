@@ -7,11 +7,13 @@ ModuleCutsceneSystem = {
     },
 
     Global = {
+        Data = {},
         Cutscene = {},
         CutsceneQueue = {},
         CutsceneCounter = 0;
     },
     Local = {
+        Data = {},
         Cutscene = {},
     },
 

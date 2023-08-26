@@ -7,11 +7,14 @@ ModuleNpcInteraction = {
     },
 
     Global = {
+        Data = {},
         Interactions = {},
         NPC = {},
         UseMarker = true,
     };
-    Local  = {};
+    Local  = {
+        Data = {},
+    };
     -- This is a shared structure but the values are asynchronous!
     Shared = {
         Text = {

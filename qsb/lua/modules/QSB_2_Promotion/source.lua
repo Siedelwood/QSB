@@ -6,8 +6,12 @@ ModuleKnightTitleRequirements = {
         Version = "3.0.0 (BETA 2.0.0)",
     },
 
-    Global = {};
-    Local  = {};
+    Global = {
+        Data = {},
+    };
+    Local  = {
+        Data = {},
+    };
 
     Shared = {};
 };

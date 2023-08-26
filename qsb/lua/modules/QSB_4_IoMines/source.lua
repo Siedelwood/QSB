@@ -7,6 +7,7 @@ ModuleInteractiveMines = {
     },
 
     Global = {
+        Data = {},
         Mines = {},
         Lambda = {
             MineCondition = {},
@@ -14,7 +15,9 @@ ModuleInteractiveMines = {
             InteractiveMineDepleted = {},
         }
     },
-    Local = {},
+    Local = {
+        Data = {},
+    },
     -- This is a shared structure but the values are asynchronous!
     Shared = {
         Text = {

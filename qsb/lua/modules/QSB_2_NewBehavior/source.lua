@@ -7,10 +7,13 @@ ModuleBehaviorCollection = {
     },
 
     Global = {
+        Data = {},
         SoldierKillsCounter = {},
         VictoryWithPartyEntities = {},
     },
-    Local = {},
+    Local = {
+        Data = {},
+    },
 
     Shared = {},
 };

@@ -6,8 +6,11 @@ ModuleSound = {
         Version = "3.0.0 (BETA 2.0.0)",
     },
 
-    Global = {},
+    Global = {
+        Data = {},
+    },
     Local = {
+        Data = {},
         SoundBackup = {},
     },
 }
