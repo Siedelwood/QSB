@@ -388,6 +388,7 @@ function API.SetResourceAmount(_Entity, _StartAmount, _RefillAmount)
         QSB.RefillAmounts[EntityID] = _RefillAmount;
     end
 end
+SetResourceAmount = API.SetResourceAmount
 
 ---
 -- Gibt dem Entity einen eindeutigen Skriptnamen und gibt ihn zurück.
