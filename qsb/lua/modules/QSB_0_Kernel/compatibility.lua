@@ -274,3 +274,18 @@ end
 function API.DeactivateIO(_ScriptName)
     API.InteractiveObjectDeactivate(_ScriptName)
 end
+
+---
+-- Aktiviert oder deaktiviert die automatische Speicherung der History Edition.
+--
+-- <b>Hinweis</b>: Diese Funktion hat keinen Effekt beim Originalspiel. Nur die
+-- History Edition erzeugt automatische Spielstände.
+--
+-- <b>QSB:</b> API.DisableAutoSave(_Flag)
+--
+-- @param[type=boolean] _Flag HE Quicksave deaktivieren
+-- @within QSB-Kern
+--
+function API.DisableAutomaticQuickSave(_Flag)
+    API.DisableAutoSave(_Flag)
+end

@@ -14,9 +14,11 @@
 - *fix* Fehlende Data-Tabelle bei Gebäudebuttons hinzugefügt
 - *fix* Fehlende Implementierung von API.SetSpeedLimit(_Limit) hinzugefügt
 
+
 - *added* Addon für Questketten hinzugefügt
 - *added* Kompatibilität zu Funktionen zum verstecken von Interfaceelementen
 - *added* Kompatibilität zu Funktionen zur Nutztierzucht
+- *added* Kompatibilität zu HE Quicksave Unterdrückung
 - *added* API.UseSingleStop(_Flag) zu BuildingUI Modul hinzugefügt
 - *added* API.UseSingleReserve(_Flag) zu BuildingUI Modul hinzugefügt
 - *added* API.UseDowngrade(_Flag) zu BuildingUI Modul hinzugefügt
