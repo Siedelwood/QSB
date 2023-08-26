@@ -20,6 +20,7 @@
 - *added* Kompatibilität zu Funktionen zur Nutztierzucht
 - *added* Kompatibilität zu HE Quicksave Unterdrückung
 - *added* Kompatibilität zu SetResourceAmount
+- *added* Kompatibilität zu Funktionen des Interfaces
 - *added* API.UseSingleStop(_Flag) zu BuildingUI Modul hinzugefügt
 - *added* API.UseSingleReserve(_Flag) zu BuildingUI Modul hinzugefügt
 - *added* API.UseDowngrade(_Flag) zu BuildingUI Modul hinzugefügt
