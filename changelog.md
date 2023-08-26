@@ -12,9 +12,11 @@
 - *fix* Reward_EditBuildingUpgradeCosts wurde nicht gefunden
 - *fix* Reward_EditBuildingConstructionCosts wurde nicht gefunden
 - *fix* Fehlende Data-Tabelle bei Gebäudebuttons hinzugefügt
+- *fix* Fehlende Implementierung von API.SetSpeedLimit(_Limit) hinzugefügt
 
 - *added* Addon für Questketten hinzugefügt
 - *added* Kompatibilität zu Funktionen zum verstecken von Interfaceelementen
+- *added* Kompatibilität zu Funktionen zur Nutztierzucht
 
 ## Version 3.0.0.beta-1.1
 

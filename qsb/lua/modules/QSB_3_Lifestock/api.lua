@@ -43,7 +43,7 @@ QSB.ScriptEvents = QSB.ScriptEvents or {};
 --
 -- @usage
 -- -- Es können keine Kühe gezüchtet werden
--- API.UseBreedCattle(false);
+-- API.ActivateCattleBreeding(false);
 --
 function API.ActivateCattleBreeding(_Flag)
     if GUI then
@@ -73,7 +73,7 @@ end
 --
 -- @usage
 -- -- Schafsaufzucht ist erlaubt
--- API.UseBreedSheeps(true);
+-- API.ActivateSheepBreeding(true);
 --
 function API.ActivateSheepBreeding(_Flag)
     if GUI then
