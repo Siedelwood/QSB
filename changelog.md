@@ -17,6 +17,9 @@
 - *added* Addon für Questketten hinzugefügt
 - *added* Kompatibilität zu Funktionen zum verstecken von Interfaceelementen
 - *added* Kompatibilität zu Funktionen zur Nutztierzucht
+- *added* API.UseSingleStop(_Flag) zu BuildingUI Modul hinzugefügt
+- *added* API.UseSingleReserve(_Flag) zu BuildingUI Modul hinzugefügt
+- *added* API.UseDowngrade(_Flag) zu BuildingUI Modul hinzugefügt
 
 ## Version 3.0.0.beta-1.1
 
