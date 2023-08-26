@@ -527,7 +527,7 @@ function API.GetPosition(_Entity)
         return {X= 0, Y= 0, Z= 0};
     end
     local x, y, z = Logic.EntityGetPos(GetID(_Entity));
-    return {X= x, Y= y, Z= y};
+    return {X= x, Y= y, Z= z};
 end
 API.LocateEntity = API.GetPosition;
 GetPosition = API.GetPosition;
