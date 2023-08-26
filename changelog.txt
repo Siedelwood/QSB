@@ -12,3 +12,4 @@ Changelog:
 - fix Reward_EditBuildingConstructionCosts wurde nicht gefunden
 
 - added Addon für Questketten hinzugefügt
+- added Kompatibilität zu Funktionen zum verstecken von Interfaceelementen

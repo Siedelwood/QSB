@@ -13,6 +13,7 @@
 - *fix* Reward_EditBuildingConstructionCosts wurde nicht gefunden
 
 - *added* Addon für Questketten hinzugefügt
+- *added* Kompatibilität zu Funktionen zum verstecken von Interfaceelementen
 
 ## Version 3.0.0.beta-1.1
 

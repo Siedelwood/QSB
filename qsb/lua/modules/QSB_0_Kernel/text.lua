@@ -273,7 +273,7 @@ end
 -- zurückgegeben. Alle anderen Werte sind nicht in der Rückgabe enthalten.
 --
 -- @param[type=table] _Text Table mit Übersetzungen
--- @return Übersetzten Text oder Table mit Texten
+-- @return[type=string] Übersetzten Text oder Table mit Texten
 -- @within Text
 --
 -- @usage
