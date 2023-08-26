@@ -479,37 +479,39 @@ function ModuleBuildingCost.Local:GetCostByCostTable(_upgradeCategory)
 		return
 	end
 	local CurrentCostTable = self.Data.Costs.Construction[_upgradeCategory]
-	if #self.Data.DiscountFunctions.Construction.AddedGood > 0 then
-		local factor = 1
-		for i,v in ipairs(self.Data.DiscountFunctions.Construction.AddedGood) do
-			factor = factor - (v() or 0)
-		end
-		if CurrentCostTable[3] then
-			CurrentCostTable[3] = math.floor(CurrentCostTable[3] * factor + 0.5)
-			if not self.Data.DiscountFunctions.CanBeZero.Construction.AddedGood then
-				if CurrentCostTable[3] == 0 then
-					CurrentCostTable[3] = 1
+	if CurrentCostTable ~= nil then
+		if #self.Data.DiscountFunctions.Construction.AddedGood > 0 then
+			local factor = 1
+			for i,v in ipairs(self.Data.DiscountFunctions.Construction.AddedGood) do
+				factor = factor - (v() or 0)
+			end
+			if CurrentCostTable[3] then
+				CurrentCostTable[3] = math.floor(CurrentCostTable[3] * factor + 0.5)
+				if not self.Data.DiscountFunctions.CanBeZero.Construction.AddedGood then
+					if CurrentCostTable[3] == 0 then
+						CurrentCostTable[3] = 1
+					end
 				end
 			end
 		end
-	end
-	if #self.Data.DiscountFunctions.Construction.OriginalGood > 0 then
-		local factor = 1
-		for i,v in ipairs(self.Data.DiscountFunctions.Construction.OriginalGood) do
-			factor = factor - (v() or 0)
-		end
-
-		local _, building = Logic.GetBuildingTypesInUpgradeCategory(_upgradeCategory)
-		local originalCosts = {ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost(building)}
-		local originalCost = originalCosts[2]
-		local addedCosts = CurrentCostTable[1] - originalCost
-		addedCosts = math.floor(addedCosts * factor + 0.5)
-		if not self.Data.DiscountFunctions.CanBeZero.Construction.OriginalGood then
-			if addedCosts == 0 then
-				addedCosts = 1
+		if #self.Data.DiscountFunctions.Construction.OriginalGood > 0 then
+			local factor = 1
+			for i,v in ipairs(self.Data.DiscountFunctions.Construction.OriginalGood) do
+				factor = factor - (v() or 0)
 			end
+
+			local _, building = Logic.GetBuildingTypesInUpgradeCategory(_upgradeCategory)
+			local originalCosts = {ModuleBuildingCost.Local.Data.Original.GetEntityTypeFullCost(building)}
+			local originalCost = originalCosts[2]
+			local addedCosts = CurrentCostTable[1] - originalCost
+			addedCosts = math.floor(addedCosts * factor + 0.5)
+			if not self.Data.DiscountFunctions.CanBeZero.Construction.OriginalGood then
+				if addedCosts == 0 then
+					addedCosts = 1
+				end
+			end
+			CurrentCostTable[1] = originalCost + addedCosts
 		end
-		CurrentCostTable[1] = originalCost + addedCosts
 	end
 	return CurrentCostTable
 end
