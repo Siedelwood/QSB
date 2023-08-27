@@ -1,7 +1,7 @@
 
 # Changelog
 
-## Version 3.0.0.beta-1.2 (in Arbeit)
+## Version 3.0.0.beta-1.2
 
 - *fix* Rechtschreibfehler
 - *fix* fehlenden Rückgabeparameter in API.CanKnightBePromoted
