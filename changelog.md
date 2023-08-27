@@ -1,6 +1,15 @@
 
 # Changelog
 
+## Version 3.0.0.beta-1.3 (In Arbeit)
+
+- *fix* error in TypeWriter, Briefing und Cutscenes
+- *fix* error on RandomChest
+
+- *added* Alias-Funktion SetCameraToEntity hinzugefügt
+- *added* Alias-Funktion CreateObject hinzugefügt
+- *added* Kompatibilität zu API.TravelingSalesmanCreate
+
 ## Version 3.0.0.beta-1.2
 
 - *fix* Rechtschreibfehler

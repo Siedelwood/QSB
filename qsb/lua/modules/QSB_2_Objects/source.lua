@@ -84,6 +84,11 @@ function ModuleObjectInteraction.Global:CreateObject(_Description)
     if ID == 0 then
         return;
     end
+
+    if _Description.Callback then
+        _Description.Action = _Description.Callback
+    end
+
     self:DestroyObject(_Description.Name);
 
     local TypeName = Logic.GetEntityTypeName(Logic.GetEntityType(ID));

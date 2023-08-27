@@ -362,7 +362,7 @@ end
 --
 function API.StartTypewriter(_Data)
     if Framework.IsNetworkGame() ~= true then
-        _Data.PlayerID = _Data.PlayerID or QSB.HumanPlayerID;
+        _Data.PlayerID = _Data.PlayerID or 1;
     end
     if _Data.PlayerID == nil or (_Data.PlayerID < 1 or _Data.PlayerID > 8) then
         return;

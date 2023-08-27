@@ -66,3 +66,17 @@ function API.CreateChainedQuest(_Data)
     end
     return AddOnChainedQuests.Global:CreateChainedQuest(_Data)
 end
+
+---
+-- Bestimmt die Wartezeit zum Start der nächsten Quest in der Questkette
+--
+-- @param[type=number] _Delay Wartezeit zur nächsten Quest der Kette
+-- @within Anwenderfunktionen
+--
+-- @usage
+-- -- Quests in einer Questkette sollen immer sofort nach der letzten starten
+-- API.SetChainedQuestsDefaultDelay(0) 
+--
+function API.SetChainedQuestsDefaultDelay(_Delay)
+    AddOnChainedQuests.Global:SetDefaultDelay(_Delay)
+end

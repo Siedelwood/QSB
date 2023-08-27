@@ -32,8 +32,8 @@
 -- @param[type=number] _Good      Warentyp
 -- @param[type=number] _Min       Mindestmenge
 -- @param[type=number] _Max       (Optional) Maximalmenge
--- @param[type=number] _Condition (Optional) Bedingung zur Aktivierung
 -- @param[type=number] _Action    (Optional) Aktion nach Aktivierung
+-- @param[type=number] _Condition (Optional) Bedingung zur Aktivierung
 -- @within Anwenderfunktionen
 --
 -- @usage
@@ -42,21 +42,15 @@
 --
 -- @usage
 -- -- Bepspiel #2: Truhe mit Aktion
--- -- Wird die Bedingung weggelassen, tritt die Aktion an ihre Stelle
 -- API.CreateRandomChest("well1", Goods.G_Gems, 100, 300, MyActionFunction);
 --
 -- @usage
 -- -- Bepspiel #3: Truhe mit Bedingung
--- -- Wenn eine Bedingung gebraucht wird, muss eine Aktion angegeben werden.
--- API.CreateRandomChest("well1", Goods.G_Gems, 100, 300, MyConditionFunction, MyActionFunction);
+-- API.CreateRandomChest("well1", Goods.G_Gems, 100, 300, MyActionFunction, MyConditionFunction);
 --
-function API.CreateRandomChest(_Name, _Good, _Min, _Max, _Condition, _Action)
+function API.CreateRandomChest(_Name, _Good, _Min, _Max, _Action, _Condition)
     if GUI then
         return;
-    end
-    if not _Action then
-        _Action = _Condition;
-        _Condition = nil;
     end
 
     if not IsExisting(_Name) then

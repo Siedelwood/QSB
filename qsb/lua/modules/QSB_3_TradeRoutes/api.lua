@@ -87,7 +87,7 @@ end
 --
 function API.DisposeHarbor(_PlayerID)
     if Logic.GetStoreHouse(_PlayerID) == 0 then
-        error("API.AddTradeRoute: player " .._PlayerID.. " is dead! :(");
+        error("API.DisposeHarbor: player " .._PlayerID.. " is dead! :(");
         return;
     end
     ModuleShipSalesment.Global:DisposeHarbor(_PlayerID);

@@ -116,7 +116,7 @@ function API.StartCutscene(_Cutscene, _Name, _PlayerID)
     end
     local PlayerID = _PlayerID;
     if not PlayerID and not Framework.IsNetworkGame() then
-        PlayerID = QSB.HumanPlayerID;
+        PlayerID = 1;
     end
     assert(_Name ~= nil);
     assert(_PlayerID ~= nil);

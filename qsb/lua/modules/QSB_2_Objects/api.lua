@@ -208,6 +208,7 @@ function API.SetupObject(_Description)
     return ModuleObjectInteraction.Global:CreateObject(_Description);
 end
 API.CreateObject = API.SetupObject;
+CreateObject = API.SetupObject;
 
 ---
 -- Zerstört die Interation mit dem Objekt.

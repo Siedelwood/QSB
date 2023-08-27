@@ -6,7 +6,9 @@ AddOnChainedQuests = {
     },
 
     Global = {
-        Data = {},
+        Data = {
+            DefaultDelay = 10,
+        },
     },
     Local = {
         Data = {},
@@ -23,6 +25,10 @@ AddOnChainedQuests = {
 --
 function AddOnChainedQuests.Global:OnGameStart()
 
+end
+
+function AddOnChainedQuests.Global:SetDefaultDelay(_Delay)
+    self.Data.DefaultDelay = _Delay
 end
 
 function AddOnChainedQuests.Global:CreateChainedQuest(_Data)
@@ -73,9 +79,9 @@ function AddOnChainedQuests.Global:CreateSegmentForChainedQuest(_Data, _ParentNa
     end
     if _TriggerQuest ~= nil then
         if _Ignore then
-            table.insert(QuestDescription, Trigger_OnQuestOver(_TriggerQuest, _Data.Delay or 10))
+            table.insert(QuestDescription, Trigger_OnQuestOver(_TriggerQuest, _Data.Delay or self.Data.DefaultDelay))
         else
-            table.insert(QuestDescription, Trigger_OnQuestSuccess(_TriggerQuest, _Data.Delay or 10))
+            table.insert(QuestDescription, Trigger_OnQuestSuccess(_TriggerQuest, _Data.Delay or self.Data.DefaultDelay))
         end
     end
     API.CreateQuest(QuestDescription)
