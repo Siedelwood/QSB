@@ -1,7 +1,7 @@
 
 # Changelog
 
-## Version 3.0.0.beta-1.3 (In Arbeit)
+## Version 3.0.0.beta-1.3
 
 - *fix* error in TypeWriter, Briefing und Cutscenes
 - *fix* error on RandomChest
