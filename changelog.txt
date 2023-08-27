@@ -1,11 +1,5 @@
 
 
-Changelog:
+# Changelog:
 
-- fix error in TypeWriter
-- fix error on RandomChest
-
-- added Alias-Funktion SetCameraToEntity hinzugefügt
-- added Alias-Funktion CreateObject hinzugefügt
-- added Kompatibilität zu API.TravelingSalesmanCreate
-- added Kompatibilität zu Cutscene System
+- noch nichts

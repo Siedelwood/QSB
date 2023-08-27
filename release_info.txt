@@ -1,17 +1,18 @@
 
-QSB3 Release-Informationen:
+# QSB3 Release-Informationen:
 
-Die ZIP-Datei enthält mehrere Dateien:
+## Die ZIP-Datei enthält mehrere Dateien:
 - Wie üblich sind die normalen lokalen und globalen Scripte enthalten
 - Im Ordner "doc" befindet sich die bekannte Doku
 - Im Ordner "source" befinden sich die verschiedenen QSB-Varianten, Module und Addons
 - Im Ordner "binary" befinden sich die compilierten Dateien aus dem letzten Punkt (schnellere Ladezeiten)
 
-Die QSB hat nun 3 Varianten:
+## Die QSB hat nun 3 Varianten:
 - "qsb.lua" : Dies ist nur der Kern der QSB
 - "qsb_all.lua" : Dies ist die QSB mit allen Modulen
 - "qsb_comp.lua" : Wie "qsb_all.lua" plus Kompatibilitätsfeatures zur 2.14
 - Addons müssen immer selbst in die Map dazugeladen werden
 
+## Module und AddOns
 Die QSB und alle Module werden von dem Projekt gepflegt. Bei Problemen kann einfach hier ein Issue angelegt werden oder mit dem Team Kontakt aufgenommen werden.
 Die AddOns wiederum werden von den jeweiligen Erstellern zur Verfügung gestellt und gepflegt. Falls es mit diesen Probleme gibt, bitte direkt bei den Autoren melden.

@@ -1,6 +1,8 @@
 
 # Changelog
 
+## Version 3.0.0.beta-1.4
+
 ## Version 3.0.0.beta-1.3
 
 - *fix* error in TypeWriter, Briefing und Cutscenes
