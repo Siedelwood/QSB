@@ -7,7 +7,9 @@ ModuleBehaviorCollection = {
     },
 
     Global = {
-        Data = {},
+        Data = {
+            PlayerID = 1,
+        },
         SoldierKillsCounter = {},
         VictoryWithPartyEntities = {},
     },
@@ -271,6 +273,7 @@ function ModuleBehaviorCollection.Local:OnGameStart()
     self:DisplayQuestObjective();
     self:GetEntitiesOrTerritoryList();
     self:OverrideSaveQuestEntityTypes();
+    GUI.SendScriptCommand("ModuleBehaviorCollection.Global.Data.PlayerID = " .. GUI.GetPlayerID())
 end
 
 function ModuleBehaviorCollection.Local:OnEvent(_ID, ...)
