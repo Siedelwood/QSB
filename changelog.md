@@ -9,6 +9,7 @@
 - *added* Alias-Funktion SetCameraToEntity hinzugefügt
 - *added* Alias-Funktion CreateObject hinzugefügt
 - *added* Kompatibilität zu API.TravelingSalesmanCreate
+- *added* Kompatibilität zu Cutscene System
 
 ## Version 3.0.0.beta-1.2
 
