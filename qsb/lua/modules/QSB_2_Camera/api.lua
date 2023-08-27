@@ -66,6 +66,8 @@ end
 ---
 -- Fokusiert die Kamera auf dem Entity.
 --
+-- Alias: SetCameraToEntity
+--
 -- @param _Entity Entity (Skriptname oder ID)
 -- @param[type=number] _Rotation Kamerawinkel
 -- @param[type=number] _ZoomFactor Zoomfaktor
@@ -95,4 +97,5 @@ function API.FocusCameraOnEntity(_Entity, _Rotation, _ZoomFactor)
     end
     return ModuleCamera.Local:SetCameraToEntity(_Entity, _Rotation, _ZoomFactor);
 end
+SetCameraToEntity = API.FocusCameraOnEntity
 

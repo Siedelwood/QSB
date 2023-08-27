@@ -1,11 +1,10 @@
 
 ---
--- Dieses Addon erlaubt es Gebäuden einen Button für Single Reserve und Single Knockdown zu geben
+-- Dieses Addon erlaubt es Questketten zu erzeugen
 --
 -- <b>Vorausgesetzte Module:</b>
 -- <ul>
 -- <li><a href="qsb.html">(0) Basismodul</a></li>
--- <li><a href="modules.qsb_2_buildingui.qsb_2_buildingui.html">(2) Gebäudeschalter</a></li>
 -- </ul>
 --
 -- @within Modulbeschreibung
