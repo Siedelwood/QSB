@@ -2,4 +2,4 @@
 
 # Changelog:
 
-- noch nichts
+- *fix* error in Aufgabencounter

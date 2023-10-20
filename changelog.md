@@ -1,7 +1,13 @@
 
 # Changelog
 
+## Version 3.0.0.beta-1.5
+
+- *fix* error in Aufgabencounter
+
 ## Version 3.0.0.beta-1.4
+
+- *added* Addon HuntableLifestock hinzugefügt
 
 ## Version 3.0.0.beta-1.3
 
