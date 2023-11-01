@@ -3,6 +3,10 @@
 
 ## Version 3.0.0.beta-1.5
 
+- *fix* error bei den Banditenfeuern (Ubisoft Fehler)
+
+## Version 3.0.0.beta-1.5
+
 - *fix* error in Aufgabencounter
 
 ## Version 3.0.0.beta-1.4
