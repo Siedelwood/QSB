@@ -19,7 +19,8 @@ function Swift.Bugfix:Initalize()
     end
     if Swift.Environment == QSB.Environment.LOCAL then
         self:FixInteractiveObjectClicked();
-		self:FixCathedralName();
+        self:FixCathedralName();
+        self:FixHouseMenuIconsAndCounting();
     end
 end
 
@@ -212,6 +213,7 @@ function Swift.Bugfix:FixCathedralName()
 	GUI_BuildingInfo.BuildingNameUpdate_Orig_QSB_Kernel = GUI_BuildingInfo.BuildingNameUpdate;
 	GUI_BuildingInfo.BuildingNameUpdate = function()
 		GUI_BuildingInfo.BuildingNameUpdate_Orig_QSB_Kernel()
+		
 		local CurrentWidgetID = XGUIEng.GetCurrentWidgetID()
 		if XGUIEng.GetText(CurrentWidgetID) == "{center}B_Cathedral_Big" then
 			local CurrentLanguage = Network.GetDesiredLanguage()
@@ -221,6 +223,7 @@ function Swift.Bugfix:FixCathedralName()
 				XGUIEng.SetText(CurrentWidgetID, "{center}Cathedral")
 			end
 		end
+		
 	end
 end
 
@@ -272,4 +275,140 @@ function Swift.Bugfix:FixBanditCampFireplace()
     end
 end
 
+-- -------------------------------------------------------------------------- --
+-- Icons and Counting in House Menu
+
+function Swift.Bugfix:FixHouseMenuIconsAndCounting()
+	-- Fix HouseMenu not showing Cathedrals, Castles != the current climate zone and Outposts != the current climate zone
+	HouseMenuSetIconsPart = function(_Part, _HighlightBool)
+		local PlayerID = GUI.GetPlayerID()
+		local HouseMenuButtons = {XGUIEng.ListSubWidgets(_Part)}
+		local Buildings = {Logic.GetBuildingsByPlayer(PlayerID)}
+		local WidgetName, CurrentCategory
+
+		for i = 1, #HouseMenuButtons do
+			WidgetName = XGUIEng.GetWidgetNameByID(HouseMenuButtons[i])
+			CurrentCategory = HouseMenuBugFixGetEntityCategory(WidgetName)
+		
+			local WidgetPosEntry = Entities[WidgetName]
+			local Button = _Part .. "/" .. WidgetName .. "/Button"
+
+			SetIcon(Button, g_TexturePositions.Entities[WidgetPosEntry])
+
+			local Count = 0
+			local CategoryBuildings
+			if CurrentCategory ~= nil then
+				CategoryBuildings = {Logic.GetPlayerEntitiesInCategory(PlayerID, CurrentCategory)}
+				Count = #CategoryBuildings
+			else
+				for j = 1, #Buildings do
+					local EntityType = Logic.GetEntityType(Buildings[j])
+					local EntityName = Logic.GetEntityTypeName(EntityType)
+					local ClimateWidgetName = GetClimateEntityName(WidgetName)
+
+					if EntityName == ClimateWidgetName then
+						Count = Count + 1
+					end
+				end
+			end
+
+			if Count == 0 then
+				XGUIEng.DisableButton(Button, 1)
+			else
+				XGUIEng.DisableButton(Button, 0)
+			end
+
+			local Amount = _Part .. "/" .. WidgetName .. "/Amount"
+			XGUIEng.SetText(Amount, "{center}" .. Count)
+
+			local StopWidget = _Part .. "/" .. WidgetName .. "/Stop"
+			UpdateStopOverlay(StopWidget, WidgetName, Count)
+
+			-- display overlay icon of current building
+			if WidgetName == HouseMenu.Widget.CurrentBuilding then
+				UpdateStopOverlay(HouseMenu.Widget.CurrentStop, HouseMenu.Widget.CurrentBuilding, Count)
+			end
+		end
+
+		HouseMenu.Counter = HouseMenu.Counter + 1
+
+		if _HighlightBool or math.mod(HouseMenu.Counter, 20) == 0 then
+			for j = 1, #HouseMenuButtons do
+				local WidgetNameHighlighted = XGUIEng.GetWidgetNameByID(HouseMenuButtons[j])
+				local ButtonHighlighted = _Part .. "/" .. WidgetNameHighlighted .. "/Button"
+				WidgetNameHighlighted = GetClimateEntityName(WidgetNameHighlighted)
+
+				if WidgetNameHighlighted == HouseMenu.Widget.CurrentBuilding then
+					XGUIEng.HighLightButton(ButtonHighlighted, 1)
+				else
+					XGUIEng.HighLightButton(ButtonHighlighted, 0)
+				end
+			end
+		end
+	end
+
+	HouseMenuGetNextBuildingID = function(WidgetName)
+		local PlayerID = GUI.GetPlayerID()
+		local CurrentCategory = HouseMenuBugFixGetEntityCategory(WidgetName)
+		WidgetName = GetClimateEntityName(WidgetName)
+	
+		local Buildings, i
+		if CurrentCategory ~= nil then
+			Buildings = {Logic.GetPlayerEntitiesInCategory(PlayerID, CurrentCategory)}
+		else
+			Buildings = {Logic.GetBuildingsByPlayer(PlayerID)}
+		end
+
+		if HouseMenu.Widget.CurrentBuilding ~= WidgetName then
+			HouseMenu.Widget.CurrentBuilding = WidgetName
+			HouseMenu.Widget.CurrentBuildingNumber = 0
+		end
+
+		local FoundNumber = 0
+		local HigherBuildingFound = false
+
+		for i = 1, #Buildings do
+			local EntityType = Logic.GetEntityType(Buildings[i])
+			local EntityName = Logic.GetEntityTypeName(EntityType)
+
+			if CurrentCategory ~= nil or EntityName == WidgetName then
+				FoundNumber = i
+
+				if FoundNumber > HouseMenu.Widget.CurrentBuildingNumber then
+					HouseMenu.Widget.CurrentBuildingNumber = FoundNumber
+					HigherBuildingFound = true
+					break;
+				end
+			end
+		end
+
+		if FoundNumber == 0 then
+			return nil;
+		end
+
+		if not HigherBuildingFound then
+			for i = 1, #Buildings do
+				local EntityType = Logic.GetEntityType(Buildings[i])
+				local EntityName = Logic.GetEntityTypeName(EntityType)
+				if CurrentCategory ~= nil or EntityName == WidgetName then
+					HouseMenu.Widget.CurrentBuildingNumber = i
+					break;
+				end
+			end
+		end
+
+		return Buildings[HouseMenu.Widget.CurrentBuildingNumber]
+	end
+	
+	HouseMenuBugFixGetEntityCategory = function(_WidgetName)
+		if _WidgetName == "B_Castle_ME" then
+			return EntityCategories.Headquarters
+		elseif _WidgetName == "B_Outpost_ME" then
+			return EntityCategories.Outpost
+		elseif _WidgetName == "B_Cathedral" then
+			return EntityCategories.Cathedrals
+		end
+		return nil
+	end
+end
 --#EOF
