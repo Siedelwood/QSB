@@ -1,7 +1,11 @@
 
 # Changelog
 
-## Version 3.0.0.beta-1.5
+## Version 3.0.0.beta-1.7
+
+
+
+## Version 3.0.0.beta-1.6
 
 - *fix* error bei den Banditenfeuern (Ubisoft Fehler)
 
