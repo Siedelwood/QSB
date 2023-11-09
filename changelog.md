@@ -3,7 +3,9 @@
 
 ## Version 3.0.0.beta-1.7
 
+- *fix* Im Produktionsmenü werden nun die Kathedrale/Kirche, alle Arten von Burgen und alle Arten von Außenposten korrekt erfasst und sind durchschaltbar
 
+- *added* toggle für DSE-Fehlerausgabe
 
 ## Version 3.0.0.beta-1.6
 
