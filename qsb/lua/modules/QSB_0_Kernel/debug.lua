@@ -192,3 +192,18 @@ function API.ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _De
     Swift.Debug:ActivateDebugMode(_CheckAtRun, _TraceQuests, _DevelopingCheats, _DevelopingShell);
 end
 
+-- Aktiviert DisplayScriptErrors, auch wenn der Benutzer das Spiel nicht
+-- mit dem Kommandozeilenparameter gestartet hat.
+-- @param[type=boolean] _active An/Aus.
+
+function API.ToggleDisplayScriptErrors(_active)
+    if Swift.Environment == QSB.Environment.LOCAL then
+		g_DisplayScriptErrors = _active
+		GUI.SendScriptCommand([[g_DisplayScriptErrors = ]]..tostring(_active)..[[]])
+		return;
+    end
+
+	g_DisplayScriptErrors = _active
+	Logic.ExecuteInLuaLocalState([[g_DisplayScriptErrors = ]]..tostring(_active)..[[]])
+end
+-- #EOF
