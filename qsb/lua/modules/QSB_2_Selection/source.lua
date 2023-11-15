@@ -450,12 +450,26 @@ function ModuleSelection.Local:OverwriteMultiselectIcon()
         local CurrentMotherID = XGUIEng.GetWidgetsMotherID(CurrentWidgetID);
         local CurrentMotherName = XGUIEng.GetWidgetNameByID(CurrentMotherID);
         local Index = tonumber(CurrentMotherName);
-        local EntityID = g_MultiSelection.EntityList[Index];
-        local EntityType = Logic.GetEntityType(EntityID);
+		local EntityID = g_MultiSelection.EntityList[Index];
+        local EntityType = 0
+    
+		if Logic.IsLeader(EntityID) == 1 then
+			EntityType = Logic.LeaderGetSoldiersType(EntityID)
+		else
+			EntityType = Logic.GetEntityType(EntityID)
+		end
+    
+		local EntityTypeName = Logic.GetEntityTypeName(EntityType)
+		
+		if EntityTypeName == nil then
+			return;
+		end
+		
         if EntityType ~= Entities.U_SiegeEngineCart and EntityType ~= Entities.U_Trebuchet then
             GUI_MultiSelection.IconMouseOver_Orig_ModuleSelection();
             return;
         end
+		
         if EntityType == Entities.U_SiegeEngineCart then
             local TooltipData = API.Localize(ModuleSelection.Shared.Text.Tooltips.TrebuchetCart);
             API.SetTooltipNormal(TooltipData.Title, TooltipData.Text);
