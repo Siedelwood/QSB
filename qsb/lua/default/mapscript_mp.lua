@@ -17,15 +17,13 @@ function Mission_FirstMapAction()
     end
 end
 
-function Mission_InitPlayers()
-end
+function Mission_InitPlayers() end
 
 function Mission_SetStartingMonth()
     Logic.SetMonthOffset(3);
 end
 
-function Mission_InitMerchants()
-end
+function Mission_InitMerchants() end
 
 -- ========================================================================== --
 
@@ -52,6 +50,10 @@ function Mission_MP_OnQsbLoaded()
     -- (Auskommentieren, wenn nicht benötigt)
     API.ActivateDebugMode(true, false, true, true);
 
+	-- DisplayScriptErrors aktivieren/deaktivieren (Überschreibt den Kommandozeilenparameter)
+	-- (Auskommentieren, wenn nicht benötigt)
+	API.ToggleDisplayScriptErrors(true)
+	
     -- Standard Quests starten
     -- (Auskommentieren, wenn nicht benötigt)
     -- SetupNPCQuests()

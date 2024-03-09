@@ -15,18 +15,17 @@ function Mission_FirstMapAction()
         Startup_StartGoods();
         Startup_Diplomacy();
     end
+	
     Mission_OnQsbLoaded();
 end
 
-function Mission_InitPlayers()
-end
+function Mission_InitPlayers() end
 
 function Mission_SetStartingMonth()
     Logic.SetMonthOffset(3);
 end
 
-function Mission_InitMerchants()
-end
+function Mission_InitMerchants() end
 
 -- ========================================================================== --
 
@@ -52,6 +51,10 @@ function Mission_OnQsbLoaded()
     -- Testmodus aktivieren
     -- (Auskommentieren, wenn nicht benötigt)
     API.ActivateDebugMode(true, false, true, true);
+	
+	-- DisplayScriptErrors aktivieren/deaktivieren (Überschreibt den Kommandozeilenparameter)
+	-- (Auskommentieren, wenn nicht benötigt)
+	API.ToggleDisplayScriptErrors(true)
 
     -- Assistenten Quests starten
     -- (Auskommentieren, wenn nicht benötigt)
