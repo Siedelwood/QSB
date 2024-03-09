@@ -1,7 +1,7 @@
 
 # Changelog
 
-- ## Version 3.0.0.beta-1.8
+## Version 3.0.0.beta-1.8
 
 - *fix* Mehrere Fixes von 2.15.0.3 geported.
 
