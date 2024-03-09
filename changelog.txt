@@ -2,4 +2,4 @@
 
 # Changelog:
 
-- *fix* Multiselektionsfix von 2.14.9 hinzugefügt
+- *fix* Mehrere Fixes von 2.15.0.3 geported.
