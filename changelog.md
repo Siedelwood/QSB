@@ -1,6 +1,10 @@
 
 # Changelog
 
+- ## Version 3.0.0.beta-1.8
+
+- *fix* Mehrere Fixes von 2.15.0.3 geported.
+
 ## Version 3.0.0.beta-1.8
 
 - *fix* Multiselektionsfix von 2.14.9 hinzugefügt
