@@ -197,13 +197,14 @@ end
 -- @param[type=boolean] _active An/Aus.
 
 function API.ToggleDisplayScriptErrors(_active)
+	local Active = _active == true
+	g_DisplayScriptErrors = Active
+
     if Swift.Environment == QSB.Environment.LOCAL then
-		g_DisplayScriptErrors = _active
-		GUI.SendScriptCommand([[g_DisplayScriptErrors = ]]..tostring(_active)..[[]])
+		GUI.SendScriptCommand([[g_DisplayScriptErrors = ]]..tostring(Active)..[[]])
 		return;
     end
 
-	g_DisplayScriptErrors = _active
-	Logic.ExecuteInLuaLocalState([[g_DisplayScriptErrors = ]]..tostring(_active)..[[]])
+	Logic.ExecuteInLuaLocalState([[g_DisplayScriptErrors = ]]..tostring(Active)..[[]])
 end
 -- #EOF

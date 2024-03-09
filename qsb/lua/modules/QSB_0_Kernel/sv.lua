@@ -10,20 +10,24 @@ Swift.ScriptingValue = {
     SV = {
         Game = "Vanilla",
         Vanilla = {
-            Destination = {X = 19, Y= 20},
+            Destination = {X = 19, Y = 20},
             Health      = -41,
             Player      = -71,
             Size        = -45,
             Visible     = -50,
             NPC         = 6,
+			Model 		= -74,
+			--Selectable  = -50,
         },
         HistoryEdition = {
-            Destination = {X = 17, Y= 18},
+            Destination = {X = 17, Y = 18},
             Health      = -38,
             Player      = -68,
             Size        = -42,
             Visible     = -47,
             NPC         = 6,
+			Model 		= -71,
+			--Selectable  = -47,
         }
     }
 }
@@ -162,7 +166,7 @@ end
 -- <li><b>QSB.ScriptingValue.Health</b><br>
 -- Setzt die Gesundheit eines Entity ohne Folgeaktionen zu triggern.</li>
 -- <li><b>QSB.ScriptingValue.Player</b><br>
--- Setzt den Besitzer des Entity ohne Plausibelitätsprüfungen.</li>
+-- Setzt den Besitzer des Entity ohne Plausibilitätsprüfungen.</li>
 -- <li><b>QSB.ScriptingValue.Size</b><br>
 -- Setzt den Größenfaktor eines Entities als Float.</li>
 -- <li><b>QSB.ScriptingValue.Visible</b><br>
