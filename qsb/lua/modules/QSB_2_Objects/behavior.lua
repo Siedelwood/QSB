@@ -21,9 +21,9 @@ end
 B_Goal_ActivateSeveralObjects = {
     Name = "Goal_ActivateSeveralObjects",
     Description = {
-        en = "Goal: Activate an interactive object",
-        de = "Ziel: Aktiviere ein interaktives Objekt",
-        fr = "Objectif: activer un objet interactif",
+        en = "Goal: Activate multiple interactive objects",
+        de = "Ziel: Aktiviere mehrere interaktive Objekte",
+        fr = "Objectif: activer un objet interactif", -- TODO
     },
     Parameter = {
         { ParameterType.Default, en = "Object name 1", de = "Skriptname 1", fr = "Nom de l'entité 1" },
