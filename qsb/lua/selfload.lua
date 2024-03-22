@@ -14,7 +14,7 @@ if not MapEditor and not GUI then
 
     Logic.ExecuteInLuaLocalState([[
         gvMission = gvMission or {};
-        gvMission.GlobalVariables = Logic.CreateReferenceToTableInGlobaLuaState("gvMission");
+        gvMission.GlobalVariables  = Logic.CreateReferenceToTableInGlobaLuaState("gvMission");
         gvMission.ContentPath      = "maps/]] ..MapTypeFolder.. [[/" ..Framework.GetCurrentMapName() .. "/";
         gvMission.MusicRootPath    = gvMission.ContentPath.. "music/";
         gvMission.PlaylistRootPath = "config/sound/";
@@ -49,4 +49,3 @@ if not MapEditor and not GUI then
         InitKnightTitleTables();
     end
 end
-
