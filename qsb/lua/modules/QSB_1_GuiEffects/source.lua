@@ -33,7 +33,7 @@ QSB.FarClipDefault = {
     -- nothing being rendered at all.
     MIN = 45000,
     -- Default: 1000000
-    -- Using the default is way to much render distance and will cause the
+    -- Using the default is way too much render distance and will cause the
     -- game to stutter when in cutscene mode.
     MAX = 45000
 };
@@ -530,6 +530,11 @@ function ModuleGuiEffects.Local:InterfaceDeactivateBorderScroll(_PlayerID, _Posi
     end
     Camera.RTS_SetBorderScrollSize(0);
     Camera.RTS_SetZoomWheelSpeed(0);
+	Camera.RTS_SetRotationSpeed(0);
+	
+	if EMXHookLibrary and EMXHookLibrary.ToggleRTSCameraMouseRotation then
+		EMXHookLibrary.ToggleRTSCameraMouseRotation(false)
+	end
 
     API.SendScriptEventToGlobal("BorderScrollLocked", _PlayerID, (_PositionID or 0));
     API.SendScriptEvent(QSB.ScriptEvents.BorderScrollLocked, _PlayerID, _PositionID);
@@ -543,6 +548,11 @@ function ModuleGuiEffects.Local:InterfaceActivateBorderScroll(_PlayerID)
     Camera.RTS_FollowEntity(0);
     Camera.RTS_SetBorderScrollSize(3.0);
     Camera.RTS_SetZoomWheelSpeed(4.2);
+	Camera.RTS_SetRotationSpeed(90);
+	
+	if EMXHookLibrary and EMXHookLibrary.ToggleRTSCameraMouseRotation then
+		EMXHookLibrary.ToggleRTSCameraMouseRotation(true)
+	end
 
     API.SendScriptEventToGlobal("BorderScrollReset", _PlayerID);
     API.SendScriptEvent(QSB.ScriptEvents.BorderScrollReset, _PlayerID);
