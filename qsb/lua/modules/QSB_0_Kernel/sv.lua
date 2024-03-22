@@ -170,7 +170,9 @@ end
 -- <li><b>QSB.ScriptingValue.Size</b><br>
 -- Setzt den Größenfaktor eines Entities als Float.</li>
 -- <li><b>QSB.ScriptingValue.Visible</b><br>
--- Sichtbarkeit eines Entities abfragen (801280 == sichtbar)</li>
+-- Sichtbarkeit eines Entities abfragen. (801280 == sichtbar)</li>
+-- <li><b>QSB.ScriptingValue.Model</b><br>
+-- Wenn ein Model gesetzt ist, wird dieses zurückgegeben.</li>
 -- <li><b>QSB.ScriptingValue.NPC</b><br>
 -- NPC-Flag eines Siedlers setzen (0 = inaktiv, 1 - 4 = aktiv)</li>
 -- </ul>
@@ -256,10 +258,10 @@ function API.SetFloat(_Entity, _SV, _Value)
 end
 
 ---
--- Konvertirert den Wert in eine Ganzzahl.
+-- Konvertiert den Wert in eine Gleitkommazahl.
 --
--- @param[type=number] _Value Gleitkommazahl
--- @return[type=number] Konvertierte Ganzzahl
+-- @param[type=number] _Value Ganzzahl
+-- @return[type=number] Konvertierte Gleitkommazahl
 -- @within ScriptingValue
 --
 -- @usage
@@ -270,7 +272,7 @@ function API.ConvertIntegerToFloat(_Value)
 end
 
 ---
--- Konvertirert den Wert in eine Gleitkommazahl.
+-- Konvertiert den Wert in eine Ganzzahl.
 --
 -- @param[type=number] _Value Gleitkommazahl
 -- @return[type=number] Konvertierte Ganzzahl
@@ -282,3 +284,96 @@ end
 function API.ConvertFloatToInteger(_Value)
     return Swift.ScriptingValue:FloatToInteger(_Value);
 end
+
+---
+-- Gibt das Model der Entität zurück.
+--
+-- @param _Entity Entity (Scriptname oder ID)
+-- @return[type=number] Model der Entität
+-- @within ScriptingValue
+--
+-- @usage
+-- local Model = API.GetEntityModel("Scriptname")
+--
+function API.GetEntityModel(_Entity)
+    return API.GetInteger(_Entity, QSB.ScriptingValue.Model);
+end
+GetModel = API.GetEntityModel;
+
+---
+-- Gibt den Größenfaktor des Entity zurück.
+--
+-- @param _Entity Entity (Scriptname oder ID)
+-- @return[type=number] Größenfaktor des Entity
+-- @within ScriptingValue
+--
+-- @usage
+-- local Scale = API.GetEntityScale("Scriptname")
+--
+function API.GetEntityScale(_Entity)
+    return API.GetFloat(_Entity, QSB.ScriptingValue.Size);
+end
+GetScale = API.GetEntityScale;
+
+---
+-- Setzt die Größe des Entity. Wenn es sich um einen Siedler handelt, wird
+-- versucht einen neuen Speedfactor zu setzen.
+--
+-- @param              _Entity Entity (Scriptname oder ID)
+-- @param[type=number] _Scale Neuer Größenfaktor
+-- @within ScriptingValue
+--
+-- @usage
+-- API.SetEntityScale("Scriptname", 1.5)
+--
+function API.SetEntityScale(_Entity, _Scale)
+	local EntityID = GetID(_Entity);
+    if EntityID > 0 then
+        API.SetFloat(EntityID, QSB.ScriptingValue.Size, _Scale);
+        if Logic.IsSettler(EntityID) == 1 then
+            Logic.SetSpeedFactor(EntityID, _Scale);
+        end
+    end
+end
+SetScale = API.SetEntityScale;
+
+---
+-- Gibt den Besitzer des Entity zurück.
+--
+-- @param[type=string] _Entity Scriptname des Entity
+-- @return[type=number] Besitzer des Entity
+-- @within ScriptingValue
+--
+-- @usage
+-- local PlayerID = API.GetEntityPlayer("Scriptname")
+--
+function API.GetEntityPlayer(_Entity)
+    return API.GetInteger(_Entity, QSB.ScriptingValue.Player);
+end
+GetPlayer = API.GetEntityPlayer;
+
+---
+-- Setzt den Besitzer des Entity.
+--
+-- @param               _Entity  Entity (Scriptname oder ID)
+-- @param[type=number] _PlayerID ID des Besitzers
+-- @within ScriptingValue
+--
+-- @usage
+-- API.SetEntityPlayer("Scriptname", 3)
+--
+function API.SetEntityPlayer(_Entity, _PlayerID)
+    local EntityID = GetID(_Entity);
+    if EntityID > 0 then
+		local Categories = {EntityCategories.Leader, EntityCategories.CattlePasture, EntityCategories.SheepPasture}
+		for i = 1, #Categories do
+			if Logic.IsEntityTypeInCategory(Logic.GetEntityType(EntityID), Categories[i]) == 1 then
+				Logic.ChangeSettlerPlayerID(EntityID, _PlayerID);
+				return;
+			end
+		end
+        API.SetInteger(EntityID, QSB.ScriptingValue.Player, _PlayerID);
+    end
+end
+SetPlayer = API.SetEntityPlayer;
+-- #EOF
