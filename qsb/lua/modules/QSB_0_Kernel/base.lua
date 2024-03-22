@@ -11,7 +11,7 @@ API = {};
 SCP = {Core = {}};
 
 QSB = {};
-QSB.Version = "3.0.0.beta-1.1";
+QSB.Version = "3.0.0.beta-1.1.2 - 22.03.2024";
 
 ---
 -- Stellt wichtige Kernfunktionen bereit.
