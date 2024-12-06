@@ -3,15 +3,10 @@
 ---
 -- Schafe und Kühe können vom Spieler gezüchtet werden.
 -- 
--- Verschiedene Kenngrößen können angepasst werden.
---
--- Es wird ein Button an Kuh- und Schafställe angebracht. Damit kann die
--- Zucht individuell angehalten oder fortgesetzt werden. Dieser Button
--- belegt einen der 6 möglichen zusätzlichen Buttons bei den Ställen.
---
--- Wird im Produktionsmenü die Produktion von Kuh- oder Schaffarmen gestoppt,
--- werden jeweils alle Kuh- oder Schafställe ebenfalls gestoppt. Wird die
--- Produktion fortgeführt, wird auch die Zucht fortgeführt.
+-- Es wird der klassische Kaufbutton an Gehegen angebracht, über den für eine
+-- bestimmte Menge Getreide ein neues Tier gekauft werden kann. Tiere können 
+-- ebenso Getreide verbrauchen, aber es gibt keine Konsequenzen, wenn Getreide
+-- ausgeht.
 --
 -- <b>Vorausgesetzte Module:</b>
 -- <ul>
@@ -25,72 +20,45 @@
 --
 
 ---
--- Events, auf die reagiert werden kann.
+-- Aktiviert/Deaktiviert die Zucht von Kühen.
 --
--- @field AnimalBreed Ein Nutztier wurde erzeugt. (Parameter: PlayerID, EntityID)
---
--- @within Event
---
-QSB.ScriptEvents = QSB.ScriptEvents or {};
-
----
--- Erlaube oder verbiete dem Spieler Kühe zu züchten.
---
--- Die Zucht wird immer synchron für alle Spieler erlaubt oder verboten.
---
--- @param[type=boolean] _Flag Kuhzucht aktiv/inaktiv
+-- @param[type=table] _PlayerID ID des Spielers
+-- @param[type=table] _Flag Zucht ist aktiv
 -- @within Anwenderfunktionen
 --
--- @usage
--- -- Es können keine Kühe gezüchtet werden
--- API.ActivateCattleBreeding(false);
---
-function API.ActivateCattleBreeding(_Flag)
-    if GUI then
+function API.ActivateCattleBreeding(_PlayerID, _Flag)
+    if (IsLocalScript()) then
+        error("Can not be used in local script!");
         return;
     end
 
-    ModuleLifestockBreeding.Global.Sheep.Breeding = _Flag == true;
-    Logic.ExecuteInLuaLocalState("ModuleLifestockBreeding.Local.Sheep.Breeding = " ..tostring(_Flag == true));
-    if _Flag ~= true then
-        local Price = MerchantSystem.BasePricesOrigModuleLifestockBreeding[Goods.G_Sheep];
-        MerchantSystem.BasePrices[Goods.G_Sheep] = Price;
-        Logic.ExecuteInLuaLocalState("MerchantSystem.BasePrices[Goods.G_Sheep] = " ..Price);
-    else
-        local Price = ModuleLifestockBreeding.Global.Sheep.MoneyCost;
-        MerchantSystem.BasePrices[Goods.G_Sheep] = Price;
-        Logic.ExecuteInLuaLocalState("MerchantSystem.BasePrices[Goods.G_Sheep] = " ..Price);
-    end
+    ModuleLifestockBreeding.Global.PlayerData[_PlayerID].CattleActive = _Flag == true;
+    local Command = string.format(
+        [[ModuleLifestockBreeding.Global.PlayerData[%d].CattleActive = %s]],
+        _PlayerID, tostring(_Flag == true)
+    );
+    Logic.ExecuteInLuaLocalState(Command);
 end
 
 ---
--- Erlaube oder verbiete dem Spieler Schafe zu züchten.
+-- Aktiviert/Deaktiviert die Zucht von Schafen.
 --
--- Die Zucht wird immer synchron für alle Spieler erlaubt oder verboten.
---
--- @param[type=boolean] _Flag Schafzucht aktiv/inaktiv
+-- @param[type=table] _PlayerID ID des Spielers
+-- @param[type=table] _Flag Zucht ist aktiv
 -- @within Anwenderfunktionen
 --
--- @usage
--- -- Schafsaufzucht ist erlaubt
--- API.ActivateSheepBreeding(true);
---
-function API.ActivateSheepBreeding(_Flag)
-    if GUI then
+function API.ActivateSheepBreeding(_PlayerID, _Flag)
+    if (IsLocalScript()) then
+        error("Can not be used in local script!");
         return;
     end
 
-    ModuleLifestockBreeding.Global.Cattle.Breeding = _Flag == true;
-    Logic.ExecuteInLuaLocalState("ModuleLifestockBreeding.Local.Cattle.Breeding = " ..tostring(_Flag == true));
-    if _Flag ~= true then
-        local Price = MerchantSystem.BasePricesOrigModuleLifestockBreeding[Goods.G_Cow];
-        MerchantSystem.BasePrices[Goods.G_Cow] = Price;
-        Logic.ExecuteInLuaLocalState("MerchantSystem.BasePrices[Goods.G_Cow] = " ..Price);
-    else
-        local Price = ModuleLifestockBreeding.Global.Cattle.MoneyCost;
-        MerchantSystem.BasePrices[Goods.G_Cow] = Price;
-        Logic.ExecuteInLuaLocalState("MerchantSystem.BasePrices[Goods.G_Cow] = " ..Price);
-    end
+    ModuleLifestockBreeding.Global.PlayerData[_PlayerID].SheepActive = _Flag == true;
+    local Command = string.format(
+        [[ModuleLifestockBreeding.Global.PlayerData[%d].SheepActive = %s]],
+        _PlayerID, tostring(_Flag == true)
+    );
+    Logic.ExecuteInLuaLocalState(Command);
 end
 
 ---
@@ -106,54 +74,28 @@ end
 -- <td><b>Beschreibung</b></td>
 -- </tr>
 -- <tr>
--- <td>RequiredAmount</td>
--- <td>number</td>
--- <td>Mindestanzahl an Tieren, die sich im Gebiet befinden müssen.
--- (Default: 2)</td>
+-- <td>BasePrice</td>
+-- <td>integer</td>
+-- <td>Basispreis für Tiere bei Händlern
+-- (Default: 300)</td>
 -- </tr>
 -- <tr>
--- <td>QuantityBoost</td>
--- <td>number</td>
--- <td>Menge an Sekunden, die jedes Tier im Gebiet die Zuchtauer verkürzt.
--- (Default: 9)</td>
+-- <td>GrainCost</td>
+-- <td>integer</td>
+-- <td>Initiale Menge, benötigt um ein Tier zu züchten.
+-- (Default: 10)</td>
 -- </tr>
 -- <tr>
--- <td>AreaSize</td>
--- <td>number</td>
--- <td>Größe des Gebietes, in dem Tiere für die Zucht vorhanden sein müssen.
--- (Default: 4500)</td>
--- </tr>
--- <tr>
--- <td>UseCalves</td>
--- <td>boolean</td>
--- <td>Gezüchtete Tiere erscheinen zuerst als Kälber und wachsen. Dies ist rein
--- kosmetisch und hat keinen Einfluss auf die Produktion. (Default: true)</td>
--- </tr>
--- <tr>
--- <td>CalvesSize</td>
--- <td>number</td>
--- <td>Bestimmt die initiale Größe der Kälber. Werden Kälber nicht benutzt, wird
--- diese Option ignoriert. (Default: 0.45)</td>
+-- <td>GrainUpkeep</td>
+-- <td>integer</td>
+-- <td>Menge an Getreide, das ein Tier konsumiert.
+-- (Default: 1)</td>
 -- </tr>
 -- <tr>
 -- <td>FeedingTimer</td>
--- <td>number</td>
--- <td>Bestimmt die Zeit in Sekunden zwischen den Fütterungsperioden. Am Ende
--- jeder Periode wird pro züchtendem Gatter 1 Getreide abgezogen, wenn das
--- Gebäude nicht pausiert ist. (Default: 25)</td>
--- </tr>
--- <tr>
--- <td>BreedingTimer</td>
--- <td>number</td>
--- <td>Bestimmt die Zeit in Sekunden, bis ein neues Tier erscheint. Wenn für
--- eine Fütterung kein Getreide da ist, wird der Zähler zur letzten Fütterung
--- zurückgesetzt. (Default: 150)</td>
--- </tr>
--- <tr>
--- <td>GrothTimer</td>
--- <td>number</td>
--- <td>Bestimmt die Zeit in Sekunden zwischen den Wachstumsschüben eines
--- Kalbs. Jeder Wachstumsschub ist +0.05 Gößenänderung. (Default: 15)</td>
+-- <td>integer</td>
+-- <td>Zeit, bis Tiere gefüttert werden. (0 = aus)
+-- (Default: 0)</td>
 -- </tr>
 -- </table>
 -- 
@@ -163,36 +105,47 @@ end
 -- @usage
 -- API.ConfigureCattleBreeding{
 --     -- Es werden keine Tiere benötigt
---     RequiredAmount = 0,
---     -- Mindestzeit sind 3 Minuten
---     BreedingTimer = 3*60
+--     GrainCost = 0,
+--     -- 2 Getreide werden konsumiert
+--     GrainUpkeep = 2,
+--     -- Fütterungsinterval
+--     FeedingTimer = 3*60,
 -- }
 --
 function API.ConfigureCattleBreeding(_Data)
-    if _Data.CalvesSize ~= nil then
-        ModuleLifestockBreeding.Global.Cattle.CalvesSize = _Data.CalvesSize;
+    if (IsLocalScript()) then
+        error("Can not be used in local script!");
+        return;
     end
-    if _Data.RequiredAmount ~= nil then
-        ModuleLifestockBreeding.Global.Cattle.RequiredAmount = _Data.RequiredAmount;
+    if (type(_Data) ~= "table") then
+        error("Malformed data passed!");
+        return;
     end
-    if _Data.QuantityBoost ~= nil then
-        ModuleLifestockBreeding.Global.Cattle.QuantityBoost = _Data.QuantityBoost;
-    end
-    if _Data.AreaSize ~= nil then
-        ModuleLifestockBreeding.Global.Cattle.AreaSize = _Data.AreaSize;
-    end
-    if _Data.UseCalves ~= nil then
-        ModuleLifestockBreeding.Global.Cattle.UseCalves = _Data.UseCalves;
-    end
-    if _Data.FeedingTimer ~= nil then
-        ModuleLifestockBreeding.Global.Cattle.FeedingTimer = _Data.FeedingTimer;
-    end
-    if _Data.BreedingTimer ~= nil then
-        ModuleLifestockBreeding.Global.Cattle.BreedingTimer = _Data.BreedingTimer;
-    end
-    if _Data.GrothTimer ~= nil then
-        ModuleLifestockBreeding.Global.Cattle.GrothTimer = _Data.GrothTimer;
-    end
+
+    local CattleBasePrice = _Data.BasePrice or 300;
+    local CattleGrainCost = _Data.GrainCost or 10;
+    local CattleGrainUpkeep = _Data.GrainUpkeep or 1;
+    local CattleFeedingTimer = _Data.FeedingTimer or 0;
+
+    local Command = string.format([[ModuleLifestockBreeding.Global.CattleBasePrice = %d]], CattleBasePrice);
+    Logic.ExecuteInLuaLocalState(Command);
+    ModuleLifestockBreeding.Global.CattleBasePrice = CattleBasePrice;
+
+    local Command = string.format([[MerchantSystem.BasePrices[Goods.G_Cow] = %d]], CattleGrainCost);
+    Logic.ExecuteInLuaLocalState(Command);
+    MerchantSystem.BasePrices[Goods.G_Cow] = CattleBasePrice;
+
+    local Command = string.format([[ModuleLifestockBreeding.Global.CattleGrainCost = %d]], CattleGrainCost);
+    Logic.ExecuteInLuaLocalState(Command);
+    ModuleLifestockBreeding.Global.CattleGrainCost = CattleGrainCost;
+
+    local Command = string.format([[ModuleLifestockBreeding.Global.CattleGrainUpkeep = %d]], CattleGrainUpkeep);
+    Logic.ExecuteInLuaLocalState(Command);
+    ModuleLifestockBreeding.Global.CattleGrainUpkeep = CattleGrainUpkeep;
+
+    local Command = string.format([[ModuleLifestockBreeding.Global.CattleFeedingTimer = %d]], CattleFeedingTimer);
+    Logic.ExecuteInLuaLocalState(Command);
+    ModuleLifestockBreeding.Global.CattleFeedingTimer = CattleFeedingTimer;
 end
 
 ---
@@ -208,54 +161,28 @@ end
 -- <td><b>Beschreibung</b></td>
 -- </tr>
 -- <tr>
--- <td>RequiredAmount</td>
--- <td>number</td>
--- <td>Mindestanzahl an Tieren, die sich im Gebiet befinden müssen.
--- (Default: 2)</td>
+-- <td>BasePrice</td>
+-- <td>integer</td>
+-- <td>Basispreis für Tiere bei Händlern
+-- (Default: 300)</td>
 -- </tr>
 -- <tr>
--- <td>QuantityBoost</td>
--- <td>number</td>
--- <td>Menge an Sekunden, die jedes Tier im Gebiet die Zuchtauer verkürzt.
--- (Default: 9)</td>
+-- <td>GrainCost</td>
+-- <td>integer</td>
+-- <td>Initiale Menge, benötigt um ein Tier zu züchten.
+-- (Default: 10)</td>
 -- </tr>
 -- <tr>
--- <td>AreaSize</td>
--- <td>number</td>
--- <td>Größe des Gebietes, in dem Tiere für die Zucht vorhanden sein müssen.
--- (Default: 4500)</td>
--- </tr>
--- <tr>
--- <td>UseCalves</td>
--- <td>boolean</td>
--- <td>Gezüchtete Tiere erscheinen zuerst als Kälber und wachsen. Dies ist rein
--- kosmetisch und hat keinen Einfluss auf die Produktion. (Default: true)</td>
--- </tr>
--- <tr>
--- <td>CalvesSize</td>
--- <td>number</td>
--- <td>Bestimmt die initiale Größe der Kälber. Werden Kälber nicht benutzt, wird
--- diese Option ignoriert. (Default: 0.45)</td>
+-- <td>GrainUpkeep</td>
+-- <td>integer</td>
+-- <td>Menge an Getreide, das ein Tier konsumiert.
+-- (Default: 1)</td>
 -- </tr>
 -- <tr>
 -- <td>FeedingTimer</td>
--- <td>number</td>
--- <td>Bestimmt die Zeit in Sekunden zwischen den Fütterungsperioden. Am Ende
--- jeder Periode wird pro züchtendem Gatter 1 Getreide abgezogen, wenn das
--- Gebäude nicht pausiert ist. (Default: 30)</td>
--- </tr>
--- <tr>
--- <td>BreedingTimer</td>
--- <td>number</td>
--- <td>Bestimmt die Zeit in Sekunden, bis ein neues Tier erscheint. Wenn für
--- eine Fütterung kein Getreide da ist, wird der Zähler zur letzten Fütterung
--- zurückgesetzt. (Default: 120)</td>
--- </tr>
--- <tr>
--- <td>GrothTimer</td>
--- <td>number</td>
--- <td>Bestimmt die Zeit in Sekunden zwischen den Wachstumsschüben eines
--- Kalbs. Jeder Wachstumsschub ist +0.05 Gößenänderung. (Default: 15)</td>
+-- <td>integer</td>
+-- <td>Zeit, bis Tiere gefüttert werden. (0 = aus)
+-- (Default: 0)</td>
 -- </tr>
 -- </table>
 -- 
@@ -265,35 +192,46 @@ end
 -- @usage
 -- API.ConfigureSheepBreeding{
 --     -- Es werden keine Tiere benötigt
---     RequiredAmount = 0,
---     -- Mindestzeit sind 3 Minuten
---     BreedingTimer = 3*60
+--     GrainCost = 0,
+--     -- 2 Getreide werden konsumiert
+--     GrainUpkeep = 2,
+--     -- Fütterungsinterval
+--     FeedingTimer = 3*60,
 -- }
 --
 function API.ConfigureSheepBreeding(_Data)
-    if _Data.CalvesSize ~= nil then
-        ModuleLifestockBreeding.Global.Sheep.CalvesSize = _Data.CalvesSize;
+    if (IsLocalScript()) then
+        error("Can not be used in local script!");
+        return;
     end
-    if _Data.RequiredAmount ~= nil then
-        ModuleLifestockBreeding.Global.Sheep.RequiredAmount = _Data.RequiredAmount;
+    if (type(_Data) ~= "table") then
+        error("Malformed data passed!");
+        return;
     end
-    if _Data.QuantityBoost ~= nil then
-        ModuleLifestockBreeding.Global.Sheep.QuantityBoost = _Data.QuantityBoost;
-    end
-    if _Data.AreaSize ~= nil then
-        ModuleLifestockBreeding.Global.Sheep.AreaSize = _Data.AreaSize;
-    end
-    if _Data.UseCalves ~= nil then
-        ModuleLifestockBreeding.Global.Sheep.UseCalves = _Data.UseCalves;
-    end
-    if _Data.FeedingTimer ~= nil then
-        ModuleLifestockBreeding.Global.Sheep.FeedingTimer = _Data.FeedingTimer;
-    end
-    if _Data.BreedingTimer ~= nil then
-        ModuleLifestockBreeding.Global.Cattle.BreedingTimer = _Data.BreedingTimer;
-    end
-    if _Data.GrothTimer ~= nil then
-        ModuleLifestockBreeding.Global.Sheep.GrothTimer = _Data.GrothTimer;
-    end
+
+    local SheepBasePrice = _Data.SheepBasePrice or 300;
+    local SheepGrainCost = _Data.SheepGrainCost or 10;
+    local SheepGrainUpkeep = _Data.SheepGrainUpkeep or 1;
+    local SheepFeedingTimer = _Data.SheepFeedingTimer or 0;
+
+    local Command = string.format([[ModuleLifestockBreeding.Global.SheepBasePrice = %d]], SheepBasePrice);
+    Logic.ExecuteInLuaLocalState(Command);
+    ModuleLifestockBreeding.Global.SheepBasePrice = SheepBasePrice;
+
+    local Command = string.format([[MerchantSystem.BasePrices[Goods.G_Sheep] = %d]], SheepBasePrice);
+    Logic.ExecuteInLuaLocalState(Command);
+    MerchantSystem.BasePrices[Goods.G_Sheep] = SheepBasePrice;
+
+    local Command = string.format([[ModuleLifestockBreeding.Global.SheepGrainCost = %d]], SheepGrainCost);
+    Logic.ExecuteInLuaLocalState(Command);
+    ModuleLifestockBreeding.Global.SheepGrainCost = SheepGrainCost;
+
+    local Command = string.format([[ModuleLifestockBreeding.Global.SheepGrainUpkeep = %d]], SheepGrainUpkeep);
+    Logic.ExecuteInLuaLocalState(Command);
+    ModuleLifestockBreeding.Global.SheepGrainUpkeep = SheepGrainUpkeep;
+
+    local Command = string.format([[ModuleLifestockBreeding.Global.SheepFeedingTimer = %d]], SheepFeedingTimer);
+    Logic.ExecuteInLuaLocalState(Command);
+    ModuleLifestockBreeding.Global.SheepFeedingTimer = SheepFeedingTimer;
 end
 
