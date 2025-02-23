@@ -293,3 +293,27 @@ end
 function API.DisableAutomaticQuickSave(_Flag)
     API.DisableAutoSave(_Flag)
 end
+
+---
+-- Errechnet eine Position relativ im angegebenen Winkel und Position zur
+-- Basisposition. Die Basis kann ein Entity oder eine Positionstabelle sein.
+-- Im Endeffekt ist es nur ein Alias für API.GetCirclePosition.
+--
+-- <p><b>Alias:</b> GetRelativePos</p>
+--
+-- @param               _target             Basisposition (Skriptname, ID oder Position)
+-- @param[type=number]  _distance           Entfernung
+-- @param[type=number]  _angle              Winkel
+-- @param[type=boolean] _BuildingRealPos    Optional: Gebäudemitte statt Gebäudeeingang
+-- @return[type=table] Position
+-- @within QSB-Kern
+--
+-- @usage
+-- local RelativePostion = API.GetRelativePosition("pos1", 1000, 32);
+--
+-- local RelativePostion = API.GetRelativePosition("pos1", 1000, 32, true);
+
+function API.GetRelativePosition(_Target, _Distance, _Angle, __BuildingRealPos)
+    return API.GetCirclePosition(_Target, _Distance, _Angle, __BuildingRealPos)
+end
+GetRelativePos = API.GetRelativePosition

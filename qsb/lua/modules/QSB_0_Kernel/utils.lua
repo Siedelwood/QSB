@@ -809,15 +809,16 @@ end
 ---
 -- Gibt eine Position auf einer Kreisbahn um einen Punkt zurück.
 --
--- @param               _Target          Entity oder Position
--- @param[type=number]  _Distance        Entfernung um das Zentrum
--- @param[type=number]  _Angle           Winkel auf dem Kreis
+-- @param               _Target             Entity oder Position
+-- @param[type=number]  _Distance           Entfernung um das Zentrum
+-- @param[type=number]  _Angle              Winkel auf dem Kreis
+-- @param[type=bool]    __BuildingRealPos   Optional: Gebäudemitte statt Gebäudeeingang
 -- @return[type=table] Position auf Kreisbahn
 -- @within Math
 -- @usage
 -- local Position = API.GetCirclePosition("HQ1", 3000, -45);
 --
-function API.GetCirclePosition(_Target, _Distance, _Angle)
+function API.GetCirclePosition(_Target, _Distance, _Angle, __BuildingRealPos)
     if not API.IsValidPosition(_Target) and not IsExisting(_Target) then
         error("API.GetCirclePosition: _Target does not exist or is invalid position!");
         return;
@@ -829,6 +830,11 @@ function API.GetCirclePosition(_Target, _Distance, _Angle)
         local EntityID = GetID(_Target);
         Orientation = Logic.GetEntityOrientation(EntityID)+(_Angle or 0);
         Position = API.GetPosition(EntityID);
+        if Logic.IsBuilding(EntityID) == 1 and not __BuildingRealPos then
+            x, y = Logic.GetBuildingApproachPosition(EntityID);
+            pos = {X= x, Y= y};
+            Orientation = Orientation -90;
+        end
     end
 
     local Result = {

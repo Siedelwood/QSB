@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 3.0beta-2.2.0
+
+- *added* API.GetRelativePosition
+- *change* API.GetCirclePosition hat einen optionalen zusätzlichen Parameter bekommen "__BuildingRealPos" an vierter Stelle.
+
 ## Version 3.0beta-2.1.9
 
 - *added* Goal_GoodTributeClaim
