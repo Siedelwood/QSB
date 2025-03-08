@@ -634,14 +634,10 @@ function ModuleQuest.Global:ProcessChatInput(_Text, _PlayerID, _IsDebug)
             end
         end
 
-        if Commands[i][1] == "stopped" then
-            manuelLogging( self:FindQuestsByState(QuestState.Interrupted) )
+        if Commands[i][1] == "over" then
+            manuelLogging( self:FindQuestsByState(QuestState.Over) )
         elseif Commands[i][1] == "active" then
             manuelLogging( self:FindQuestsByState(QuestState.Active) )
-        elseif Commands[i][1] == "won" then
-            manuelLogging( self:FindQuestsByState(QuestState.Success) )
-        elseif Commands[i][1] == "failed" then
-            manuelLogging( self:FindQuestsByState(QuestState.Failure) )
         elseif Commands[i][1] == "waiting" then
             manuelLogging( self:FindQuestsByState(QuestState.NotTriggered) )
         elseif Commands[i][1] == "find" then
@@ -678,7 +674,7 @@ end
 function ModuleQuest.Global:FindQuestsByState(_QuestState)
     local QuestsOfState = {};
     for i= 1, Quests[0], 1 do
-        if Quests[i].Result == _QuestState then
+        if Quests[i].State == _QuestState then
             table.insert(QuestsOfState, Quests[i]);
         end
     end

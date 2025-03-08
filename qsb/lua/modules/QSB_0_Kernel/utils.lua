@@ -298,10 +298,10 @@ end
 -- der Wert liegt zwischen 0 und 100.
 --
 -- @param _Entity Entity (Scriptname oder ID)
--- @return[type=number] Aktuelle Gesundheit
+-- @return[type=number] Aktuelle Gesundheit in Prozent
 -- @within Entity
 --
-function API.GetEntityHealth(_Entity)
+function API.GetEntityRelativeHealth(_Entity)
     local EntityID = GetID(_Entity);
     if IsExisting(EntityID) then
         local MaxHealth = Logic.GetEntityMaxHealth(EntityID);
@@ -311,6 +311,26 @@ function API.GetEntityHealth(_Entity)
     error("API.GetEntityHealth: _Entity (" ..tostring(_Entity).. ") does not exist!");
     return 0;
 end
+
+
+---
+-- Gibt die absolute Gesundheit des Entity zurück.
+--
+-- <b>Alias</b>: GetHealth
+--
+-- @param _Entity Entity (Scriptname oder ID)
+-- @return[type=number] Aktuelle Gesundheit
+-- @within Entity
+--
+function API.GetEntityHealth(_Entity)
+    local EntityID = GetID(_Entity);
+    if IsExisting(EntityID) then
+        return Logic.GetEntityHealth(EntityID)
+    end
+    error("API.GetEntityHealth: _Entity (" ..tostring(_Entity).. ") does not exist!");
+    return 0
+end
+GetHealth = API.GetEntityHealth
 
 ---
 -- Setzt die Gesundheit des Entity. Optional kann die Gesundheit relativ zur

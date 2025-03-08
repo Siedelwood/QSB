@@ -13,7 +13,6 @@ Swift.Logging = {
 };
 
 QSB.LogLevel = {
-    ManuelLogging = 5;
     ALL     = 4;
     INFO    = 3;
     WARNING = 2;
@@ -55,6 +54,17 @@ function Swift.Logging:Log(_Text, _Level, _Verbose)
     end
 end
 
+function Swift.Logging:ManuelLog(_Text)
+    if Swift.Environment == QSB.Environment.GLOBAL then
+         Logic.ExecuteInLuaLocalState(string.format(
+             [[GUI.AddStaticNote("%s")]],
+             _Text
+            ));
+        return;
+    end
+        GUI.AddStaticNote(_Text);
+end
+
 function Swift.Logging:SetLogLevel(_ScreenLogLevel, _FileLogLevel)
     if Swift.Environment == QSB.Environment.GLOBAL then
         Logic.ExecuteInLuaLocalState(string.format(
@@ -83,7 +93,7 @@ function error(_Text, _Silent)
     Swift.Logging:Log("ERROR: " .._Text, QSB.LogLevel.ERROR, not _Silent);
 end
 function manuelLogging(_Text, _Silent)
-    Swift.Logging:Log("Log: " .._Text, QSB.LogLevel.ManuelLogging, not _Silent);
+    Swift.Logging:ManuelLog("Log: " .._Text);
 end
 
 -- -------------------------------------------------------------------------- --
