@@ -618,30 +618,30 @@ function ModuleQuest.Global:ProcessChatInput(_Text, _PlayerID, _IsDebug)
             end
             if Commands[i][1] == "fail" then
                 API.FailQuest(FoundQuests[1]);
-                manuelLogging("fail quest '" ..FoundQuests[1].. "'");
+                LogManually("fail quest '" ..FoundQuests[1].. "'");
             elseif Commands[i][1] == "restart" then
                 API.RestartQuest(FoundQuests[1]);
-                manuelLogging("restart quest '" ..FoundQuests[1].. "'");
+                LogManually("restart quest '" ..FoundQuests[1].. "'");
             elseif Commands[i][1] == "start" then
                 API.StartQuest(FoundQuests[1]);
-                manuelLogging("trigger quest '" ..FoundQuests[1].. "'");
+                LogManually("trigger quest '" ..FoundQuests[1].. "'");
             elseif Commands[i][1] == "stop" then
                 API.StopQuest(FoundQuests[1]);
-                manuelLogging("interrupt quest '" ..FoundQuests[1].. "'");
+                LogManually("interrupt quest '" ..FoundQuests[1].. "'");
             elseif Commands[i][1] == "win" then
                 API.WinQuest(FoundQuests[1]);
-                manuelLogging("win quest '" ..FoundQuests[1].. "'");
+                LogManually("win quest '" ..FoundQuests[1].. "'");
             end
         end
 
         if Commands[i][1] == "over" then
-            manuelLogging( self:FindQuestsByState(QuestState.Over) )
+            LogManually( self:FindQuestsByState(QuestState.Over) )
         elseif Commands[i][1] == "active" then
-            manuelLogging( self:FindQuestsByState(QuestState.Active) )
+            LogManually( self:FindQuestsByState(QuestState.Active) )
         elseif Commands[i][1] == "waiting" then
-            manuelLogging( self:FindQuestsByState(QuestState.NotTriggered) )
+            LogManually( self:FindQuestsByState(QuestState.NotTriggered) )
         elseif Commands[i][1] == "find" then
-            manuelLogging( self:FindQuestsByNamePart(Commands[i]) )
+            LogManually( self:FindQuestsByNamePart(Commands[i]) )
         end
     end
 end

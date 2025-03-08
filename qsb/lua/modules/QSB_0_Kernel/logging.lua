@@ -54,7 +54,7 @@ function Swift.Logging:Log(_Text, _Level, _Verbose)
     end
 end
 
-function Swift.Logging:ManuelLog(_Text)
+function Swift.Logging:LogManually(_Text)
     if Swift.Environment == QSB.Environment.GLOBAL then
          Logic.ExecuteInLuaLocalState(string.format(
              [[GUI.AddStaticNote("%s")]],
@@ -92,8 +92,8 @@ end
 function error(_Text, _Silent)
     Swift.Logging:Log("ERROR: " .._Text, QSB.LogLevel.ERROR, not _Silent);
 end
-function manuelLogging(_Text, _Silent)
-    Swift.Logging:ManuelLog("Log: " .._Text);
+function LogManually(_Text, _Silent)
+    Swift.Logging:LogManually("Log: " .._Text);
 end
 
 -- -------------------------------------------------------------------------- --
