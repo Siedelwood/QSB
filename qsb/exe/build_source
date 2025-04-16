@@ -12,6 +12,7 @@ mkdir -p qsb/lua/var/build/source/modules
 mkdir -p qsb/lua/var/build/source/addons
 
 # replace version information
+echo 'set current version and date'
 PLACEHOLDER_VERSION="PLACEHOLDER_VERSION"
 PLACEHOLDER_DATE="PLACEHOLDER_DATE"
 VERSION=$(head -n 1 "version.txt")
