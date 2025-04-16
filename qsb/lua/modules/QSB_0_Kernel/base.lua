@@ -17,7 +17,7 @@ API = {};
 SCP = {Core = {}};
 
 QSB = {};
-QSB.Version = "3.0.0.beta-2.1.8 - 19.12.2024"
+QSB.Version = "PLACEHOLDER_VERSION - PLACEHOLDER_DATE"
 ---
 -- Stellt wichtige Kernfunktionen bereit.
 --

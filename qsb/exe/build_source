@@ -11,6 +11,15 @@ rm -rf qsb/lua/var &>/dev/null
 mkdir -p qsb/lua/var/build/source/modules
 mkdir -p qsb/lua/var/build/source/addons
 
+# replace version information
+PLACEHOLDER_VERSION="PLACEHOLDER_VERSION"
+PLACEHOLDER_DATE="PLACEHOLDER_DATE"
+VERSION=$(head -n 1 "version.txt")
+CURRENT_DATE=$(date +"%d.%m.%Y")
+BASE_FILE="qsb/lua/modules/QSB_0_Kernel/base.lua"
+sed -i "s/${PLACEHOLDER_VERSION}/${VERSION}/" $BASE_FILE
+sed -i "s/${PLACEHOLDER_DATE}/${CURRENT_DATE}/" $BASE_FILE
+
 # create core qsb and modules
 cd qsb/lua/modules
 for folder in *; do
