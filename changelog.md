@@ -1,6 +1,21 @@
 
 # Changelog
 
+## Version 3.0beta-2.2.1
+
+- *change* Funktionsname API.GetEntityHealth -> API.GetEntityRelativeHealth
+- *added/change* API.GetEntityHealth erstellt, gibt die aktuellen absoluten Leben zurück
+- *added* GetHealth als Alias für API.GetEntityHealth
+- *change* Chatkommandos `failed`,`won`,`stopped` entfernt
+- *change* Chatkommandos `active`,`find` funktionsfähig gemacht
+- *added* Chatkommando `over` hinzugefügt für allgemein beendete Quests, egal ob verloren, gewonnen oder abgebrochen
+- *change* Manuelles Logging wird nun unabhängig vom Loglevel erzeugt. Es wird nicht in eine Log-Datei geschrieben, sondern ausdrücklich im Chat
+
+## Version 3.0beta-2.2.0
+
+- *added* API.GetRelativePosition
+- *change* API.GetCirclePosition hat einen optionalen zusätzlichen Parameter bekommen "__BuildingRealPos" an vierter Stelle.
+
 ## Version 3.0beta-2.1.9
 
 - *added* Goal_GoodTributeClaim
