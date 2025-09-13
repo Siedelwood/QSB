@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 3.0.0beta-2.2.2
+
+- *fix* Behebt einen Fehler bei den Diplomatiequests 
+
 ## Version 3.0beta-2.2.1
 
 - *change* Funktionsname API.GetEntityHealth -> API.GetEntityRelativeHealth

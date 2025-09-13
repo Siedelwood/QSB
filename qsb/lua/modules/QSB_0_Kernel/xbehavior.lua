@@ -3536,6 +3536,9 @@ end
 
 B_Reprisal_SlightlyDiplomacyDecrease = {
     Name = "Reprisal_SlightlyDiplomacyDecrease",
+    Parameter = {
+        { ParameterType.PlayerID, en = "PlayerID", de = "PlayerID", fr = "PlayerID" },
+    },
     Description = {
         en = "Reprisal: Diplomacy decreases slightly to another player.",
         de = "Vergeltung: Der Diplomatiestatus zum Auftraggeber wird um eine Stufe verringert.",
@@ -4854,6 +4857,9 @@ end
 
 B_Reward_SlightlyDiplomacyIncrease = {
     Name = "Reward_SlightlyDiplomacyIncrease",
+    Parameter = {
+        { ParameterType.PlayerID, en = "PlayerID", de = "PlayerID", fr = "PlayerID" },
+    },
     Description = {
         en = "Reward: Diplomacy increases slightly to another player",
         de = "Lohn: Verbesserung des Diplomatiestatus zu einem anderen Spieler",

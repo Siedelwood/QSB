@@ -2,10 +2,4 @@
 
 # Changelog:
 
-- *change* Funktionsname API.GetEntityHealth -> API.GetEntityRelativeHealth
-- *added/change* API.GetEntityHealth erstellt, gibt die aktuellen absoluten Leben zurück
-- *added* GetHealth als Alias für API.GetEntityHealth
-- *change* Chatkommandos `failed`,`won`,`stopped` entfernt
-- *change* Chatkommandos `active`,`find` funktionsfähig gemacht
-- *added* Chatkommando `over` hinzugefügt für allgemein beendete Quests, egal ob verloren, gewonnen oder abgebrochen
-- *change* Manuelles Logging wird nun unabhängig vom Loglevel erzeugt. Es wird nicht in eine Log-Datei geschrieben, sondern ausdrücklich im Chat
+- *fix* Behebt einen Fehler bei den Diplomatiequests 
