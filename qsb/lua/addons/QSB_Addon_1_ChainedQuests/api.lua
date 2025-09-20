@@ -13,6 +13,7 @@
 -- @within Modulbeschreibung
 -- @set sort=true
 -- @author Jelumar
+-- @maintainer Jelumar
 --
 
 API = API or {}

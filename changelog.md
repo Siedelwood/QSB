@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 3.0.0beta-2.2.3
+
+- *added* Addons EvilHeroes and RedPrince
+
 ## Version 3.0.0beta-2.2.2
 
 - *fix* Behebt einen Fehler bei den Diplomatiequests 
