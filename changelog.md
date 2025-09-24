@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 3.0.0beta-2.2.4
+
+- *fixed* SingleReserve Button macht etwas
+
 ## Version 3.0.0beta-2.2.3
 
 - *added* Addons EvilHeroes and RedPrince

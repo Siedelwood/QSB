@@ -10,6 +10,7 @@
 --
 -- @within Modulbeschreibung
 -- @set sort=true
+-- @author totalwarAngel
 -- @maintainer Jelumar
 --
 

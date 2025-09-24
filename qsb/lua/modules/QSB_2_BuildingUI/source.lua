@@ -752,27 +752,40 @@ function ModuleBuildingButtons.Local:AddSingleReserveButton()
     end
     self.Data.Button.SingleReserve = API.AddBuildingButton(
         function(_WidgetID, _BuildingID)
+            local PlayerID = GUI.GetPlayerID();
+            local EntityType = Logic.GetEntityType(_BuildingID);
+            local GoodType = Logic.GetProductOfBuildingType(EntityType);
 
+            if Logic.IsGoodLocked(PlayerID, GoodType) then
+                HouseMenu.StopConsumptionBool = false;
+            else
+                HouseMenu.StopConsumptionBool = true;
+            end
+            GUI.SetGoodLockState(GoodType, HouseMenu.StopConsumptionBool);
         end,
         function(WidgetID, _BuildingID)
+            local PlayerID = GUI.GetPlayerID();
+            local EntityType = Logic.GetEntityType(_BuildingID);
+            local GoodType = Logic.GetProductOfBuildingType(EntityType);
+
             local Title = {
                 de = "Produzierte Güter reservieren",
                 en = "Reserve produced goods",
                 fr = "Réserver les biens produits",
             }
             local Text = {
-                de = "- Siedler fürfen keine Güter dieses Gebäudes konsumieren.{cr}- Güter sind für Verkauf oder Aufträge reserviert.",
+                de = "- Siedler dürfen keine Güter dieses Gebäudes konsumieren.{cr}- Güter sind für Verkauf oder Aufträge reserviert.",
                 en = "- Settlers may not consume goods from this building.{cr}- Goods are reserved for sale or orders.",
                 fr = "- Les Settlers ne peuvent pas consommer les biens de ce bâtiment {cr}- Les biens sont réservés à la vente ou aux commandes.",
             }
-            if Logic.IsBuildingStopped(_BuildingID) then -- Change to reserviert
+            if Logic.IsGoodLocked(PlayerID, GoodType) then
                 Title = {
                     de = "Produzierte Güter freigeben",
                     en = "Release produced goods",
                     fr = "Partager les biens produits",
                 }
                 Text = {
-                    de = "- Siedler fürfen Güter dieses Gebäudes konsumieren.",
+                    de = "- Siedler dürfen Güter dieses Gebäudes konsumieren.",
                     en = "- Settlers may consume goods from this building.",
                     fr = "- Les Settlers peuvent consommer les biens de ce bâtiment.",
                 }
@@ -780,6 +793,10 @@ function ModuleBuildingButtons.Local:AddSingleReserveButton()
             API.SetTooltipCosts(Title, Text)
         end,
         function(_WidgetID, _BuildingID)
+            local PlayerID = GUI.GetPlayerID();
+            local EntityType = Logic.GetEntityType(_BuildingID);
+            local GoodType = Logic.GetProductOfBuildingType(EntityType);
+            
             if Logic.IsEntityInCategory(_BuildingID, EntityCategories.OuterRimBuilding) == 0
             and Logic.IsEntityInCategory(_BuildingID, EntityCategories.CityBuilding) == 0
             or Logic.IsConstructionComplete(_BuildingID) == 0 then
@@ -789,14 +806,16 @@ function ModuleBuildingButtons.Local:AddSingleReserveButton()
             end
             if Logic.IsBuildingBeingUpgraded(_BuildingID)
             or Logic.IsBuildingBeingKnockedDown(_BuildingID)
-            or Logic.IsBurning(_BuildingID) then
+            or Logic.IsBurning(_BuildingID)
+            or Logic.IsBuildingStopped(_BuildingID) then
                 XGUIEng.DisableButton(_WidgetID, 1)
             else
                 XGUIEng.DisableButton(_WidgetID, 0)
             end
-            SetIcon(_WidgetID, {10, 9})
-            if Logic.IsBuildingStopped(_BuildingID) then -- Change to reserviert
-                SetIcon(_WidgetID, {15, 6})
+
+            SetIcon(_WidgetID, {15, 6})
+            if Logic.IsGoodLocked(PlayerID, GoodType) then 
+                SetIcon(_WidgetID, {10, 9})
             end
         end
     )
