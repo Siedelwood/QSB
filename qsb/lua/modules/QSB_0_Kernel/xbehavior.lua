@@ -8297,7 +8297,7 @@ B_Trigger_OnQuestSuccess = Swift.LuaBase:CopyTable(B_Trigger_OnQuestSuccessWait)
 B_Trigger_OnQuestSuccess.Name = "Trigger_OnQuestSuccess";
 B_Trigger_OnQuestSuccess.Description.en = "Trigger: Starts the quest after another finished successfully.";
 B_Trigger_OnQuestSuccess.Description.de = "Auslöser: Startet den Quest, wenn ein anderer erfolgreich abgeschlossen wurde.";
-B_Trigger_OnQuestSuccess.Description.de = "Déclencheur: Démarre la quête lorsqu'une autre a été accomplie avec succès.";
+B_Trigger_OnQuestSuccess.Description.fr = "Déclencheur: Démarre la quête lorsqu'une autre a été accomplie avec succès.";
 B_Trigger_OnQuestSuccess.Parameter = {
     { ParameterType.QuestName,     en = "Quest name", de = "Questname", fr = "Nom de la quête" },
 }
