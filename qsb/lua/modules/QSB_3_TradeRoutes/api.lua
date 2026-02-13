@@ -48,7 +48,7 @@
 QSB.ScriptEvents = QSB.ScriptEvents or {};
 
 ---
--- Fügt einen Schiffshändler im Lagerhaus des Spielers hinzu.
+-- Initialisiert einen Handelshafen im Lagerhaus des Spielers.
 --
 -- Optional kann eine Liste von Handelsrouten übergeben werden.
 --
@@ -65,14 +65,14 @@ function API.InitHarbor(_PlayerID, ...)
         error("API.InitHarbor: player " .._PlayerID.. " is dead! :(");
         return;
     end
-    ModuleShipSalesment.Global:CreateHarbor(_PlayerID);
+    ModuleShipSalesment.Global:CreateHarbor(_PlayerID, false);
     for i= 1, #arg do
         API.AddTradeRoute(_PlayerID, arg[i]);
     end
 end
 
 ---
--- Entfernt den Schiffshändler vom Lagerhaus des Spielers.
+-- Entfernt den Handelshafen vom Lagerhaus des Spielers.
 --
 -- <b>Hinweis</b>: Die Routen werden sofort gelöscht. Schiffe, die sich mitten
 -- in ihrem Zyklus befinden, werden ebenfalls gelöscht und alle aktiven Angebote
@@ -204,6 +204,11 @@ function API.AddTradeRoute(_PlayerID, _Route)
         error("API.AddTradeRoute: route " .._Route.Name.. " has not enough offers!");
         return;
     end
+    if  ModuleShipSalesment.Global:CountTradeRoutes(_PlayerID) > 0
+    and ModuleShipSalesment.Global:IsRetroHarbor(_PlayerID) then
+        error("API.AddTradeRoute: Can't add routes to traveling salesman!");
+        return;
+    end
     for i= 1, #_Route.Offers, 1 do
         if Goods[_Route.Offers[i][1]] == nil and Entities[_Route.Offers[i][1]] == nil then
             error("API.AddTradeRoute: Offers[" ..i.. "][1] is invalid good type!");
@@ -285,6 +290,10 @@ function API.RemoveTradeRoute(_PlayerID, _RouteName)
     if Logic.GetStoreHouse(_PlayerID) == 0 then
         error("API.RemoveTradeRoute: player " .._PlayerID.. " is dead! :(");
         return 0;
+    end
+    if ModuleShipSalesment.Global:IsRetroHarbor(_PlayerID) then
+        error("API.RemoveTradeRoute: Can't remove routes to traveling salesman!");
+        return;
     end
     return ModuleShipSalesment.Global:ShutdownTradeRoute(_PlayerID, _RouteName);
 end

@@ -7,13 +7,10 @@ ModuleShipSalesment = {
     },
 
     Global = {
-        Data = {},
         Harbors = {},
         LoudTrader = true,
     },
-    Local = {
-        Data = {},
-    },
+    Local = {},
     Shared = {},
 };
 
@@ -41,38 +38,20 @@ function ModuleShipSalesment.Global:OnEvent(_ID, ...)
     if _ID == QSB.ScriptEvents.LoadscreenClosed then
         self.LoadscreenClosed = true;
     elseif _ID == QSB.ScriptEvents.TradeShipSpawned then
-        if ModuleShipSalesment.Global.LoudTrader then
-            Logic.ExecuteInLuaLocalState("LocalScriptCallback_QueueVoiceMessage(".. arg[1] ..", 'TravelingSalesmanSpotted')");
-        end
+        self:OnTravelingSalesmanShipSpawned(arg[1], arg[2], arg[3]);
     elseif _ID == QSB.ScriptEvents.TradeShipArrived then
-        if ModuleShipSalesment.Global.LoudTrader then
-            Logic.ExecuteInLuaLocalState("LocalScriptCallback_QueueVoiceMessage(".. arg[1] ..", 'TravelingSalesman')");
-        end
-    elseif  _ID == QSB.ScriptEvents.TradeShipLeft then
-        for _index = 1, #self.Harbors[arg[1]].Routes do
-            if self.Harbors[arg[1]].Routes[_index].OldHarbor == true then
-                StoreData = ModuleTrade.Global:GetStorehouseInformation(arg[1])
-                for _NumberOfOffers = StoreData.OfferCount, 1 , -1 do
-                    local Offer = table.remove(self.Harbors[arg[1]].AddedOffers, 1);
-                    API.RemoveTradeOffer(arg[1], Offer);
-                end
-            end
-        end
-        if ModuleShipSalesment.Global.LoudTrader then
-            Logic.ExecuteInLuaLocalState("LocalScriptCallback_QueueVoiceMessage(".. arg[1] ..", 'TravelingSalesman_Failure')");
-        end
-    elseif _ID == QSB.ScriptEvents.TradeShipDespawned then
-        if ModuleShipSalesment.Global.LoudTrader then
-            
-        end
+        self:OnTravelingSalesmanShipArrived(arg[1], arg[2], arg[3]);
+    elseif _ID == QSB.ScriptEvents.TradeShipLeft then
+        self:OnTravelingSalesmanShipLeft(arg[1], arg[2], arg[3]);
     end
 end
 
-function ModuleShipSalesment.Global:CreateHarbor(_PlayerID)
+function ModuleShipSalesment.Global:CreateHarbor(_PlayerID, _IsRetro)
     if self.Harbors[_PlayerID] then
         self:DisposeHarbor(_PlayerID);
     end
     self.Harbors[_PlayerID] = {
+        IsRetro = _IsRetro == true,
         AddedOffers  = {},
         Routes = {}
     };
@@ -86,6 +65,29 @@ function ModuleShipSalesment.Global:DisposeHarbor(_PlayerID)
     if IsExisting(StoreHouseID) then
         Logic.RemoveAllOffers(StoreHouseID);
     end
+end
+
+function ModuleShipSalesment.Global:IsRetroHarbor(_PlayerID)
+    if self.Harbors[_PlayerID] then
+        return self.Harbors[_PlayerID].IsRetro == true;
+    end
+    return false;
+end
+
+function ModuleShipSalesment.Global:IsSendingMessage(_PlayerID)
+    if  self.Harbors[_PlayerID]
+    and self.Harbors[_PlayerID].Routes[1]
+    and self.Harbors[_PlayerID].Routes[1].Message then
+        return true;
+    end
+    return false;
+end
+
+function ModuleShipSalesment.Global:CountTradeRoutes(_PlayerID)
+    if self.Harbors[_PlayerID] then
+        return #self.Harbors[_PlayerID].Routes;
+    end
+    return false;
 end
 
 function ModuleShipSalesment.Global:AddTradeRoute(_PlayerID, _Data)
@@ -110,6 +112,7 @@ function ModuleShipSalesment.Global:AlterTradeRouteOffers(_PlayerID, _Name, _Off
     end
     for i= #self.Harbors[_PlayerID].Routes, 1, -1 do
         if self.Harbors[_PlayerID].Routes[i].Name == _Name then
+            _Offers.Message = self.Harbors[_PlayerID].Routes[i].Message == true;
             self.Harbors[_PlayerID].Routes[i].Offers = _Offers;
             return;
         end
@@ -286,12 +289,13 @@ function ModuleShipSalesment.Global:AddTradeOffers(_PlayerID, _Index)
             end
         end
         -- remove oldest offer if needed
-        StoreData = ModuleTrade.Global:GetStorehouseInformation(_PlayerID);
-        if StoreData.OfferCount >= 4 then
+        StoreData = API.GetOfferInformation(_PlayerID);
+        if  not self:IsRetroHarbor(_PlayerID)
+        and StoreData.OfferCount >= 4 then
             local LastOffer = table.remove(self.Harbors[_PlayerID].AddedOffers, 1);
             API.RemoveTradeOffer(_PlayerID, LastOffer);
-            StoreData = ModuleTrade.Global:GetStorehouseInformation(_PlayerID);
         end
+        StoreData = API.GetOfferInformation(_PlayerID);
         -- add new offer
         API.RemoveTradeOffer(_PlayerID, OfferType);
         if IsGoodType then
@@ -312,6 +316,13 @@ function ModuleShipSalesment.Global:AddTradeOffers(_PlayerID, _Index)
         [[GameCallback_CloseNPCInteraction(GUI.GetPlayerID(), %d)]],
         StoreData.Storehouse
     ));
+end
+
+function ModuleShipSalesment.Global:RemoveTradeOffers(_PlayerID, _Index)
+    if self:IsRetroHarbor(_PlayerID) then
+        local StoreHouseID = Logic.GetStoreHouse(_PlayerID)
+        Logic.RemoveAllOffers(StoreHouseID);
+    end
 end
 
 function ModuleShipSalesment.Global:ControlHarbors()
@@ -360,6 +371,7 @@ function ModuleShipSalesment.Global:ControlHarbors()
                             self.Harbors[k].Routes[i].State = QSB.ShipTraderState.MovingOut;
                             self.Harbors[k].Routes[i].Timer = 0;
                             self:SendShipLeftEvent(k, v.Routes[i], ShipID);
+                            self:RemoveTradeOffers(k, i);
                             self:MoveShipOut(k, i);
                         end
 
@@ -372,6 +384,56 @@ function ModuleShipSalesment.Global:ControlHarbors()
                         end
                     end
                 end
+            end
+        end
+    end
+end
+
+function ModuleShipSalesment.Global:OnTravelingSalesmanInitalized(_PlayerID)
+    if self:IsRetroHarbor(_PlayerID) then
+        -- Change diplomacy
+        for PlayerID = 1, 8 do
+            if _PlayerID ~= PlayerID and Logic.PlayerGetIsHumanFlag(PlayerID) then
+                SetDiplomacyState(PlayerID, _PlayerID, 0);
+            end
+        end
+    end
+end
+
+function ModuleShipSalesment.Global:OnTravelingSalesmanShipSpawned(_PlayerID, _RouteName, _ShipID)
+    if self:IsRetroHarbor(_PlayerID) then
+        -- Send "voice" message
+        if self:IsSendingMessage(_PlayerID) then
+            Logic.ExecuteInLuaLocalState("LocalScriptCallback_QueueVoiceMessage(".. _PlayerID ..", 'TravelingSalesmanSpotted')");
+        end
+    end
+end
+
+function ModuleShipSalesment.Global:OnTravelingSalesmanShipArrived(_PlayerID, _RouteName, _ShipID)
+    if self:IsRetroHarbor(_PlayerID) then
+        -- Send "voice" message
+        if self:IsSendingMessage(_PlayerID) then
+            Logic.ExecuteInLuaLocalState("LocalScriptCallback_QueueVoiceMessage(".. _PlayerID ..", 'TravelingSalesman')");
+        end
+        -- Change diplomacy
+        for PlayerID = 1, 8 do
+            if _PlayerID ~= PlayerID and Logic.PlayerGetIsHumanFlag(PlayerID) then
+                SetDiplomacyState(PlayerID, _PlayerID, 1);
+            end
+        end
+    end
+end
+
+function ModuleShipSalesment.Global:OnTravelingSalesmanShipLeft(_PlayerID, _RouteName, _ShipID)
+    if self:IsRetroHarbor(_PlayerID) then
+        -- Send "voice" message
+        if self:IsSendingMessage(_PlayerID) then
+            Logic.ExecuteInLuaLocalState("LocalScriptCallback_QueueVoiceMessage(".. _PlayerID ..", 'TravelingSalesman_Failure')");
+        end
+        -- Change diplomacy
+        for PlayerID = 1, 8 do
+            if _PlayerID ~= PlayerID and Logic.PlayerGetIsHumanFlag(PlayerID) then
+                SetDiplomacyState(PlayerID, _PlayerID, 0);
             end
         end
     end

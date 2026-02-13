@@ -7,33 +7,19 @@
 --
 -- Es kann mehr als einen fahrender Händler auf der Map geben.
 --
--- <h5>Angebote</h5>
--- Es können Waren, Soldaten oder Entertainer angeboten werden. Aus allen
--- definierten Angeboten werden zufällig Angebote in der angegebenen Mange
--- ausgesucht und gesetzt.
---
--- <h5>Routen</h5>
--- Um die Route anzugeben, wird ein Name eingegeben. Es werden alle fortlaufend
--- nummerierte Punkte mit diesem Namen gesucht. Alternativ kann auch eine
--- Liste von Punkten angegeben werden. Es muss mindestens 2 Punkte geben.
---
 -- <b>Alias</b>: TravelingSalesmanActivate
---
--- <b>QSB:</b> API.InitHarbor(_PlayerID, ...)
 --
 -- @param[type=table]  _Description Definition des Händlers
 -- @within QSB_3_TradeRoutes
 --
 -- @usage local TraderDescription = {
---     PlayerID   = 2,       -- Partei des Hafen
---     Path       = "SH2WP", -- Pfad (auch als Table einzelner Punkte möglich)
---     Duration   = 150,     -- Ankerzeit in Sekunden (Standard: 360)
---     Interval   = 3,       -- Monate zwischen zwei Anfarten (Standard: 2)
---     OfferCount = 4,       -- Anzahl Angebote (1 bis 4) (Standard: 4)
---     NoIce      = true,    -- Schiff kommt nicht im Winter (Standard: false)
---     OldHarbor  = true,     -- Optional, Angebote werden mit Verlassen des Schiffs wieder entfernt (Standard: false)
---     Name       = "Route1", -- Optional, Pro Hafen kann nur eine Route diesen Namen haben. Wird zum Entfernen und Verändern von Routen benutzt.
---     Offers = {
+--     PlayerID   = 2,                   -- Partei des Hafen
+--     Path       = {"SH2WP1","SH2WP2"}, -- Pfad zum Hafen
+--     Duration   = 150,                 -- Ankerzeit in Sekunden (Standard: 360)
+--     Interval   = 3,                   -- Monate zwischen zwei Anfarten (Standard: 2)
+--     Amount     = 4,                   -- Anzahl Angebote (1 bis 4) (Standard: 4)
+--     Message    = true,                -- Händler teilt Status des Schiffs mit
+--     Offers = { 
 --         -- Angebot, Menge
 --         {"G_Gems", 5},
 --         {"G_Iron", 5},
@@ -51,25 +37,79 @@
 -- };
 -- API.TravelingSalesmanCreate(TraderDescription);
 --
-function API.TravelingSalesmanCreate(_TraderDescription)
+function API.TravelingSalesmanCreate(_Data)
     if GUI then
         return;
     end
-    _TraderDescription.Name = "TravelingSalesman" .. _TraderDescription.PlayerID
-    _TraderDescription.Interval = _TraderDescription.Interval * 60
-    _TraderDescription.Amount = _TraderDescription.OfferCount
-    API.InitHarbor(_TraderDescription.PlayerID, _TraderDescription)
+    if type(_Data) ~= "table" then
+        error("API.TravelingSalesmanCreate: _Data must be a table!");
+        return;
+    end
+    local PlayerID = _Data.PlayerID;
+    _Data.PlayerID = nil;
+    _Data.Duration = _Data.Duration or (6 * 60);
+    _Data.Interval = (_Data.Interval or 2) * 60;
+    _Data.Amount = _Data.Amount or 4;
+    _Data.Message = _Data.Message == true;
+
+    if type(_Data.Path) ~= "table" then
+        error("API.TravelingSalesmanCreate: _Data.Path is not valid!");
+        return;
+    end
+    if Logic.GetStoreHouse(PlayerID) == 0 then
+        error("API.TravelingSalesmanCreate: Player " ..PlayerID.. " is dead! :(");
+        return;
+    end
+    ModuleShipSalesment.Global:CreateHarbor(PlayerID, true);
+    _Data.Name = "Player" ..PlayerID.. "_Route";
+    API.AddTradeRoute(PlayerID, _Data);
+    ModuleShipSalesment.Global:OnTravelingSalesmanInitalized(PlayerID);
 end
 TravelingSalesmanCreate = API.TravelingSalesmanCreate;
 
--- Setzt ob der Händler des Hafens etwas sagen soll, nachdem er etwas gemacht hat bzw. passiert ist.
+---
+-- Entfernt den fahrenden Händler vom Lagerhaus des Spielers.
 --
---<b>QSB:</b> API.InitHarbor(_PlayerID, ...)
---@param[type=boolean] _flag true oder false. Standartwert ist true
---@within QSB_3_TradeRoutes
+-- @param[type=number] _PlayerID ID des Spielers
+-- @within Anwenderfunktionen
 --
---@usage API.TravelingSalesmanShouting(true)
---@usage API.TravelingSalesmanShouting(false)
-function API.TravelingSalesmanShouting(_flag)
-    ModuleShipSalesment.Global.LoudTrader = _flag;
+-- @usage
+-- API.TravelingSalesmanDelete(2);
+--
+function API.TravelingSalesmanDelete(_PlayerID)
+    if not ModuleShipSalesment.Global:IsRetroHarbor(_PlayerID) then
+        error("API.TravelingSalesmanDelete: Not a traveling salesman!")
+        return;
+    end
+    if Logic.GetStoreHouse(_PlayerID) == 0 then
+        error("API.TravelingSalesmanDelete: player " .._PlayerID.. " is dead! :(");
+        return;
+    end
+    ModuleShipSalesment.Global:DisposeHarbor(_PlayerID);
 end
+
+---
+-- Andert das Warenangebot eines fliegenden Händlers.
+--
+-- @param[type=number] _PlayerID    ID des Spielers
+-- @param[type=table]  _RouteOffers Daten der Handelsroute
+-- @within Anwenderfunktionen
+--
+-- @usage
+-- API.ChangeTravelingSalesmanGoods(
+--     2,
+--     {{"G_Wool", 3},
+--      {"U_CatapultCart", 5},
+--      {"G_Beer", 2},
+--      {"G_Herb", 3},
+--      {"U_Entertainer_NA_StiltWalker", 1}}
+-- );
+--
+function API.ChangeTravelingSalesmanGoods(_PlayerID, _RouteOffers)
+    if not ModuleShipSalesment.Global:IsRetroHarbor(_PlayerID) then
+        error("API.ChangeTravelingSalesmanGoods: Not a traveling salesman!")
+        return;
+    end
+    API.ChangeTradeRouteGoods(_PlayerID, "Player" .._PlayerID.. "_Route", _RouteOffers);
+end
+
