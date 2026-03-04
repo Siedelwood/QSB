@@ -561,8 +561,6 @@ function ModuleBriefingSystem.Local:OnEvent(_ID, ...)
         self:EndBriefing(arg[1], arg[2]);
     elseif _ID == QSB.ScriptEvents.BriefingPageShown then
         self:DisplayPage(arg[1], arg[2], arg[3]);
-    elseif _ID == QSB.ScriptEvents.BriefingSkipButtonPressed then
-        self:SkipButtonPressed(arg[1]);
     end
 end
 
@@ -1026,6 +1024,9 @@ function ModuleBriefingSystem.Local:SkipButtonPressed(_PlayerID, _Page)
     end
     if (self.Briefing[_PlayerID].LastSkipButtonPressed + 500) < Logic.GetTimeMs() then
         self.Briefing[_PlayerID].LastSkipButtonPressed = Logic.GetTimeMs();
+
+        API.BroadcastScriptEventToGlobal("BriefingSkipButtonPressed",_PlayerID);
+        API.SendScriptEvent(QSB.ScriptEvents.BriefingSkipButtonPressed, _PlayerID);
     end
 end
 
@@ -1072,12 +1073,7 @@ function ModuleBriefingSystem.Local:OverrideThroneRoomFunctions()
     GameCallback_Camera_SkipButtonPressed = function(_PlayerID)
         GameCallback_Camera_SkipButtonPressed_Orig_ModuleBriefingSystem(_PlayerID);
         if _PlayerID == GUI.GetPlayerID() then
-            -- Must trigger in global script for all players.
-            API.BroadcastScriptEventToGlobal(
-                "BriefingSkipButtonPressed",
-                _PlayerID
-            );
-            API.SendScriptEvent(QSB.ScriptEvents.BriefingSkipButtonPressed, _PlayerID);
+            ModuleBriefingSystem.Local:SkipButtonPressed(_PlayerID);
         end
     end
 
