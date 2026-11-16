@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 3.0.0beta-2.2.6
+
+- *fixed* API.GetCirclePosition hat bei Gebäuden und der Flag zur Nutzung des Eingangs nicht den Eingang benutzt
+
 ## Version 3.0.0beta-2.2.5
 
 - *fixed* Übersetzungsfehler bei Trigger OnQuestSuccess
