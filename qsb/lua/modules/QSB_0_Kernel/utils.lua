@@ -852,7 +852,7 @@ function API.GetCirclePosition(_Target, _Distance, _Angle, __BuildingRealPos)
         Position = API.GetPosition(EntityID);
         if Logic.IsBuilding(EntityID) == 1 and not __BuildingRealPos then
             x, y = Logic.GetBuildingApproachPosition(EntityID);
-            pos = {X= x, Y= y};
+            Position = {X= x, Y= y, Z= Position.Z};
             Orientation = Orientation -90;
         end
     end
